@@ -258,6 +258,22 @@ h2.sec-title { font-size: clamp(30px, 4vw, 42px); font-weight: 800; letter-spaci
 .pcard .flavor { font-size: 12.5px; color: var(--fern); font-weight: 700; text-transform: uppercase; letter-spacing: .12em; margin-top: 4px; }
 .pcard .price { margin-top: 18px; font-size: 40px; font-weight: 800; letter-spacing: -1.8px; font-variant-numeric: tabular-nums; }
 .pcard .price small { font-size: 14px; color: var(--taupe); font-weight: 500; letter-spacing: 0; }
+/* The anchor above the price, and the number that melts down to ours. Lifted
+   from `.mcard .price .was` and the menu-price counter in glazedweb's own
+   app/globals.css and app/page.jsx. Same element, same job, one card instead
+   of three, so the left-to-right stagger is dropped and nothing else is.
+
+   `tabular-nums` is already on `.price` and is what stops the card twitching
+   sideways while five digits count down to four. */
+.pcard .price .was {
+  display: block; font-size: 12.5px; font-weight: 600; letter-spacing: .04em;
+  color: var(--taupe); text-transform: uppercase; margin-bottom: 2px;
+}
+.pcard .price .was s { text-decoration-color: var(--raspberry); text-decoration-thickness: 2px; }
+.pcard .anchor-note {
+  margin-top: 14px; font-size: 12.5px; color: var(--taupe); line-height: 1.55;
+}
+.pcard .anchor-note a { color: var(--raspberry-ink); }
 .pcard .mo { margin-top: 6px; font-size: 20px; font-weight: 800; letter-spacing: -0.6px; font-variant-numeric: tabular-nums; }
 .pcard .mo small { font-size: 13.5px; color: var(--taupe); font-weight: 500; letter-spacing: 0; }
 .pcard ul { list-style: none; margin: 22px 0 0; display: grid; gap: 10px; }
@@ -625,7 +641,10 @@ footer .inner { max-width: 1100px; margin: 0 auto; padding: 56px 24px 36px; }
         <span class="tag">Custom Order</span>
         <h3>Insurance for a Cause</h3>
         <p class="flavor">Anchor Insurance and Risk Management</p>
-        <p class="price">$3,500 <small>to build</small></p>
+        <p class="price">
+          <span class="was" aria-hidden="true">Market <s>$15,000</s></span>
+          $<span class="price-num" data-from="15000" data-to="3500">3,500</span> <small>to build</small>
+        </p>
         <p class="mo">$150 <small>a month after launch</small></p>
         <ul>
           <li>The full site, written not assembled</li>
@@ -636,6 +655,7 @@ footer .inner { max-width: 1100px; margin: 0 auto; padding: 56px 24px 36px; }
           <li>Search, maps and link previews set up properly</li>
           <li>Hosting, security updates and content edits, monthly</li>
         </ul>
+        <p class="anchor-note">$15,000 is the top of the published range for an independent agent&rsquo;s site, and that range buys five to ten pages with a contact form on it. The same guide puts a custom quote tool and purpose-built pages in the next tier up, at $20,000 to $60,000. This is twenty-one pages and three tools nobody else has written. <a href="https://qrolic.com/blog/insurance-company-website-cost-2026/">Range published here</a>.</p>
       </div>
 
       <div class="terms">
@@ -725,6 +745,65 @@ document.documentElement.classList.add('js');
   window.addEventListener('scroll', onScroll, { passive: true });
   window.addEventListener('resize', onScroll, { passive: true });
 })();
+
+/* The price melts. You glimpse the market number as the card comes up, then it
+   counts down to ours as your eyes reach it, and scrolling back up re-arms it
+   for the next pass. Lifted from the menu-price counter in glazedweb's
+   app/page.jsx: the same 1100ms, the same cubic ease-out, the same three-state
+   idle/primed/counting machine and the same 0.12/0.38/0.45 thresholds. The
+   left-to-right stagger is dropped because there is one card here, not three.
+
+   THE RENDERED NUMBER IS ALREADY THE REAL ONE. `data-to` is what is in the
+   markup, so with JavaScript off, under reduced motion, or if this script never
+   runs, the card reads $3,500 and the struck-through anchor still sits above
+   it. Nothing here is load-bearing, which is the rule.
+
+   Never write the anchor into the DOM at load and count down from it. That way,
+   a reader whose scripts are blocked is looking at a price we are not charging,
+   and on this page of all pages that is the one unforgivable bug. */
+(function () {
+  var el = document.querySelector('#price .price-num');
+  if (!el) return;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var card = el.closest('.pcard') || el;
+  var from = parseFloat(el.dataset.from);
+  var to = parseFloat(el.dataset.to);
+  if (!isFinite(from) || !isFinite(to)) return;
+  var fmt = function (v) { return Math.round(v).toLocaleString('en-US'); };
+  var status = 'idle', anim = 0, raf = 0;
+  function stop() { if (anim) cancelAnimationFrame(anim); anim = 0; }
+  function count() {
+    var start;
+    var dur = 1100;
+    function tick(ts) {
+      if (start === undefined) start = ts;
+      var p = Math.min(1, (ts - start) / dur);
+      var ease = 1 - Math.pow(1 - p, 3);
+      el.textContent = fmt(from + (to - from) * ease);
+      if (p < 1) anim = requestAnimationFrame(tick);
+      else { anim = 0; status = 'done'; }
+    }
+    anim = requestAnimationFrame(tick);
+  }
+  function update() {
+    raf = 0;
+    var r = card.getBoundingClientRect();
+    var vh = window.innerHeight || 1;
+    var cp = Math.min(1, Math.max(0, (vh - r.top) / (vh + r.height)));
+    if (cp >= 0.45) {
+      if (status === 'idle' || status === 'primed') { status = 'counting'; count(); }
+    } else if (cp >= 0.12 && cp < 0.38) {
+      if (status !== 'primed') { stop(); el.textContent = fmt(from); status = 'primed'; }
+    } else if (cp < 0.12) {
+      if (status !== 'idle') { stop(); el.textContent = fmt(to); status = 'idle'; }
+    }
+  }
+  function onScroll() { if (!raf) raf = requestAnimationFrame(update); }
+  update();
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll, { passive: true });
+})();
+
 (function () {
   var els = document.querySelectorAll('.reveal');
   if (!('IntersectionObserver' in window) ||

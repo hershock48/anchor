@@ -1,4 +1,4 @@
-From e7b60dca048b411963587f67604ab21f23dc15a8 Mon Sep 17 00:00:00 2001
+From aad611f5f82be1df119786153cec437c29f42179 Mon Sep 17 00:00:00 2001
 From: Kevin Hershock <kevin@glazedweb.com>
 Date: Thu, 20 Aug 2026 21:47:15 +0000
 Subject: [PATCH] Fold in what the Insurance for a Cause build taught the docs
@@ -46,10 +46,13 @@ no icon and falls back to /favicon.ico at the origin root. Declare on both sides
 and nothing falls back. Plus the SVG-then-.ico order for Safari, absolute paths
 because / and /logo are rewrites, and a checklist line.
 
-proposal.md: the numbered steps glaze, and the glaze is lifted from `.step .num`
-verbatim, driver and thresholds included. With the trap: copy only the disc and
-it looks glazed sitting still and never glazes, because the two pieces that make
-it work are the two with no visible effect on their own.
+proposal.md: the numbered steps glaze and the price melts, both lifted from
+glazedweb verbatim, drivers and thresholds included. With the trap on each. On
+the glaze: copy only the disc and it looks glazed sitting still and never
+glazes, because the two pieces that make it work are the two with no visible
+effect on their own. On the price: the anchor is a published figure with a link
+under it, and `data-to` holds the real price so nobody with scripts blocked ever
+reads a number we are not charging.
 
 intake.md: "what town are they actually in, and which county", asked even when
 you think you know. The story now carries both misses, because the second one is
@@ -65,8 +68,8 @@ Claude-Session: https://claude.ai/code/session_01LRN2pKhBSdie1ymm4FJ9LR
  glaze/intake.md     | 68 ++++++++++++++++++++++++++++-----------------
  glaze/launch.md     | 12 ++++++++
  glaze/link-cards.md | 35 +++++++++++++++++++++++
- glaze/proposal.md   | 15 ++++++++++
- 6 files changed, 164 insertions(+), 25 deletions(-)
+ glaze/proposal.md   | 34 +++++++++++++++++++++++
+ 6 files changed, 183 insertions(+), 25 deletions(-)
 
 diff --git a/glaze.md b/glaze.md
 index f540a86..1376545 100644
@@ -376,10 +379,10 @@ index 539eb12..c96200d 100644
 +      nothing falls back to the origin root. Proposal and logo page declare
 +      Glazed's; the demo declares the client's.
 diff --git a/glaze/proposal.md b/glaze/proposal.md
-index efacb03..e2250b2 100644
+index efacb03..6b54d29 100644
 --- a/glaze/proposal.md
 +++ b/glaze/proposal.md
-@@ -14,6 +14,21 @@ phone if a call goes sideways.
+@@ -14,6 +14,40 @@ phone if a call goes sideways.
  Lift its stylesheet and its animated donut marks **verbatim**. Do not re-derive
  them. Then strip what the new proposal does not use.
  
@@ -397,6 +400,25 @@ index efacb03..e2250b2 100644
 +against, and `overflow: hidden`, which keeps the sweep inside the circle.**
 +Without them the highlight lands somewhere up the page and the sweep runs across
 +the card. Scroll-scrubbed, never autoplayed, and off under reduced motion.
++
++**The price melts too.** The build number counts down from a market anchor as
++the card reaches the reader, same 1100ms and cubic ease-out as the menu prices
++on glazedweb, same idle/primed/counting machine so scrolling back up re-arms it.
++One card instead of three, so the left-to-right stagger is the only thing
++dropped.
++
++Two rules on that, and the second one is not optional:
++
++- **The anchor is a published figure with a link under it, not a number you
++  liked.** Every other figure in a proposal carries a source, and an invented
++  one in the price section is the one place a client will actually check.
++  Insurance for a Cause anchors at $15,000 against $3,500, which is the top of
++  a published range for an independent agent's site, with the range and what it
++  buys said out loud underneath.
++- **The rendered number is the real price.** `data-to` is what sits in the
++  markup and the anchor is only in `data-from`. Write the anchor into the DOM
++  at load and count down from it, and a reader with scripts blocked, or on
++  reduced motion, is looking at a price you are not charging.
 +
  Also in that repo, for reference:
  
