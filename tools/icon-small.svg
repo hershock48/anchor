@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <!-- THE SMALL CUT, for 32px and below.
+       Same rule as components/Logo.tsx: the heart's counter closes into a smudge
+       at small sizes, so it fills solid and keeps its mass, and the strokes go
+       heavier so the anchor survives the pixel grid. Not a different logo, a
+       different cut of the same one. -->
+  <rect width="512" height="512" fill="#14293C"/>
+  <g transform="translate(106 74) scale(2.5)">
+    <path d="M60 47 C60 47 38 34 38 20.5 C38 12.4 44.2 6 52.1 6 C56.2 6 59 8.2 60 11 C61 8.2 63.8 6 67.9 6 C75.8 6 82 12.4 82 20.5 C82 34 60 47 60 47 Z"
+      fill="#E4614F"/>
+    <g fill="none" stroke="#FFFFFF" stroke-width="14" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M60 42 L60 120"/>
+      <path d="M30 62 L90 62"/>
+      <path d="M20 82 C20 110 38 126 60 126 C82 126 100 110 100 82"/>
+    </g>
+  </g>
+</svg>

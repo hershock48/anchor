@@ -18,7 +18,14 @@
 <meta property="og:image:alt" content="Can anyone check that you gave? A proposal from Glazed Web.">
 <meta name="twitter:card" content="summary_large_image">
 
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='42' fill='%23E84D8A'/%3E%3Ccircle cx='50' cy='50' r='11' fill='%23FDF6EC'/%3E%3C/svg%3E">
+<!-- THE ANCHOR, NOT THE DONUT.
+     A favicon is cached per ORIGIN, and on a pitch host the proposal, the logo
+     page and the whole demo share one. Two different icons on one origin means
+     whichever loads first tends to stay in the tab, and the order somebody
+     actually browses is proposal then demo, so the Glazed donut was sticking on
+     her site. The header lockup and the footer plate carry Glazed on this
+     document; the tab carries hers. -->
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20120%20150'%3E%3Crect%20width='120'%20height='150'%20fill='#14293C'/%3E%3Cpath%20d='M60%2047%20C60%2047%2038%2034%2038%2020.5%20C38%2012.4%2044.2%206%2052.1%206%20C56.2%206%2059%208.2%2060%2011%20C61%208.2%2063.8%206%2067.9%206%20C75.8%206%2082%2012.4%2082%2020.5%20C82%2034%2060%2047%2060%2047%20Z'%20fill='#E4614F'/%3E%3Cg%20fill='none'%20stroke='#fff'%20stroke-width='12'%20stroke-linecap='round'%20stroke-linejoin='round'%3E%3Cpath%20d='M60%2042%20L60%20122'/%3E%3Cpath%20d='M30%2062%20L90%2062'/%3E%3Cpath%20d='M20%2083%20C20%20111%2038%20127%2060%20127%20C82%20127%20100%20111%20100%2083'/%3E%3C/g%3E%3C/svg%3E">
 
 <style>
 /* Palette and type lifted from glazedweb app/globals.css. Three pinks on
