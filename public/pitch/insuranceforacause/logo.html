@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The mark — Insurance for a Cause</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='42' fill='%23E84D8A'/%3E%3Ccircle cx='50' cy='50' r='11' fill='%23FDF6EC'/%3E%3C/svg%3E">
+<style>
+/* Palette lifted from glazedweb app/globals.css. Three pinks on purpose. */
+:root{
+  --raspberry:#E84D8A; --raspberry-deep:#CE3672; --raspberry-ink:#C9356F;
+  --slime:#BFE07A; --slime-bright:#A9D65C; --fern:#467C3D;
+  --chocolate:#2B1E16; --chocolate-2:#201712;
+  --cream:#FDF6EC; --cream-2:#FFFDF8; --taupe:#7F6D5B;
+  /* the client's, shown here only inside specimens */
+  --navy:#14293C; --brick:#C4362B; --sand:#E4D7C3; --paper:#F7F3EC;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  background:var(--cream);color:var(--chocolate);overflow-x:hidden}
+::selection{background:var(--slime);color:var(--chocolate)}
+a{color:var(--raspberry-ink)}
+h1,h2,h3,h4,p,li,span,b{overflow-wrap:break-word}
+
+header{position:sticky;top:0;z-index:50;background:rgba(253,246,236,.85);backdrop-filter:blur(12px);border-bottom:1px solid rgba(43,30,22,.07)}
+.navwrap{max-width:1100px;margin:0 auto;padding:14px 24px;display:flex;align-items:center;justify-content:space-between;gap:14px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--chocolate)}
+.brand .bw{font-weight:800;font-size:19px;letter-spacing:-.6px}
+.brand .bw span{font-weight:350;color:var(--taupe)}
+.navfor{font-size:13px;color:var(--taupe);font-weight:600;text-align:right}
+.navfor b{display:block;color:var(--chocolate);font-size:14px;font-weight:800}
+
+.hero{max-width:1100px;margin:0 auto;padding:56px 24px 60px}
+.kicker{font-size:12px;letter-spacing:.3em;text-transform:uppercase;color:var(--fern);font-weight:700;margin-bottom:18px}
+h1{font-size:clamp(34px,5.2vw,56px);font-weight:800;letter-spacing:-2px;line-height:1.04}
+h1 em{font-style:normal;color:var(--raspberry)}
+.hero p.sub{margin-top:22px;font-size:18px;color:#6B5747;line-height:1.6;max-width:600px}
+
+.ticker{background:var(--slime);overflow:hidden;padding:13px 0;border-top:2px solid var(--chocolate);border-bottom:2px solid var(--chocolate)}
+.ticker-inner{display:flex;width:max-content;animation:scroll 30s linear infinite}
+.ticker span{font-weight:800;font-size:14px;letter-spacing:.18em;text-transform:uppercase;color:var(--chocolate);padding:0 18px;white-space:nowrap}
+@keyframes scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+section .inner{max-width:1100px;margin:0 auto;padding:74px 24px}
+.sec-kicker{font-size:12px;letter-spacing:.3em;text-transform:uppercase;font-weight:700;margin-bottom:14px;color:var(--fern)}
+h2.sec-title{font-size:clamp(28px,4vw,40px);font-weight:800;letter-spacing:-1.4px;line-height:1.1}
+.sec-sub{margin-top:14px;font-size:16.5px;color:#6B5747;max-width:640px;line-height:1.6}
+#why{background:var(--cream-2)}
+#dark{background:var(--chocolate-2);color:#F3EAE1}
+#dark .sec-kicker{color:var(--slime)}
+#dark .sec-sub{color:#C3B2A2}
+
+.stage{background:#fff;border:2px solid rgba(43,30,22,.1);border-radius:22px;padding:44px 30px;margin-top:36px;
+  display:flex;justify-content:center;align-items:center;gap:48px;flex-wrap:wrap}
+.stage.paper{background:var(--paper);border-color:rgba(20,41,60,.14)}
+.stage.navy{background:var(--navy);border-color:var(--navy)}
+.stage.brick{background:var(--brick);border-color:var(--brick)}
+.stage.sand{background:var(--sand);border-color:#d3c3aa}
+.cap{text-align:center;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--taupe);font-weight:700;margin-top:12px}
+
+.cards{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;margin-top:38px}
+@media(max-width:800px){.cards{grid-template-columns:1fr}}
+.card{background:var(--cream-2);border:2px solid rgba(43,30,22,.1);border-radius:20px;padding:24px 24px;position:relative}
+.card.fix{border-color:var(--raspberry);box-shadow:0 18px 40px -18px rgba(232,77,138,.35)}
+.card .tag{position:absolute;top:-13px;left:22px;background:var(--raspberry-deep);color:#fff;font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;border-radius:999px;padding:5px 12px}
+.card .tag.was{background:var(--taupe)}
+.card h3{font-size:18px;font-weight:800;letter-spacing:-.4px;line-height:1.25}
+.card p{font-size:14.5px;color:#5A4A3A;line-height:1.6;margin-top:9px}
+#dark .card{background:rgba(243,234,225,.05);border-color:rgba(243,234,225,.14)}
+#dark .card h3{color:#F3EAE1}
+#dark .card p{color:#C3B2A2}
+#dark .card p strong{color:var(--slime)}
+
+/* wordmark specimens */
+.lock{display:flex;flex-direction:column;align-items:center;gap:6px}
+.lockh{display:flex;align-items:center;gap:16px}
+.wm{font-weight:800;letter-spacing:-.035em;line-height:.9;color:var(--navy);text-align:center}
+.wm .big{font-size:38px;display:block}
+.wm .tl{display:block;margin-top:9px;font-size:12.5px;font-weight:650;letter-spacing:0;color:var(--brick)}
+.lockh .wm{text-align:left}
+.lockh .wm .big{font-size:26px}
+.lockh .wm .tl{font-size:10.5px;margin-top:6px}
+.stage.navy .wm{color:#fff}.stage.navy .wm .tl{color:#F0A093}
+.stage.brick .wm{color:#fff}.stage.brick .wm .tl{color:#fff;opacity:1}
+
+.chip{display:flex;flex-direction:column;align-items:center;gap:9px}
+.chip .lbl{font-size:11px;color:var(--taupe);font-family:ui-monospace,monospace}
+
+.sw{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:32px}
+@media(max-width:760px){.sw{grid-template-columns:repeat(2,1fr)}}
+.sw div{border-radius:16px;padding:20px 18px;border:2px solid rgba(43,30,22,.1);min-height:112px}
+.sw b{display:block;font-size:14.5px;font-weight:800;margin-bottom:3px}
+.sw code{font-family:ui-monospace,monospace;font-size:12px;display:block}
+.sw em{font-style:normal;display:block;font-size:12px;margin-top:8px;line-height:1.45}
+
+
+/* ===== in use ===== */
+.mocks{display:grid;grid-template-columns:1fr;gap:26px;margin-top:38px;min-width:0}
+.mocks>*{min-width:0}
+.win,.win .screen{min-width:0}
+.win{background:var(--navy);border-radius:16px;padding:9px;box-shadow:0 26px 56px -30px rgba(20,41,60,.6)}
+.win .bar{display:flex;gap:6px;padding:7px 10px 10px}
+.win .bar i{width:9px;height:9px;border-radius:50%;background:rgba(255,255,255,.22);display:block}
+.win .screen{background:var(--paper);border-radius:10px;overflow:hidden}
+.sitenav{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:15px 22px;border-bottom:1px solid rgba(20,41,60,.1);flex-wrap:wrap;min-width:0}
+.sitenav .lk{display:flex;align-items:center;gap:10px}
+.sitenav .lk .n{font-weight:800;font-size:15px;letter-spacing:-.03em;color:var(--navy);line-height:1}
+.sitenav .lk .n em{display:block;font-style:normal;font-weight:650;font-size:8.5px;color:var(--brick);margin-top:3px;letter-spacing:0}
+.sitenav ul{display:flex;gap:17px;list-style:none}
+.sitenav li{font-size:11.5px;font-weight:650;color:var(--navy);opacity:.72}
+.sitenav .cta{background:var(--brick);color:#fff;font-size:11.5px;font-weight:800;padding:8px 15px;border-radius:999px}
+.sitehero{padding:40px 22px 34px}
+.sitehero h4{font-size:clamp(24px,3.4vw,38px);font-weight:800;letter-spacing:-.035em;line-height:1.02;color:var(--navy);max-width:15ch}
+.sitehero p{margin-top:12px;font-size:13px;color:#5C6B78;max-width:44ch;line-height:1.55}
+.sitehero .row{display:flex;gap:9px;margin-top:18px;flex-wrap:wrap}
+.sitehero .b1{background:var(--brick);color:#fff;font-size:12px;font-weight:800;padding:11px 20px;border-radius:999px}
+.sitehero .b2{border:2px solid rgba(20,41,60,.2);color:var(--navy);font-size:12px;font-weight:800;padding:9px 18px;border-radius:999px}
+.giveband{background:var(--brick);color:#fff;padding:22px;display:flex;gap:22px;align-items:center;flex-wrap:wrap;justify-content:space-between}
+.giveband b{font-size:19px;font-weight:800;letter-spacing:-.02em;display:block}
+.giveband span{font-size:12px;opacity:.9;display:block;margin-top:3px}
+.giveband .bar2{flex:1;min-width:170px;height:11px;border-radius:6px;background:rgba(255,255,255,.28);overflow:hidden}
+.giveband .bar2 i{display:block;height:100%;width:34%;background:#fff;border-radius:6px}
+
+.smallmocks{display:grid;grid-template-columns:1.25fr 1fr;gap:22px;min-width:0}
+.smallmocks>*{min-width:0}
+@media(max-width:800px){.smallmocks{grid-template-columns:1fr}}
+.card2{background:var(--paper);border-radius:12px;padding:22px 22px;box-shadow:0 18px 36px -22px rgba(20,41,60,.55);aspect-ratio:1.75/1;display:flex;flex-direction:column;justify-content:space-between}
+.card2.back{background:var(--navy)}
+.card2 .top{display:flex;align-items:center;gap:11px}
+.card2 .top .n{font-weight:800;font-size:15.5px;letter-spacing:-.03em;color:var(--navy);line-height:1}
+.card2 .top .n em{display:block;font-style:normal;font-weight:650;font-size:8.5px;color:var(--brick);margin-top:3px;letter-spacing:0}
+.card2 .who{font-size:12px;color:#5C6B78;line-height:1.55}
+.card2 .who b{display:block;color:var(--navy);font-size:13.5px;font-weight:800}
+.card2.back .mid{margin:auto;text-align:center;color:#fff}
+.card2.back .mid b{display:block;font-size:16px;font-weight:800;letter-spacing:-.02em}
+.card2.back .mid span{display:block;font-size:11px;opacity:.8;margin-top:5px}
+.avatars{display:flex;gap:16px;align-items:center;flex-wrap:wrap;justify-content:center}
+.av{border-radius:50%;background:var(--navy);display:grid;place-items:center}
+.av.b{background:var(--brick)}
+
+.drip-divider{display:block;width:100%;height:54px;margin-bottom:-1px}
+.ctaband{background:var(--raspberry-deep);color:#fff}
+.ctaband .inner{padding:76px 24px;text-align:center}
+.ctaband h2{font-size:clamp(26px,4.2vw,40px);font-weight:800;letter-spacing:-1.6px;line-height:1.08}
+.ctaband .btn{display:inline-block;background:var(--chocolate);color:#fff !important;font-weight:700;border-radius:999px;text-decoration:none;padding:15px 30px;font-size:16px;box-shadow:0 10px 24px -10px rgba(0,0,0,.4);transition:transform .15s ease}
+.ctaband .btn:hover{transform:translateY(-2px)}
+.ph{background:#F3E7CE;border-bottom:1.5px dashed #C08A2C;padding:0 4px;border-radius:2px;font-style:normal;color:#8A5A1C;font-weight:600}
+.ctaband p{margin:16px auto 0;font-size:17px;max-width:560px;line-height:1.55}
+
+footer{background:var(--chocolate-2);color:#A6907F}
+footer .inner{max-width:1100px;margin:0 auto;padding:52px 24px 34px}
+.foot-top{display:flex;justify-content:space-between;align-items:flex-start;gap:30px;flex-wrap:wrap}
+.foot-brand{display:flex;align-items:center;gap:12px}
+.foot-brand .bw{font-weight:800;font-size:22px;letter-spacing:-.7px;color:#F3EAE1}
+.foot-brand .bw span{font-weight:350;color:#A6907F}
+.foot-note{font-size:14px;line-height:1.6;max-width:420px}
+.foot-note a{color:#F3EAE1;font-weight:700;text-decoration:none}
+.foot-bottom{margin-top:38px;padding-top:22px;border-top:1px solid rgba(243,234,225,.1);display:flex;justify-content:space-between;font-size:12.5px;flex-wrap:wrap;gap:10px}
+
+.js .reveal{opacity:0;transform:translateY(26px);transition:opacity .7s ease,transform .7s ease}
+.js .reveal.in{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .js .reveal{opacity:1;transform:none;transition:none}
+  .ticker-inner{animation:none}
+}
+@media(max-width:760px){
+  .sitenav ul{display:none}
+  .sitehero{padding:30px 18px 26px}
+  .giveband{padding:18px}
+  .card2{padding:18px;aspect-ratio:auto}
+}
+@media(max-width:640px){
+  .navwrap{padding:11px 14px}.brand .bw{font-size:17px}
+  .hero{padding:34px 20px 44px}section .inner{padding:52px 20px}
+  .stage{padding:32px 18px;gap:30px}
+  .ctaband .inner{padding:58px 20px}
+}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <!-- Glazed Web donut, lifted verbatim from components/Logo.jsx. viewBox cropped
+       to 46 16 110 186, the mark's real painted bounds. -->
+  <radialGradient id="pinkGrad" cx="40%" cy="34%" r="75%">
+    <stop offset="0%" stop-color="#F887B2"/><stop offset="55%" stop-color="#E84D8A"/><stop offset="100%" stop-color="#CE3672"/>
+  </radialGradient>
+  <linearGradient id="lgGrad" x1="0" y1="92" x2="0" y2="215" gradientUnits="userSpaceOnUse">
+    <stop offset="0%" stop-color="#D9EDA0"/><stop offset="55%" stop-color="#BFE07A"/><stop offset="100%" stop-color="#A3CE55"/>
+  </linearGradient>
+  <linearGradient id="creepGrad" x1="0" y1="90" x2="0" y2="124" gradientUnits="userSpaceOnUse">
+    <stop offset="0%" stop-color="#E3F2B0"/><stop offset="100%" stop-color="#C3E181"/>
+  </linearGradient>
+  <linearGradient id="dgGrad" x1="0" y1="92" x2="0" y2="165" gradientUnits="userSpaceOnUse">
+    <stop offset="0%" stop-color="#5FA850"/><stop offset="100%" stop-color="#43813A"/>
+  </linearGradient>
+  <symbol id="mark" viewBox="46 16 110 186" overflow="visible">
+    <g fill="url(#dgGrad)">
+      <ellipse cx="100" cy="110" rx="38" ry="15"/>
+      <path d="M 86 100 C 86 116, 87 130, 88 142 C 88 148, 91 149, 92 142 C 93 130, 92 114, 92 100 Z"/>
+      <path d="M 114 100 C 114 112, 115 124, 116 134 C 116 140, 119 141, 120 134 C 121 124, 120 110, 120 100 Z"/>
+    </g>
+    <g fill="url(#lgGrad)">
+      <path d="M 64 100 C 63 120, 65 138, 66 152 C 66 164, 68 172, 74 173 C 80 172, 83 165, 82 154 C 84 136, 85 116, 86 100 Z"/>
+      <path d="M 92 100 C 91 128, 93 152, 94 172 C 94 188, 97 199, 104 200 C 111 199, 114 190, 112 174 C 113 150, 114 124, 114 100 Z"/>
+      <path d="M 120 100 C 119 116, 120 130, 121 142 C 121 152, 123 159, 129 160 C 134 159, 137 153, 135 144 C 136 130, 137 114, 137 100 Z"/>
+    </g>
+    <circle cx="100" cy="70" r="52" fill="url(#pinkGrad)"/>
+    <path d="M 56 98 A 52 52 0 0 0 144 98 C 142 94, 138 92, 134 94 C 130 97, 129 102, 125 104 C 119 106, 116 98, 110 96 C 104 94, 103 102, 98 105 C 93 107, 90 100, 84 97 C 78 95, 76 100, 71 102 C 66 103, 62 100, 56 98 Z" fill="url(#creepGrad)"/>
+    <path d="M 68 106 A 42 42 0 0 0 84 116" fill="none" stroke="#F1F8DC" stroke-width="4" stroke-linecap="round" opacity="0.85"/>
+    <path d="M 97 144 Q 103 151 109 144" fill="none" stroke="#55974A" stroke-width="4" stroke-linecap="round"/>
+    <g stroke="#F1F8DC" fill="none" stroke-linecap="round">
+      <path d="M 97 128 C 96 148, 97 166, 100 182" stroke-width="4.5" opacity="0.85"/>
+      <path d="M 69 118 C 68 132, 70 146, 71 156" stroke-width="3.5" opacity="0.8"/>
+      <path d="M 124 114 C 123 124, 125 138, 126 148" stroke-width="3.5" opacity="0.8"/>
+    </g>
+    <circle cx="100" cy="192" r="2.5" fill="#F1F8DC" opacity="0.9"/>
+    <circle cx="100" cy="72" r="13" fill="var(--hole, #FDF6EC)"/>
+    <circle cx="100" cy="72" r="13" fill="none" stroke="#C22F6B" stroke-width="3" opacity="0.3"/>
+    <path d="M 62 46 A 44 44 0 0 1 82 28" fill="none" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round" opacity="0.75"/>
+    <circle cx="92" cy="26" r="3.5" fill="#FFFFFF" opacity="0.75"/>
+  </symbol>
+  <symbol id="dripEdge" viewBox="0 0 1440 60" preserveAspectRatio="none">
+    <path d="M0,0 H1440 V16 C1408 16 1400 44 1378 44 C1356 44 1362 16 1332 16 H1180 C1160 16 1156 52 1132 52 C1110 52 1116 16 1088 16 H880 C862 16 860 38 842 38 C824 38 828 16 802 16 H590 C574 16 572 48 550 48 C528 48 532 16 506 16 H300 C284 16 282 36 264 36 C246 36 250 16 224 16 H0 Z"/>
+  </symbol>
+
+  <!-- ===== the client's mark, drawn rather than constructed ===== -->
+  <!-- Every part is a filled path with real taper: the shank widens toward the
+       crown, the stock is a lens thick at the middle, the arms narrow into
+       drawn fluke points. No uniform stroke anywhere. -->
+  <g id="ifac">
+    <g fill="var(--a-ink,#14293C)">
+      <path d="M55.5 42 H64.5 L67 110 H53 Z"/>
+      <path d="M24 57 C38.5 50.5 47 49 60 49 C73 49 81.5 50.5 96 57 C96 57 95 61.8 94.5 62.5 C80.5 57.2 72 56 60 56 C48 56 39.5 57.2 25.5 62.5 C25 61.8 24 57 24 57 Z"/>
+      <path d="M60 118 C38 118 21.5 104 19 79 L13 82 L23.5 62 L34 79 L27.5 76.5 C30 96 43 110 60 110 Z"/>
+      <path d="M60 118 C82 118 98.5 104 101 79 L107 82 L96.5 62 L86 79 L92.5 76.5 C90 96 77 110 60 110 Z"/>
+    </g>
+    <path d="M60 47 C60 47 36.5 34 36.5 19.5 C36.5 10.5 43.2 4.5 51 4.5 C55.4 4.5 58.4 7.2 60 10.6 C61.6 7.2 64.6 4.5 69 4.5 C76.8 4.5 83.5 10.5 83.5 19.5 C83.5 34 60 47 60 47 Z M60 29.2 A6.4 6.4 0 1 0 60 16.4 A6.4 6.4 0 1 0 60 29.2 Z"
+          fill="var(--a-accent,#C4362B)" fill-rule="evenodd"/>
+  </g>
+  <!-- small cut: hole closed, mass kept -->
+  <g id="ifacS">
+    <g fill="var(--a-ink,#14293C)">
+      <path d="M54.5 42 H65.5 L68 110 H52 Z"/>
+      <path d="M26 56 C39 50 47 48.5 60 48.5 C73 48.5 81 50 94 56 C94 56 93 61.5 92.5 62.5 C79 57.5 71 56.5 60 56.5 C49 56.5 41 57.5 27.5 62.5 C27 61.5 26 56 26 56 Z"/>
+      <path d="M60 119 C37 119 20.5 104 18 78 L11 81.5 L22.5 60 L34 79 L26.5 75.5 C29 96 43 110 60 110 Z"/>
+      <path d="M60 119 C83 119 99.5 104 102 78 L109 81.5 L97.5 60 L86 79 L93.5 75.5 C91 96 77 110 60 110 Z"/>
+    </g>
+    <path d="M60 47 C60 47 38 34 38 20 C38 11.5 44 5.5 51 5.5 C55.2 5.5 58.4 8 60 11.2 C61.6 8 64.8 5.5 69 5.5 C76 5.5 82 11.5 82 20 C82 34 60 47 60 47 Z"
+          fill="var(--a-accent,#C4362B)"/>
+  </g>
+</defs></svg>
+
+<header>
+  <div class="navwrap">
+    <a class="brand" href="https://glazedweb.com">
+      <svg width="24" height="31" viewBox="46 16 110 186" overflow="visible" aria-hidden="true"><use href="#mark"/></svg>
+      <span class="bw">glazed<span>web</span></span>
+    </a>
+    <div class="navfor">Prepared for<b>Insurance for a Cause</b></div>
+  </div>
+</header>
+
+<div class="hero">
+  <p class="kicker">A logo presentation, August 2026</p>
+  <h1>You already own <em>the best symbol in insurance.</em></h1>
+  <p class="sub">It is the name of your agency. An anchor means stability, holding fast, not drifting, and it is exactly what somebody buying coverage wants to feel. So we drew you one.</p>
+</div>
+
+<div class="ticker" aria-hidden="true">
+  <div class="ticker-inner">
+    <span>Anchor Insurance and Risk Management</span><span>&bull;</span><span>Coverage that gives back</span><span>&bull;</span><span>Marshall, Michigan</span><span>&bull;</span><span>Independent agency</span><span>&bull;</span><span>Anchor Insurance and Risk Management</span><span>&bull;</span><span>Coverage that gives back</span><span>&bull;</span><span>Marshall, Michigan</span><span>&bull;</span><span>Independent agency</span><span>&bull;</span>
+    <span>Anchor Insurance and Risk Management</span><span>&bull;</span><span>Coverage that gives back</span><span>&bull;</span><span>Marshall, Michigan</span><span>&bull;</span><span>Independent agency</span><span>&bull;</span><span>Anchor Insurance and Risk Management</span><span>&bull;</span><span>Coverage that gives back</span><span>&bull;</span><span>Marshall, Michigan</span><span>&bull;</span><span>Independent agency</span><span>&bull;</span>
+  </div>
+</div>
+
+<section id="new">
+  <div class="inner">
+    <p class="sec-kicker reveal">The idea</p>
+    <h2 class="sec-title reveal">An anchor holds. The heart is why.</h2>
+    <p class="sec-sub reveal">The one change we make to the anchor is the ring at the top, the part the rope passes through. That becomes a heart. It is not decoration stuck on the side. It is the piece that connects the anchor to everything else, which is a fair description of what the giving program is to your business.</p>
+
+    <div class="stage paper reveal">
+      <svg width="188" height="235" viewBox="0 0 120 150" aria-hidden="true"><use href="#ifac"/></svg>
+    </div>
+    <p class="cap">The mark</p>
+
+    <div class="stage paper reveal" style="padding-top:52px;padding-bottom:52px">
+      <div class="lock">
+        <svg width="96" height="120" viewBox="0 0 120 150" aria-hidden="true"><use href="#ifac"/></svg>
+        <div class="wm">
+          <span class="big">Insurance for a Cause</span>
+          <span class="tl">Coverage that gives back</span>
+        </div>
+      </div>
+    </div>
+    <p class="cap">The primary lockup</p>
+
+    <div class="stage navy reveal">
+      <div class="lockh">
+        <svg width="62" height="78" viewBox="0 0 120 150" style="--a-ink:#ffffff;--a-accent:#E4614F" aria-hidden="true"><use href="#ifac"/></svg>
+        <div class="wm"><span class="big">Insurance for a Cause</span><span class="tl">Coverage that gives back</span></div>
+      </div>
+    </div>
+    <p class="cap">Horizontal, reversed</p>
+
+    <div class="stage brick reveal">
+      <div class="lockh">
+        <svg width="62" height="78" viewBox="0 0 120 150" style="--a-ink:#ffffff;--a-accent:#ffffff" aria-hidden="true"><use href="#ifac"/></svg>
+        <div class="wm"><span class="big">Insurance for a Cause</span><span class="tl">Coverage that gives back</span></div>
+      </div>
+    </div>
+    <p class="cap">On the loud one</p>
+
+    <div class="stage sand reveal" style="gap:40px;align-items:flex-end">
+      <div class="chip"><svg width="70" height="88" viewBox="0 0 120 150" aria-hidden="true"><use href="#ifac"/></svg><span class="lbl">full</span></div>
+      <div class="chip"><svg width="34" height="43" viewBox="0 0 120 150" aria-hidden="true"><use href="#ifac"/></svg><span class="lbl">34px</span></div>
+      <div class="chip"><svg width="22" height="28" viewBox="0 0 120 150" aria-hidden="true"><use href="#ifacS"/></svg><span class="lbl">22px · small cut</span></div>
+      <div class="chip"><svg width="16" height="20" viewBox="0 0 120 150" aria-hidden="true"><use href="#ifacS"/></svg><span class="lbl">16px · small cut</span></div>
+      <div class="chip"><svg width="70" height="88" viewBox="0 0 120 150" style="--a-ink:#14293C;--a-accent:#14293C" aria-hidden="true"><use href="#ifac"/></svg><span class="lbl">one colour</span></div>
+    </div>
+    <p class="cap">Two cuts. The rope hole closes below about 30px and the mass stays.</p>
+  </div>
+</section>
+
+<svg class="drip-divider" viewBox="0 0 1440 60" preserveAspectRatio="none" style="background:#201712" aria-hidden="true"><use href="#dripEdge" fill="#FFFDF8"/></svg>
+
+<section id="why">
+  <div class="inner">
+    <p class="sec-kicker reveal">Colour</p>
+    <h2 class="sec-title reveal">Four colours, and each one has to come from somewhere real.</h2>
+    <p class="sec-sub reveal">This is the part we need you for. Every small business identity that got taken seriously in the last two years pulled its colours off a photograph of something that actually exists, and then said so out loud. We do not want to specify "navy." We want to specify a navy from a thing in your town.</p>
+
+    <div class="sw">
+      <div style="background:#14293C;color:#fff;border-color:#14293C">
+        <b>Anchor Navy</b><code>#14293C</code>
+        <em>Carries the trust. Text, the mark, dark surfaces.</em>
+      </div>
+      <div style="background:#C4362B;color:#fff;border-color:#C4362B">
+        <b>Cause Red</b><code>#C4362B</code>
+        <em>The giving, and allowed to fill whole sections rather than trim.</em>
+      </div>
+      <div style="background:#E4D7C3;border-color:#d3c3aa">
+        <b>Sand</b><code>#E4D7C3</code>
+        <em>The third voice. Keeps it off the navy-and-white default.</em>
+      </div>
+      <div style="background:#F7F3EC">
+        <b>Paper</b><code>#F7F3EC</code>
+        <em>The page. Warm, not white.</em>
+      </div>
+    </div>
+
+    <div class="cards" style="margin-top:34px">
+      <div class="card reveal">
+        <h3>What we need from you</h3>
+        <p>A photograph of something in Marshall that means something to you. A brick wall, the water, a sign, the building you work in. We pull the navy and the red out of it, and the guidelines say where they came from. It costs nothing and it turns a palette into a decision.</p>
+      </div>
+      <div class="card reveal">
+        <h3>And the thing that matters more than any of it</h3>
+        <p>Nothing about this mark is specific to you yet. It could be any agency with an anchor in the name. Every small business identity worth copying in the last two years earned it by naming the place, the year, or the family. If there is a founding year, a street, or a name that belongs in this, tell us and we will build it in.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<svg class="drip-divider" viewBox="0 0 1440 60" preserveAspectRatio="none" style="background:#FFFDF8" aria-hidden="true"><use href="#dripEdge" fill="#FDF6EC"/></svg>
+
+<section id="use">
+  <div class="inner">
+    <p class="sec-kicker reveal">In use</p>
+    <h2 class="sec-title reveal">What it looks like once it is doing its job.</h2>
+    <p class="sec-sub reveal">A logo does not live on a white page. It lives on a phone, on a card somebody puts in a wallet, and on the profile picture that shows up next to a Google review. Here it is in all three.</p>
+
+    <div class="mocks">
+      <div class="win reveal">
+        <div class="bar"><i></i><i></i><i></i></div>
+        <div class="screen">
+          <div class="sitenav">
+            <div class="lk">
+              <svg width="26" height="33" viewBox="0 0 120 150" aria-hidden="true"><use href="#ifac"/></svg>
+              <span class="n">Insurance for a Cause<em>Coverage that gives back</em></span>
+            </div>
+            <ul><li>Auto</li><li>Home</li><li>Our giving</li><li>About</li><li>Contact</li></ul>
+            <span class="cta">Get a quote</span>
+          </div>
+          <div class="sitehero">
+            <h4>Coverage that gives back.</h4>
+            <p>An independent agency in <span class="ph">Marshall</span>, shopping <span class="ph">your carriers</span> for you, and giving a share of every commission to a local cause you can watch us pick.</p>
+            <div class="row"><span class="b1">Get my quote</span><span class="b2">See where the money went</span></div>
+          </div>
+          <div class="giveband">
+            <div><b>Right now we are raising for <span class="ph" style="background:rgba(255,255,255,.22);border-color:rgba(255,255,255,.6);color:#fff">[first cause]</span></b><span>Every policy we write moves this.</span></div>
+            <div class="bar2"><i></i></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="smallmocks">
+        <div class="card2 reveal">
+          <div class="top">
+            <svg width="30" height="38" viewBox="0 0 120 150" aria-hidden="true"><use href="#ifac"/></svg>
+            <span class="n">Insurance for a Cause<em>Coverage that gives back</em></span>
+          </div>
+          <div class="who">
+            <b><span class="ph">[Owner name]</span></b>
+            Agent, Anchor Insurance and Risk Management<br>
+            <span class="ph">[phone]</span> &nbsp;·&nbsp; <span class="ph">[email]</span>
+          </div>
+        </div>
+        <div class="card2 back reveal">
+          <div class="mid">
+            <svg width="46" height="58" viewBox="0 0 120 150" style="--a-ink:#ffffff;--a-accent:#E4614F" aria-hidden="true"><use href="#ifac"/></svg>
+            <b style="margin-top:12px">Coverage that gives back</b>
+            <span>A share of every commission stays in <span class="ph" style="background:rgba(255,255,255,.22);border-color:rgba(255,255,255,.6);color:#fff">[your county]</span>.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="stage sand reveal" style="margin-top:0">
+        <div class="avatars">
+          <div class="chip"><div class="av" style="width:92px;height:92px"><svg width="44" height="55" viewBox="0 0 120 150" style="--a-ink:#ffffff;--a-accent:#E4614F" aria-hidden="true"><use href="#ifac"/></svg></div><span class="lbl">profile, 92px</span></div>
+          <div class="chip"><div class="av b" style="width:64px;height:64px"><svg width="30" height="38" viewBox="0 0 120 150" style="--a-ink:#ffffff;--a-accent:#ffffff" aria-hidden="true"><use href="#ifacS"/></svg></div><span class="lbl">64px</span></div>
+          <div class="chip"><div class="av" style="width:40px;height:40px"><svg width="19" height="24" viewBox="0 0 120 150" style="--a-ink:#ffffff;--a-accent:#E4614F" aria-hidden="true"><use href="#ifacS"/></svg></div><span class="lbl">40px</span></div>
+          <div class="chip"><div class="av" style="width:26px;height:26px"><svg width="13" height="16" viewBox="0 0 120 150" style="--a-ink:#ffffff;--a-accent:#E4614F" aria-hidden="true"><use href="#ifacS"/></svg></div><span class="lbl">26px</span></div>
+        </div>
+      </div>
+      <p class="cap">Round crops, because Google and Facebook will cut the corners off a square one</p>
+    </div>
+  </div>
+</section>
+
+<div class="ctaband">
+  <div class="inner">
+    <h2>Next: the website.</h2>
+    <p>That is the mark. Nothing here is locked, and if the heart is not the one, the anchor works on its own. When you are ready, the proposal for the site it goes on is one click away.</p>
+    <a class="btn big" href="/" style="margin-top:26px">Read the website proposal</a>
+  </div>
+</div>
+
+<footer>
+  <div class="inner">
+    <div class="foot-top">
+      <div class="foot-brand">
+        <svg width="30" height="38" viewBox="46 16 110 186" overflow="visible" style="--hole:#201712" aria-hidden="true"><use href="#mark"/></svg>
+        <span class="bw">glazed<span>web</span></span>
+      </div>
+      <p class="foot-note">Hand-built websites for small businesses in and around Marshall, Michigan. <a href="https://glazedweb.com">glazedweb.com</a></p>
+    </div>
+    <div class="foot-bottom">
+      <span>Prepared for Insurance for a Cause, August 2026.</span>
+      <span>Colours and files final once you pick the photograph.</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+document.documentElement.classList.add('js');
+(function(){
+  var els=document.querySelectorAll('.reveal');
+  if(!('IntersectionObserver' in window)||window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+    for(var i=0;i<els.length;i++)els[i].classList.add('in');return;
+  }
+  var io=new IntersectionObserver(function(es){es.forEach(function(e){
+    if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});},{rootMargin:'0px 0px -60px 0px'});
+  els.forEach(function(el){io.observe(el);});
+})();
+</script>
+</body>
+</html>

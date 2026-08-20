@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Can anyone check that you gave? A proposal for Insurance for a Cause</title>
+<meta name="description" content="A website proposal for Insurance for a Cause in Michigan, where every claim links to the proof.">
+<meta name="robots" content="noindex, nofollow">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Glazed Web">
+<meta property="og:title" content="Can anyone check that you gave?">
+<meta property="og:description" content="A website proposal for Insurance for a Cause, where every claim links to the proof.">
+<meta property="og:url" content="https://insuranceforacause.glazedweb.com/">
+<meta property="og:image" content="https://insuranceforacause.glazedweb.com/pitch/insuranceforacause/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Can anyone check that you gave? A proposal from Glazed Web.">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='42' fill='%23E84D8A'/%3E%3Ccircle cx='50' cy='50' r='11' fill='%23FDF6EC'/%3E%3C/svg%3E">
+
+<style>
+/* Palette and type lifted from glazedweb app/globals.css. Three pinks on
+   purpose: --raspberry is 3.34 as text on cream and 3.58 under white, so it is
+   accents only. --raspberry-deep (4.78) carries white text. --raspberry-ink
+   (4.63 on cream) is link text. Picking the wrong one reintroduces a fault
+   that took a full audit to find. */
+:root {
+  --raspberry: #E84D8A;
+  --raspberry-deep: #CE3672;
+  --raspberry-ink: #C9356F;
+  --slime: #BFE07A;
+  --slime-bright: #A9D65C;
+  --fern: #467C3D;
+  --chocolate: #2B1E16;
+  --chocolate-2: #201712;
+  --cream: #FDF6EC;
+  --cream-2: #FFFDF8;
+  --taupe: #7F6D5B;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background: var(--cream); color: var(--chocolate);
+  overflow-x: hidden;
+}
+::selection { background: var(--slime); color: var(--chocolate); }
+a { color: var(--raspberry-ink); }
+/* This document is full of long unbreakable tokens: domain names, upload paths,
+   "schulersrestaurant.com" in a 30px heading. At 320px they pushed the page 16px
+   wide. Fixed here, on the text elements, rather than on the one heading the
+   measurement named, because there are a dozen more of them in the findings. */
+h1, h2, h3, h4, p, li, span, a, b { overflow-wrap: break-word; }
+
+/* ============ header ============ */
+header {
+  position: sticky; top: 0; z-index: 50;
+  background: rgba(253, 246, 236, 0.85); backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(43,30,22,0.07);
+}
+.navwrap { max-width: 1100px; margin: 0 auto; padding: 14px 24px; display: flex; align-items: center; justify-content: space-between; gap: 14px; }
+.brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--chocolate); }
+.brand .bw { font-weight: 800; font-size: 19px; letter-spacing: -0.6px; }
+.brand .bw span { font-weight: 350; color: var(--taupe); }
+.navfor { font-size: 13px; color: var(--taupe); font-weight: 600; text-align: right; }
+.navfor b { display: block; color: var(--chocolate); font-size: 14px; font-weight: 800; }
+
+.btn {
+  display: inline-block; background: var(--raspberry-deep); color: #fff !important;
+  font-weight: 700; border-radius: 999px; text-decoration: none;
+  padding: 10px 20px; font-size: 14px; border: none; cursor: pointer;
+  box-shadow: 0 6px 16px -6px rgba(232,77,138,0.55);
+  transition: transform .15s ease, box-shadow .15s ease;
+  white-space: nowrap;
+}
+.btn:hover { transform: translateY(-2px); box-shadow: 0 10px 22px -8px rgba(232,77,138,0.65); }
+.btn.big { padding: 15px 30px; font-size: 16px; }
+.btn.ghost { background: transparent; color: var(--chocolate) !important; box-shadow: none; border: 2px solid rgba(43,30,22,0.18); }
+.btn.ghost:hover { border-color: var(--raspberry-deep); color: var(--raspberry-deep) !important; }
+
+/* ============ hero ============ */
+.hero { max-width: 1100px; margin: 0 auto; padding: 64px 24px 78px; display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 40px; align-items: center; }
+@media (max-width: 800px) { .hero { grid-template-columns: 1fr; text-align: center; } .hero .mark { order: -1; margin: 0 auto; } }
+.kicker { font-size: 12px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--fern); font-weight: 700; margin-bottom: 18px; }
+h1 { font-size: clamp(36px, 5.2vw, 58px); font-weight: 800; letter-spacing: -2px; line-height: 1.04; }
+h1 em { font-style: normal; color: var(--raspberry); }
+.hero p.sub { margin-top: 22px; font-size: 18px; color: #6B5747; line-height: 1.6; max-width: 500px; }
+.hero .ctas { margin-top: 30px; display: flex; gap: 14px; flex-wrap: wrap; }
+@media (max-width: 800px) { .hero .ctas, .hero p.sub { justify-content: center; margin-left: auto; margin-right: auto; } }
+.hero .proof { margin-top: 26px; font-size: 13px; color: var(--taupe); line-height: 1.6; }
+.hero .proof b { color: var(--chocolate); }
+
+/* logo animations, lifted from globals.css */
+.goo { transform-box: fill-box; transform-origin: 50% 0%; animation: breathe 6s ease-in-out infinite; }
+@keyframes breathe { 0%,100% { transform: scaleY(1); } 50% { transform: scaleY(1.02); } }
+.wob1, .wob2, .wob3, .wobB { transform-box: fill-box; transform-origin: 50% 0%; }
+.wob1 { animation: sagg 3.8s ease-in-out infinite -0.6s; }
+.wob2 { animation: sagg 4.9s ease-in-out infinite -2.1s; }
+.wob3 { animation: sagg 4.3s ease-in-out infinite -1.3s; }
+.wobB { animation: sagg 5.6s ease-in-out infinite -3s; }
+@keyframes sagg { 0%,100% { transform: scaleY(1) scaleX(1); } 50% { transform: scaleY(1.07) scaleX(0.98); } }
+.string { transform-box: fill-box; transform-origin: 50% 0%; animation: stringy 3.4s cubic-bezier(.55,.1,.8,.5) infinite; }
+@keyframes stringy {
+  0% { transform: scaleY(0.1); opacity: 0; } 25% { transform: scaleY(0.8); opacity: 1; }
+  60% { transform: scaleY(1.7); opacity: .85; } 80% { transform: scaleY(2.4); opacity: 0; } 100% { transform: scaleY(0.1); opacity: 0; }
+}
+.droplet { transform-box: fill-box; transform-origin: center; animation: fall 3.4s cubic-bezier(.5,.08,.85,.6) infinite; }
+@keyframes fall {
+  0% { transform: translateY(-16px) scaleY(1.5) scaleX(.7); opacity: 0; }
+  22% { transform: translateY(-8px) scaleY(1.2) scaleX(.85); opacity: 1; }
+  60% { transform: translateY(10px) scale(1); opacity: 1; }
+  100% { transform: translateY(38px) scaleY(1.15) scaleX(.9); opacity: 0; }
+}
+.droplet2 { transform-box: fill-box; transform-origin: center; animation: fall2 5.1s cubic-bezier(.5,.08,.85,.6) infinite -2.4s; }
+@keyframes fall2 {
+  0% { transform: translateY(-10px) scaleY(1.4) scaleX(.75); opacity: 0; }
+  25% { transform: translateY(-4px) scale(1); opacity: 1; }
+  65% { transform: translateY(8px) scale(1); opacity: 1; }
+  100% { transform: translateY(26px) scale(1); opacity: 0; }
+}
+.sheen { animation: shimmer 6s ease-in-out infinite; }
+@keyframes shimmer { 0%,100% { opacity: .55; } 50% { opacity: .95; } }
+
+/* ============ ticker ============ */
+.ticker { background: var(--slime); overflow: hidden; padding: 13px 0; border-top: 2px solid var(--chocolate); border-bottom: 2px solid var(--chocolate); }
+.ticker-inner { display: flex; gap: 0; width: max-content; animation: scroll 34s linear infinite; }
+.ticker span { font-weight: 800; font-size: 14px; letter-spacing: .18em; text-transform: uppercase; color: var(--chocolate); padding: 0 18px; white-space: nowrap; }
+@keyframes scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+/* ============ sections ============ */
+section .inner { max-width: 1100px; margin: 0 auto; padding: 84px 24px; }
+.sec-kicker { font-size: 12px; letter-spacing: .3em; text-transform: uppercase; font-weight: 700; margin-bottom: 14px; color: var(--fern); }
+h2.sec-title { font-size: clamp(30px, 4vw, 42px); font-weight: 800; letter-spacing: -1.4px; line-height: 1.1; }
+.sec-sub { margin-top: 14px; font-size: 16.5px; color: #6B5747; max-width: 620px; line-height: 1.6; }
+
+/* ============ findings ============ */
+#found { background: var(--cream-2); }
+.find-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; margin-top: 44px; }
+@media (max-width: 800px) { .find-grid { grid-template-columns: 1fr; } }
+.fcard {
+  background: #fff; border: 2px solid rgba(43,30,22,0.1); border-radius: 20px; padding: 26px 24px;
+  position: relative;
+}
+.fcard.urgent { border-color: var(--raspberry); box-shadow: 0 18px 40px -18px rgba(232,77,138,.35); grid-column: 1 / -1; }
+.fcard .tag { position: absolute; top: -13px; left: 24px; background: var(--raspberry-deep); color: #fff; font-size: 11px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; border-radius: 999px; padding: 5px 12px; }
+.fcard h3 { font-size: 19px; font-weight: 800; letter-spacing: -0.5px; line-height: 1.25; }
+.fcard p { font-size: 14.5px; color: #5A4A3A; line-height: 1.6; margin-top: 10px; }
+.fcard .proof { display: block; margin-top: 14px; font-size: 12.5px; font-weight: 700; color: var(--raspberry-ink); text-transform: uppercase; letter-spacing: .08em; word-break: break-word; }
+.fcard .proof a { color: var(--raspberry-ink); }
+.split { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 16px; }
+@media (max-width: 560px) { .split { grid-template-columns: 1fr; } }
+.split > div { background: var(--cream); border-radius: 12px; padding: 13px 15px; border: 1px solid rgba(43,30,22,0.09); }
+.split b { display: block; font-size: 12px; text-transform: uppercase; letter-spacing: .1em; color: var(--fern); margin-bottom: 4px; }
+.split span { font-size: 14.5px; color: #5A4A3A; line-height: 1.45; }
+
+.honest { margin-top: 40px; background: var(--cream); border: 2px solid rgba(43,30,22,0.09); border-radius: 16px; padding: 20px 22px; }
+.honest b { display: block; font-size: 12.5px; text-transform: uppercase; letter-spacing: .1em; color: var(--fern); margin-bottom: 8px; }
+.honest p { font-size: 14.5px; color: #5A4A3A; line-height: 1.6; }
+.honest p + p { margin-top: 10px; }
+
+/* ============ the wedge ============ */
+#wedge { background: var(--chocolate-2); color: #F3EAE1; }
+#wedge .sec-kicker { color: var(--slime); }
+#wedge .sec-sub { color: #C3B2A2; }
+#wedge .lede { margin-top: 34px; font-size: 20px; line-height: 1.6; max-width: 720px; color: #F3EAE1; }
+#wedge .lede strong { color: var(--slime); }
+.wcards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 40px; }
+@media (max-width: 800px) { .wcards { grid-template-columns: 1fr; } }
+.wcard { background: rgba(243,234,225,0.05); border: 1px solid rgba(243,234,225,0.14); border-radius: 18px; padding: 24px 22px; }
+.wcard b { display: block; font-size: 12px; text-transform: uppercase; letter-spacing: .12em; color: var(--slime); margin-bottom: 10px; }
+.wcard p { font-size: 14.5px; color: #C3B2A2; line-height: 1.6; }
+.wcard p strong { color: #F3EAE1; }
+
+/* ============ build ============ */
+.blist { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; margin-top: 44px; }
+@media (max-width: 800px) { .blist { grid-template-columns: 1fr; } }
+.bitem { background: var(--cream-2); border: 2px solid rgba(43,30,22,0.09); border-radius: 18px; padding: 24px 22px; }
+.bitem .num {
+  width: 42px; height: 42px; border-radius: 50%;
+  background: radial-gradient(circle at 32% 26%, #EAF7C6 0%, var(--slime) 48%, #9CCB4F 100%);
+  box-shadow: inset 0 2px 3px rgba(255,255,255,.7), inset 0 -3px 5px rgba(67,129,58,.35);
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 800; font-size: 17px; color: var(--chocolate); margin-bottom: 16px;
+  border: 2px solid var(--chocolate);
+}
+.bitem h4 { font-size: 17.5px; font-weight: 800; letter-spacing: -0.3px; }
+.bitem .sub { font-size: 12px; text-transform: uppercase; letter-spacing: .12em; color: var(--fern); font-weight: 700; margin: 4px 0 10px; }
+.bitem p { font-size: 14.5px; color: #5A4A3A; line-height: 1.6; }
+.later { margin-top: 28px; font-size: 14.5px; color: var(--taupe); line-height: 1.65; max-width: 700px; }
+.later b { color: var(--chocolate); }
+
+/* ============ price ============ */
+#price { background: var(--cream-2); }
+.pricewrap { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 26px; margin-top: 44px; align-items: start; }
+@media (max-width: 860px) { .pricewrap { grid-template-columns: 1fr; } }
+.pcard {
+  background: #fff; border: 2px solid var(--raspberry); border-radius: 20px; padding: 32px 28px;
+  box-shadow: 0 18px 40px -18px rgba(232,77,138,.35); position: relative;
+}
+.pcard .tag { position: absolute; top: -13px; left: 24px; background: var(--raspberry-deep); color: #fff; font-size: 11px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; border-radius: 999px; padding: 5px 12px; }
+.pcard h3 { font-size: 21px; font-weight: 800; letter-spacing: -0.5px; }
+.pcard .flavor { font-size: 12.5px; color: var(--fern); font-weight: 700; text-transform: uppercase; letter-spacing: .12em; margin-top: 4px; }
+.pcard .price { margin-top: 18px; font-size: 40px; font-weight: 800; letter-spacing: -1.8px; font-variant-numeric: tabular-nums; }
+.pcard .price small { font-size: 14px; color: var(--taupe); font-weight: 500; letter-spacing: 0; }
+.pcard .mo { margin-top: 6px; font-size: 20px; font-weight: 800; letter-spacing: -0.6px; font-variant-numeric: tabular-nums; }
+.pcard .mo small { font-size: 13.5px; color: var(--taupe); font-weight: 500; letter-spacing: 0; }
+.pcard ul { list-style: none; margin: 22px 0 0; display: grid; gap: 10px; }
+.pcard li { font-size: 14.5px; color: #5A4A3A; padding-left: 24px; position: relative; line-height: 1.45; }
+.pcard li::before {
+  content: ""; position: absolute; left: 0; top: 4px; width: 12px; height: 12px;
+  border: 3.5px solid var(--raspberry); border-radius: 50%;
+}
+.terms { display: grid; gap: 14px; }
+.terms > div { background: #fff; border: 2px solid rgba(43,30,22,0.1); border-radius: 16px; padding: 20px 22px; }
+.terms b { display: block; font-size: 15.5px; margin-bottom: 6px; }
+.terms span { font-size: 14.5px; color: #5A4A3A; line-height: 1.6; display: block; }
+
+/* ============ cta band ============ */
+.ctaband { background: var(--raspberry-deep); color: #fff; }
+.ctaband .inner { padding: 86px 24px; text-align: center; }
+.ctaband h2 { font-size: clamp(28px, 4.2vw, 44px); font-weight: 800; letter-spacing: -1.6px; line-height: 1.08; }
+.ctaband p { margin: 16px auto 30px; font-size: 17px; max-width: 520px; line-height: 1.55; color: #fff; }
+.ctaband .btn { background: var(--chocolate); box-shadow: 0 10px 24px -10px rgba(0,0,0,.4); }
+/* Was #FBEFF4, a softened white, which measured 4.27 on --raspberry-deep and
+   failed the 4.5 that normal-weight text needs. Same fault and same fix as the
+   band's own paragraph in globals.css: the softness was costing the pass on its
+   own, so it comes off and hierarchy comes from size instead. Full white is
+   4.78 on this ground. */
+.ctaband .after { margin-top: 22px; font-size: 13.5px; color: #fff; }
+
+/* ============ footer ============ */
+footer { background: var(--chocolate-2); color: #A6907F; }
+footer .inner { max-width: 1100px; margin: 0 auto; padding: 56px 24px 36px; }
+.foot-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 30px; flex-wrap: wrap; }
+.foot-brand { display: flex; align-items: center; gap: 12px; }
+.foot-brand .bw { font-weight: 800; font-size: 22px; letter-spacing: -0.7px; color: #F3EAE1; }
+.foot-brand .bw span { font-weight: 350; color: #A6907F; }
+.foot-note { font-size: 14px; line-height: 1.6; max-width: 420px; }
+.foot-note a { color: #F3EAE1; font-weight: 700; text-decoration: none; }
+.foot-note a:hover { color: var(--slime); }
+.foot-bottom { margin-top: 40px; padding-top: 22px; border-top: 1px solid rgba(243,234,225,0.1); display: flex; justify-content: space-between; font-size: 12.5px; flex-wrap: wrap; gap: 10px; }
+
+/* drip dividers */
+.drip-divider { display: block; width: 100%; height: 54px; margin-bottom: -1px; }
+
+/* reveal on scroll. The un-animated state is the finished state: .reveal is
+   only added by JS, so a blocked script or reduced motion leaves a complete
+   page rather than an empty one. */
+.js .reveal { opacity: 0; transform: translateY(26px); transition: opacity .7s ease, transform .7s ease; }
+.js .reveal.in { opacity: 1; transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .js .reveal { opacity: 1; transform: none; transition: none; }
+  .goo, .wob1, .wob2, .wob3, .wobB, .string, .droplet, .droplet2, .sheen, .ticker-inner { animation: none; }
+  .string, .droplet, .droplet2 { opacity: 1; }
+  .btn:hover { transform: none; }
+}
+
+/* ============ mobile ============ */
+@media (max-width: 640px) {
+  .navwrap { padding: 11px 14px; }
+  .brand { gap: 7px; }
+  .brand .bw { font-size: 17px; }
+  .navfor { font-size: 12px; }
+  .navfor b { font-size: 13px; }
+  .hero { padding: 30px 20px 58px; gap: 22px; }
+  .hero .mark svg { width: 165px; height: 208px; }
+  .hero p.sub { font-size: 16px; }
+  .btn.big { padding: 13px 22px; font-size: 15px; }
+  section .inner { padding: 56px 20px; }
+  .ctaband .inner { padding: 60px 20px; }
+  .pcard .price { font-size: 34px; }
+  footer .inner { padding: 44px 20px 30px; }
+}
+@media (max-width: 390px) {
+  .brand .bw { font-size: 16px; }
+  .navfor { display: none; }
+}
+</style></head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <radialGradient id="pinkGrad" cx="40%" cy="34%" r="75%">
+      <stop offset="0%" stop-color="#F887B2"/><stop offset="55%" stop-color="#E84D8A"/><stop offset="100%" stop-color="#CE3672"/>
+    </radialGradient>
+    <linearGradient id="lgGrad" x1="0" y1="92" x2="0" y2="215" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#D9EDA0"/><stop offset="55%" stop-color="#BFE07A"/><stop offset="100%" stop-color="#A3CE55"/>
+    </linearGradient>
+    <linearGradient id="creepGrad" x1="0" y1="90" x2="0" y2="124" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#E3F2B0"/><stop offset="100%" stop-color="#C3E181"/>
+    </linearGradient>
+    <linearGradient id="dgGrad" x1="0" y1="92" x2="0" y2="165" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#5FA850"/><stop offset="100%" stop-color="#43813A"/>
+    </linearGradient>
+  </defs>
+  <!-- viewBox cropped to 46 16 110 186, the mark's real painted bounds. No
+       coordinate moves; the matting is gone so it reads at 26px. -->
+  <symbol id="mark" viewBox="46 16 110 186" overflow="visible">
+    <g fill="url(#dgGrad)">
+      <ellipse cx="100" cy="110" rx="38" ry="15"/>
+      <path d="M 86 100 C 86 116, 87 130, 88 142 C 88 148, 91 149, 92 142 C 93 130, 92 114, 92 100 Z"/>
+      <path d="M 114 100 C 114 112, 115 124, 116 134 C 116 140, 119 141, 120 134 C 121 124, 120 110, 120 100 Z"/>
+    </g>
+    <g fill="url(#lgGrad)">
+      <path d="M 64 100 C 63 120, 65 138, 66 152 C 66 164, 68 172, 74 173 C 80 172, 83 165, 82 154 C 84 136, 85 116, 86 100 Z"/>
+      <path d="M 92 100 C 91 128, 93 152, 94 172 C 94 188, 97 199, 104 200 C 111 199, 114 190, 112 174 C 113 150, 114 124, 114 100 Z"/>
+      <path d="M 120 100 C 119 116, 120 130, 121 142 C 121 152, 123 159, 129 160 C 134 159, 137 153, 135 144 C 136 130, 137 114, 137 100 Z"/>
+    </g>
+    <circle cx="100" cy="70" r="52" fill="url(#pinkGrad)"/>
+    <path d="M 56 98 A 52 52 0 0 0 144 98 C 142 94, 138 92, 134 94 C 130 97, 129 102, 125 104 C 119 106, 116 98, 110 96 C 104 94, 103 102, 98 105 C 93 107, 90 100, 84 97 C 78 95, 76 100, 71 102 C 66 103, 62 100, 56 98 Z" fill="url(#creepGrad)"/>
+    <path d="M 68 106 A 42 42 0 0 0 84 116" fill="none" stroke="#F1F8DC" stroke-width="4" stroke-linecap="round" opacity="0.85"/>
+    <path d="M 97 144 Q 103 151 109 144" fill="none" stroke="#55974A" stroke-width="4" stroke-linecap="round"/>
+    <g stroke="#F1F8DC" fill="none" stroke-linecap="round">
+      <path d="M 97 128 C 96 148, 97 166, 100 182" stroke-width="4.5" opacity="0.85"/>
+      <path d="M 69 118 C 68 132, 70 146, 71 156" stroke-width="3.5" opacity="0.8"/>
+      <path d="M 124 114 C 123 124, 125 138, 126 148" stroke-width="3.5" opacity="0.8"/>
+    </g>
+    <circle cx="100" cy="192" r="2.5" fill="#F1F8DC" opacity="0.9"/>
+    <circle cx="100" cy="72" r="13" fill="var(--hole, #FDF6EC)"/>
+    <circle cx="100" cy="72" r="13" fill="none" stroke="#C22F6B" stroke-width="3" opacity="0.3"/>
+    <path d="M 62 46 A 44 44 0 0 1 82 28" fill="none" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round" opacity="0.75"/>
+    <circle cx="92" cy="26" r="3.5" fill="#FFFFFF" opacity="0.75"/>
+  </symbol>
+  <symbol id="dripEdge" viewBox="0 0 1440 60" preserveAspectRatio="none">
+    <path d="M0,0 H1440 V16 C1408 16 1400 44 1378 44 C1356 44 1362 16 1332 16 H1180 C1160 16 1156 52 1132 52 C1110 52 1116 16 1088 16 H880 C862 16 860 38 842 38 C824 38 828 16 802 16 H590 C574 16 572 48 550 48 C528 48 532 16 506 16 H300 C284 16 282 36 264 36 C246 36 250 16 224 16 H0 Z"/>
+  </symbol>
+</svg>
+
+<header>
+  <div class="navwrap">
+    <a class="brand" href="https://glazedweb.com">
+      <svg width="24" height="31" viewBox="46 16 110 186" overflow="visible" aria-hidden="true"><use href="#mark"/></svg>
+      <span class="bw">glazed<span>web</span></span>
+    </a>
+    <div class="navfor">
+      Prepared for
+      <b>Insurance for a Cause</b>
+    </div>
+  </div>
+</header>
+
+<div class="hero">
+  <div>
+    <p class="kicker">A website proposal, August 2026</p>
+    <h1>Can anyone check <em>that you gave?</em></h1>
+    <p class="sub">Not read that you care about the community. Check it. See the amount, the date, the organization, and the receipt, without asking you for any of it.</p>
+    <div class="ctas">
+      <a class="btn big" href="#found">See what we found</a>
+      <a class="btn big ghost" href="#price">Skip to the price</a>
+    </div>
+    <p class="proof">Every finding below links to the agency's own page that proves it. Nothing here is an opinion about anybody's design.</p>
+  </div>
+  <div class="mark">
+    <!-- AnimatedMark, lifted verbatim. Hero only, one per page. -->
+    <svg width="230" height="290" viewBox="0 0 200 250" overflow="visible" aria-hidden="true">
+      <g class="goo">
+        <g fill="url(#dgGrad)">
+          <ellipse cx="100" cy="110" rx="38" ry="15"/>
+          <path class="wobB" d="M 86 100 C 86 116, 87 130, 88 142 C 88 148, 91 149, 92 142 C 93 130, 92 114, 92 100 Z"/>
+          <path d="M 114 100 C 114 112, 115 124, 116 134 C 116 140, 119 141, 120 134 C 121 124, 120 110, 120 100 Z"/>
+        </g>
+        <g fill="url(#lgGrad)">
+          <path class="wob1" d="M 64 100 C 63 120, 65 138, 66 152 C 66 164, 68 172, 74 173 C 80 172, 83 165, 82 154 C 84 136, 85 116, 86 100 Z"/>
+          <path class="wob2" d="M 92 100 C 91 128, 93 152, 94 172 C 94 188, 97 199, 104 200 C 111 199, 114 190, 112 174 C 113 150, 114 124, 114 100 Z"/>
+          <path class="wob3" d="M 120 100 C 119 116, 120 130, 121 142 C 121 152, 123 159, 129 160 C 134 159, 137 153, 135 144 C 136 130, 137 114, 137 100 Z"/>
+        </g>
+      </g>
+      <path class="string" d="M 104 199 L 104 209" stroke="#BFE07A" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+      <g class="droplet">
+        <circle cx="104" cy="213" r="7" fill="#BFE07A"/>
+        <circle cx="102" cy="211" r="2" fill="#F1F8DC" opacity="0.9"/>
+      </g>
+      <circle class="droplet2" cx="74" cy="186" r="4.5" fill="#BFE07A"/>
+      <circle cx="100" cy="70" r="52" fill="url(#pinkGrad)"/>
+      <path d="M 56 98 A 52 52 0 0 0 144 98 C 142 94, 138 92, 134 94 C 130 97, 129 102, 125 104 C 119 106, 116 98, 110 96 C 104 94, 103 102, 98 105 C 93 107, 90 100, 84 97 C 78 95, 76 100, 71 102 C 66 103, 62 100, 56 98 Z" fill="url(#creepGrad)"/>
+      <path d="M 68 106 A 42 42 0 0 0 84 116" fill="none" stroke="#F1F8DC" stroke-width="4" stroke-linecap="round" opacity="0.85"/>
+      <path d="M 97 144 Q 103 151 109 144" fill="none" stroke="#55974A" stroke-width="4" stroke-linecap="round"/>
+      <g stroke="#F1F8DC" fill="none" stroke-linecap="round">
+        <path d="M 97 128 C 96 148, 97 166, 100 182" stroke-width="4.5" opacity="0.85"/>
+        <path d="M 69 118 C 68 132, 70 146, 71 156" stroke-width="3.5" opacity="0.8"/>
+        <path d="M 124 114 C 123 124, 125 138, 126 148" stroke-width="3.5" opacity="0.8"/>
+      </g>
+      <circle cx="100" cy="192" r="2.5" fill="#F1F8DC" opacity="0.9"/>
+      <circle cx="100" cy="72" r="13" fill="#FDF6EC"/>
+      <circle cx="100" cy="72" r="13" fill="none" stroke="#C22F6B" stroke-width="3" opacity="0.3"/>
+      <path class="sheen" d="M 62 46 A 44 44 0 0 1 82 28" fill="none" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round"/>
+      <circle class="sheen" cx="92" cy="26" r="3.5" fill="#FFFFFF"/>
+    </svg>
+  </div>
+</div>
+
+<div class="ticker" aria-hidden="true">
+  <div class="ticker-inner">
+    <span>&ldquo;a portion of proceeds&rdquo;</span><span>&bull;</span><span>&ldquo;we give back to our community&rdquo;</span><span>&bull;</span><span>&ldquo;a portion of our money, time, talents and resources&rdquo;</span><span>&bull;</span><span>&ldquo;proud to support local causes&rdquo;</span><span>&bull;</span><span>no amount</span><span>&bull;</span><span>no date</span><span>&bull;</span><span>no total</span><span>&bull;</span>
+    <span>&ldquo;a portion of proceeds&rdquo;</span><span>&bull;</span><span>&ldquo;we give back to our community&rdquo;</span><span>&bull;</span><span>&ldquo;a portion of our money, time, talents and resources&rdquo;</span><span>&bull;</span><span>&ldquo;proud to support local causes&rdquo;</span><span>&bull;</span><span>no amount</span><span>&bull;</span><span>no date</span><span>&bull;</span><span>no total</span><span>&bull;</span>
+  </div>
+</div>
+
+<section id="found">
+  <div class="inner">
+    <p class="sec-kicker reveal">What we found</p>
+    <h2 class="sec-title reveal">We read the giving page of every agency already running your idea.</h2>
+    <p class="sec-sub reveal">Eight of them. This is the part that should make you feel good: they are all doing it, and almost none of them can prove it.</p>
+
+    <div class="find-grid">
+
+      <div class="fcard urgent reveal">
+        <span class="tag">The opening</span>
+        <h3>96% of independent agencies already donate to charity. Almost none publish a number.</h3>
+        <p>Giving is not the differentiator, because it is nearly universal in this business. The independent channel is one of the most generous corners of American small business, and it says so in language a customer cannot check. That leaves the actual opening wide open, and nobody is standing in it.</p>
+        <span class="proof">Verified: <a href="https://www.agentgiving.com/about/ia-community-giving-report/">IA Community Giving Report</a></span>
+      </div>
+
+      <div class="fcard reveal">
+        <h3>Alliance Financial &amp; Insurance, Michigan</h3>
+        <p>$10 for every completed online quote, split between two named nonprofits, with the fine print done properly. A good program, run for years. There is no running total anywhere on the page, so a visitor has no way to know whether it has raised $200 or $20,000.</p>
+        <span class="proof">Proof: <a href="https://www.allins.com/quotes-for-a-cause.html">allins.com/quotes-for-a-cause</a></span>
+      </div>
+
+      <div class="fcard reveal">
+        <h3>Rathbun Insurance, Lansing</h3>
+        <p>Running since September 2015, with seventeen pages of blog posts about the causes they have supported. Genuinely impressive commitment. The per-quote amount is never stated, and the eleven years of giving are never added up.</p>
+        <span class="proof">Proof: <a href="https://www.rathbuninsurance.com/blog/tag/quotes-for-a-cause">rathbuninsurance.com/blog/tag/quotes-for-a-cause</a></span>
+      </div>
+
+      <div class="fcard reveal">
+        <h3>ION Insurance, Connecticut</h3>
+        <p>$5 per new quote, a different charity every month. Clear mechanic, clearly written. No totals, no history, no way to see which charities came before this month's.</p>
+        <span class="proof">Proof: <a href="https://ioninsurance.com/quotes-for-a-cause/">ioninsurance.com/quotes-for-a-cause</a></span>
+      </div>
+
+      <div class="fcard reveal">
+        <h3>Strickler Insurance, Pennsylvania</h3>
+        <p>$10 per quote when the prospect mentions the partner nonprofit. The page is written to recruit nonprofits rather than to report to customers, and it carries no amounts given to date.</p>
+        <span class="proof">Proof: <a href="https://stricklerinsurance.com/about-our-agency/quotes-for-a-cause/">stricklerinsurance.com</a></span>
+      </div>
+
+      <div class="fcard reveal">
+        <h3>GJ Insurance Group</h3>
+        <p>A new cause every ninety days and a form to suggest one. There is no dollar figure on the page at all: not per quote, not per year, not in total. A reader is asked to take the whole thing on faith.</p>
+        <span class="proof">Proof: <a href="https://gjinsurancegroup.com/causes/gj-insurance-group-joins-the-agents-of-change-movement/">gjinsurancegroup.com</a></span>
+      </div>
+
+      <div class="fcard reveal">
+        <h3>American Insurance, Idaho</h3>
+        <p>The whole program in one sentence: "a portion of our money, time, talents and resources." Warm, sincere, and completely unfalsifiable. This is the sentence your competitors will write, and it is the sentence you get to not write.</p>
+        <span class="proof">Proof: <a href="https://www.americaninsuranceid.com/community">americaninsuranceid.com/community</a></span>
+      </div>
+
+      <div class="fcard reveal">
+        <h3>Real Estate For A CAUSE, Grand Blanc</h3>
+        <p>The Michigan brokerage the model comes from, and they do it well enough to franchise. Press coverage from 2021 reports over 450 donations totalling nearly $110,000. The percentage of commission is described only as "a portion," and we could not reach the site to check it.</p>
+        <span class="proof">Unverified: refacmi.com redirect-loops and would not load. Figures are from <a href="https://geneseecountyview.com/articles/burtonview/real-estate-for-a-cause-combines-passions-for-work-and-charity/">Genesee County View</a>, not the company.</span>
+      </div>
+
+      <div class="fcard urgent reveal">
+        <span class="tag">The one who does it right</span>
+        <h3>VanScoter Insurance publishes a ledger. Their first year was $1,940.</h3>
+        <p>One agency out of the eight lists every year and every charity, with amounts: 2019 was $1,940, then $2,290, then $2,980, then $3,180, then $4,810, adding to $15,200 since they formalised the program. Those numbers are small. It is the most convincing giving page we found anywhere, and the smallness is exactly why. You cannot fake a rising line.</p>
+        <span class="proof">Proof: <a href="https://www.vanscoterinsurance.com/charitable-giving-program/">vanscoterinsurance.com/charitable-giving-program</a></span>
+      </div>
+
+    </div>
+
+    <div class="honest reveal">
+      <b>What we could not verify</b>
+      <p>We could not load refacmi.com. It answers with a redirect that sends the browser in a circle, so the figures in that card come from a newspaper profile rather than from the company, and the commission percentage is not published anywhere we could find.</p>
+      <p>We also have not seen your carrier appointments, so the logo wall in the build below is drawn as a placeholder rather than guessed at.</p>
+    </div>
+  </div>
+</section>
+
+<svg class="drip-divider" viewBox="0 0 1440 60" preserveAspectRatio="none" style="background:#FFFDF8" aria-hidden="true"><use href="#dripEdge" fill="#201712"/></svg>
+
+<section id="wedge">
+  <div class="inner">
+    <p class="sec-kicker reveal">The part that matters most</p>
+    <h2 class="sec-title reveal">A promise nobody can check is a slogan. A ledger is a fact.</h2>
+    <p class="lede reveal">Everything above says some version of we give back. Your site is going to say <strong>$340, on the 14th, to the Marshall band program, here is the photo of the check.</strong> That is a different kind of sentence, and it is the one thing on this list your competitors cannot copy quickly, because copying it means having counted all along.</p>
+
+    <div class="wcards">
+      <div class="wcard reveal">
+        <b>The ledger</b>
+        <p>Every donation, published. Date, organization, amount, and the proof. It adds itself up and carries an "as of" date, so nobody ever wonders whether it is current. <strong>A stale number is worse than no number</strong>, so the page tells on itself if it goes quiet.</p>
+      </div>
+      <div class="wcard reveal">
+        <b>The goal</b>
+        <p>You have no totals yet, and we are not going to hide that behind a counter reading zero. The homepage carries one cause, one number and one deadline, small enough to finish. <strong>When it fills you publish the check and start the next one.</strong></p>
+      </div>
+      <div class="wcard reveal">
+        <b>The vote</b>
+        <p>Anyone can nominate a local organization, and the public votes on who gets the next quarter. Every nonprofit on that shortlist sends their own mailing list to your website to vote for them. <strong>It is the cheapest traffic you will ever get</strong>, from people rooting for you.</p>
+      </div>
+    </div>
+
+    <p class="lede reveal" style="font-size:17px;color:#C3B2A2">Michigan has rules about how an agency can donate commission, and we read them before drawing any of this. The donation has to be offered the same way to everyone, and a customer cannot direct where their own policy's money goes. That is why this is a public vote and not a pick-your-charity box, and why the organizations you support stay separate from the ones you insure. We will hand your attorney a written description of the program so that is a short conversation.</p>
+  </div>
+</section>
+
+<svg class="drip-divider" viewBox="0 0 1440 60" preserveAspectRatio="none" style="background:#201712" aria-hidden="true"><use href="#dripEdge" fill="#FDF6EC"/></svg>
+
+<section id="build">
+  <div class="inner">
+    <p class="sec-kicker reveal">What we would build</p>
+    <h2 class="sec-title reveal">Your first website, and the one tool nobody in Michigan has built.</h2>
+    <p class="sec-sub reveal">Everything on the list you sent, plus the three pieces above and one more that has nothing to do with giving and may bring you more business than any of it.</p>
+
+    <div class="blist">
+      <div class="bitem reveal">
+        <div class="num">1</div>
+        <h4>The site</h4>
+        <p class="sub">Home, coverage, story, contact</p>
+        <p>A real page for every line you write, not one page with a list, because that is still the single biggest factor in whether you turn up in local search. Your story written from a recorded hour with you, in your voice. Phone, address, hours and service area set large, not buried in the footer.</p>
+      </div>
+      <div class="bitem reveal">
+        <div class="num">2</div>
+        <h4>The giving program</h4>
+        <p class="sub">Ledger, goal, vote, nominations</p>
+        <p>The three pieces from the last section, with a simple screen where you post a donation, close a goal or open a vote yourself. No developer, no ticket, no waiting on us.</p>
+      </div>
+      <div class="bitem reveal">
+        <div class="num">3</div>
+        <h4>The quote flow</h4>
+        <p class="sub">Short, and handled properly</p>
+        <p>Four fields first: name, phone, ZIP, what you need covered. Everything else moves to step two or to your callback, because a five-field form finishes about twice as often as an eight-field one. A quote request carries dates of birth and addresses, so it does not land in an inbox, and the consent language for calling and texting is written to protect you.</p>
+      </div>
+      <div class="bitem reveal">
+        <div class="num">4</div>
+        <h4>The PIP tool</h4>
+        <p class="sub">The part we are most excited about</p>
+        <p>Dropping from unlimited PIP to the $500,000 level saves a Michigan driver about <b>3.6%</b>. Not thirty. Three and a half. Nearly three in ten Michigan vehicles now carry limited PIP, and a lot of those people traded away catastrophic medical coverage for a rounding error because nobody showed them the number. We build the calculator that shows it, with the eligibility rules most sites get wrong.</p>
+      </div>
+    </div>
+
+    <p class="later reveal"><b>And a handful of pages nobody local is writing.</b> Excess attendant care costs about $14 a year and roughly 5% of Michigan drivers carry it. Mini-tort is $3,000, only if you are half at fault or less, and only for the vehicle. ZIP code was banned as a rating factor in 2020 and your rate still depends on where you live, which is a question you get asked constantly. And on March 6 an EF-3 killed three people in Union City, fifteen miles away, with a touchdown in Calhoun County itself, which is a storm-claims page written from something that actually happened rather than from fear.</p>
+  </div>
+</section>
+
+<section id="price">
+  <div class="inner">
+    <p class="sec-kicker reveal">What it costs</p>
+    <h2 class="sec-title reveal">$3,500 to build it. $150 a month to keep it.</h2>
+    <p class="sec-sub reveal">One number, not a range. If we find something during the build that changes the scope, you hear it before we do it, not after.</p>
+
+    <div class="pricewrap">
+      <div class="pcard reveal">
+        <span class="tag">Custom Order</span>
+        <h3>Insurance for a Cause</h3>
+        <p class="flavor">Anchor Insurance and Risk Management</p>
+        <p class="price">$3,500 <small>to build</small></p>
+        <p class="mo">$150 <small>a month after launch</small></p>
+        <ul>
+          <li>The full site, written not assembled</li>
+          <li>The ledger, the goal and the public vote</li>
+          <li>The quote flow, with lead handling done properly</li>
+          <li>The Michigan PIP tool and the local coverage pages</li>
+          <li>Your logo, drawn, in every format you will be asked for</li>
+          <li>Search, maps and link previews set up properly</li>
+          <li>Hosting, security updates and content edits, monthly</li>
+        </ul>
+      </div>
+
+      <div class="terms">
+        <div class="reveal">
+          <b>You own it</b>
+          <span>When the build is paid, the code, the content and the accounts are yours. We hand over the repository and every login. The domain stays in your name and transfers free whenever you ask.</span>
+        </div>
+        <div class="reveal">
+          <b>Month to month, thirty days' notice</b>
+          <span>No term, no auto-renewal, no penalty for leaving. If you go, you take the whole site with you and it keeps working. The monthly buys care, not permission.</span>
+        </div>
+        <div class="reveal">
+          <b>Nothing rented underneath it</b>
+          <span>The ledger, the vote and the PIP tool are written into your site rather than licensed from anyone. There is no per-month platform fee sitting under this that grows when you do.</span>
+        </div>
+        <div class="reveal">
+          <b>Your email, on your own name, free</b>
+          <span>We will get your domain sending and receiving so you can write from hello@ your own address instead of a Gmail. It takes us twenty minutes and we do not charge for it. Everybody should have it.</span>
+        </div>
+      </div>
+    </div>
+
+    <p class="later reveal" style="margin-top:34px"><b>One thing worth saying that is not ours to sell.</b> Nearly half of people will not use a business with fewer than twenty reviews, and three quarters want to see reviews from the last three months. We will build the review request into the site and into your follow-up, but getting your first twenty reviews will probably do more for you than half of this website will. You should hear that from us now rather than work it out in month six.</p>
+  </div>
+</section>
+
+<div class="ctaband">
+  <div class="inner">
+    <h2>Give us thirty minutes.</h2>
+    <p>We will sit down with you, walk through the findings on a phone, and you can tell us where we are wrong. No slides.</p>
+    <a class="btn big" href="mailto:kevin@glazedweb.com?subject=Insurance%20for%20a%20Cause%20website%20proposal">Email Kevin</a>
+    <p class="after">Glazed Web is one person in Marshall. You would be working with Kevin, start to finish.</p>
+  </div>
+</div>
+
+<footer>
+  <div class="inner">
+    <div class="foot-top">
+      <div class="foot-brand">
+        <svg width="30" height="38" viewBox="46 16 110 186" overflow="visible" style="--hole:#201712" aria-hidden="true"><use href="#mark"/></svg>
+        <span class="bw">glazed<span>web</span></span>
+      </div>
+      <p class="foot-note">Hand-built websites for small businesses in and around Marshall, Michigan. <a href="https://glazedweb.com">glazedweb.com</a></p>
+    </div>
+    <div class="foot-bottom">
+      <span>Prepared for Insurance for a Cause, August 2026.</span>
+      <span>Findings verified against the live sites on August 20, 2026.</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* The class is added by script, so with JavaScript off nothing is ever hidden
+   and the page is complete on arrival. */
+document.documentElement.classList.add('js');
+(function () {
+  var els = document.querySelectorAll('.reveal');
+  if (!('IntersectionObserver' in window) ||
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    for (var i = 0; i < els.length; i++) els[i].classList.add('in');
+    return;
+  }
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+    });
+  }, { rootMargin: '0px 0px -60px 0px' });
+  els.forEach(function (el) { io.observe(el); });
+})();
+</script>
+</body>
+</html>
