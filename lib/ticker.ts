@@ -58,6 +58,6 @@ export const marketNotes: string[] = [
   "Mini-tort caps at $3,000, and only if you are 50% at fault or less",
   "ZIP code was banned as a rating factor in 2020",
   "Carriers moved to census tract territories instead",
-  "An EF-3 touched down 15 miles from Marshall on March 6",
+  "The strongest Michigan tornado since 1977 hit on March 6",
   "Wind and hail deductibles are often a percentage, not a dollar figure",
 ];

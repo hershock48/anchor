@@ -85,15 +85,15 @@ export const guides: Guide[] = [
   {
     slug: "storm-claims-after-march-6",
     title: "After March 6: what a wind and hail claim actually involves",
-    dek: "The strongest tornado in Michigan since 1977 touched down fifteen miles from here.",
+    dek: "The strongest tornado in Michigan since 1977 came through this March.",
     description:
       "The March 6, 2026 tornadoes hit Branch, St. Joseph, Cass and Calhoun counties. What a wind and hail deductible really costs, what replacement cost means, and how to spot a storm chaser.",
     body: [
       {
-        p: "On March 6, 2026 four tornadoes touched down across southwest Michigan. The Union City tornado was rated EF-3 with peak winds of 160 mph and killed three people, injuring twelve. The National Weather Service recorded it as the strongest tornado in Michigan since the F4 that struck Kalamazoo and Eaton counties on April 2, 1977. A fourth tornado, an EF-0 with 85 mph winds, touched down in Clarendon Township, in Calhoun County.",
+        p: "On March 6, 2026 four tornadoes touched down across southern Michigan. The Union City tornado was rated EF-3 with peak winds of 160 mph and killed three people, injuring twelve. The National Weather Service recorded it as the strongest tornado in Michigan since the F4 that struck Kalamazoo and Eaton counties on April 2, 1977. It was about an hour west of here, which is close enough to be the same weather and far enough that most people around Grass Lake watched it on the news.",
       },
       {
-        p: "We are writing this because it happened here, not to frighten anybody into buying something. Three things about storm claims are worth understanding before you need them, and all three are easier to fix in February than in March.",
+        p: "We are writing this because it is the kind of March that is going to keep happening, not to frighten anybody into buying something. Three things about storm claims are worth understanding before you need them, and all three are easier to fix in February than in March.",
       },
       { h: "Your wind and hail deductible is probably not a dollar figure" },
       {
@@ -121,7 +121,7 @@ export const guides: Guide[] = [
     title: "ZIP codes were banned in 2020. So why does your address still matter?",
     dek: "Because the rating factor changed shape instead of going away.",
     description:
-      "Michigan banned ZIP code and credit score as auto insurance rating factors in 2020. Territories drawn from census tracts replaced them, which is why Marshall, Battle Creek and Albion still quote differently.",
+      "Michigan banned ZIP code and credit score as auto insurance rating factors in 2020. Territories drawn from census tracts replaced them, which is why Grass Lake, Jackson and Chelsea still quote differently.",
     body: [
       {
         p: "The 2019 reform banned a specific list of rating factors from Michigan auto insurance, ZIP code and credit score among them, and the ban took effect in 2020. People reasonably concluded that where they live stopped mattering. Two quotes from two sides of the same county say otherwise.",
@@ -132,7 +132,7 @@ export const guides: Guide[] = [
       },
       { h: "What that means for you" },
       {
-        p: "Marshall, Battle Creek and Albion can quote differently on identical drivers and identical cars, and the difference between carriers in the same town can be larger than the difference between towns. Which is the actual argument for shopping it instead of renewing.",
+        p: "Grass Lake, Jackson and Chelsea can quote differently on identical drivers and identical cars, and the difference between carriers in the same town can be larger than the difference between towns. Which is the actual argument for shopping it instead of renewing.",
       },
       {
         note: "If a quote seems out of line with a neighbor’s, it is more often a different carrier’s territory map than a mistake on your record. Worth asking about before you assume.",

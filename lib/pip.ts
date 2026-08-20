@@ -113,6 +113,6 @@ export const pipMisconceptions = [
   {
     claim: "Your ZIP code sets your rate.",
     truth:
-      "ZIP code and credit score were banned as rating factors in 2020. Carriers moved to territories drawn from census tracts and grid systems instead, which is why Marshall, Battle Creek and Albion still quote differently.",
+      "ZIP code and credit score were banned as rating factors in 2020. Carriers moved to territories drawn from census tracts and grid systems instead, which is why Grass Lake, Jackson and Chelsea still quote differently.",
   },
 ];

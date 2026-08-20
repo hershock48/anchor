@@ -1,7 +1,7 @@
 # Insurance for a Cause
 
 The website for **Insurance for a Cause**, the trade name of **Anchor Insurance
-and Risk Management**, an independent agency in Marshall, Michigan.
+and Risk Management**, an independent agency in Grass Lake, Michigan.
 
 Next.js App Router, TypeScript, plain CSS, deployed on Vercel. **Prospect, not
 signed** as of August 2026: this is a concept build, and the pitch that goes with

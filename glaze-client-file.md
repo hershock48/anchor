@@ -7,7 +7,7 @@ copy.
 
 ---
 
-Independent insurance agency, Marshall, Michigan. **Prospect, not signed** as of
+Independent insurance agency, Grass Lake, Michigan. **Prospect, not signed** as of
 August 2026.
 
 | | |
@@ -45,8 +45,10 @@ matter here:
    the cause is chosen by a **public vote open to anyone** and why there is no
    choose-your-charity control on the quote form. **Do not add one**, however
    good an idea it looks.
-3. **The recipient must not be a client of the producer.** Published on the
-   giving page and in the footer.
+3. **The recipient must not be a client of the producer.** In the footer only.
+   It was on the homepage and the giving page too and Kevin pulled it: in the
+   body of a page it explains a licensing constraint to a customer who never
+   asked.
 
 Her attorney or E&O carrier signs the program off. DIFS closes its own FAQ
 recommending counsel. **We do not give the legal opinion**, we hand over a written
@@ -75,6 +77,28 @@ hour, in her words. **Inventing it would be the most damaging thing available on
 this site.**
 
 ## Retired
+
+**"Marshall, Michigan."** The entire first build said Marshall, in page titles,
+the hero, the structured data and four local guides. Nobody asked, and it was the
+one contact field that was NOT written as a placeholder, so it read as a
+confirmed fact and propagated. **They are in Grass Lake**, a village of about
+1,100 in Jackson County, just south of I-94 and roughly 48 miles east of
+Marshall. Different county, different school district, different neighbours.
+
+Two pieces of local content died with it, and it is worth knowing why so they do
+not come back:
+
+- **The BlueOval hook.** Ford's battery plant is a Marshall story. It is about 40
+  miles from Grass Lake and has nothing to do with their book.
+- **"An EF-3 fifteen miles away."** The March 6 2026 tornadoes hit Branch, St
+  Joseph, Cass and Calhoun counties. Jackson County is not among them, and Union
+  City is about 48 miles from Grass Lake. The storm guide keeps the event,
+  because it is the strongest Michigan tornado since 1977 and that is a statewide
+  fact, but the proximity claim is gone.
+
+**The towns a local guide may name are Jackson, Chelsea, Michigan Center,
+Napoleon and Munith.** They are in `site.contact.nearby` so this is checkable
+instead of remembered.
 
 **"The giving program is the differentiator."** Researched and dropped. 96% of
 independent agents already donate, only about 34% of Americans say a charitable

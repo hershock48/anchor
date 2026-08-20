@@ -48,9 +48,26 @@ export const site = {
     phoneHref: "PLACEHOLDER:phone-digits" as string,
     email: "PLACEHOLDER:email" as string,
     street: "PLACEHOLDER:street address" as string,
-    city: "Marshall",
+    /**
+     * GRASS LAKE, NOT MARSHALL.
+     *
+     * This said Marshall for the whole first build because that is Kevin's town
+     * and I never asked. It is a village of about 1,100 in JACKSON county, just
+     * south of I-94, roughly 48 miles east of Marshall and a different county,
+     * a different school district and a different set of neighbouring towns.
+     *
+     * It was also the one contact field that was NOT a placeholder, so it read
+     * as a known fact and got written into page titles, the hero, the structured
+     * data and four local guides before anybody questioned it. An assumed fact
+     * that looks like a confirmed one is worse than a blank.
+     */
+    city: "Grass Lake",
+    county: "Jackson",
     state: "MI",
     zip: "PLACEHOLDER:ZIP" as string,
+    /** The towns a local guide may name. Anything not on this list is not local
+     *  to them, however good the story is. */
+    nearby: ["Jackson", "Chelsea", "Michigan Center", "Napoleon", "Munith"],
     /** True if there is no walk-in office. Changes how the contact page reads. */
     byAppointmentOnly: true,
   },
