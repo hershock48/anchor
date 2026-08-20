@@ -1,4 +1,4 @@
-From f2d7bcb13dcd68c309c2214967a3e6659f471b2b Mon Sep 17 00:00:00 2001
+From e7b60dca048b411963587f67604ab21f23dc15a8 Mon Sep 17 00:00:00 2001
 From: Kevin Hershock <kevin@glazedweb.com>
 Date: Thu, 20 Aug 2026 21:47:15 +0000
 Subject: [PATCH] Fold in what the Insurance for a Cause build taught the docs
@@ -13,7 +13,7 @@ glaze.md, CSS failure log:
   browser and sat dead still on a phone.
 - A rotation's apparent movement scales with the element's size. The same 2.6
   degrees that sways a 300px mark is a third of the travel at 180px.
-- A colour token validated against one ground is not validated.
+- A color token validated against one ground is not validated.
 
 glaze.md, Next.js failure log:
 - Anything the server renders open and the client collapses is a layout shift. A
@@ -38,23 +38,35 @@ rather than only a throttled CPU.
 brand.md: a client favicons section. Two cuts, full bleed with no corner radius,
 and three sizes inside the .ico.
 
-link-cards.md: one host, one favicon. The file already explains that a pitch host
-serves two cards; it now also says the favicon is one asset, cached per origin,
-and the client's. Plus a checklist line.
+link-cards.md: one host, three documents, two icons. Glazed's documents carry
+Glazed's mark and the client's site carries theirs, which is the opposite of
+what this section said in its first draft. The donut sticking in the tab over a
+client's demo is a real failure with a different cause: a document that declares
+no icon and falls back to /favicon.ico at the origin root. Declare on both sides
+and nothing falls back. Plus the SVG-then-.ico order for Safari, absolute paths
+because / and /logo are rewrites, and a checklist line.
+
+proposal.md: the numbered steps glaze, and the glaze is lifted from `.step .num`
+verbatim, driver and thresholds included. With the trap: copy only the disc and
+it looks glazed sitting still and never glazes, because the two pieces that make
+it work are the two with no visible effect on their own.
 
 intake.md: "what town are they actually in, and which county", asked even when
-you think you know, and the Grass Lake story that produced it. The list is
-renumbered to keep it valid markdown.
+you think you know. The story now carries both misses, because the second one is
+the useful half: it cost one edit and a regenerated image, against a first
+correction that touched titles, hero, structured data, a card and four guides.
+A fact you got wrong once belongs in exactly one place.
 
 Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
 Claude-Session: https://claude.ai/code/session_01LRN2pKhBSdie1ymm4FJ9LR
 ---
- glaze.md            | 39 ++++++++++++++++++++++++++++
- glaze/brand.md      | 20 +++++++++++++++
- glaze/intake.md     | 62 +++++++++++++++++++++++++++------------------
- glaze/launch.md     | 12 +++++++++
- glaze/link-cards.md | 20 +++++++++++++++
- 5 files changed, 128 insertions(+), 25 deletions(-)
+ glaze.md            | 39 ++++++++++++++++++++++++++
+ glaze/brand.md      | 20 +++++++++++++
+ glaze/intake.md     | 68 ++++++++++++++++++++++++++++-----------------
+ glaze/launch.md     | 12 ++++++++
+ glaze/link-cards.md | 35 +++++++++++++++++++++++
+ glaze/proposal.md   | 15 ++++++++++
+ 6 files changed, 164 insertions(+), 25 deletions(-)
 
 diff --git a/glaze.md b/glaze.md
 index f540a86..1376545 100644
@@ -152,25 +164,31 @@ index 9e399cd..95ee375 100644
  
  ## The palette
 diff --git a/glaze/intake.md b/glaze/intake.md
-index 4717e70..a4b1483 100644
+index 4717e70..3831115 100644
 --- a/glaze/intake.md
 +++ b/glaze/intake.md
-@@ -18,6 +18,14 @@ Real examples, all from one working day in August 2026:
+@@ -18,6 +18,20 @@ Real examples, all from one working day in August 2026:
  - A credentials strip on a licensed cannabis facility's site sat empty for two
    rounds of work because it needs a licence class and a canopy figure that only
    the operator has.
 +- An insurance agency's whole site said Marshall, in page titles, the hero, the
 +  structured data, the link card and four local guides, because that is Kevin's
-+  town and nobody asked. They are in Grass Lake, a different county forty-eight
-+  miles away. It survived several review passes because `city` was the one
-+  contact field written as a plain string while everything around it was a
++  town and nobody asked. It survived several review passes because `city` was the
++  one contact field written as a plain string while everything around it was a
 +  marked placeholder, so it read as a confirmed fact. **An assumed fact that
 +  looks confirmed is worse than a blank, because a blank gets asked about.**
 +  Write unknowns as placeholders even when the guess feels safe.
++
++  The correction was then wrong as well, twice over: Grass Lake, then Manchester,
++  seventy miles from where the site had said. **The second fix cost one edit and
++  a regenerated image**, because after the first miss `city`, `county` and
++  `nearby` in `lib/site.ts` became the only places a town name was allowed to
++  live. That is the shape to copy. A fact you got wrong once is a fact worth
++  putting in exactly one place, because you will probably get it wrong again.
  
  None of those were hard questions. All of them were asked late.
  
-@@ -36,70 +44,74 @@ A client who answers eight of twelve has still unblocked eight things.
+@@ -36,70 +50,74 @@ A client who answers eight of twelve has still unblocked eight things.
  3. **Who answers the email?** A named human and an inbox they actually read. Not a
     forwarding address nobody opens.
  4. **Hours, including the seasonal exceptions and the one day that is different.**
@@ -308,40 +326,81 @@ index 9d81247..c7cf45f 100644
  
  ## Zero to live, in order
 diff --git a/glaze/link-cards.md b/glaze/link-cards.md
-index 539eb12..55140a2 100644
+index 539eb12..c96200d 100644
 --- a/glaze/link-cards.md
 +++ b/glaze/link-cards.md
-@@ -107,6 +107,24 @@ each platform's debugger to force one when it matters.
+@@ -107,6 +107,38 @@ each platform's debugger to force one when it matters.
  
  ---
  
-+## One host, one favicon
-+
-+The two cards above are deliberately two files doing two jobs. **The favicon is
-+one asset, it is cached per ORIGIN, and it belongs to the client.**
++## One host, three documents, two icons
 +
 +A pitch host serves the proposal at `/`, the logo page at `/logo` and the whole
-+client site at `/demo`. Three pages, one origin. Declare two different icons
-+across them and whichever loads first tends to stay in the tab, and the order
-+somebody actually browses is proposal, then demo. So the Glazed donut sits in
-+the tab while the client looks at their own site, which is the wrong way round
-+in front of a prospect.
++client site at `/demo`. Three documents, one origin, and a favicon is cached per
++origin, which is what makes this look harder than it is.
 +
-+**Every page on a pitch host declares the client's mark, including the
-+proposal.** Glazed is carried on that document by the header lockup and the
-+footer plate, both considerably more visible than a 16px tab icon.
++**Glazed's documents carry Glazed's mark. The client's site carries theirs.**
++The proposal and the logo presentation are ours. The demo is theirs, and the tab
++above their own site should say their name, not ours.
++
++The failure people try to prevent here is the donut sticking in the tab while
++the client looks at their site. It is real, and the cause is not two icons on
++one origin. It is a document that declares no icon at all and lets the browser
++fall back to `/favicon.ico` at the root, which on a pitch host is whatever the
++demo app happens to serve. **Declare explicitly on both sides and neither falls
++back, so neither can win the other's tab.** On a Next demo the file conventions
++do it for you: `app/favicon.ico`, `app/icon.png`, `app/apple-icon.png` all emit
++real `<link>` tags. On a static pitch page you write them yourself.
++
++Two details that are easy to get wrong on the static side:
++
++- **SVG first, `.ico` after it.** Safari does not take an SVG through
++  `rel=icon`, so a page with only the SVG shows Safari nothing.
++- **Absolute paths.** `/` and `/logo` are rewrites. A relative href resolves
++  against the pretty URL, not against the file it was written in.
++
++**Lift the icon, do not redraw it.** Glazed's own `public/favicon.svg`,
++`favicon.ico` and `apple-touch-icon.png` are the assets. Copy them next to the
++pitch pages.
 +
 +---
 +
  ## Making the image
  
  Render it from a real page rather than assembling it in an image editor, so the
-@@ -141,3 +159,5 @@ in a message bubble where the card is a third the size.
+@@ -141,3 +173,6 @@ in a message bubble where the card is a third the size.
  - [ ] Pasted into Messages **and** one non-Apple surface, and looked at.
  - [ ] For a pitch host: proposal card and demo card are different files, and the
        demo card is the client's.
-+- [ ] For a pitch host: every page declares the **same** favicon, and it is the
-+      client's.
++- [ ] For a pitch host: **every** document declares an icon explicitly, so
++      nothing falls back to the origin root. Proposal and logo page declare
++      Glazed's; the demo declares the client's.
+diff --git a/glaze/proposal.md b/glaze/proposal.md
+index efacb03..e2250b2 100644
+--- a/glaze/proposal.md
++++ b/glaze/proposal.md
+@@ -14,6 +14,21 @@ phone if a call goes sideways.
+ Lift its stylesheet and its animated donut marks **verbatim**. Do not re-derive
+ them. Then strip what the new proposal does not use.
+ 
++**The numbered steps glaze, and the glaze is lifted too.** The discs in the
++process section come from `.step .num` in glazedweb's own `app/globals.css`: a
++radial that puts the light at 32% 26%, two inset shadows, a blurred white
++highlight on `::before`, and a skewed white gradient on `::after` that sweeps
++across when the step arrives. The driver is the scroll handler in its
++`app/page.jsx`, thresholds `[0.22, 0.38, 0.54, 0.7]` included, rewritten as
++plain JS because a proposal page has no React.
++
++Copying only the disc is the trap. It looks glazed sitting still and never
++glazes, because the two pieces that make it work are the ones with no visible
++effect on their own: **`position: relative`, which the pseudo-elements position
++against, and `overflow: hidden`, which keeps the sweep inside the circle.**
++Without them the highlight lands somewhere up the page and the sweep runs across
++the card. Scroll-scrubbed, never autoplayed, and off under reduced motion.
++
+ Also in that repo, for reference:
+ 
+ | Path | What it is |
 -- 
 2.43.0
 
