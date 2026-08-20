@@ -1,21 +1,22 @@
 import type { NextConfig } from "next";
 
-const PITCH_HOST = "insuranceforacause.glazedweb.com";
-
 /**
- * The pitch has to work on the *.vercel.app preview URL as well as the custom
- * domain.
+ * ANY glazedweb.com subdomain is a pitch host, and so is any vercel.app preview.
  *
- * Scoping these to the custom domain alone means /logo and /demo return 404 on
- * the preview host, which is the URL you actually open first, before DNS is
- * pointed and before the domain is even bought. That is a 404 on the two links
- * the proposal leans on hardest, and you find it by clicking them in front of
- * somebody.
+ * This started as the single literal host `insuranceforacause.glazedweb.com`,
+ * which was the wrong shape twice over. The subdomain actually created was
+ * `anchor.glazedweb.com`, named for the repo rather than the DBA, so nothing
+ * matched and the pitch host served the client's homepage instead of the
+ * proposal. And scoping to the custom domain alone meant /logo and /demo were
+ * 404 on the preview URL, which is the host you open before DNS is pointed.
  *
- * Both hosts are noindex below, so serving the pitch on the preview host costs
- * nothing.
+ * Matching the pattern rather than the name removes both failures and the whole
+ * class they belong to. A glazedweb.com subdomain is never the client's own
+ * domain, so there is no case where this matches something it should not.
+ *
+ * Everything it matches is noindex below.
  */
-const PITCH_HOSTS = "(insuranceforacause\\.glazedweb\\.com|[a-z0-9-]+\\.vercel\\.app)";
+const PITCH_HOSTS = "([a-z0-9-]+\\.glazedweb\\.com|[a-z0-9-]+\\.vercel\\.app)";
 const onPitchHost = [{ type: "host" as const, value: PITCH_HOSTS }];
 
 const nextConfig: NextConfig = {

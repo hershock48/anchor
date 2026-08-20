@@ -281,11 +281,24 @@ in six places: the hero button, a band at the top of "What we built", deep links
 into `/demo/giving`, `/demo/quote` and `/demo/tools/michigan-pip`, and the
 closing ask.
 
-**The pitch rewrites match the `*.vercel.app` preview host as well as the custom
-domain.** Scoped to the domain alone, `/logo` and `/demo` return 404 on the
-preview URL, which is the one you open before DNS is pointed. Both hosts are
-noindex. **On the preview host the root is the proposal, not the site**; the site
-is at `/demo`.
+**The pitch host is matched by pattern, not by name: any `*.glazedweb.com`
+subdomain, plus any `*.vercel.app` preview.** It started as the single literal
+`insuranceforacause.glazedweb.com` and that was wrong twice. The subdomain
+actually created was **`anchor.glazedweb.com`**, named for the repo rather than
+the DBA, so nothing matched. And scoping to the custom domain alone left `/logo`
+and `/demo` returning 404 on the preview URL, which is the host you open before
+DNS is pointed. **On any pitch host the root is the proposal, not the site**; the
+site is at `/demo`.
+
+**`vercel.json` declares `framework: nextjs` and nulls `outputDirectory` on
+purpose.** This repo began life as a static-only pitch with
+`"outputDirectory": "public"`, and Vercel saved that into the *project settings*
+when it was first imported. Dashboard settings survive deleting the file, so the
+project kept serving `public/` as a flat directory: `next build` ran and
+succeeded, `/pitch/insuranceforacause/index.html` returned 200, and every route
+that needed the Next app returned Vercel&rsquo;s own `NOT_FOUND`. **A green build
+proves nothing about what is being served.** `vercel.json` takes precedence over
+project settings, which is what clears it from in here.
 
 ---
 
