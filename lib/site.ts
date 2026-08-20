@@ -25,7 +25,14 @@ export const site = {
   /** The licensed entity. Has to appear, and is not the same string. */
   legalName: "Anchor Insurance and Risk Management",
   tagline: "Coverage that gives back",
+  /**
+   * PLACEHOLDER in effect: the domain is not bought yet. This is an assumption,
+   * and it is load-bearing because `metadataBase` and the sitemap are both
+   * built from it. Confirm the real domain before launch and change it here
+   * only; nothing else hardcodes it.
+   */
   url: "https://insuranceforacause.com" as string,
+  urlConfirmed: false,
 
   owner: {
     name: "PLACEHOLDER:Owner name" as string,

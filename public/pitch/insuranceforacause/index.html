@@ -173,6 +173,17 @@ h2.sec-title { font-size: clamp(30px, 4vw, 42px); font-weight: 800; letter-spaci
 .wcard p { font-size: 14.5px; color: #C3B2A2; line-height: 1.6; }
 .wcard p strong { color: #F3EAE1; }
 
+/* ============ demo bar ============ */
+.demobar {
+  display: flex; align-items: center; justify-content: space-between; gap: 22px; flex-wrap: wrap;
+  background: var(--chocolate-2); color: #F3EAE1; border-radius: 20px; padding: 26px 28px; margin-top: 34px;
+}
+.demobar b { display: block; font-size: 19px; letter-spacing: -0.4px; }
+.demobar span { display: block; font-size: 14.5px; color: #C3B2A2; margin-top: 6px; max-width: 52ch; line-height: 1.55; }
+.demobar .btn { background: var(--slime); color: var(--chocolate) !important; box-shadow: none; }
+.demobar .btn:hover { background: var(--slime-bright); }
+@media (max-width: 640px) { .demobar { padding: 20px 20px; } .demobar .btn { width: 100%; text-align: center; } }
+
 /* ============ build ============ */
 .blist { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; margin-top: 44px; }
 @media (max-width: 800px) { .blist { grid-template-columns: 1fr; } }
@@ -349,8 +360,8 @@ footer .inner { max-width: 1100px; margin: 0 auto; padding: 56px 24px 36px; }
     <h1>Can anyone check <em>that you gave?</em></h1>
     <p class="sub">Not read that you care about the community. Check it. See the amount, the date, the organization, and the receipt, without asking you for any of it.</p>
     <div class="ctas">
-      <a class="btn big" href="#found">See what we found</a>
-      <a class="btn big ghost" href="#price">Skip to the price</a>
+      <a class="btn big" href="/demo">See the site we built you</a>
+      <a class="btn big ghost" href="#found">See what we found</a>
     </div>
     <p class="proof">Every finding below links to the agency's own page that proves it. Nothing here is an opinion about anybody's design.</p>
   </div>
@@ -505,9 +516,17 @@ footer .inner { max-width: 1100px; margin: 0 auto; padding: 56px 24px 36px; }
 
 <section id="build">
   <div class="inner">
-    <p class="sec-kicker reveal">What we would build</p>
-    <h2 class="sec-title reveal">Your first website, and the one tool nobody in Michigan has built.</h2>
-    <p class="sec-sub reveal">Everything on the list you sent, plus the three pieces above and one more that has nothing to do with giving and may bring you more business than any of it.</p>
+    <p class="sec-kicker reveal">What we built</p>
+    <h2 class="sec-title reveal">We did not describe it. We built it.</h2>
+    <p class="sec-sub reveal">Everything on the list you sent, plus the three pieces above and one more that has nothing to do with giving and may bring you more business than any of it. It is live right now, on a phone or a laptop, and you can click every part of it.</p>
+
+    <div class="demobar reveal">
+      <div>
+        <b>The whole site is up</b>
+        <span>Twenty pages. Your name is on it, and everything we do not know yet is marked in yellow rather than made up.</span>
+      </div>
+      <a class="btn big" href="/demo">Open the site</a>
+    </div>
 
     <div class="blist">
       <div class="bitem reveal">
@@ -520,19 +539,19 @@ footer .inner { max-width: 1100px; margin: 0 auto; padding: 56px 24px 36px; }
         <div class="num">2</div>
         <h4>The giving program</h4>
         <p class="sub">Ledger, goal, vote, nominations</p>
-        <p>The three pieces from the last section, with a simple screen where you post a donation, close a goal or open a vote yourself. No developer, no ticket, no waiting on us.</p>
+        <p>The three pieces from the last section, with a simple screen where you post a donation, close a goal or open a vote yourself. No developer, no ticket, no waiting on us. <a href="/demo/giving">Go look at it</a>.</p>
       </div>
       <div class="bitem reveal">
         <div class="num">3</div>
         <h4>The quote flow</h4>
         <p class="sub">Short, and handled properly</p>
-        <p>Four fields first: name, phone, ZIP, what you need covered. Everything else moves to step two or to your callback, because a five-field form finishes about twice as often as an eight-field one. A quote request carries dates of birth and addresses, so it does not land in an inbox, and the consent language for calling and texting is written to protect you.</p>
+        <p><a href="/demo/quote">Try it yourself</a>. Four fields first: name, phone, ZIP, what you need covered. Everything else moves to step two or to your callback, because a five-field form finishes about twice as often as an eight-field one. A quote request carries dates of birth and addresses, so it does not land in an inbox, and the consent language for calling and texting is written to protect you.</p>
       </div>
       <div class="bitem reveal">
         <div class="num">4</div>
         <h4>The PIP tool</h4>
         <p class="sub">The part we are most excited about</p>
-        <p>Dropping from unlimited PIP to the $500,000 level saves a Michigan driver about <b>3.6%</b>. Not thirty. Three and a half. Nearly three in ten Michigan vehicles now carry limited PIP, and a lot of those people traded away catastrophic medical coverage for a rounding error because nobody showed them the number. We build the calculator that shows it, with the eligibility rules most sites get wrong.</p>
+        <p>Dropping from unlimited PIP to the $500,000 level saves a Michigan driver about <b>3.6%</b>. Not thirty. Three and a half. Nearly three in ten Michigan vehicles now carry limited PIP, and a lot of those people traded away catastrophic medical coverage for a rounding error because nobody showed them the number. We built the calculator that shows it, with the eligibility rules most sites get wrong. <a href="/demo/tools/michigan-pip">It is the best thing on the site</a>.</p>
       </div>
     </div>
 
@@ -544,7 +563,7 @@ footer .inner { max-width: 1100px; margin: 0 auto; padding: 56px 24px 36px; }
   <div class="inner">
     <p class="sec-kicker reveal">What it costs</p>
     <h2 class="sec-title reveal">$3,500 to build it. $150 a month to keep it.</h2>
-    <p class="sec-sub reveal">One number, not a range. If we find something during the build that changes the scope, you hear it before we do it, not after.</p>
+    <p class="sec-sub reveal">One number, not a range. You have already seen what it buys, because it is built. If we find something during the rest of the work that changes the scope, you hear it before we do it, not after.</p>
 
     <div class="pricewrap">
       <div class="pcard reveal">
@@ -593,6 +612,7 @@ footer .inner { max-width: 1100px; margin: 0 auto; padding: 56px 24px 36px; }
     <h2>Give us thirty minutes.</h2>
     <p>We will sit down with you, walk through the findings on a phone, and you can tell us where we are wrong. No slides.</p>
     <a class="btn big" href="mailto:kevin@glazedweb.com?subject=Insurance%20for%20a%20Cause%20website%20proposal">Email Kevin</a>
+    <p class="after" style="margin-top:18px"><a href="/demo" style="color:#fff;font-weight:700">Or open the site one more time</a></p>
     <p class="after">Glazed Web is one person in Marshall. You would be working with Kevin, start to finish.</p>
   </div>
 </div>

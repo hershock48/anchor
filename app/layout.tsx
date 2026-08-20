@@ -38,6 +38,13 @@ export const metadata: Metadata = {
   },
   description:
     "An independent Michigan insurance agency that gives a share of every commission to a local cause, and publishes every dollar of it.",
+  /**
+   * NEXT DOES NOT DEEP-MERGE `openGraph`. A page that defines its own block
+   * replaces this one wholesale, image included, and that route silently loses
+   * its card. Every page in this app sets only `title` and `description` at the
+   * top level, which merge fine. If you ever add an `openGraph` block to a
+   * page, set the image on it too.
+   */
   openGraph: {
     type: "website",
     siteName: site.name,
@@ -45,7 +52,16 @@ export const metadata: Metadata = {
     description:
       "Independent auto, home and business insurance in Michigan. We give a share of every commission to a local cause and publish the ledger.",
     url: "/",
+    images: [
+      {
+        url: "/og.jpg",
+        width: 1200,
+        height: 630,
+        alt: `${site.name}. Coverage that gives back. An independent agency in ${site.contact.city}, Michigan.`,
+      },
+    ],
   },
+  twitter: { card: "summary_large_image" },
   robots: { index: true, follow: true },
 };
 

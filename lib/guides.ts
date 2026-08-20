@@ -83,6 +83,40 @@ export const guides: Guide[] = [
     ],
   },
   {
+    slug: "storm-claims-after-march-6",
+    title: "After March 6: what a wind and hail claim actually involves",
+    dek: "The strongest tornado in Michigan since 1977 touched down fifteen miles from here.",
+    description:
+      "The March 6, 2026 tornadoes hit Branch, St. Joseph, Cass and Calhoun counties. What a wind and hail deductible really costs, what replacement cost means, and how to spot a storm chaser.",
+    body: [
+      {
+        p: "On March 6, 2026 four tornadoes touched down across southwest Michigan. The Union City tornado was rated EF-3 with peak winds of 160 mph and killed three people, injuring twelve. The National Weather Service recorded it as the strongest tornado in Michigan since the F4 that struck Kalamazoo and Eaton counties on April 2, 1977. A fourth tornado, an EF-0 with 85 mph winds, touched down in Clarendon Township, in Calhoun County.",
+      },
+      {
+        p: "We are writing this because it happened here, not to frighten anybody into buying something. Three things about storm claims are worth understanding before you need them, and all three are easier to fix in February than in March.",
+      },
+      { h: "Your wind and hail deductible is probably not a dollar figure" },
+      {
+        p: "Many Michigan homeowners policies carry a separate wind and hail deductible set as a percentage of the dwelling amount rather than as a flat number. On a house insured for $300,000, a 2% wind and hail deductible is $6,000, not the $1,000 you may have in mind from the rest of the policy. People find this out at the worst possible moment.",
+      },
+      { h: "Replacement cost and actual cash value are not close to each other" },
+      {
+        p: "Actual cash value pays what the roof was worth the day before the storm, depreciation subtracted. Replacement cost pays what it costs to put a new one on. On a fifteen year old roof that difference can be most of the claim. Check which one you have.",
+      },
+      { h: "The contractors arrive before the adjuster does" },
+      {
+        p: "After a storm of any size, crews from out of state show up in the neighborhoods that were hit. Some are fine. The ones that are not ask you to sign something on the spot, offer to cover your deductible, or want money before work starts. Michigan licenses residential builders, and the license is checkable in about a minute.",
+      },
+      {
+        note: "Waiving or covering a customer's deductible is not a discount, it is generally insurance fraud, and it is the clearest signal that the person on your porch is not the one to hire.",
+      },
+      { h: "What to do in the first day" },
+      {
+        p: "Photograph everything before anything is moved or covered. Make the temporary repairs that stop further damage and keep the receipts, because that is covered. Call your agent before you call a contractor. And do not throw anything away until the adjuster has seen it.",
+      },
+    ],
+  },
+  {
     slug: "why-your-rate-depends-on-where-you-live",
     title: "ZIP codes were banned in 2020. So why does your address still matter?",
     dek: "Because the rating factor changed shape rather than going away.",

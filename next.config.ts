@@ -1,14 +1,29 @@
 import type { NextConfig } from "next";
 
 const PITCH_HOST = "insuranceforacause.glazedweb.com";
-const onPitchHost = [{ type: "host" as const, value: PITCH_HOST }];
+
+/**
+ * The pitch has to work on the *.vercel.app preview URL as well as the custom
+ * domain.
+ *
+ * Scoping these to the custom domain alone means /logo and /demo return 404 on
+ * the preview host, which is the URL you actually open first, before DNS is
+ * pointed and before the domain is even bought. That is a 404 on the two links
+ * the proposal leans on hardest, and you find it by clicking them in front of
+ * somebody.
+ *
+ * Both hosts are noindex below, so serving the pitch on the preview host costs
+ * nothing.
+ */
+const PITCH_HOSTS = "(insuranceforacause\\.glazedweb\\.com|[a-z0-9-]+\\.vercel\\.app)";
+const onPitchHost = [{ type: "host" as const, value: PITCH_HOSTS }];
 
 const nextConfig: NextConfig = {
   async rewrites() {
     /**
      * THE HOST SPLIT.
      *
-     * On the pitch host: the proposal at the root, the logo presentation at
+     * On a pitch host: the proposal at the root, the logo presentation at
      * /logo, and the whole real site under /demo. On the client's own domain:
      * the site at the root and no proposal anywhere.
      *
@@ -40,17 +55,12 @@ const nextConfig: NextConfig = {
     return [
       {
         /**
-         * The pitch host is a duplicate of the client's site and must never be
-         * indexed. The .vercel.app host is the same risk and is indexable by
-         * default, which is why this is matched on host rather than on path.
+         * Same host set as the rewrites, so the two cannot drift apart. The
+         * preview host is indexable by default and is the same
+         * duplicate-content risk as the pitch domain.
          */
         source: "/:path*",
-        has: [{ type: "host", value: PITCH_HOST }],
-        headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow" }],
-      },
-      {
-        source: "/:path*",
-        has: [{ type: "host", value: "(?<h>.*\\.vercel\\.app)" }],
+        has: [{ type: "host", value: PITCH_HOSTS }],
         headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow" }],
       },
       {

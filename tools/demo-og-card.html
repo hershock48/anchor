@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>demo og card source</title>
+<!--
+  Source page for public/og.jpg, the DEMO card. This is the client's own card,
+  not Glazed's: link-cards.md is explicit that a pitch host serves two, and that
+  getting them backwards is the most common mistake. The proposal card wears
+  Glazed's argument in Glazed's colors and asks a question. This one wears her
+  brand entirely and says what the business is, because the demo is a full copy
+  of her site and should look like it everywhere, including here.
+
+  Screenshot at 1200x630, 1x. Everything that must be read sits inside the
+  centre 630x630 band, x 285 to x 915, because iOS crops toward square.
+-->
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1200px; height: 630px; }
+  body {
+    font-family: Georgia, "Times New Roman", serif;
+    background: #14293C; color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    position: relative; overflow: hidden;
+  }
+  .wash { position: absolute; inset: 0;
+    background: radial-gradient(circle at 12% 20%, rgba(196,54,43,.28), transparent 45%); }
+  .safe { position: relative; z-index: 2; width: 630px; height: 630px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; padding: 0 6px; }
+  .name { font-size: 62px; font-weight: 700; letter-spacing: -2px; line-height: 1.04; margin-top: 26px; }
+  .rule { width: 84px; height: 3px; background: #E4614F; margin: 22px 0 18px; }
+  .tag { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 21px;
+    letter-spacing: .2em; text-transform: uppercase; color: #F0A093; font-weight: 600; }
+  .where { margin-top: 26px; font-size: 26px; color: #C8D4DE; }
+</style>
+</head>
+<body>
+  <div class="wash"></div>
+  <div class="safe">
+    <svg width="118" height="148" viewBox="0 0 120 150" aria-hidden="true">
+      <path d="M60 45 C60 45 38.5 32.5 38.5 19.5 C38.5 11.6 44.6 5.4 52.3 5.4 C56.3 5.4 59 7.5 60 10.2 C61 7.5 63.7 5.4 67.7 5.4 C75.4 5.4 81.5 11.6 81.5 19.5 C81.5 32.5 60 45 60 45 Z"
+        fill="none" stroke="#E4614F" stroke-width="10" stroke-linejoin="round"/>
+      <g fill="none" stroke="#FFFFFF" stroke-width="10" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M60 47 L60 120"/><path d="M32 62 L88 62"/>
+        <path d="M22 83 C22 110 39 125 60 125 C81 125 98 110 98 83"/>
+      </g>
+    </svg>
+    <p class="name">Insurance<br>for a Cause</p>
+    <div class="rule"></div>
+    <p class="tag">Coverage that gives back</p>
+    <p class="where">Independent agency &middot; Marshall, Michigan</p>
+  </div>
+</body>
+</html>

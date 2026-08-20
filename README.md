@@ -77,6 +77,9 @@ customers on another build.
       in her words. The single most damaging thing on this site to invent
 - [ ] **Privacy retention period** — `app/privacy/page.tsx`
 - [ ] **Real photographs.** There are none. No stock, on purpose
+- [ ] **The domain.** `site.url` assumes `insuranceforacause.com` and it is not
+      bought. `site.urlConfirmed` is `false`. It feeds `metadataBase` and the
+      sitemap, so it is load-bearing
 
 ---
 
@@ -244,7 +247,11 @@ list.
       want to see reviews from the last three months. **This will probably do more
       for her than half of this website will**
 - [ ] Domain bought and pointed, `site.url` updated
-- [ ] Link cards checked in Messages and one non-Apple surface
+- [ ] Link cards checked in Messages and one non-Apple surface. **Two of them:**
+      `public/pitch/insuranceforacause/og.jpg` is Glazed's argument in Glazed's
+      colors and is what the proposal link shows. `public/og.jpg` is hers
+      entirely and is what the demo link shows. Getting them backwards is the
+      common mistake
 - [ ] The studio credit is on. It is `Baked by`, not `Double Dipped by`: a donut
       pun does not belong next to somebody's license number while they are
       deciding whether to trust an agency with their house. Tell her it is there;
@@ -260,16 +267,25 @@ list.
 | `public/pitch/insuranceforacause/index.html` | The proposal. Self-contained, no build step |
 | `public/pitch/insuranceforacause/logo.html` | The logo presentation and mockups. **Send this first** |
 | `public/pitch/insuranceforacause/og.jpg` | The proposal's link card, 1200x630 |
-| `tools/og-card.html` | The page the card is rendered from |
+| `public/og.jpg` | The **demo's** link card. Hers, not Glazed's |
+| `tools/og-card.html` | The proposal card is rendered from this |
+| `tools/demo-og-card.html` | The demo card is rendered from this |
 
 On `insuranceforacause.glazedweb.com`: proposal at `/`, logo at `/logo`, the whole
 site at `/demo`. Every path on that host sends `X-Robots-Tag: noindex, nofollow`,
 and so does any `.vercel.app` host, which is indexable by default and the same
 duplicate-content risk.
 
-The proposal is priced **$3,500 build, $150 a month.** It does not mention a demo,
-because when it was written there was not one. **It does now, so add the `/demo`
-link before sending it.**
+The proposal is priced **$3,500 build, $150 a month**, and it points at the demo
+in six places: the hero button, a band at the top of "What we built", deep links
+into `/demo/giving`, `/demo/quote` and `/demo/tools/michigan-pip`, and the
+closing ask.
+
+**The pitch rewrites match the `*.vercel.app` preview host as well as the custom
+domain.** Scoped to the domain alone, `/logo` and `/demo` return 404 on the
+preview URL, which is the one you open before DNS is pointed. Both hosts are
+noindex. **On the preview host the root is the proposal, not the site**; the site
+is at `/demo`.
 
 ---
 
