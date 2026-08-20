@@ -1,4 +1,4 @@
-From aad611f5f82be1df119786153cec437c29f42179 Mon Sep 17 00:00:00 2001
+From fc8d5f527b31898996e54917e88939245e8e15f4 Mon Sep 17 00:00:00 2001
 From: Kevin Hershock <kevin@glazedweb.com>
 Date: Thu, 20 Aug 2026 21:47:15 +0000
 Subject: [PATCH] Fold in what the Insurance for a Cause build taught the docs
@@ -25,6 +25,17 @@ glaze.md, Next.js failure log:
   that began as a static pitch kept serving public/ as a flat directory after it
   became a Next app: green build, and every framework route returning Vercel's
   own NOT_FOUND.
+
+glaze.md, Being straight: do not argue the other guy's case in our own pitch.
+A price note on the proposal apologized for a comparison that was already
+sourced and linked, in two sentences of the competitor's defense written by us,
+unprompted. Kevin deleted it. The rule is a test of who pays for the silence:
+if leaving it out costs the client money, time or a bad surprise, say it; if it
+costs only our comfort, cut it. A sourced figure needs no apology, and a
+comparison that cannot be defended without a caveat is a comparison to change
+rather than annotate. proposal.md gets the short version in what stays out,
+plus a checklist line that greps for "in fairness", "to be fair",
+"admittedly", "of course" and "that said".
 
 glaze.md, the quality bar:
 - A guess written as a plain value is worse than a blank. Mark it PLACEHOLDER
@@ -63,16 +74,16 @@ A fact you got wrong once belongs in exactly one place.
 Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
 Claude-Session: https://claude.ai/code/session_01LRN2pKhBSdie1ymm4FJ9LR
 ---
- glaze.md            | 39 ++++++++++++++++++++++++++
+ glaze.md            | 72 +++++++++++++++++++++++++++++++++++++++++++++
  glaze/brand.md      | 20 +++++++++++++
- glaze/intake.md     | 68 ++++++++++++++++++++++++++++-----------------
+ glaze/intake.md     | 68 ++++++++++++++++++++++++++----------------
  glaze/launch.md     | 12 ++++++++
- glaze/link-cards.md | 35 +++++++++++++++++++++++
- glaze/proposal.md   | 34 +++++++++++++++++++++++
- 6 files changed, 183 insertions(+), 25 deletions(-)
+ glaze/link-cards.md | 35 ++++++++++++++++++++++
+ glaze/proposal.md   | 53 ++++++++++++++++++++++++++++++++-
+ 6 files changed, 234 insertions(+), 26 deletions(-)
 
 diff --git a/glaze.md b/glaze.md
-index f540a86..1376545 100644
+index f540a86..a155c9c 100644
 --- a/glaze.md
 +++ b/glaze.md
 @@ -201,6 +201,15 @@ out loud at handover.** Silence about a placeholder reads as "this number is rea
@@ -91,7 +102,47 @@ index f540a86..1376545 100644
  ### Accessibility is measured, not intended
  
  **Run `glaze/scripts/audit.mjs`. Zero violations at both widths on every route.** Fix contrast at
-@@ -500,6 +509,19 @@ session does by default, which is why they need naming.
+@@ -293,6 +302,39 @@ exist.
+ unverified. This applies to repos, to a component rendered twice on a page, to
+ footers across two layouts, and to routes.
+ 
++### Do not argue the other guy's case in our own pitch
++
++Being straight is a rule about facts. It is not a license to hedge our work in
++a client's document, and the two get confused constantly, because the hedge
++sounds like the virtue.
++
++A price note on the Insurance for a Cause proposal read: *"In fairness to them,
++theirs is a themed WordPress site rather than twenty-one written pages and three
++tools, so the comparison flatters us on what you get. It does not flatter us on
++what you keep."* Kevin's response was to delete it, and he was right. It is two
++sentences of a competitor's defense sitting in the middle of our price, written
++by us, unprompted, in a document whose job is to be stood behind.
++
++**The test is who pays for the silence.**
++
++- If leaving it out costs the client money, time or a bad surprise, say it.
++  *"Getting your first twenty reviews will probably do more for you than half of
++  this website will"* costs us the sale and saves her the disappointment. That
++  is the house voice and it stays.
++- If leaving it out costs only our own comfort, cut it. Pre-emptively softening
++  a comparison, apologizing for a number that is already sourced, or
++  volunteering the counter-argument nobody raised is not honesty. It is
++  flinching, and the client can hear it.
++
++A figure with a link under it needs no apology. It is already checkable, which
++is the entire point of putting it there. If a comparison genuinely cannot be
++defended without a caveat, **the comparison is the thing to change**, not to
++annotate.
++
++Related and different: **do not tell a client something unflattering about their
++own idea unless they can act on it.** That is settled elsewhere, in the Insurance
++for a Cause file, and it was settled the same way.
++
+ ---
+ 
+ ## 5. The process
+@@ -500,6 +542,19 @@ session does by default, which is why they need naming.
  - **A generic element selector can style a class you thought was independent.**
    `footer { background: dark }` painted a footer whose own class set light-ground
    text colours, producing a 1.09 link.
@@ -111,7 +162,7 @@ index f540a86..1376545 100644
  
  ### SVG and images
  
-@@ -535,6 +557,23 @@ session does by default, which is why they need naming.
+@@ -535,6 +590,23 @@ session does by default, which is why they need naming.
    parent's wholesale, image included.
  - **A `301` may turn a POST into a GET.** Exclude `/api` from any catch-all
    redirect, or use `308`, which preserves the method.
@@ -379,7 +430,7 @@ index 539eb12..c96200d 100644
 +      nothing falls back to the origin root. Proposal and logo page declare
 +      Glazed's; the demo declares the client's.
 diff --git a/glaze/proposal.md b/glaze/proposal.md
-index efacb03..6b54d29 100644
+index efacb03..02a7e9a 100644
 --- a/glaze/proposal.md
 +++ b/glaze/proposal.md
 @@ -14,6 +14,40 @@ phone if a call goes sideways.
@@ -423,6 +474,36 @@ index efacb03..6b54d29 100644
  Also in that repo, for reference:
  
  | Path | What it is |
+@@ -66,7 +100,21 @@ ownership terms, one next step.
+ 
+ **Out:** stock photography. Anything about Glazed Web's process that the client
+ did not ask about. Adjectives doing the work a number should do. Any claim about
+-their current site that has not been verified in a browser this session.
++their current site that has not been verified in a browser this session. **Any
++sentence that argues the competitor's side of a comparison we are making.**
++
++That last one is worth a paragraph, because it does not feel like a mistake
++while you are writing it. A price note on the Insurance for a Cause proposal
++read: *"In fairness to them, theirs is a themed WordPress site rather than
++twenty-one written pages and three tools, so the comparison flatters us on what
++you get."* That is the other guy's defense, written by us, unprompted, inside
++our own price. Kevin deleted it.
++
++**A sourced figure needs no apology. It is already checkable, which is why it is
++there.** If a comparison cannot be defended without a caveat, change the
++comparison rather than annotate it. The full rule, and where the line sits
++against the unflattering things we DO say, is under "Being straight" in
++`glaze.md`.
+ 
+ ---
+ 
+@@ -120,3 +168,6 @@ check it on every build.
+ - [ ] The price is a number.
+ - [ ] Read it once as the owner, not as the builder. If a sentence is about us
+       rather than about them, cut it.
++- [ ] No sentence anywhere argues the other side of a comparison we are making.
++      Search it for "in fairness", "to be fair", "admittedly", "of course" and
++      "that said" and justify every hit or cut it.
 -- 
 2.43.0
 
