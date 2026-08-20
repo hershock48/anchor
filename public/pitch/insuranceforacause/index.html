@@ -642,7 +642,7 @@ footer .inner { max-width: 1100px; margin: 0 auto; padding: 56px 24px 36px; }
         <h3>Insurance for a Cause</h3>
         <p class="flavor">Anchor Insurance and Risk Management</p>
         <p class="price">
-          <span class="was" aria-hidden="true">Elsewhere <s>$18,200</s></span>
+          <span class="was" aria-hidden="true">Market <s>$18,200</s></span>
           $<span class="price-num" data-from="18200" data-to="3500">3,500</span> <small>to build</small>
         </p>
         <p class="mo">$150 <small>a month after launch</small></p>
@@ -750,8 +750,9 @@ document.documentElement.classList.add('js');
    counts down to ours as your eyes reach it, and scrolling back up re-arms it
    for the next pass. Lifted from the menu-price counter in glazedweb's
    app/page.jsx: the same 1100ms, the same cubic ease-out, the same three-state
-   idle/primed/counting machine and the same 0.12/0.38/0.45 thresholds. The
-   left-to-right stagger is dropped because there is one card here, not three.
+   idle/primed/counting machine. The thresholds are ours, for the reason in the
+   comment on `watch` below, and the left-to-right stagger is dropped because
+   there is one card here, not three.
 
    THE RENDERED NUMBER IS ALREADY THE REAL ONE. `data-to` is what is in the
    markup, so with JavaScript off, under reduced motion, or if this script never
@@ -765,7 +766,18 @@ document.documentElement.classList.add('js');
   var el = document.querySelector('#price .price-num');
   if (!el) return;
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  var card = el.closest('.pcard') || el;
+  /* WATCH THE PRICE LINE, NOT THE CARD.
+     This used to observe `.pcard` with glazedweb's own 0.45 progress
+     threshold, which is right for its menu cards and wrong here. Those are
+     short. This card is about 700px tall, and on a 900px screen 0.45 works out
+     to the card's top sitting 180px below the top of the viewport, meaning the
+     number melted when you had already scrolled past it and read it.
+
+     The price line is about 55px tall, so its own top is a straight answer to
+     "can they see this yet". Expressed as a fraction of the viewport rather
+     than as progress through an element, because that is the question being
+     asked and it does not change meaning when the card's height does. */
+  var watch = el.closest('.price') || el.closest('.pcard') || el;
   var from = parseFloat(el.dataset.from);
   var to = parseFloat(el.dataset.to);
   if (!isFinite(from) || !isFinite(to)) return;
@@ -787,14 +799,20 @@ document.documentElement.classList.add('js');
   }
   function update() {
     raf = 0;
-    var r = card.getBoundingClientRect();
     var vh = window.innerHeight || 1;
-    var cp = Math.min(1, Math.max(0, (vh - r.top) / (vh + r.height)));
-    if (cp >= 0.45) {
+    var top = watch.getBoundingClientRect().top;
+    if (top <= vh * 0.85) {
+      /* Fifteen percent up from the bottom edge. The count runs 1100ms and the
+         reader is still scrolling, so it has to start while the line is on its
+         way up the screen, not once it has arrived. */
       if (status === 'idle' || status === 'primed') { status = 'counting'; count(); }
-    } else if (cp >= 0.12 && cp < 0.38) {
+    } else if (top <= vh) {
+      /* On screen but only just: show the market number so it is glimpsed
+         before it melts. */
       if (status !== 'primed') { stop(); el.textContent = fmt(from); status = 'primed'; }
-    } else if (cp < 0.12) {
+    } else {
+      /* Below the fold. Hold the real price, so anything that never scrolls
+         here, a screen reader included, reads what we actually charge. */
       if (status !== 'idle') { stop(); el.textContent = fmt(to); status = 'idle'; }
     }
   }
