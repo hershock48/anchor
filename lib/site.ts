@@ -49,25 +49,29 @@ export const site = {
     email: "PLACEHOLDER:email" as string,
     street: "PLACEHOLDER:street address" as string,
     /**
-     * GRASS LAKE, NOT MARSHALL.
+     * MANCHESTER, WASHTENAW COUNTY.
      *
-     * This said Marshall for the whole first build because that is Kevin's town
-     * and I never asked. It is a village of about 1,100 in JACKSON county, just
-     * south of I-94, roughly 48 miles east of Marshall and a different county,
-     * a different school district and a different set of neighbouring towns.
+     * Corrected twice. The first build said Marshall, because that is Kevin's
+     * town and nobody asked. The second said Grass Lake. It is Manchester: a
+     * city of about 2,000 on the River Raisin with M-52 running through the
+     * middle of it, in WASHTENAW county, roughly 70 miles east of Marshall.
      *
-     * It was also the one contact field that was NOT a placeholder, so it read
-     * as a known fact and got written into page titles, the hero, the structured
-     * data and four local guides before anybody questioned it. An assumed fact
-     * that looks like a confirmed one is worse than a blank.
+     * It is a CITY, not a village. It was a village from 1867 and voted for
+     * cityhood in November 2023, which is recent enough that plenty of copy
+     * still says village. Do not write village.
+     *
+     * The lesson from the first miss holds and is why this one was cheap: this
+     * field and `nearby` are the only places a town name is allowed to live, so
+     * correcting it is one edit instead of a hunt through four guides, the page
+     * titles, the structured data and a rendered card image.
      */
-    city: "Grass Lake",
-    county: "Jackson",
+    city: "Manchester",
+    county: "Washtenaw",
     state: "MI",
     zip: "PLACEHOLDER:ZIP" as string,
     /** The towns a local guide may name. Anything not on this list is not local
      *  to them, however good the story is. */
-    nearby: ["Jackson", "Chelsea", "Michigan Center", "Napoleon", "Munith"],
+    nearby: ["Chelsea", "Saline", "Clinton", "Tecumseh", "Ann Arbor"],
     /** True if there is no walk-in office. Changes how the contact page reads. */
     byAppointmentOnly: true,
   },

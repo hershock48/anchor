@@ -7,7 +7,7 @@ copy.
 
 ---
 
-Independent insurance agency, Grass Lake, Michigan. **Prospect, not signed** as of
+Independent insurance agency, Manchester, Michigan. **Prospect, not signed** as of
 August 2026.
 
 | | |
@@ -78,27 +78,37 @@ this site.**
 
 ## Retired
 
-**"Marshall, Michigan."** The entire first build said Marshall, in page titles,
-the hero, the structured data and four local guides. Nobody asked, and it was the
-one contact field that was NOT written as a placeholder, so it read as a
-confirmed fact and propagated. **They are in Grass Lake**, a village of about
-1,100 in Jackson County, just south of I-94 and roughly 48 miles east of
-Marshall. Different county, different school district, different neighbours.
+**"Marshall, Michigan," then "Grass Lake."** The town was wrong twice. The first
+build said Marshall throughout, in page titles, the hero, the structured data,
+the rendered card image and four local guides, because that is Kevin's town and
+nobody asked. The correction to Grass Lake was also wrong.
 
-Two pieces of local content died with it, and it is worth knowing why so they do
-not come back:
+**They are in Manchester**: a city of about 2,000 on the River Raisin with M-52
+through the middle, in **Washtenaw** county, roughly 70 miles east of Marshall.
+It is a **city**, not a village. It was a village from 1867 and voted for
+cityhood in November 2023, so plenty of copy still says village. Do not.
 
-- **The BlueOval hook.** Ford's battery plant is a Marshall story. It is about 40
-  miles from Grass Lake and has nothing to do with their book.
-- **"An EF-3 fifteen miles away."** The March 6 2026 tornadoes hit Branch, St
-  Joseph, Cass and Calhoun counties. Jackson County is not among them, and Union
-  City is about 48 miles from Grass Lake. The storm guide keeps the event,
-  because it is the strongest Michigan tornado since 1977 and that is a statewide
-  fact, but the proximity claim is gone.
+The first correction was expensive and the second was cheap, and the difference
+is the whole lesson: `city`, `county` and `nearby` in `lib/site.ts` are now the
+only places a town name is allowed to live, so the second fix was one edit plus
+regenerating a card image.
 
-**The towns a local guide may name are Jackson, Chelsea, Michigan Center,
-Napoleon and Munith.** They are in `site.contact.nearby` so this is checkable
-instead of remembered.
+**The towns a local guide may name are Chelsea, Saline, Clinton, Tecumseh and
+Ann Arbor.** They are in `site.contact.nearby` so it is checkable instead of
+remembered.
+
+One piece of local content died with the first miss and stays dead: **the
+BlueOval hook.** Ford's battery plant is a Marshall story and has nothing to do
+with their book. **"An EF-3 fifteen miles away"** went the same way; the March 6
+2026 tornadoes hit Branch, St Joseph, Cass and Calhoun counties, which is about
+70 miles from Manchester. The storm guide keeps the event, because the strongest
+Michigan tornado since 1977 is a statewide fact and the claims advice is
+unchanged, but not the proximity.
+
+**Worth raising with her:** the River Raisin runs through the middle of
+Manchester. Flood and water backup on a river town is a genuinely local coverage
+angle and we have not written it, because nobody has confirmed anything about
+their flood book.
 
 **"The giving program is the differentiator."** Researched and dropped. 96% of
 independent agents already donate, only about 34% of Americans say a charitable

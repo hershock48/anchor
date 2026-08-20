@@ -18,14 +18,25 @@
 <meta property="og:image:alt" content="Can anyone check that you gave? A proposal from Glazed Web.">
 <meta name="twitter:card" content="summary_large_image">
 
-<!-- THE ANCHOR, NOT THE DONUT.
+<!-- THE DONUT ON GLAZED'S DOCUMENTS, THE ANCHOR ON HERS.
+     This page and the logo presentation are Glazed's, so they carry Glazed's
+     icon, lifted from glazedweb's own public/ rather than redrawn. The demo is
+     hers and carries the anchor, which Next emits from app/icon.png and
+     app/favicon.ico.
+
      A favicon is cached per ORIGIN, and on a pitch host the proposal, the logo
-     page and the whole demo share one. Two different icons on one origin means
-     whichever loads first tends to stay in the tab, and the order somebody
-     actually browses is proposal then demo, so the Glazed donut was sticking on
-     her site. The header lockup and the footer plate carry Glazed on this
-     document; the tab carries hers. -->
-<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20120%20150'%3E%3Crect%20width='120'%20height='150'%20fill='#14293C'/%3E%3Cpath%20d='M60%2047%20C60%2047%2038%2034%2038%2020.5%20C38%2012.4%2044.2%206%2052.1%206%20C56.2%206%2059%208.2%2060%2011%20C61%208.2%2063.8%206%2067.9%206%20C75.8%206%2082%2012.4%2082%2020.5%20C82%2034%2060%2047%2060%2047%20Z'%20fill='#E4614F'/%3E%3Cg%20fill='none'%20stroke='#fff'%20stroke-width='12'%20stroke-linecap='round'%20stroke-linejoin='round'%3E%3Cpath%20d='M60%2042%20L60%20122'/%3E%3Cpath%20d='M30%2062%20L90%2062'/%3E%3Cpath%20d='M20%2083%20C20%20111%2038%20127%2060%20127%20C82%20127%20100%20111%20100%2083'/%3E%3C/g%3E%3C/svg%3E">
+     page and the whole demo share one, so the earlier version of this file made
+     everything the anchor to stop the donut sticking on her site. That was the
+     wrong fix. The sticking happens when a document declares nothing and the
+     browser falls back to the origin's /favicon.ico. Both sides declare
+     explicitly now, so neither falls back and neither can win the other's tab.
+
+     SVG first for the shape, .ico after it for Safari, which does not take an
+     SVG through rel=icon. Absolute paths, because /logo and / are rewrites and
+     a relative href would resolve against the pretty URL instead of this file. -->
+<link rel="icon" href="/pitch/insuranceforacause/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/pitch/insuranceforacause/favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="/pitch/insuranceforacause/apple-touch-icon.png">
 
 <style>
 /* Palette and type lifted from glazedweb app/globals.css. Three pinks on
@@ -195,6 +206,14 @@ h2.sec-title { font-size: clamp(30px, 4vw, 42px); font-weight: 800; letter-spaci
 .blist { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; margin-top: 44px; }
 @media (max-width: 800px) { .blist { grid-template-columns: 1fr; } }
 .bitem { background: var(--cream-2); border: 2px solid rgba(43,30,22,0.09); border-radius: 18px; padding: 24px 22px; }
+/* The number glazes. Lifted from `.step .num` in glazedweb's app/globals.css
+   rather than re-derived: the radial, the two inset shadows, the highlight and
+   the sweep are his, and this is the same element doing the same job. Only the
+   selector changed.
+
+   `overflow: hidden` is what keeps the sweep inside the disc, and `position:
+   relative` is what the two pseudo-elements position against. Both were missing
+   here, which is why this had the glazed *look* and never actually glazed. */
 .bitem .num {
   width: 42px; height: 42px; border-radius: 50%;
   background: radial-gradient(circle at 32% 26%, #EAF7C6 0%, var(--slime) 48%, #9CCB4F 100%);
@@ -202,6 +221,23 @@ h2.sec-title { font-size: clamp(30px, 4vw, 42px); font-weight: 800; letter-spaci
   display: flex; align-items: center; justify-content: center;
   font-weight: 800; font-size: 17px; color: var(--chocolate); margin-bottom: 16px;
   border: 2px solid var(--chocolate);
+  position: relative; overflow: hidden;
+}
+.bitem .num::before {
+  content: ""; position: absolute; top: 4px; left: 7px; width: 12px; height: 7px;
+  border-radius: 50%; background: rgba(255,255,255,.75);
+  transform: rotate(-18deg); filter: blur(.5px);
+}
+.bitem .num::after {
+  content: ""; position: absolute; top: -30%; left: 0; width: 40%; height: 160%;
+  background: linear-gradient(100deg, rgba(255,255,255,0), rgba(255,255,255,.9), rgba(255,255,255,0));
+  transform: translateX(-160%) skewX(-18deg); opacity: 0;
+}
+.bitem.glazed .num::after { animation: glazeSweep .9s ease-out both; }
+@keyframes glazeSweep {
+  0% { transform: translateX(-160%) skewX(-18deg); opacity: 0; }
+  12% { opacity: 1; }
+  100% { transform: translateX(340%) skewX(-18deg); opacity: 0; }
 }
 .bitem h4 { font-size: 17.5px; font-weight: 800; letter-spacing: -0.3px; }
 .bitem .sub { font-size: 12px; text-transform: uppercase; letter-spacing: .12em; color: var(--fern); font-weight: 700; margin: 4px 0 10px; }
@@ -273,6 +309,9 @@ footer .inner { max-width: 1100px; margin: 0 auto; padding: 56px 24px 36px; }
   html { scroll-behavior: auto; }
   .js .reveal { opacity: 1; transform: none; transition: none; }
   .goo, .wob1, .wob2, .wob3, .wobB, .string, .droplet, .droplet2, .sheen, .ticker-inner { animation: none; }
+  /* The disc keeps its glaze, it just stops sweeping. The un-animated state is
+     the finished state. */
+  .bitem.glazed .num::after { animation: none; opacity: 0; }
   .string, .droplet, .droplet2 { opacity: 1; }
   .btn:hover { transform: none; }
 }
@@ -508,7 +547,7 @@ footer .inner { max-width: 1100px; margin: 0 auto; padding: 56px 24px 36px; }
   <div class="inner">
     <p class="sec-kicker reveal">The part that matters most</p>
     <h2 class="sec-title reveal">A promise nobody can check is a slogan. A ledger is a fact.</h2>
-    <p class="lede reveal">Everything above says some version of we give back. Your site is going to say <strong>$340, on the 14th, to the Grass Lake band program, here is the photo of the check.</strong> That is a different kind of sentence, and it is the one thing on this list your competitors cannot copy quickly, because copying it means having counted all along.</p>
+    <p class="lede reveal">Everything above says some version of we give back. Your site is going to say <strong>$340, on the 14th, to the Manchester band program, here is the photo of the check.</strong> That is a different kind of sentence, and it is the one thing on this list your competitors cannot copy quickly, because copying it means having counted all along.</p>
 
     <div class="wcards">
       <div class="wcard reveal">
@@ -654,6 +693,39 @@ footer .inner { max-width: 1100px; margin: 0 auto; padding: 56px 24px 36px; }
 /* The class is added by script, so with JavaScript off nothing is ever hidden
    and the page is complete on arrival. */
 document.documentElement.classList.add('js');
+
+/* Each number glazes as the scroll reaches it, 1 first, then 2, 3, 4 as the
+   section moves through the viewport. Recrossing a threshold re-runs that
+   number's shine. Lifted from the process steps in glazedweb's app/page.jsx,
+   thresholds included, and written as plain JS because this page has no React.
+
+   Scroll-scrubbed rather than autoplayed on purpose: the visitor controls it,
+   which is the rule in glaze.md, and it means the fourth number does not shine
+   at somebody who never scrolled that far. */
+(function () {
+  var sec = document.getElementById('build');
+  if (!sec) return;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var steps = Array.prototype.slice.call(sec.querySelectorAll('.bitem'));
+  if (!steps.length) return;
+  var thresholds = [0.22, 0.38, 0.54, 0.7];
+  var raf = 0;
+  function update() {
+    raf = 0;
+    var r = sec.getBoundingClientRect();
+    var vh = window.innerHeight || 1;
+    var p = Math.min(1, Math.max(0, (vh - r.top) / (vh + r.height)));
+    steps.forEach(function (el, i) {
+      var t = thresholds[i] !== undefined ? thresholds[i] : 0.8;
+      if (p >= t) el.classList.add('glazed');
+      else if (p < t - 0.06) el.classList.remove('glazed');
+    });
+  }
+  function onScroll() { if (!raf) raf = requestAnimationFrame(update); }
+  update();
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll, { passive: true });
+})();
 (function () {
   var els = document.querySelectorAll('.reveal');
   if (!('IntersectionObserver' in window) ||
