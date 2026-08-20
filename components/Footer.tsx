@@ -15,8 +15,7 @@ export default function Footer() {
           <p className="foot-name">{site.name}</p>
           <p className="foot-tag">Coverage that gives back</p>
           <p className="foot-legal">
-            A trade name of {site.legalName}. An independent agency, which means we shop
-            several carriers for you rather than selling one company&rsquo;s product.
+            A trade name of {site.legalName}. An independent agency, which means we shop several carriers for you instead of selling one company&rsquo;s product.
           </p>
         </div>
 

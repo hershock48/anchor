@@ -38,7 +38,7 @@ export const site = {
     name: "PLACEHOLDER:Owner name" as string,
     title: "Agent and owner",
     /** Second producer the client mentioned. Role unconfirmed. */
-    second: "PLACEHOLDER:Amanda's role" as string,
+    second: "PLACEHOLDER:Amanda’s role" as string,
   },
 
   contact: {
@@ -99,8 +99,8 @@ export const site = {
  *     pick-your-charity control on the quote form.
  *
  * A third condition matters operationally: the recipient must not be a client
- * of the producer. `EXCLUSION_NOTE` below is published on the giving page
- * because saying it out loud is both good faith and compliance.
+ * of the producer. That one is NOT published on the site, deliberately. See the
+ * note on it below.
  *
  * None of this is legal advice and the program needs her attorney or E&O
  * carrier to sign off. DIFS closes its own FAQ recommending counsel.
@@ -112,11 +112,22 @@ export const giving = {
   base: "commission we earn on every policy",
   cadence: "quarterly",
 
+  /**
+   * THE FOOTER ONLY. Michigan DIFS condition six is that the organization
+   * receiving the donation may not be a client of the producer, so the
+   * recipient list and the book stay disjoint.
+   *
+   * This was on the site in three places, which was two too many: repeated in
+   * the body of the homepage and the giving page it read as explaining a
+   * licensing constraint to a customer who never asked. In the footer it sits
+   * with the other standing disclosures, where somebody looking for it will
+   * find it and nobody else trips over it.
+   */
   EXCLUSION_NOTE:
     "We do not donate to organizations we insure. Keeping those two lists separate is a Michigan licensing requirement and we think it is the right way to run this anyway.",
 
   DISCLOSURE:
-    "No purchase necessary. The donation is the same whether or not you buy a policy, and no customer can direct where their own policy's money goes.",
+    "No purchase necessary. The donation is the same whether or not you buy a policy, and no customer can direct where their own policy’s money goes.",
 
   /**
    * The live ledger. Empty on purpose at launch.
@@ -165,9 +176,9 @@ export const lines = [
     name: "Auto",
     short: "Cars, trucks, motorcycles and the Michigan rules nobody explains.",
     blurb:
-      "Michigan is the only state that still offers unlimited lifetime medical on an auto policy, and the choice you make about it is the most consequential one on the whole form. We walk you through it rather than reading you the levels.",
+      "Michigan is the only state that still offers unlimited lifetime medical on an auto policy, and the choice you make about it is the most consequential one on the whole form. We walk you through it instead of reading you the levels.",
     points: [
-      "Personal injury protection, explained in dollars rather than in tiers",
+      "Personal injury protection, explained in dollars, not in tiers",
       "Mini-tort, which covers your vehicle damage and almost nothing else",
       "Uninsured and underinsured motorist",
       "Multi-car and multi-policy",

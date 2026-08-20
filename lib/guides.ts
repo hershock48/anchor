@@ -48,7 +48,7 @@ export const guides: Guide[] = [
       },
       { h: "You claim it from the other driver, not from a policy that pays automatically" },
       {
-        p: "Your carrier can pursue it for you, and most will, but it is a claim against the at-fault driver's mini-tort coverage rather than a benefit that simply arrives.",
+        p: "Your carrier can pursue it for you, and most will, but it is a claim against the at-fault driver’s mini-tort coverage, and it does not simply arrive.",
       },
       {
         note: "Worth knowing before you need it: if your collision deductible is $1,000, mini-tort still caps at $3,000 total but you can only recover the deductible you actually paid.",
@@ -63,7 +63,7 @@ export const guides: Guide[] = [
       "Excess attendant care in Michigan costs roughly $14 to $18 a year and only about 5% of drivers carry it. What it does and why the take-up is so low.",
     body: [
       {
-        p: "If you are badly hurt in a car accident and need someone at home to help you eat, dress or move, that is attendant care. Michigan's 2019 reform capped what an auto policy pays a family member providing it at 56 hours a week.",
+        p: "If you are badly hurt in a car accident and need someone at home to help you eat, dress or move, that is attendant care. Michigan’s 2019 reform capped what an auto policy pays a family member providing it at 56 hours a week.",
       },
       { h: "The gap that creates" },
       {
@@ -75,10 +75,10 @@ export const guides: Guide[] = [
       },
       { h: "Roughly one driver in twenty has it" },
       {
-        p: "Take-up sits around 5%. That is not a pricing problem, it is a nobody-mentioned-it problem, which is a fair description of a lot of insurance.",
+        p: "Take-up sits around 5%. That is not a pricing problem. It is a nobody-mentioned-it problem, which describes a good deal of insurance.",
       },
       {
-        note: "If you carry limited personal injury protection, this matters more rather than less, because your total medical pot is already capped.",
+        note: "If you carry limited personal injury protection, this matters more, not less, because your total medical pot is already capped.",
       },
     ],
   },
@@ -97,7 +97,7 @@ export const guides: Guide[] = [
       },
       { h: "Your wind and hail deductible is probably not a dollar figure" },
       {
-        p: "Many Michigan homeowners policies carry a separate wind and hail deductible set as a percentage of the dwelling amount rather than as a flat number. On a house insured for $300,000, a 2% wind and hail deductible is $6,000, not the $1,000 you may have in mind from the rest of the policy. People find this out at the worst possible moment.",
+        p: "Many Michigan homeowners policies carry a separate wind and hail deductible set as a percentage of the dwelling amount, not as a flat number. On a house insured for $300,000, a 2% wind and hail deductible is $6,000, not the $1,000 you may have in mind from the rest of the policy. People find this out at the worst possible moment.",
       },
       { h: "Replacement cost and actual cash value are not close to each other" },
       {
@@ -108,7 +108,7 @@ export const guides: Guide[] = [
         p: "After a storm of any size, crews from out of state show up in the neighborhoods that were hit. Some are fine. The ones that are not ask you to sign something on the spot, offer to cover your deductible, or want money before work starts. Michigan licenses residential builders, and the license is checkable in about a minute.",
       },
       {
-        note: "Waiving or covering a customer's deductible is not a discount, it is generally insurance fraud, and it is the clearest signal that the person on your porch is not the one to hire.",
+        note: "Waiving or covering a customer’s deductible is not a discount, it is generally insurance fraud, and it is the clearest signal that the person on your porch is not the one to hire.",
       },
       { h: "What to do in the first day" },
       {
@@ -119,7 +119,7 @@ export const guides: Guide[] = [
   {
     slug: "why-your-rate-depends-on-where-you-live",
     title: "ZIP codes were banned in 2020. So why does your address still matter?",
-    dek: "Because the rating factor changed shape rather than going away.",
+    dek: "Because the rating factor changed shape instead of going away.",
     description:
       "Michigan banned ZIP code and credit score as auto insurance rating factors in 2020. Territories drawn from census tracts replaced them, which is why Marshall, Battle Creek and Albion still quote differently.",
     body: [
@@ -132,10 +132,10 @@ export const guides: Guide[] = [
       },
       { h: "What that means for you" },
       {
-        p: "Marshall, Battle Creek and Albion can quote differently on identical drivers and identical cars, and the difference between carriers in the same town can be larger than the difference between towns. Which is the actual argument for shopping it rather than renewing.",
+        p: "Marshall, Battle Creek and Albion can quote differently on identical drivers and identical cars, and the difference between carriers in the same town can be larger than the difference between towns. Which is the actual argument for shopping it instead of renewing.",
       },
       {
-        note: "If a quote seems out of line with a neighbor's, it is more often a different carrier's territory map than a mistake on your record. Worth asking about rather than assuming.",
+        note: "If a quote seems out of line with a neighbor’s, it is more often a different carrier’s territory map than a mistake on your record. Worth asking about before you assume.",
       },
     ],
   },

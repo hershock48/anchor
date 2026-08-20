@@ -195,7 +195,10 @@ export default function Home() {
             <Link className="btn onnavy" href="/giving">
               Read the whole program
             </Link>
-            <p>{giving.EXCLUSION_NOTE}</p>
+            <p>
+              Nominations are open to anyone and always will be. You do not have to be a
+              customer to put a cause forward or to vote for one.
+            </p>
           </div>
         </div>
       </section>

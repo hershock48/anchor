@@ -93,10 +93,6 @@ export default function Giving() {
               </p>
             </div>
             <div className="card">
-              <h3>We do not donate to organizations we insure</h3>
-              <p>{giving.EXCLUSION_NOTE}</p>
-            </div>
-            <div className="card">
               <h3>No purchase necessary</h3>
               <p>{giving.DISCLOSURE}</p>
             </div>

@@ -15,8 +15,7 @@ export default function CoverageIndex() {
           <p className="kicker">Coverage</p>
           <h1>What we write</h1>
           <p className="lede" style={{ marginTop: 14 }}>
-            Independent, so each of these gets shopped across several carriers rather than
-            quoted from one. Pick the one you came for.
+            Independent, so each of these gets shopped across several carriers instead of quoted from one. Pick the one you came for.
           </p>
         </div>
       </section>

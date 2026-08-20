@@ -94,7 +94,7 @@ export const pipLevels: PipLevel[] = [
       "Only if you have Medicare Parts A and B, and everyone else in the household has qualified coverage or their own policy.",
     verdict: "restricted",
     detail:
-      "A full opt out of the medical portion. It is available to a narrow group and it removes the coverage entirely rather than capping it.",
+      "A full opt out of the medical portion. It is available to a narrow group and it removes the coverage entirely instead of capping it.",
   },
 ];
 

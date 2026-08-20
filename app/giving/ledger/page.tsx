@@ -19,8 +19,7 @@ export default function Ledger() {
           <h1>Where the money went</h1>
           <p className="lede" style={{ marginTop: 14 }}>
             Every check, with the date, the organization and the amount. This page adds itself
-            up. If it ever stops being current, the date at the bottom will say so rather than
-            quietly not saying anything.
+            up. If it ever stops being current, the date at the bottom will say so.
           </p>
         </div>
       </section>

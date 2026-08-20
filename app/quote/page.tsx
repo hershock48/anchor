@@ -22,8 +22,7 @@ export default function Quote() {
           <p className="kicker">Get a quote</p>
           <h1>Four fields. Then a person calls you.</h1>
           <p className="lede" style={{ marginTop: 14 }}>
-            We are independent, so this gets shopped across several carriers rather than run
-            through one company&rsquo;s rater. If we cannot beat what you have, we will say so.
+            We are independent, so this gets shopped across several carriers instead of one company&rsquo;s rater. If we cannot beat what you have, we will say so.
           </p>
         </div>
       </section>

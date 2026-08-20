@@ -75,7 +75,7 @@ export default function Contact() {
 
         <div className="wrap" style={{ marginTop: 34 }}>
           <p>
-            Looking for a quote rather than a conversation?{" "}
+            Want a quote instead of a conversation?{" "}
             <Link href="/quote">The form takes about a minute.</Link>
           </p>
         </div>

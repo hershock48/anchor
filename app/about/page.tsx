@@ -27,8 +27,8 @@ export default function About() {
                 brand rests on being believable. */}
             <p className="ph-block">
               <span className="ph">Her story goes here</span>, written from a recorded
-              conversation rather than from a template. Why she started an agency. Why the
-              giving is built into it rather than bolted on. What she did before this. Who she
+              conversation in her own words. Why she started an agency. Why the
+              giving is built into it instead of bolted on. What she did before this. Who she
               is in this town.
             </p>
 
@@ -36,8 +36,7 @@ export default function About() {
             <p>
               We are not a captive agent for one insurance company. We hold appointments with
               several carriers and we compare them for you, which means the recommendation can
-              actually change based on your situation rather than always landing on the same
-              product.
+              actually change based on your situation instead of always landing on the same product.
             </p>
             <p>
               It also means that when a carrier stops being competitive, we can move you

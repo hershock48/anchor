@@ -644,7 +644,9 @@ section {
 .give-grid h2 { margin-bottom: 12px; }
 .give-grid p + p { margin-top: 14px; }
 .give-grid p { max-width: 62ch; }
-.rules { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 26px; }
+/* Two cards since the licensing note came off. auto-fit so removing or
+   adding one does not need a column count changed by hand. */
+.rules { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-top: 26px; }
 @media (max-width: 860px) { .rules { grid-template-columns: 1fr; } }
 .rules h3 { font-size: 18px; }
 .rules p { margin-top: 8px; font-size: 15px; color: var(--slate); line-height: 1.6; }
@@ -946,3 +948,40 @@ h1 em svg path, h2 em svg path { stroke-dasharray: 320; stroke-dashoffset: 320; 
    still reads with the color removed. Both measured on --navy-2 #0e1f2e. */
 .q-chg.up { color: #64e6a0; }    /* 10.8 */
 .q-chg.down { color: #ff9384; }  /* 8.4  */
+
+/* ── 404 ── */
+.nf-links { list-style: none; display: grid; gap: 2px; margin-top: 26px; }
+.nf-links a { display: block; padding: 13px 0; font-weight: 600; font-size: 17px; border-bottom: 1px solid var(--line); }
+.nf-cov { list-style: none; display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
+.nf-cov a {
+  display: inline-block; padding: 10px 18px; border: 2px solid var(--line);
+  border-radius: 999px; font-weight: 600; font-size: 15px; text-decoration: none; color: var(--navy);
+}
+.nf-cov a:hover { border-color: var(--brick); color: var(--brick-ink); }
+
+/* ── tap targets ──
+   WCAG 2.1 AA does not require 44px, but a 19px-tall footer link on a phone is
+   a miss you make twice before you get it. Padding rather than font size, so
+   nothing about the type changes. */
+.foot-col ul { gap: 0; }
+.foot-col li a, .foot-col li > span { display: inline-block; padding: 9px 0; }
+.foot-addr { padding: 9px 0; }
+.goal-link { padding: 11px 0; }
+.qf-consent input { width: 24px; height: 24px; margin-top: 2px; }
+
+/* ── print ──
+   Somebody will print a guide, the PIP table or their quote confirmation. */
+@media print {
+  .site-head, .site-foot, .tick, .wave, .hero-mark, .gw-plate,
+  .hero-cta, .close-actions, .btn, .skip { display: none !important; }
+  body { background: #fff; color: #000; font-size: 11pt; }
+  .hero, .band-navy, .band-sand, .closeband, .goalband { background: #fff !important; color: #000 !important; }
+  .hero h1, .band-navy h2, .band-navy h3, .closeband h2 { color: #000 !important; }
+  .lede, .hero-lede, .band-navy .lede { color: #222 !important; }
+  section { padding: 12pt 0 !important; break-inside: avoid; }
+  h1, h2, h3 { break-after: avoid; }
+  .card, .cov-card, table { break-inside: avoid; }
+  /* A printed link is a dead end without its address. */
+  main a[href^="http"]::after { content: " (" attr(href) ")"; font-size: 9pt; color: #444; }
+  .ph { background: none; border-bottom: 1px solid #000; }
+}

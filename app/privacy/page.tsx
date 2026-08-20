@@ -29,8 +29,7 @@ export default function Privacy() {
           </p>
           <p>
             <strong>It deliberately does not ask for dates of birth, driver&rsquo;s license
-            numbers or vehicle identification numbers.</strong> A rater needs those, but they
-            come up on the phone with a person rather than in a web form.
+            numbers or vehicle identification numbers.</strong> A rater needs those, but they come up on the phone, with a person.
           </p>
 
           <h2>Where it goes</h2>
@@ -55,7 +54,7 @@ export default function Privacy() {
           <h2>What this site tracks</h2>
           <p>
             No advertising trackers and no third-party analytics that follow you elsewhere. The
-            fonts are served from this site&rsquo;s own domain rather than loaded from Google,
+            fonts are served from this site&rsquo;s own domain, not loaded from Google,
             so visiting this page does not tell anyone else you were here.
           </p>
 
