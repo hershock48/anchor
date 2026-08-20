@@ -270,8 +270,30 @@ h2.sec-title { font-size: clamp(30px, 4vw, 42px); font-weight: 800; letter-spaci
   color: var(--taupe); text-transform: uppercase; margin-bottom: 2px;
 }
 .pcard .price .was s { text-decoration-color: var(--raspberry); text-decoration-thickness: 2px; }
+.pcard .price-unit { margin-top: 2px; font-size: 14px; color: var(--taupe); font-weight: 500; }
+/* NOT `.terms`. That class is already the four-card column on the right of
+   this same section and it is a grid, so an <s> inside it was being blockified
+   into a grid item and the struck-out $150 broke onto its own line. */
+.pcard .payline { margin-top: 14px; font-size: 15px; font-weight: 700; line-height: 1.5; letter-spacing: -0.2px; }
+.pcard .payline s { color: var(--taupe); text-decoration-color: var(--raspberry); text-decoration-thickness: 2px; }
+/* Hidden without JavaScript, because a button that cannot do anything is worse
+   than no button. The card is complete and true without it. */
+.pcard .ffwrap { display: none; margin-top: 16px; }
+.js .pcard .ffwrap { display: block; }
+.pcard .ffbtn { border-color: var(--slime-bright); }
+.pcard .ffbtn:hover { border-color: var(--fern); color: var(--fern) !important; }
+.pcard .ffsaid:empty { display: none; }
+.pcard .ffsaid {
+  margin-top: 14px; font-size: 14px; font-weight: 700; line-height: 1.5;
+  color: var(--fern); display: flex; gap: 8px; align-items: flex-start;
+}
+.pcard .ffsaid::before {
+  content: ""; flex: none; width: 14px; height: 14px; margin-top: 3px; border-radius: 50%;
+  background: radial-gradient(circle at 32% 26%, #EAF7C6 0%, var(--slime) 48%, #9CCB4F 100%);
+  border: 2px solid var(--chocolate);
+}
 .pcard .anchor-note {
-  margin-top: 14px; font-size: 12.5px; color: var(--taupe); line-height: 1.55;
+  margin-top: 18px; font-size: 12.5px; color: var(--taupe); line-height: 1.55;
 }
 .pcard .anchor-note a { color: var(--raspberry-ink); }
 .pcard .mo { margin-top: 6px; font-size: 20px; font-weight: 800; letter-spacing: -0.6px; font-variant-numeric: tabular-nums; }
@@ -634,7 +656,7 @@ footer .inner { max-width: 1100px; margin: 0 auto; padding: 56px 24px 36px; }
   <div class="inner">
     <p class="sec-kicker reveal">What it costs</p>
     <h2 class="sec-title reveal">$3,500 to build it. $150 a month to keep it.</h2>
-    <p class="sec-sub reveal">One number, not a range. You have already seen what it buys, because it is built. If we find something during the rest of the work that changes the scope, you hear it before we do it, not after.</p>
+    <p class="sec-sub reveal">One number, not a range. You have already seen what it buys, because it is built. If we find something during the rest of the work that changes the scope, you hear it before we do it, not after. The card shows three years, because everyone else in this category charges monthly and a build price on its own is not comparable to anything.</p>
 
     <div class="pricewrap">
       <div class="pcard reveal">
@@ -642,10 +664,15 @@ footer .inner { max-width: 1100px; margin: 0 auto; padding: 56px 24px 36px; }
         <h3>Insurance for a Cause</h3>
         <p class="flavor">Anchor Insurance and Risk Management</p>
         <p class="price">
-          <span class="was" aria-hidden="true">Market <s>$15,000</s></span>
-          $<span class="price-num" data-from="15000" data-to="3500">3,500</span> <small>to build</small>
+          <span class="was" aria-hidden="true">Three years elsewhere <s>$18,200</s></span>
+          $<span class="price-num" data-from="18200" data-to="8900" data-ff="3500">8,900</span>
         </p>
-        <p class="mo">$150 <small>a month after launch</small></p>
+        <p class="price-unit">three years, everything in</p>
+        <p class="payline" id="priceTerms">$3,500 to build, then $150 a month. You own all of it.</p>
+        <p class="ffwrap">
+          <button type="button" class="btn ghost ffbtn" id="ffbtn">Apply the friends and family rate</button>
+        </p>
+        <p class="ffsaid" id="ffsaid" role="status"></p>
         <ul>
           <li>The full site, written not assembled</li>
           <li>The ledger, the goal and the public vote</li>
@@ -655,7 +682,7 @@ footer .inner { max-width: 1100px; margin: 0 auto; padding: 56px 24px 36px; }
           <li>Search, maps and link previews set up properly</li>
           <li>Hosting, security updates and content edits, monthly</li>
         </ul>
-        <p class="anchor-note">$15,000 is the top of the published range for an independent agent&rsquo;s site, and that range buys five to ten pages with a contact form on it. The same guide puts a custom quote tool and purpose-built pages in the next tier up, at $20,000 to $60,000. This is twenty-one pages and three tools nobody else has written. <a href="https://qrolic.com/blog/insurance-company-website-cost-2026/">Range published here</a>.</p>
+        <p class="anchor-note">$18,200 is Advisor Evolved&rsquo;s published Custom Build for an insurance agency: $5,600 up front and $350 a month, three years. It is the closest thing in this category that prints a price. In fairness to them it is a themed WordPress site, not twenty-one written pages and three tools, so the comparison flatters us on what you get. It does not flatter us on what you keep. Their own answer to what happens if you stop paying is that your service is turned off, and the theme and plugins do not transfer. <a href="https://advisorevolved.com/plans/">Their prices</a>. The rest of the category: BrightFire $170 a month, InsuranceSplash $89 a month and built in three days, both rented.</p>
       </div>
 
       <div class="terms">
@@ -764,13 +791,19 @@ document.documentElement.classList.add('js');
 (function () {
   var el = document.querySelector('#price .price-num');
   if (!el) return;
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  /* REDUCED MOTION TURNS OFF THE COUNTING, NOT THE BUTTON.
+     This guard used to sit here and return, which took the friends and family
+     button out with it, because the listener is attached further down. Somebody
+     who asks their machine for less movement was being quietly charged $5,400
+     more. The count is decoration. The price is content. Never guard content on
+     a motion preference. */
+  var scrubs = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var card = el.closest('.pcard') || el;
   var from = parseFloat(el.dataset.from);
   var to = parseFloat(el.dataset.to);
   if (!isFinite(from) || !isFinite(to)) return;
   var fmt = function (v) { return Math.round(v).toLocaleString('en-US'); };
-  var status = 'idle', anim = 0, raf = 0;
+  var status = 'idle', anim = 0, raf = 0, locked = false;
   function stop() { if (anim) cancelAnimationFrame(anim); anim = 0; }
   function count() {
     var start;
@@ -787,6 +820,7 @@ document.documentElement.classList.add('js');
   }
   function update() {
     raf = 0;
+    if (locked) return;
     var r = card.getBoundingClientRect();
     var vh = window.innerHeight || 1;
     var cp = Math.min(1, Math.max(0, (vh - r.top) / (vh + r.height)));
@@ -799,9 +833,54 @@ document.documentElement.classList.add('js');
     }
   }
   function onScroll() { if (!raf) raf = requestAnimationFrame(update); }
-  update();
-  window.addEventListener('scroll', onScroll, { passive: true });
-  window.addEventListener('resize', onScroll, { passive: true });
+  if (scrubs) {
+    update();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll, { passive: true });
+  }
+
+  /* The friends and family rate. Clicking it counts the same number the rest of
+     the way down, from the standard three-year total to hers, and rewrites the
+     terms line underneath so the arithmetic still adds up on screen:
+     $3,500 + $0 x 36 = $3,500.
+
+     Once applied it is applied. `locked` takes the scroll driver off the number
+     for good, or scrolling past the card would helpfully undo her discount.
+
+     One-way on purpose. There is no toggle back to the higher price, because a
+     button that takes a discount away is a thing no one should have to look at.
+
+     Under reduced motion it snaps instead of counting, but it still works. The
+     count is the decoration; the price is the content. */
+  var btn = document.getElementById('ffbtn');
+  var ff = parseFloat(el.dataset.ff);
+  if (!btn || !isFinite(ff)) return;
+  btn.addEventListener('click', function () {
+    var start;
+    var begin = parseFloat(String(el.textContent).replace(/[^0-9.]/g, '')) || to;
+    stop();
+    locked = true;
+    status = 'done';
+
+    var terms = document.getElementById('priceTerms');
+    if (terms) {
+      terms.innerHTML = '$3,500 to build. The monthly is <s>$150</s> nothing for three years. You own all of it.';
+    }
+    var said = document.getElementById('ffsaid');
+    if (said) said.textContent = 'Friends and family rate applied. Three years, everything in, for $3,500.';
+    btn.parentNode.removeChild(btn);
+
+    if (!scrubs) { el.textContent = fmt(ff); return; }
+    function tick(ts) {
+      if (start === undefined) start = ts;
+      var p = Math.min(1, (ts - start) / 900);
+      var ease = 1 - Math.pow(1 - p, 3);
+      el.textContent = fmt(begin + (ff - begin) * ease);
+      if (p < 1) anim = requestAnimationFrame(tick);
+      else anim = 0;
+    }
+    anim = requestAnimationFrame(tick);
+  });
 })();
 
 (function () {
