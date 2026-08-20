@@ -1,0 +1,347 @@
+From f2d7bcb13dcd68c309c2214967a3e6659f471b2b Mon Sep 17 00:00:00 2001
+From: Kevin Hershock <kevin@glazedweb.com>
+Date: Thu, 20 Aug 2026 21:47:15 +0000
+Subject: [PATCH] Fold in what the Insurance for a Cause build taught the docs
+
+Everything here cost real time on `anchor` and none of it was written down
+anywhere. Rules first, the story that produced each one indented underneath, in
+the shape the rest of these files already use.
+
+glaze.md, CSS failure log:
+- An animated element wider than about 4096px stops being composited on mobile.
+  Two marquee rails at 4,510px and 11,488px animated perfectly in every desktop
+  browser and sat dead still on a phone.
+- A rotation's apparent movement scales with the element's size. The same 2.6
+  degrees that sways a 300px mark is a third of the travel at 180px.
+- A colour token validated against one ground is not validated.
+
+glaze.md, Next.js failure log:
+- Anything the server renders open and the client collapses is a layout shift. A
+  mobile menu rendered expanded for the no-JS case then collapsed on hydration
+  measured CLS 0.3947, and only on a throttled connection.
+- On a pitch host, / is the proposal, not the site, so a logo linking home
+  throws the client out of their own demo.
+- A dashboard build setting survives deleting the file that created it. A repo
+  that began as a static pitch kept serving public/ as a flat directory after it
+  became a Next app: green build, and every framework route returning Vercel's
+  own NOT_FOUND.
+
+glaze.md, the quality bar:
+- A guess written as a plain value is worse than a blank. Mark it PLACEHOLDER
+  even when the guess feels safe, because the next person cannot tell your
+  assumption from a confirmed fact.
+
+launch.md: favicon lines in the done list, a 404 line, a note not to put a 404
+route in the auditor's list, and a note to measure CLS on a throttled connection
+rather than only a throttled CPU.
+
+brand.md: a client favicons section. Two cuts, full bleed with no corner radius,
+and three sizes inside the .ico.
+
+link-cards.md: one host, one favicon. The file already explains that a pitch host
+serves two cards; it now also says the favicon is one asset, cached per origin,
+and the client's. Plus a checklist line.
+
+intake.md: "what town are they actually in, and which county", asked even when
+you think you know, and the Grass Lake story that produced it. The list is
+renumbered to keep it valid markdown.
+
+Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01LRN2pKhBSdie1ymm4FJ9LR
+---
+ glaze.md            | 39 ++++++++++++++++++++++++++++
+ glaze/brand.md      | 20 +++++++++++++++
+ glaze/intake.md     | 62 +++++++++++++++++++++++++++------------------
+ glaze/launch.md     | 12 +++++++++
+ glaze/link-cards.md | 20 +++++++++++++++
+ 5 files changed, 128 insertions(+), 25 deletions(-)
+
+diff --git a/glaze.md b/glaze.md
+index f540a86..1376545 100644
+--- a/glaze.md
++++ b/glaze.md
+@@ -201,6 +201,15 @@ out loud at handover.** Silence about a placeholder reads as "this number is rea
+ > Sprinkles served invented prices to real customers because a placeholder was
+ > left in a constant and nobody said so.
+ 
++**A guess written as a plain value is worse than a blank.** If you do not know
++it, mark it `PLACEHOLDER` even when the guess feels safe, because the next
++person cannot tell your assumption from a confirmed fact.
++
++> An agency's whole site said the wrong town for a full build. `city` was the one
++> field in the contact block written as a bare string while every neighbour was a
++> marked placeholder, so it read as checked. It reached page titles, the hero,
++> the structured data, the link card image and four local guides.
++
+ ### Accessibility is measured, not intended
+ 
+ **Run `glaze/scripts/audit.mjs`. Zero violations at both widths on every route.** Fix contrast at
+@@ -500,6 +509,19 @@ session does by default, which is why they need naming.
+ - **A generic element selector can style a class you thought was independent.**
+   `footer { background: dark }` painted a footer whose own class set light-ground
+   text colours, producing a 1.09 link.
++- **An animated element wider than about 4096px stops being composited on
++  mobile.** Mobile GPUs cap a layer's texture, commonly at 4096 and on older
++  devices 2048, and past it iOS Safari can decline to run the animation at all.
++  Two marquee rails measuring 4,510px and 11,488px animated perfectly in every
++  desktop browser and sat dead still on a phone. **Measure the track, treat its
++  width as a budget, and say so next to the content that spends it.**
++- **A rotation's apparent movement scales with the element's size.** The same
++  2.6 degrees that reads as a gentle sway on a 300px mark is a third of the
++  travel at 180px and reads as static. Responsive artwork needs responsive
++  amplitude, and the thing to measure is pixels travelled, not degrees.
++- **A colour token validated against one ground is not validated.** Two tokens
++  passed on the page colour and failed on the second, quieter band that was
++  added later. Check every token against **every** ground it can land on.
+ 
+ ### SVG and images
+ 
+@@ -535,6 +557,23 @@ session does by default, which is why they need naming.
+   parent's wholesale, image included.
+ - **A `301` may turn a POST into a GET.** Exclude `/api` from any catch-all
+   redirect, or use `308`, which preserves the method.
++- **Anything the server renders open and the client collapses is a layout
++  shift.** A mobile menu rendered expanded, so it would work with JavaScript
++  off, then collapsed on hydration, shipped a header 365px taller than it ends
++  up and threw the page upward. **CLS 0.3947 against a 0.1 bar, and only on a
++  throttled connection.** A native `<details>` is collapsed in the server's HTML
++  *and* opens without JavaScript, which is both problems solved and less code.
++- **On a pitch host, `/` is the proposal, not the site.** Every other path is
++  served normally, so a root-relative link is fine everywhere except the one
++  that points at `/`. A logo linking home therefore throws the client out of
++  their own demo and back into the sales document. Resolve it from the hostname
++  and keep that pattern in sync with the rewrite's.
++- **A dashboard build setting survives deleting the file that created it.** A
++  repo that began as a static pitch with `"outputDirectory": "public"` kept
++  serving `public/` as a flat directory after it became a Next app: `next build`
++  ran, reported success, and every route needing the framework returned Vercel's
++  own `NOT_FOUND`. `vercel.json` takes precedence over project settings and is
++  how you clear it from the repo.
+ 
+ ### Scripted edits
+ 
+diff --git a/glaze/brand.md b/glaze/brand.md
+index 9e399cd..95ee375 100644
+--- a/glaze/brand.md
++++ b/glaze/brand.md
+@@ -73,6 +73,26 @@ nothing and renders invisible shapes.
+ Use the SVG. The PNGs exist for surfaces that cannot take vector, such as the
+ `image` and `logo` fields in the site's JSON-LD.
+ 
++### Client favicons
++
++Everything above is the studio's own mark. **A client site gets the client's
++mark**, and it gets cut the same way a header mark is: the detailed version above
++roughly 32px, a simplified one below it.
++
++**Full bleed, no corner radius.** Render on the icon's own background, not on a
++white page. A rounded rect screenshotted on white bakes pure `#FFFFFF` into the
++four corners, which reads as a white frame around the icon on any tab, launcher
++or bookmark bar that is not white. iOS also masks an `apple-touch-icon` itself
++and expects a full square, so a pre-rounded one double-rounds.
++
++**Build the `.ico` with three sizes inside it**, 48 from the detailed cut and 32
++and 16 from the simplified one. One source scaled to 16px is how a mark turns to
++mush.
++
++> The anchor on Insurance for a Cause lost the heart's counter completely at
++> 16px, and had white corners at every size. Both were invisible in the 512px
++> source and obvious in a tab.
++
+ ---
+ 
+ ## The palette
+diff --git a/glaze/intake.md b/glaze/intake.md
+index 4717e70..a4b1483 100644
+--- a/glaze/intake.md
++++ b/glaze/intake.md
+@@ -18,6 +18,14 @@ Real examples, all from one working day in August 2026:
+ - A credentials strip on a licensed cannabis facility's site sat empty for two
+   rounds of work because it needs a licence class and a canopy figure that only
+   the operator has.
++- An insurance agency's whole site said Marshall, in page titles, the hero, the
++  structured data, the link card and four local guides, because that is Kevin's
++  town and nobody asked. They are in Grass Lake, a different county forty-eight
++  miles away. It survived several review passes because `city` was the one
++  contact field written as a plain string while everything around it was a
++  marked placeholder, so it read as a confirmed fact. **An assumed fact that
++  looks confirmed is worse than a blank, because a blank gets asked about.**
++  Write unknowns as placeholders even when the guess feels safe.
+ 
+ None of those were hard questions. All of them were asked late.
+ 
+@@ -36,70 +44,74 @@ A client who answers eight of twelve has still unblocked eight things.
+ 3. **Who answers the email?** A named human and an inbox they actually read. Not a
+    forwarding address nobody opens.
+ 4. **Hours, including the seasonal exceptions and the one day that is different.**
+-5. **What is the correct legal name, and what do customers call you?** These
++5. **What town are they actually in, and which county?** Ask even when you
++   think you know. This is the fact most likely to be assumed rather than
++   checked, because the answer feels obvious and is not, and it decides every
++   local reference on the site.
++6. **What is the correct legal name, and what do customers call you?** These
+    differ more often than not, and both need to appear.
+-6. **Founding year, and is it the year you want on the site?** Verify it rather
++7. **Founding year, and is it the year you want on the site?** Verify it rather
+    than inferring: one build published a founding year taken from a redesign date,
+    while the client's own social avatar said something else.
+-7. **Do you have the logo as a file, and who made it?** A vector if it exists. If
++8. **Do you have the logo as a file, and who made it?** A vector if it exists. If
+    the only copy is a JPEG, say so now, because that changes the build.
+-8. **Which photos may we use, and are any of them somebody else's?** Get this in
++9. **Which photos may we use, and are any of them somebody else's?** Get this in
+    writing. Permission on file for photos and logos is recorded per client.
+-9. **Anything on the current site that is wrong or out of date?** Owners usually
++10. **Anything on the current site that is wrong or out of date?** Owners usually
+    know and rarely volunteer it.
+-10. **Is there anything you do *not* want changed?** The answer is often the
++11. **Is there anything you do *not* want changed?** The answer is often the
+     brand, and finding that out after a redesign is expensive.
+ 
+ ## If they take money on the site
+ 
+-11. **What exactly is being paid for, and is it a deposit or the whole thing?**
+-12. **What is the price, and is it per unit, per pound, per hour, or quoted?** If
++12. **What exactly is being paid for, and is it a deposit or the whole thing?**
++13. **What is the price, and is it per unit, per pound, per hour, or quoted?** If
+     it varies, ask for the **range**, not the average. A single number becomes a
+     quote the business gets held to.
+-13. **Which processor do you already use?** Square and Stripe are both fine.
++14. **Which processor do you already use?** Square and Stripe are both fine.
+     Whichever they have is the right answer, because it is the one they can
+     reconcile.
+-14. **Who needs to know an order came in, and how?** Email, text, or the
++15. **Who needs to know an order came in, and how?** Email, text, or the
+     processor's own notification. Then confirm that whatever the site sends
+     contains enough to fulfil the order: what was bought, how many, and a phone
+     number.
+-15. **What happens after they pay?** Pickup, delivery, a call, a confirmation.
++16. **What happens after they pay?** Pickup, delivery, a call, a confirmation.
+     If it is pickup, when, and is that date fixed?
+ 
+ ## If they take bookings
+ 
+-16. **What is actually being booked, and how long does it take?**
+-17. **Who is available, and when?** Real opening hours, real breaks, real days off.
+-18. **What has to be true before a booking is worth taking?** Deposit, minimum
++17. **What is actually being booked, and how long does it take?**
++18. **Who is available, and when?** Real opening hours, real breaks, real days off.
++19. **What has to be true before a booking is worth taking?** Deposit, minimum
+     party size, notice period, a form filled in first.
+-19. **What happens when two people want the same slot?** A hand-written slot list
++20. **What happens when two people want the same slot?** A hand-written slot list
+     cannot know what is already booked. Say that plainly and leave a named seam
+     for a calendar feed rather than implying availability is solved.
+ 
+ ## If they sell physical goods
+ 
+-20. **What are the sizes, weights or variants, in the terms the customer sees?**
+-21. **Do they vary, and by how much?** Ranges, again.
+-22. **Shipping, pickup, or both, and who packs it?**
+-23. **How many can you actually make?** A store that oversells is worse than no
++21. **What are the sizes, weights or variants, in the terms the customer sees?**
++22. **Do they vary, and by how much?** Ranges, again.
++23. **Shipping, pickup, or both, and who packs it?**
++24. **How many can you actually make?** A store that oversells is worse than no
+     store.
+ 
+ ## If there is printed material in the world
+ 
+-24. **What is printed right now, and how much of it is left?** Cards, flyers,
++25. **What is printed right now, and how much of it is left?** Cards, flyers,
+     menus, vehicle wraps, signage.
+-25. **What URL or QR code is on it?** Then **scan the code and read the URL out
++26. **What URL or QR code is on it?** Then **scan the code and read the URL out
+     loud**, because what the owner believes is printed and what is printed are
+     two different facts. This single answer decides whether existing stock can be
+     saved with a redirect or has to be reprinted.
+-26. **Who has the login for whatever generated the QR code?** A dynamic short link
++27. **Who has the login for whatever generated the QR code?** A dynamic short link
+     can be re-pointed and the stock is saved outright. A static code cannot.
+ 
+ ## Before launch day
+ 
+-27. **Who owns the domain, and where is it registered?** Login, not just the name.
+-28. **What is currently at that domain, and who can change the DNS?**
+-29. **Is there anything we must not break?** An old email setup on the same
++28. **Who owns the domain, and where is it registered?** Login, not just the name.
++29. **What is currently at that domain, and who can change the DNS?**
++30. **Is there anything we must not break?** An old email setup on the same
+     domain is the usual one, and it is the one that takes a business offline.
+ 
+ ---
+diff --git a/glaze/launch.md b/glaze/launch.md
+index 9d81247..c7cf45f 100644
+--- a/glaze/launch.md
++++ b/glaze/launch.md
+@@ -26,6 +26,7 @@ None of these is a judgment call.
+ - [ ] Checked at 320, 390, 768 and 1440 wide. 320 is the one that breaks.
+ - [ ] Reduced motion produces a complete page, not an empty one.
+ - [ ] With JavaScript off, every form still submits and every nav link still works.
++- [ ] A real 404 in the site's own design, with links out. Not the framework default.
+ - [ ] Keyboard: focus visible on every interactive element, skip link first in tab order.
+ - [ ] Largest Contentful Paint under 2.5s and Cumulative Layout Shift under 0.1 on
+       a throttled mobile profile. Total JavaScript under 150KB compressed.
+@@ -37,6 +38,9 @@ None of these is a judgment call.
+ - [ ] Canonical URL points at the client's real domain, never at a `.vercel.app` host.
+ - [ ] `LocalBusiness` structured data, with hours and address, on the homepage.
+ - [ ] `sitemap.xml` and `robots.txt` present, and the demo or preview host is `noindex`.
++- [ ] Favicon set present and it is the **client's** mark: `favicon.ico`, `icon.png`,
++      `apple-icon.png`. Full bleed, **no corner radius**, corners in the icon's own
++      background colour. Checked at 48, 32 and 16 at true size.
+ 
+ ### Security and handover
+ 
+@@ -54,6 +58,14 @@ device before it ships.
+ 
+ **Accessibility target.** WCAG 2.1 AA, measured with the auditor.
+ 
++**Do not put a 404 route in the auditor's route list.** It correctly reports a
++4xx and every run then looks like a failure.
++
++**Measure CLS on a throttled connection, not just a throttled CPU.** A layout
++shift that only appears on slow network is invisible on a desktop test and
++obvious on a phone. One build measured 0.0000 locally and **0.3947** at 1.6Mbps,
++from a mobile menu that shipped expanded and collapsed on hydration.
++
+ ---
+ 
+ ## Zero to live, in order
+diff --git a/glaze/link-cards.md b/glaze/link-cards.md
+index 539eb12..55140a2 100644
+--- a/glaze/link-cards.md
++++ b/glaze/link-cards.md
+@@ -107,6 +107,24 @@ each platform's debugger to force one when it matters.
+ 
+ ---
+ 
++## One host, one favicon
++
++The two cards above are deliberately two files doing two jobs. **The favicon is
++one asset, it is cached per ORIGIN, and it belongs to the client.**
++
++A pitch host serves the proposal at `/`, the logo page at `/logo` and the whole
++client site at `/demo`. Three pages, one origin. Declare two different icons
++across them and whichever loads first tends to stay in the tab, and the order
++somebody actually browses is proposal, then demo. So the Glazed donut sits in
++the tab while the client looks at their own site, which is the wrong way round
++in front of a prospect.
++
++**Every page on a pitch host declares the client's mark, including the
++proposal.** Glazed is carried on that document by the header lockup and the
++footer plate, both considerably more visible than a 16px tab icon.
++
++---
++
+ ## Making the image
+ 
+ Render it from a real page rather than assembling it in an image editor, so the
+@@ -141,3 +159,5 @@ in a message bubble where the card is a third the size.
+ - [ ] Pasted into Messages **and** one non-Apple surface, and looked at.
+ - [ ] For a pitch host: proposal card and demo card are different files, and the
+       demo card is the client's.
++- [ ] For a pitch host: every page declares the **same** favicon, and it is the
++      client's.
+-- 
+2.43.0
+
