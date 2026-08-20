@@ -5,7 +5,8 @@ import GoalBar from "@/components/GoalBar";
 import AnchorHero from "@/components/AnchorHero";
 import Wave from "@/components/Wave";
 import Ticker from "@/components/Ticker";
-import { symbols, marketNotes } from "@/lib/ticker";
+import StockTicker from "@/components/StockTicker";
+import { marketNotes } from "@/lib/ticker";
 
 export const metadata = {
   title: `Independent insurance in ${site.contact.city}, Michigan`,
@@ -79,22 +80,13 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Two rails, different speeds, opposite directions. The carriers move
-          fast one way, the Michigan facts drift the other way slower. */}
+      {/* Two rails, different speeds, opposite directions. Markets move fast
+          one way, the Michigan facts drift the other way slower. Same speed
+          reads as one broken element; same direction reads as a mistake. */}
+      <StockTicker seconds={70} />
       <Ticker
         tone="brick"
-        seconds={64}
-        items={symbols.map((s) => (
-          <span key={s.symbol}>
-            <span className="tick-sym">{s.symbol}</span>
-            <span>{s.name}</span>
-            <span className="tick-dot" />
-          </span>
-        ))}
-      />
-      <Ticker
-        tone="navy"
-        seconds={110}
+        seconds={112}
         reverse
         items={marketNotes.map((n) => (
           <span key={n}>

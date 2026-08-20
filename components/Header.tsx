@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Lockup } from "./Logo";
 import HeaderMark from "./HeaderMark";
 import { site, ph, isPlaceholder } from "@/lib/site";
@@ -17,11 +17,26 @@ const nav = [
 
 export default function Header() {
   const pathname = usePathname();
-  const [open, setOpen] = useState(false);
-
-  // Close on navigation. A menu left open across a route change covers the
-  // page the visitor just asked for.
-  useEffect(() => setOpen(false), [pathname]);
+  /**
+   * THE MOBILE MENU IS A <details>, WITH NO JAVASCRIPT AT ALL.
+   *
+   * This took two wrong turns worth recording. First it was React state with
+   * `hidden` rendered on the server, which left exactly one reachable header
+   * link at 390px with JavaScript off. Fixing that by rendering the list
+   * expanded and collapsing it on hydration fixed the links and introduced
+   * something worse: the header shipped ~365px taller than it ends up, so
+   * hydration collapsed it and threw the whole page upward. That measured
+   * **CLS 0.3947** against a 0.1 bar, and only on a throttled connection,
+   * which is exactly the profile a real phone has and a desktop test does not.
+   *
+   * A native disclosure has neither problem. It is collapsed in the server's
+   * HTML, so nothing moves when React arrives, and it opens without any
+   * JavaScript, so every link is reachable. It is also keyboard operable and
+   * announced correctly for free.
+   *
+   * Do not replace this with a button and state to get a nicer animation.
+   * The animation is not worth either failure.
+   */
 
   const phoneReady = !isPlaceholder(site.contact.phone);
 
@@ -58,20 +73,15 @@ export default function Header() {
           </Link>
         </div>
 
-        <button
-          className="head-burger"
-          aria-expanded={open}
-          aria-controls="mobile-nav"
-          onClick={() => setOpen((v) => !v)}
-        >
-          <span className="vh">{open ? "Close menu" : "Open menu"}</span>
-          <span aria-hidden="true" className={open ? "bars x" : "bars"}>
-            <i /><i /><i />
-          </span>
-        </button>
       </div>
 
-      <div id="mobile-nav" className={open ? "mnav open" : "mnav"} hidden={!open}>
+      <details className="mnav">
+        <summary className="mnav-toggle" aria-label="Menu">
+          <span className="mnav-word">Menu</span>
+          <span aria-hidden="true" className="bars">
+            <i /><i /><i />
+          </span>
+        </summary>
         <ul>
           {nav.map((n) => (
             <li key={n.href}>
@@ -87,7 +97,8 @@ export default function Header() {
             </li>
           ) : null}
         </ul>
-      </div>
+      </details>
+
     </header>
   );
 }

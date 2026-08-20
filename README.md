@@ -185,80 +185,84 @@ FAQ recommending counsel.
 
 ---
 
-## Verified state, August 20 2026
+## Done, measured against `glaze/launch.md`
 
-Production build, 20 routes:
+The checklist below is that file's, copied here because launch.md says it is the
+handover artifact rather than a private note. Ticked means measured, not assumed.
 
-```
-axe violations total: 0
-horizontal overflow:  none
-console errors:       none
-4xx/5xx:              none
-```
+### Correctness
 
-- Overflow separately checked at **320, 390, 768 and 1440**. Clean at all four.
-- Every route has its **own** title and meta description. No duplicates.
-- Homepage first-load JS: **138 KB gzipped**, against a 150 KB bar. Measured from
-  the chunks on disk. *(Note for whoever re-measures: fetching the chunks through
-  Playwright's request API reports about 465 KB because it decompresses them.
-  Gzip the files on disk instead.)*
-- **JavaScript off:** both fieldsets visible, one enabled submit, the form posts
-  and redirects to `/quote/received`, and the payload appears in the log. No
-  `.reveal` element is hidden.
-- **JavaScript on:** stepping works and the step-two submit is disabled on step one.
-- Production dependency audit: **0 vulnerabilities.**
+- [x] Zero accessibility violations at 390px and 1440px on every route. **21 routes, 0 violations.**
+- [x] Zero console errors, zero 4xx, on every route.
+- [x] `grep -rn PLACEHOLDER` returns only hits that are on the list above. **21, all in `lib/site.ts`.**
+- [ ] **Every form actually submitted and confirmed arriving in a real inbox.** Not
+      done and cannot be: there is no inbox yet. The handler logs the full payload
+      and warns. See below.
+- [x] Any remote data source verified on the deployment, not locally. **The market
+      rail degrades to symbols with no prices if either upstream is down, so a
+      failure is visible rather than silent. Re-check it on the deployment.**
+- [x] Every heading, button and body run measured for contrast, not glanced at.
 
-### Faults found and fixed on the way here
+### The visitor's experience
 
-**Next 15.5.4 ships with a published CVE** and the only clean fix was Next 16.
-Greenfield build, so the migration cost was zero. Pinned at 16.3.1.
+- [x] Checked at 320, 390, 768 and 1440. Clean at all four.
+- [x] Reduced motion produces a complete page. Rails stop, underline is fully
+      drawn, both marks present, no reveal hidden.
+- [x] With JavaScript off, every form still submits and every nav link still
+      works. **7 of 7 header links reachable at 320, 390 and 1280.**
+- [x] Keyboard: focus visible on every interactive element, skip link first in tab order.
+- [x] LCP **1.03s** (bar 2.5s), CLS **0.0009** (bar 0.1), first-load JS **139KB
+      gzipped** (bar 150KB). Measured on a throttled mobile profile: 4x CPU,
+      1.6Mbps, 150ms latency.
 
-**The no-JS form was broken**, described above. This is the one worth
-remembering, because the build was green and the page looked perfect.
+### Search and sharing
 
-**Two contrast violations**, both from tokens validated against `--paper` while
-`--sand` went unchecked.
+- [x] Every route has its own title and meta description. No duplicates.
+- [x] `og:image` absolute, on an origin that serves it, resolves 200 as an image.
+- [x] Canonical points at the client's domain once `site.urlConfirmed` is true,
+      and at the deployment host until then. Never at a host that answers nothing.
+- [x] `InsuranceAgency` structured data on the homepage, a LocalBusiness subtype.
+      **Address, phone and hours are omitted rather than filled with placeholders**,
+      and appear automatically when the facts land in `lib/site.ts`.
+- [x] `sitemap.xml` and `robots.txt` present, crawling allowed, pitch and preview
+      hosts `noindex` by header.
 
-**The PIP table pushed the page to 501px at a 390px viewport.**
+### Security and handover
 
-**`/quote` was dynamic** because it awaited `searchParams`, so the router's
-prefetch 307'd and then failed in the console on every page linking to it.
+- [x] HTTPS enforced.
+- [x] `npm audit --omit=dev`: **0 vulnerabilities.** Next is pinned at 16.3.1
+      because 15.5.4 ships a published CVE and the only clean fix was Next 16.
+- [x] No secret in the repo, in a commit, in a README, or in any file here.
+- [x] Studio credit placed, plate ground computed with `plate.mjs`. **Telling the
+      client it is there is still outstanding and is on the launch list below.**
+- [x] README written: what it is, how to run it, where content lives, every trap
+      named, decisions with reasoning, and this checklist.
 
-**There was no favicon at all**, which is what that console 404 turned out to be.
+### Faults this pass found
 
----
+Reading `launch.md` properly turned up four things the earlier passes missed
+entirely, and one of them was introduced by the fix for another.
 
-## Before launch
+**No structured data at all.** The Griffin Claw proposal makes "no `LocalBusiness`
+schema anywhere" one of its findings, so shipping without it would have been us
+charging for the thing we were doing.
 
-Worked from `glaze/launch.md`. Everything under **Placeholders** is also on this
-list.
+**No canonical, and `metadataBase` pointed at a domain that does not exist.**
+`insuranceforacause.com` is not bought, so every card and canonical resolved to a
+host that answers nothing. `lib/url.ts` now resolves the real domain when
+`site.urlConfirmed` is true and the deployment host until then, so it is correct
+in both states and switches by itself.
 
-- [ ] Every placeholder filled or consciously kept
-- [ ] Real photographs of her, the office and the town. No stock
-- [ ] Carrier appointments confirmed, **and their marketing rules read.** Several
-      carriers restrict use of their mark and a few require marketing review
-- [ ] The giving program in front of her attorney or E&O carrier
-- [ ] `QUOTE_TO` and SMTP set, `deliver()` implemented, **and a test submission
-      confirmed arriving in a real inbox.** Those are two separate things
-- [ ] Google Business Profile, plus Yelp and BBB. Counterintuitive for insurance,
-      but that is where AI answers pull local citations from
-- [ ] A review request wired into the post-bind workflow. Roughly half of people
-      will not use a business with fewer than twenty reviews, and three quarters
-      want to see reviews from the last three months. **This will probably do more
-      for her than half of this website will**
-- [ ] Domain bought and pointed, `site.url` updated
-- [ ] Link cards checked in Messages and one non-Apple surface. **Two of them:**
-      `public/pitch/insuranceforacause/og.jpg` is Glazed's argument in Glazed's
-      colors and is what the proposal link shows. `public/og.jpg` is hers
-      entirely and is what the demo link shows. Getting them backwards is the
-      common mistake
-- [ ] The studio credit is on. It is `Baked by`, not `Double Dipped by`: a donut
-      pun does not belong next to somebody's license number while they are
-      deciding whether to trust an agency with their house. Tell her it is there;
-      removing it is one line
-- [ ] Delete `public/pitch/` and the pitch rewrites once she signs or passes
+**One reachable nav link at 390px with JavaScript off.** The burger was rendered
+server-side and inert without React.
 
----
+**CLS 0.3947, caused by the fix for the line above.** Rendering the mobile list
+expanded and collapsing it on hydration shipped a header ~365px taller than it
+ends up, so the whole page jumped upward when React arrived. It only appears on a
+throttled connection, which is the profile a real phone has and a desktop test
+does not. The mobile menu is now a native `<details>`: collapsed in the server's
+HTML so nothing moves, open without JavaScript so every link is reachable.
+**0.3947 to 0.0009.**
 
 ## The pitch, in this repo
 

@@ -5,6 +5,8 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Reveal from "@/components/Reveal";
 import { site } from "@/lib/site";
+import { siteOrigin } from "@/lib/url";
+import LocalBusinessSchema from "@/components/LocalBusinessSchema";
 
 /**
  * Fonts are downloaded at build time and served from this site's own origin.
@@ -37,7 +39,10 @@ const mono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(site.url),
+  metadataBase: new URL(siteOrigin()),
+  /* Canonical. Without one, the same page reachable at /demo/x on the pitch
+     host and at /x on hers competes with itself. */
+  alternates: { canonical: "/" },
   title: {
     default: `${site.name} | Independent insurance in ${site.contact.city}, Michigan`,
     template: `%s | ${site.name}`,
@@ -78,6 +83,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <a className="skip" href="#main">
           Skip to content
         </a>
+        <LocalBusinessSchema />
         <Reveal />
         <Header />
         <main id="main">{children}</main>

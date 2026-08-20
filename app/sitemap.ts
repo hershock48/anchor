@@ -1,9 +1,10 @@
 import type { MetadataRoute } from "next";
-import { site, lines } from "@/lib/site";
+import { lines } from "@/lib/site";
+import { siteOrigin } from "@/lib/url";
 import { guides } from "@/lib/guides";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const base = site.url.replace(/\/$/, "");
+  const base = siteOrigin();
   const routes = [
     "",
     "/coverage",

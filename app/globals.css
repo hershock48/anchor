@@ -460,14 +460,24 @@ section {
 .bars.x i:nth-child(1) { transform: translateY(7.5px) rotate(45deg); }
 .bars.x i:nth-child(2) { opacity: 0; }
 .bars.x i:nth-child(3) { transform: translateY(-7.5px) rotate(-45deg); }
+/* Native disclosure. Collapsed in the server's HTML so hydration moves nothing,
+   and openable with no JavaScript so every link stays reachable. */
 .mnav { border-top: 1px solid var(--line); background: var(--paper-2); }
-.mnav ul { list-style: none; padding: 8px 24px 18px; }
+.mnav-toggle {
+  list-style: none; cursor: pointer; display: flex; align-items: center; justify-content: space-between;
+  gap: 10px; padding: 13px 24px; font-weight: 700; font-size: 15px; color: var(--navy);
+}
+.mnav-toggle::-webkit-details-marker { display: none; }
+.mnav-toggle:focus-visible { outline: 3px solid var(--focus); outline-offset: -3px; }
+.mnav[open] .bars i:nth-child(1) { transform: translateY(7.5px) rotate(45deg); }
+.mnav[open] .bars i:nth-child(2) { opacity: 0; }
+.mnav[open] .bars i:nth-child(3) { transform: translateY(-7.5px) rotate(-45deg); }
+.mnav ul { list-style: none; padding: 0 24px 18px; }
 .mnav li { border-bottom: 1px solid var(--line); }
 .mnav li:last-child { border-bottom: 0; }
 .mnav a { display: block; padding: 14px 0; color: var(--navy); text-decoration: none; font-weight: 600; }
 @media (max-width: 950px) {
   .head-nav, .head-cta { display: none; }
-  .head-burger { display: block; }
 }
 @media (min-width: 951px) { .mnav { display: none; } }
 
@@ -888,15 +898,27 @@ h1 em svg path, h2 em svg path { stroke-dasharray: 320; stroke-dashoffset: 320; 
    Only the `.playing` class animates, and it is added after mount. Without it
    every element sits at its finished value, so no-JS and reduced motion both
    get a complete logo rather than an invisible one. */
-.hmark-rope { stroke-dasharray: 40; stroke-dashoffset: 0; }
+/* THE ROPE IS NOT PART OF THE FINISHED LOGO.
+   It was left at full opacity after the entrance, so a navy line sat straight
+   through the heart's opening on every page, forever. The finished mark is the
+   anchor and the heart, so the resting state here is invisible, which is also
+   what no-JS and reduced motion get. The idea was that the string turns into
+   the heart, so with JS it draws and then dissolves as the heart forms. */
+.hmark-rope { stroke-dasharray: 40; stroke-dashoffset: 0; opacity: 0; }
 .hmark-heart { transform-box: fill-box; transform-origin: 50% 100%; }
 .hmark-body { transform-box: fill-box; transform-origin: 50% 50%; }
 
-.hmark.playing .hmark-rope { animation: hmRope .30s ease-out both; }
+.hmark.playing .hmark-rope { animation: hmRope .84s ease-out both; }
 .hmark.playing .hmark-body { animation: hmDrop .46s cubic-bezier(.34,1.42,.64,1) both .26s; }
 .hmark.playing .hmark-heart { animation: hmHeart .42s cubic-bezier(.34,1.56,.64,1) both .50s; }
 
-@keyframes hmRope { from { stroke-dashoffset: 40; } to { stroke-dashoffset: 0; } }
+@keyframes hmRope {
+  0%   { stroke-dashoffset: 40; opacity: 1; }
+  36%  { stroke-dashoffset: 0;  opacity: 1; }
+  /* The heart starts forming at .50s. The rope is gone by the time it lands. */
+  72%  { opacity: 1; }
+  100% { opacity: 0; }
+}
 @keyframes hmDrop {
   from { transform: translateY(-16px); opacity: 0; }
   60%  { transform: translateY(2px);   opacity: 1; }
@@ -911,3 +933,16 @@ h1 em svg path, h2 em svg path { stroke-dasharray: 320; stroke-dashoffset: 320; 
   .hmark.playing .hmark-body,
   .hmark.playing .hmark-heart { animation: none !important; }
 }
+
+/* ── the market rail ── */
+.q { display: inline-flex; align-items: center; gap: 8px; }
+.q-sym { font-weight: 700; color: #fff; letter-spacing: .1em; }
+.q-px { color: #cbd7e1; letter-spacing: .04em; font-variant-numeric: tabular-nums; }
+.q-chg {
+  display: inline-flex; align-items: center; gap: 4px; font-weight: 600;
+  letter-spacing: .04em; font-variant-numeric: tabular-nums;
+}
+/* Direction is carried by the arrow and the sign as well as by color, so this
+   still reads with the color removed. Both measured on --navy-2 #0e1f2e. */
+.q-chg.up { color: #64e6a0; }    /* 10.8 */
+.q-chg.down { color: #ff9384; }  /* 8.4  */
