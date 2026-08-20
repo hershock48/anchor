@@ -784,9 +784,24 @@ document.documentElement.classList.add('js');
   var fmt = function (v) { return Math.round(v).toLocaleString('en-US'); };
   var status = 'idle', anim = 0, raf = 0;
   function stop() { if (anim) cancelAnimationFrame(anim); anim = 0; }
+  /* PHONES GET A HEAD START AND A SHORTER RUN.
+     On a laptop you scroll in small increments and the line spends a while
+     crossing the middle of the screen, so starting at 85% and running 1100ms
+     lands the whole melt in view. A phone is a different machine: one thumb
+     swipe throws the line from below the fold to the top of the screen, and
+     the same numbers meant the count was still going when the price had gone.
+
+     So on a narrow viewport it primes at 1.4 screens away, off screen, and
+     starts the instant the line appears rather than waiting for it to climb.
+     The line arrives already reading $18,200 and already falling. 800ms
+     instead of 1100 so it finishes inside one swipe.
+
+     Read on every frame, not captured once, because a phone rotated to
+     landscape is a laptop by these numbers. */
+  function narrow() { return (window.innerWidth || 1) < 700; }
   function count() {
     var start;
-    var dur = 1100;
+    var dur = narrow() ? 800 : 1100;
     function tick(ts) {
       if (start === undefined) start = ts;
       var p = Math.min(1, (ts - start) / dur);
@@ -801,14 +816,13 @@ document.documentElement.classList.add('js');
     raf = 0;
     var vh = window.innerHeight || 1;
     var top = watch.getBoundingClientRect().top;
-    if (top <= vh * 0.85) {
-      /* Fifteen percent up from the bottom edge. The count runs 1100ms and the
-         reader is still scrolling, so it has to start while the line is on its
-         way up the screen, not once it has arrived. */
+    var startAt = narrow() ? 1 : 0.85;
+    var primeAt = narrow() ? 1.4 : 1;
+    if (top <= vh * startAt) {
       if (status === 'idle' || status === 'primed') { status = 'counting'; count(); }
-    } else if (top <= vh) {
-      /* On screen but only just: show the market number so it is glimpsed
-         before it melts. */
+    } else if (top <= vh * primeAt) {
+      /* Holding the market number, ready to melt. On a laptop that is a glimpse
+         at the bottom edge; on a phone it happens off screen. */
       if (status !== 'primed') { stop(); el.textContent = fmt(from); status = 'primed'; }
     } else {
       /* Below the fold. Hold the real price, so anything that never scrolls
