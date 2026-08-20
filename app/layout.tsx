@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Fraunces, Inter, JetBrains_Mono } from "next/font/google";
+import { Archivo, Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -9,18 +9,24 @@ import { site } from "@/lib/site";
 /**
  * Fonts are downloaded at build time and served from this site's own origin.
  * That is not a rented dependency and there is no runtime request to Google, so
- * nothing here breaks if Google does. A `<link>` to a font CDN would be the
+ * nothing breaks here if Google does. A `<link>` to a font CDN would be the
  * thing that is not allowed.
  *
- * Fraunces for display because it has weight without looking like a bank, Inter
- * for the reading, and a mono for labels, license numbers and dollar figures
- * where tabular digits actually matter.
+ * Archivo for display, at 700 to 900 with tight negative tracking. The first
+ * version used Fraunces, a soft wonky serif, which read as a wedding invitation
+ * rather than as an agency somebody trusts with their house, and left the whole
+ * page quiet. The house pattern across these builds is a strong display face
+ * plus Inter: Oswald at Copper, Anton and Archivo at Beans, and on Glazed's own
+ * site the system stack pushed to 800 with tight tracking. This is that.
+ *
+ * Mono for labels, license numbers and dollar figures, where tabular digits
+ * genuinely matter.
  */
-const display = Fraunces({
+const display = Archivo({
   subsets: ["latin"],
   variable: "--font-display",
   display: "swap",
-  axes: ["SOFT", "WONK", "opsz"],
+  weight: ["600", "700", "800", "900"],
 });
 const body = Inter({ subsets: ["latin"], variable: "--font-body", display: "swap" });
 const mono = JetBrains_Mono({

@@ -109,12 +109,16 @@ export function Lockup({
   accent = "var(--brick)",
   sub = "var(--brick)",
   compact = false,
+  /** Lets the header pass an animated mark without this component needing to
+   *  become a client component itself. */
+  markSlot,
 }: {
   markWidth?: number;
   ink?: string;
   accent?: string;
   sub?: string;
   compact?: boolean;
+  markSlot?: React.ReactNode;
 }) {
   return (
     <span
@@ -126,15 +130,15 @@ export function Lockup({
         textDecoration: "none",
       }}
     >
-      <Mark width={markWidth} ink={ink} accent={accent} />
+      {markSlot ?? <Mark width={markWidth} ink={ink} accent={accent} />}
       <span style={{ display: "block" }}>
         <span
           style={{
             display: "block",
-            fontFamily: "var(--font-display), Georgia, serif",
-            fontWeight: 600,
-            fontSize: compact ? 17 : 19,
-            letterSpacing: "-0.02em",
+            fontFamily: "var(--font-display), sans-serif",
+            fontWeight: 800,
+            fontSize: compact ? 17 : 19.5,
+            letterSpacing: "-0.035em",
             color: ink,
           }}
         >
