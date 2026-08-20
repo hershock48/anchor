@@ -1,0 +1,715 @@
+/**
+ * Insurance for a Cause.
+ *
+ * Navy carries the trust and red marks the giving, and red never does anything
+ * else. The moment red starts showing up on every card it stops meaning
+ * anything and the giving program loses the one visual shorthand that made it
+ * findable on the page.
+ *
+ * Contrast is computed rather than judged. The measured value is written next
+ * to each token so the next person does not have to re-derive it, and so that a
+ * "close enough" substitution is visibly a downgrade. Fix contrast at the token
+ * or the class, never on the one element an auditor names.
+ */
+
+:root {
+  /* Anchor Navy. 13.4 on paper. Body ink and every dark ground. */
+  --navy: #14293c;
+  --navy-2: #0e1f2e; /* Footers and the deepest bands. */
+  --navy-3: #24405a; /* Borders and dividers on light grounds. */
+
+  /* Cause Red. 4.86 as text on paper, 5.37 under white. One token does both
+     jobs here, which is only true because the red was picked to clear both. */
+  --brick: #c4362b;
+  --brick-deep: #a72c22; /* Hover and pressed. */
+
+  --paper: #f7f3ec; /* The page. */
+  --paper-2: #fffdf9; /* Cards and raised panels. */
+  --sand: #e4d7c3; /* Quiet bands. Navy on it is 10.5. */
+  --line: #ded3c1;
+
+  /* Secondary small text. Validated against BOTH light grounds, which is the
+     whole point: the previous value was 4.96 on paper and 3.87 on sand, and
+     the sand band is where axe found it. 6.39 on paper, 4.99 on sand.
+     Do not lighten it. This project has now shipped four contrast faults and
+     every one of them was a color that passed before somebody softened it. */
+  --slate: #4d5a66;
+
+  /* Red as TEXT on a light ground. --brick is a fill color: white on it is
+     5.37, but as text it is 4.86 on paper and only 3.79 on sand, which is the
+     second thing axe found. This is the same three-pinks pattern as the studio
+     palette and it exists for the same reason. 6.94 on paper, 5.41 on sand. */
+  --brick-ink: #9c281f;
+
+  --focus: #14293c;
+
+  --wrap: 1120px;
+  --radius: 14px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background: var(--paper);
+  color: var(--navy);
+  font-family: var(--font-body), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Helvetica, Arial, sans-serif;
+  font-size: 17px;
+  line-height: 1.62;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* This site is full of long unbreakable tokens: dollar figures, license
+   numbers, an email address in a heading. At 320px they push the page wide.
+   Fixed on the text elements rather than on whichever one a measurement
+   happens to name, because there are a dozen more of them. */
+h1,
+h2,
+h3,
+h4,
+p,
+li,
+a,
+span,
+b,
+strong,
+dd,
+dt {
+  overflow-wrap: break-word;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-display), Georgia, "Times New Roman", serif;
+  font-weight: 600;
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+}
+
+h1 {
+  font-size: clamp(38px, 6vw, 64px);
+}
+h2 {
+  font-size: clamp(28px, 4vw, 42px);
+}
+h3 {
+  font-size: clamp(20px, 2.4vw, 26px);
+}
+
+a {
+  color: var(--brick-ink);
+  text-underline-offset: 3px;
+}
+a:hover {
+  color: var(--brick-deep);
+}
+
+/* Visible on keyboard, absent on mouse. A focus ring you cannot see is an
+   accessibility failure that looks like a design decision. */
+:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+  border-radius: 3px;
+}
+
+::selection {
+  background: var(--sand);
+  color: var(--navy);
+}
+
+img,
+svg {
+  max-width: 100%;
+}
+
+.wrap {
+  max-width: var(--wrap);
+  margin: 0 auto;
+  padding: 0 24px;
+}
+@media (max-width: 560px) {
+  .wrap {
+    padding: 0 18px;
+  }
+}
+
+.skip {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  background: var(--navy);
+  color: #fff;
+  padding: 12px 18px;
+  z-index: 200;
+  border-radius: 0 0 8px 0;
+}
+.skip:focus {
+  left: 0;
+  color: #fff;
+}
+
+/* ---- buttons ---- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--brick);
+  color: #fff;
+  font-weight: 700;
+  font-size: 16px;
+  border-radius: 999px;
+  padding: 14px 28px;
+  text-decoration: none;
+  border: 2px solid var(--brick);
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.15s ease;
+  font-family: inherit;
+}
+.btn:hover {
+  background: var(--brick-deep);
+  border-color: var(--brick-deep);
+  color: #fff;
+  transform: translateY(-1px);
+}
+.btn.ghost {
+  background: transparent;
+  color: var(--navy);
+  border-color: var(--navy-3);
+}
+.btn.ghost:hover {
+  background: transparent;
+  color: var(--navy);
+  border-color: var(--navy);
+}
+.btn.onnavy {
+  background: #fff;
+  color: var(--navy);
+  border-color: #fff;
+}
+.btn.onnavy:hover {
+  background: var(--sand);
+  border-color: var(--sand);
+  color: var(--navy);
+}
+.btn[disabled] {
+  opacity: 1;
+  background: var(--slate);
+  border-color: var(--slate);
+  cursor: not-allowed;
+}
+
+/* ---- shared bits ---- */
+.kicker {
+  font-family: var(--font-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--brick-ink);
+  font-weight: 600;
+}
+.kicker.quiet {
+  color: var(--slate);
+}
+.lede {
+  font-size: clamp(18px, 2.2vw, 21px);
+  line-height: 1.55;
+  color: var(--slate);
+  max-width: 62ch;
+}
+.card {
+  background: var(--paper-2);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 26px 24px;
+}
+section {
+  padding: 68px 0;
+}
+@media (max-width: 640px) {
+  section {
+    padding: 48px 0;
+  }
+}
+.band-navy {
+  background: var(--navy);
+  color: #fff;
+}
+.band-navy h2,
+.band-navy h3 {
+  color: #fff;
+}
+.band-navy .lede {
+  color: #c8d4de;
+}
+.band-navy .kicker {
+  color: #f0a093;
+}
+.band-sand {
+  background: var(--sand);
+}
+
+/* Placeholder marker. Deliberately loud: a placeholder that looks like content
+   is how invented prices reach real customers. */
+.ph {
+  background: #f6e7c8;
+  border-bottom: 2px dashed #a97a24;
+  color: #6f4c14;
+  padding: 0 4px;
+  border-radius: 2px;
+  font-weight: 600;
+  font-style: normal;
+}
+.band-navy .ph {
+  background: rgba(255, 255, 255, 0.16);
+  border-bottom-color: #f0c893;
+  color: #f7e6cd;
+}
+
+/* ---- motion ----
+   The un-animated state is the finished state. `.reveal` only hides once the
+   root layout has added `.js`, so a blocked script, an error before hydration,
+   or reduced motion all leave a complete page rather than an empty one. */
+.js .reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.js .reveal.in {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  .js .reveal {
+    opacity: 1;
+    transform: none;
+  }
+  .btn:hover {
+    transform: none;
+  }
+}
+
+/* ───────────────────────────────────────────────────────────────────────────
+   Glazed Web studio credit — pairs with components/GlazedCredit.
+   Everything is scoped to .gw-credit. The words inherit the footer's own colour
+   and size; the mark carries Glazed's own palette, because it is a logo and a
+   logo does not take on the host's colours.
+   ─────────────────────────────────────────────────────────────────────────── */
+.gw-credit {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45em;
+  /* A credit that sets its own colour is a credit that stops matching the day
+     the footer changes. */
+  color: inherit;
+  text-decoration: none;
+}
+.gw-credit-name {
+  font-weight: 600;
+}
+.gw-credit:hover .gw-credit-name,
+.gw-credit:focus-visible .gw-credit-name {
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+.gw-credit-mark {
+  /* Sized in em so it tracks the text beside it rather than needing a number per
+     client. 2.15em against a 12px footer line is ~26px, which is where his real
+     mark reads: the hole lands at 4.7px and the disc at 19px. At 22px the hole
+     closes to 3px and it starts reading as a lollipop; at 30px+ it dominates the
+     bar. Measured across all five footers, not guessed. */
+  height: 2.15em;
+  width: auto;
+  flex: none;
+  /* This has to be here rather than only as the SVG attribute: the UA stylesheet
+     sets overflow:hidden on an outermost <svg>, and that beats a presentation
+     attribute. Without it the hover extension is clipped at the viewBox edge. */
+  overflow: visible;
+}
+.gw-credit-drips {
+  transform-box: fill-box;
+  /* Top centre of the drip group — where the glaze leaves the donut. Scaling from
+     anywhere else slides the drips off the donut instead of running them down. */
+  transform-origin: 50% 0%;
+  /* Resting is 1: the default state is his drawing at his lengths. */
+  transform: scaleY(1);
+  transition: transform 340ms cubic-bezier(0.34, 1.32, 0.5, 1);
+}
+.gw-credit:hover .gw-credit-drips,
+.gw-credit:focus-visible .gw-credit-drips {
+  transform: scaleY(1.22);
+}
+@media (prefers-reduced-motion: reduce) {
+  /* Nothing to suppress — there is no autoplay. The hover just stops easing. */
+  .gw-credit-drips {
+    transition-duration: 0s;
+  }
+}
+
+/* ───────────────────────────────────────────────────────────────────────────
+   The signature plate — pairs with components/GlazedPlate.
+   Set the three values below per site, in that site's own palette block:
+     --gw-above      the footer colour directly above (the drip's fill)
+     --gw-plate      cream #FDF6EC under a dark footer, chocolate-2 #201712 under a light one
+     --gw-plate-ink  cream on chocolate (16.41) or chocolate on cream (15.05); both AA
+   The inversion is not taste — a chocolate plate under a #191919 footer measures 1.00 and the
+   drip vanishes. See the table in GlazedPlate for every footer in the account.
+   ─────────────────────────────────────────────────────────────────────────── */
+.gw-plate {
+  /* Defaults are the light-footer case, so a site that forgets to set them still gets a
+     legible plate rather than an invisible one. */
+  --gw-above: #FDF6EC;
+  --gw-plate: #201712;
+  --gw-plate-ink: #FDF6EC;
+  background: var(--gw-plate);
+}
+.gw-plate-drip {
+  display: block;
+  width: 100%;
+  height: 46px;
+  /* The drip is the colour of the band above it, dripping down into the plate. */
+  color: var(--gw-above);
+  fill: currentColor;
+  /* Kills the hairline of plate colour that otherwise shows along the top edge from
+     subpixel rounding — the same -1px his DripDivider uses. */
+  margin-bottom: -1px;
+}
+.gw-plate-bar {
+  display: flex;
+  justify-content: flex-end;
+  padding: 0 22px 18px;
+}
+.gw-plate .gw-credit {
+  /* Overrides the inherit-the-footer rule above: on the plate the credit takes the plate's
+     ink, because the plate is Glazed's ground, not the client's. */
+  color: var(--gw-plate-ink);
+  font-size: 12px;
+}
+@media (max-width: 640px) {
+  .gw-plate-drip { height: 34px; }
+  .gw-plate-bar { justify-content: center; padding: 0 16px 16px; }
+}
+
+/* Computed by `node glaze/scripts/plate.mjs "#0e1f2e"`, not chosen by eye.
+   The chocolate mark on this footer measures 1.05, which is invisible rather
+   than ugly, and is exactly the failure the script exists to catch. Cream
+   plate steps 15.60 off the footer. */
+.gw-plate {
+  --gw-above: #0e1f2e;
+  --gw-plate: #fdf6ec;
+  --gw-plate-ink: #2b1e16;
+}
+
+/* ═══ visually hidden ═══ */
+.vh {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+/* ═══ header ═══ */
+.site-head {
+  position: sticky; top: 0; z-index: 60;
+  background: rgba(247, 243, 236, 0.92);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line);
+}
+.head-in { display: flex; align-items: center; gap: 20px; padding-top: 12px; padding-bottom: 12px; }
+.head-brand { text-decoration: none; flex-shrink: 0; }
+.head-nav { margin-left: auto; }
+.head-nav ul { display: flex; gap: 22px; list-style: none; }
+.head-nav a {
+  color: var(--navy); text-decoration: none; font-size: 15px; font-weight: 600;
+  padding: 6px 0; border-bottom: 2px solid transparent;
+}
+.head-nav a:hover { color: var(--brick); border-bottom-color: var(--brick); }
+.head-nav a[aria-current="page"] { color: var(--brick); border-bottom-color: var(--brick); }
+.head-cta { display: flex; align-items: center; gap: 16px; flex-shrink: 0; }
+.head-phone {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-weight: 600; font-size: 15px; color: var(--navy); text-decoration: none; white-space: nowrap;
+}
+.head-phone:hover { color: var(--brick); }
+.head-burger {
+  display: none; background: none; border: 0; cursor: pointer; padding: 8px; margin-left: auto;
+}
+.bars { display: block; width: 24px; }
+.bars i { display: block; height: 2.5px; background: var(--navy); border-radius: 2px; margin: 5px 0; transition: transform .2s ease, opacity .2s ease; }
+.bars.x i:nth-child(1) { transform: translateY(7.5px) rotate(45deg); }
+.bars.x i:nth-child(2) { opacity: 0; }
+.bars.x i:nth-child(3) { transform: translateY(-7.5px) rotate(-45deg); }
+.mnav { border-top: 1px solid var(--line); background: var(--paper-2); }
+.mnav ul { list-style: none; padding: 8px 24px 18px; }
+.mnav li { border-bottom: 1px solid var(--line); }
+.mnav li:last-child { border-bottom: 0; }
+.mnav a { display: block; padding: 14px 0; color: var(--navy); text-decoration: none; font-weight: 600; }
+@media (max-width: 950px) {
+  .head-nav, .head-cta { display: none; }
+  .head-burger { display: block; }
+}
+@media (min-width: 951px) { .mnav { display: none; } }
+
+/* ═══ footer ═══ */
+.site-foot { background: var(--navy-2); color: #c3d0da; margin-top: 20px; }
+.site-foot a { color: #fff; text-decoration: none; }
+.site-foot a:hover { color: #f0a093; text-decoration: underline; }
+.foot-in {
+  display: grid; grid-template-columns: 1.6fr 1fr 1fr 1.3fr; gap: 34px;
+  padding-top: 56px; padding-bottom: 34px;
+}
+@media (max-width: 900px) { .foot-in { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 560px) { .foot-in { grid-template-columns: 1fr; gap: 28px; } }
+.foot-name { font-family: var(--font-display), Georgia, serif; font-size: 21px; font-weight: 600; color: #fff; margin-top: 12px; letter-spacing: -0.02em; }
+.foot-tag { font-family: var(--font-mono), ui-monospace, monospace; font-size: 10px; letter-spacing: .16em; text-transform: uppercase; color: #f0a093; margin-top: 5px; }
+.foot-legal { font-size: 14px; line-height: 1.6; margin-top: 14px; max-width: 34ch; }
+.foot-col h2 { font-family: var(--font-mono), ui-monospace, monospace; font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: #8fa3b4; font-weight: 600; margin-bottom: 12px; }
+.foot-col ul { list-style: none; display: grid; gap: 9px; font-size: 15px; }
+.foot-addr { line-height: 1.6; color: #c3d0da; }
+.foot-lic { margin-top: 18px; font-size: 13px; line-height: 1.7; color: #a8b9c6; font-family: var(--font-mono), ui-monospace, monospace; }
+.foot-give { border-top: 1px solid rgba(255,255,255,.12); padding-top: 22px; padding-bottom: 22px; }
+.foot-give p { font-size: 14px; line-height: 1.65; max-width: 78ch; }
+.foot-disc { margin-top: 8px; color: #93a6b5; }
+.foot-bottom {
+  border-top: 1px solid rgba(255,255,255,.12); padding-top: 20px; padding-bottom: 34px;
+  display: flex; justify-content: space-between; gap: 18px; flex-wrap: wrap; font-size: 13px; color: #93a6b5;
+}
+.foot-bottom p { max-width: 60ch; }
+
+/* ═══ page heads ═══ */
+.pagehead { padding: 56px 0 40px; }
+@media (max-width: 640px) { .pagehead { padding: 38px 0 28px; } }
+.pagehead .kicker { margin-bottom: 12px; display: block; }
+
+/* ═══ hero ═══ */
+.hero { padding: 64px 0 72px; }
+.hero-in { display: grid; grid-template-columns: 1.25fr 0.85fr; gap: 46px; align-items: center; }
+@media (max-width: 900px) { .hero-in { grid-template-columns: 1fr; gap: 34px; } }
+.hero h1 { margin-top: 16px; }
+.hero-lede { margin-top: 20px; }
+.hero-lede strong { color: var(--navy); font-weight: 700; }
+.hero-cta { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 28px; }
+.hero-note { margin-top: 18px; font-size: 14.5px; color: var(--slate); max-width: 52ch; }
+
+/* ═══ goal ═══ */
+.goal { background: var(--navy); color: #fff; border-radius: 18px; padding: 28px 26px; }
+.goal .kicker { color: #f0a093; display: block; }
+.goal-org { font-size: clamp(22px, 3vw, 28px); color: #fff; margin-top: 10px; }
+.goal-nums { display: flex; align-items: baseline; gap: 10px; margin-top: 18px; }
+.goal-raised { font-family: var(--font-mono), ui-monospace, monospace; font-size: 30px; font-weight: 600; }
+.goal-target { font-size: 14px; color: #c8d4de; }
+.goal-track { height: 14px; background: rgba(255,255,255,.22); border-radius: 7px; overflow: hidden; margin-top: 10px; }
+.goal-fill { display: block; height: 100%; background: #fff; border-radius: 7px; }
+.goal-foot { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-top: 10px; font-size: 13px; color: #c8d4de; }
+.goal-pre { margin-top: 14px; font-size: 15px; line-height: 1.6; color: #c8d4de; }
+.goal-link { display: inline-block; margin-top: 20px; color: #fff; font-weight: 600; font-size: 15px; }
+.goal-link:hover { color: #f0a093; }
+
+/* ═══ coverage grid ═══ */
+.cov-grid { list-style: none; display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 34px; }
+@media (max-width: 900px) { .cov-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 560px) { .cov-grid { grid-template-columns: 1fr; } }
+.cov-card {
+  display: block; height: 100%; background: var(--paper-2); border: 1px solid var(--line);
+  border-radius: var(--radius); padding: 24px 22px; text-decoration: none; color: var(--navy);
+  transition: border-color .15s ease, transform .15s ease;
+}
+.cov-card:hover { border-color: var(--brick); transform: translateY(-2px); color: var(--navy); }
+.cov-card h2, .cov-card h3 { font-size: 21px; }
+.cov-card p { margin-top: 8px; font-size: 15px; color: var(--slate); line-height: 1.55; }
+.cov-more { display: inline-block; margin-top: 14px; font-size: 13px; font-weight: 700; color: var(--brick-ink); font-family: var(--font-mono), ui-monospace, monospace; letter-spacing: .06em; text-transform: uppercase; }
+
+/* ═══ steps ═══ */
+.steps { list-style: none; display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 36px; counter-reset: s; }
+@media (max-width: 800px) { .steps { grid-template-columns: 1fr; } }
+.steps li { padding-top: 4px; }
+.step-n {
+  display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%;
+  background: var(--brick); color: #fff; font-family: var(--font-mono), ui-monospace, monospace;
+  font-weight: 600; font-size: 17px; margin-bottom: 14px;
+}
+.steps h3 { font-size: 21px; }
+.steps p { margin-top: 8px; font-size: 15.5px; line-height: 1.6; }
+.band-navy .steps p { color: #c8d4de; }
+.give-cta { margin-top: 40px; display: flex; gap: 22px; align-items: center; flex-wrap: wrap; }
+.give-cta p { font-size: 14.5px; color: #c8d4de; max-width: 56ch; }
+
+/* ═══ pip teaser ═══ */
+.pip-in { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 40px; align-items: center; }
+@media (max-width: 900px) { .pip-in { grid-template-columns: 1fr; gap: 26px; } }
+.pip-teaser h2 em { font-style: normal; color: var(--brick-ink); }
+.pip-mini { list-style: none; display: grid; gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
+.pip-mini li { background: var(--paper-2); display: flex; justify-content: space-between; gap: 14px; padding: 15px 18px; font-size: 15px; }
+.pm-label { font-weight: 600; }
+.pm-val { font-family: var(--font-mono), ui-monospace, monospace; color: var(--slate); }
+
+/* ═══ carriers ═══ */
+.carrier-wall { list-style: none; display: flex; gap: 26px; flex-wrap: wrap; margin-top: 20px; font-weight: 600; }
+
+/* ═══ close band ═══ */
+.close-in { display: grid; grid-template-columns: 1.4fr 0.6fr; gap: 34px; align-items: center; }
+@media (max-width: 800px) { .close-in { grid-template-columns: 1fr; gap: 22px; } }
+.close-actions { display: flex; flex-direction: column; gap: 12px; align-items: flex-start; }
+.close-ph { font-size: 15px; }
+.ghost-on-navy { background: transparent; color: #fff; border-color: rgba(255,255,255,.4); }
+.ghost-on-navy:hover { background: transparent; color: #fff; border-color: #fff; }
+
+/* ═══ two-column prose ═══ */
+.prose-2 { display: grid; grid-template-columns: 1.6fr 0.8fr; gap: 46px; align-items: start; }
+@media (max-width: 860px) { .prose-2 { grid-template-columns: 1fr; gap: 32px; } }
+.prose-2 h2, .prose h2 { margin-top: 30px; margin-bottom: 10px; font-size: clamp(22px, 2.6vw, 28px); }
+.prose-2 > div > h2:first-child, .prose > h2:first-child { margin-top: 0; }
+.prose p + p, .prose-2 p + p { margin-top: 14px; }
+.prose p, .prose-2 p { max-width: 68ch; }
+.ticks { list-style: none; display: grid; gap: 10px; margin-top: 14px; }
+.ticks li { padding-left: 28px; position: relative; }
+.ticks li::before {
+  content: ""; position: absolute; left: 3px; top: 9px; width: 11px; height: 6px;
+  border-left: 2.5px solid var(--brick); border-bottom: 2.5px solid var(--brick);
+  transform: rotate(-45deg);
+}
+.callout { margin-top: 20px; background: var(--sand); border-radius: 10px; padding: 16px 18px; font-size: 15.5px; }
+.side { background: var(--paper-2); border: 1px solid var(--line); border-radius: var(--radius); padding: 24px 22px; }
+.side h2 { font-size: 17px; margin-top: 0; }
+.side p { font-size: 15px; margin-top: 10px; }
+.sidelist, .sidesteps { margin-top: 12px; display: grid; gap: 8px; font-size: 15px; }
+.sidelist { list-style: none; }
+.sidesteps { padding-left: 20px; }
+.side-fine { font-size: 13.5px; color: var(--slate); margin-top: 16px; }
+.factlist { display: grid; grid-template-columns: auto 1fr; gap: 8px 14px; font-size: 14.5px; margin-top: 12px; }
+.factlist dt { color: var(--slate); }
+.factlist dd { font-weight: 600; }
+.ph-block { background: #fdf6e6; border-left: 3px solid #a97a24; padding: 14px 16px; border-radius: 0 8px 8px 0; }
+
+/* ═══ pip table ═══ */
+.pip { width: 100%; border-collapse: collapse; margin-top: 24px; font-size: 15.5px; }
+.pip th, .pip td { text-align: left; padding: 16px 14px; border-bottom: 1px solid var(--line); vertical-align: top; }
+.pip thead th { font-family: var(--font-mono), ui-monospace, monospace; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--slate); border-bottom: 2px solid var(--navy); }
+.pip-name { display: block; font-weight: 700; font-size: 17px; }
+.pip-limit { display: block; font-size: 13.5px; color: var(--slate); margin-top: 3px; font-weight: 400; }
+.pip-save { font-family: var(--font-mono), ui-monospace, monospace; font-weight: 600; font-size: 19px; white-space: nowrap; }
+.pip-base { color: var(--slate); font-size: 15px; font-weight: 400; }
+.pip-flag { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; padding: 3px 9px; border-radius: 20px; background: var(--sand); color: var(--navy); }
+.pip-caution .pip-flag { background: #f7e2df; color: #8c2b21; }
+.pip-restricted .pip-flag { background: #efe2cd; color: #6f4c14; }
+.pip-elig { display: block; font-size: 14px; color: var(--slate); margin-top: 8px; line-height: 1.5; }
+.pip-source { margin-top: 16px; font-size: 13.5px; color: var(--slate); }
+.pip-detail { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-top: 26px; }
+@media (max-width: 760px) { .pip-detail { grid-template-columns: 1fr; } }
+.pip-detail h3 { font-size: 19px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.pip-detail p { margin-top: 8px; font-size: 15px; color: var(--slate); line-height: 1.6; }
+.pip-chip { font-family: var(--font-mono), ui-monospace, monospace; font-size: 12px; font-weight: 600; background: var(--brick); color: #fff; padding: 3px 10px; border-radius: 20px; }
+.myths { margin-top: 26px; display: grid; gap: 18px; }
+.myths dt { font-weight: 700; font-size: 17px; }
+.myths dd { margin-top: 6px; color: var(--slate); max-width: 72ch; }
+
+/* ═══ giving ═══ */
+.give-grid { display: grid; grid-template-columns: 0.85fr 1.15fr; gap: 40px; align-items: start; }
+@media (max-width: 860px) { .give-grid { grid-template-columns: 1fr; gap: 28px; } }
+.give-grid h2 { margin-bottom: 12px; }
+.give-grid p + p { margin-top: 14px; }
+.give-grid p { max-width: 62ch; }
+.rules { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 26px; }
+@media (max-width: 860px) { .rules { grid-template-columns: 1fr; } }
+.rules h3 { font-size: 18px; }
+.rules p { margin-top: 8px; font-size: 15px; color: var(--slate); line-height: 1.6; }
+.fineprint { margin-top: 26px; font-size: 13.5px; color: var(--slate); max-width: 76ch; }
+
+/* ═══ ledger ═══ */
+.ledger { width: 100%; border-collapse: collapse; font-size: 15.5px; }
+.ledger th, .ledger td { text-align: left; padding: 14px 12px; border-bottom: 1px solid var(--line); }
+.ledger thead th { font-family: var(--font-mono), ui-monospace, monospace; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--slate); border-bottom: 2px solid var(--navy); }
+.ledger .num { text-align: right; }
+.ledger .mono { font-family: var(--font-mono), ui-monospace, monospace; }
+.ledger-city { display: block; font-size: 13px; color: var(--slate); font-weight: 400; }
+.ledger tfoot th, .ledger tfoot td { border-top: 2px solid var(--navy); border-bottom: 0; font-weight: 700; padding-top: 16px; }
+.ledger-empty { background: var(--paper-2); border: 1px solid var(--line); border-radius: var(--radius); padding: 34px 30px; max-width: 68ch; }
+.ledger-empty h2 { font-size: clamp(22px, 3vw, 28px); }
+.ledger-empty p { margin-top: 14px; color: var(--slate); }
+.ledger-empty-cta { margin-top: 22px; }
+
+/* ═══ contact ═══ */
+.contact-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
+@media (max-width: 700px) { .contact-grid { grid-template-columns: 1fr; } }
+.contact-grid h2 { font-size: 17px; font-family: var(--font-mono), ui-monospace, monospace; letter-spacing: .12em; text-transform: uppercase; color: var(--slate); font-weight: 600; }
+.contact-big { font-size: 24px; font-weight: 700; margin-top: 10px; font-family: var(--font-display), Georgia, serif; }
+.contact-grid p { margin-top: 10px; font-size: 15px; color: var(--slate); }
+.contact-addr { font-size: 17px; line-height: 1.6; margin-top: 10px; color: var(--navy) !important; }
+.hours { display: grid; gap: 8px; margin-top: 12px; font-size: 15.5px; }
+.hours div { display: flex; justify-content: space-between; gap: 14px; }
+.hours dt { color: var(--slate); }
+.hours dd { font-weight: 600; }
+
+/* ═══ guides ═══ */
+.guide-list { list-style: none; display: grid; gap: 16px; }
+.guide-list a { display: block; background: var(--paper-2); border: 1px solid var(--line); border-radius: var(--radius); padding: 26px 24px; text-decoration: none; color: var(--navy); }
+.guide-list a:hover { border-color: var(--brick); color: var(--navy); }
+.guide-list h2 { font-size: 23px; }
+.guide-list p { margin-top: 8px; color: var(--slate); font-size: 15.5px; }
+
+/* ═══ quote form ═══ */
+.qf-grid { display: grid; grid-template-columns: 1.4fr 0.6fr; gap: 40px; align-items: start; }
+@media (max-width: 860px) { .qf-grid { grid-template-columns: 1fr; gap: 28px; } }
+.qf fieldset { border: 0; }
+.qf legend { font-family: var(--font-display), Georgia, serif; font-size: clamp(22px, 3vw, 28px); font-weight: 600; letter-spacing: -0.02em; margin-bottom: 20px; }
+.qf-step { display: block; font-family: var(--font-mono), ui-monospace, monospace; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--brick-ink); margin-bottom: 8px; font-weight: 600; }
+.qf-row { margin-bottom: 18px; }
+.qf-row label { display: block; font-weight: 600; font-size: 15px; margin-bottom: 6px; }
+.qf-opt { font-weight: 400; color: var(--slate); font-size: 14px; }
+.qf input[type="text"], .qf input[type="tel"], .qf input[type="email"], .qf select, .qf textarea {
+  width: 100%; font: inherit; font-size: 16px; padding: 13px 14px;
+  border: 2px solid var(--line); border-radius: 10px; background: var(--paper-2); color: var(--navy);
+}
+.qf input:focus, .qf select:focus, .qf textarea:focus { border-color: var(--navy); }
+.qf-two { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+@media (max-width: 520px) { .qf-two { grid-template-columns: 1fr; gap: 0; } }
+.qf-consent { display: flex; gap: 12px; align-items: flex-start; margin: 6px 0 20px; }
+.qf-consent input { margin-top: 4px; width: 20px; height: 20px; flex-shrink: 0; accent-color: var(--brick); }
+.qf-consent label { font-size: 14px; line-height: 1.55; color: var(--slate); }
+.qf-actions { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; margin-top: 8px; }
+.qf-note, .qf-optnote { font-size: 14px; color: var(--slate); max-width: 40ch; }
+.qf-optnote { margin: -10px 0 18px; max-width: 60ch; }
+.qf-nodob { font-size: 14px; color: var(--slate); background: var(--sand); padding: 14px 16px; border-radius: 10px; margin-bottom: 20px; }
+.qf-hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+.qf-done { background: var(--paper-2); border: 1px solid var(--line); border-radius: var(--radius); padding: 34px 30px; }
+.qf-done p { margin-top: 14px; color: var(--slate); max-width: 60ch; }
+.qf-honest { font-size: 14.5px; }
+.qf-error { margin-top: 16px; color: #8c2b21; font-weight: 600; }
+.qf-noscript { margin-bottom: 14px; font-size: 15px; }
+
+
+/* A wide table scrolls inside itself rather than widening the page. tabindex
+   and role make the scroll container keyboard reachable; without them a
+   keyboard user cannot reach the columns that are off screen. */
+.tablewrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.tablewrap:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+.pip { min-width: 560px; }
+.ledger { min-width: 520px; }
+
+/* Stepping is CSS applied by a class the client adds, never markup the server
+   emits. With JavaScript off there is no `.stepped`, so both fieldsets show,
+   the step buttons are gone, and the single submit posts the whole form. */
+.qf-jsonly { display: none; }
+.qf.stepped .qf-jsonly { display: inline-flex; }
+.qf.stepped.step-1 [data-step="2"] { display: none; }
+.qf.stepped.step-2 [data-step="1"] { display: none; }
+.qf:not(.stepped) fieldset + fieldset { margin-top: 34px; border-top: 1px solid var(--line); padding-top: 28px; }
