@@ -279,6 +279,16 @@ footer .inner { max-width: 1100px; margin: 0 auto; padding: 56px 24px 36px; }
 
 /* ============ mobile ============ */
 @media (max-width: 640px) {
+  /* THE TICKER WAS UNREADABLE ON A PHONE.
+     At 14px with .18em tracking the longest phrase measured 612px, which is
+     157% of a 390px viewport: it could never be on screen in one piece, so
+     there was nothing to read, and one phrase took 8.9 seconds to cross. The
+     type comes down, the tracking comes in, and the loop speeds up, which
+     together put a whole phrase on screen at once. */
+  .ticker { padding: 10px 0; }
+  .ticker span { font-size: 10px; letter-spacing: .08em; padding: 0 10px; }
+  .ticker-inner { animation-duration: 26s; }
+
   .navwrap { padding: 11px 14px; }
   .brand { gap: 7px; }
   .brand .bw { font-size: 17px; }
@@ -413,8 +423,8 @@ footer .inner { max-width: 1100px; margin: 0 auto; padding: 56px 24px 36px; }
 
 <div class="ticker" aria-hidden="true">
   <div class="ticker-inner">
-    <span>&ldquo;a portion of proceeds&rdquo;</span><span>&bull;</span><span>&ldquo;we give back to our community&rdquo;</span><span>&bull;</span><span>&ldquo;a portion of our money, time, talents and resources&rdquo;</span><span>&bull;</span><span>&ldquo;proud to support local causes&rdquo;</span><span>&bull;</span><span>no amount</span><span>&bull;</span><span>no date</span><span>&bull;</span><span>no total</span><span>&bull;</span>
-    <span>&ldquo;a portion of proceeds&rdquo;</span><span>&bull;</span><span>&ldquo;we give back to our community&rdquo;</span><span>&bull;</span><span>&ldquo;a portion of our money, time, talents and resources&rdquo;</span><span>&bull;</span><span>&ldquo;proud to support local causes&rdquo;</span><span>&bull;</span><span>no amount</span><span>&bull;</span><span>no date</span><span>&bull;</span><span>no total</span><span>&bull;</span>
+    <span>&ldquo;a portion of proceeds&rdquo;</span><span>&bull;</span><span>&ldquo;we give back to our community&rdquo;</span><span>&bull;</span><span>&ldquo;a portion of our money, time, talents&hellip;&rdquo;</span><span>&bull;</span><span>&ldquo;proud to support local causes&rdquo;</span><span>&bull;</span><span>no amount</span><span>&bull;</span><span>no date</span><span>&bull;</span><span>no total</span><span>&bull;</span>
+    <span>&ldquo;a portion of proceeds&rdquo;</span><span>&bull;</span><span>&ldquo;we give back to our community&rdquo;</span><span>&bull;</span><span>&ldquo;a portion of our money, time, talents&hellip;&rdquo;</span><span>&bull;</span><span>&ldquo;proud to support local causes&rdquo;</span><span>&bull;</span><span>no amount</span><span>&bull;</span><span>no date</span><span>&bull;</span><span>no total</span><span>&bull;</span>
   </div>
 </div>
 
