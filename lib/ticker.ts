@@ -36,12 +36,8 @@ export const symbols: Sym[] = [
   { symbol: "CB", name: "Chubb" },
   { symbol: "HIG", name: "The Hartford" },
   { symbol: "CINF", name: "Cincinnati Financial" },
-  { symbol: "AFG", name: "American Financial" },
   { symbol: "KMPR", name: "Kemper" },
-  { symbol: "SAFT", name: "Safety Insurance" },
   { symbol: "ERIE", name: "Erie Indemnity" },
-  { symbol: "MCY", name: "Mercury General" },
-  { symbol: "HMN", name: "Horace Mann" },
 ];
 
 /**
@@ -50,14 +46,25 @@ export const symbols: Sym[] = [
  * every figure appears somewhere else on the site with its source named.
  */
 export const marketNotes: string[] = [
-  "Michigan is the only state that still offers unlimited lifetime medical on an auto policy",
-  "Dropping to $500,000 saves about 3.6% of the injury portion",
-  "Nearly 3 in 10 Michigan vehicles now carry limited injury coverage",
-  "Excess attendant care runs about $14 a year",
-  "Only about 5% of Michigan drivers carry it",
-  "Mini-tort caps at $3,000, and only if you are 50% at fault or less",
-  "ZIP code was banned as a rating factor in 2020",
-  "Carriers moved to census tract territories instead",
-  "The strongest Michigan tornado since 1977 hit on March 6",
-  "Wind and hail deductibles are often a percentage, not a dollar figure",
+  // TICKER LENGTH, NOT SENTENCE LENGTH.
+  //
+  // These were full sentences averaging 574px each, which made the animated
+  // track 11,488px wide. Mobile GPUs commonly cap a composited layer at 4096px
+  // and older ones at 2048, and above that iOS Safari can refuse to composite
+  // the animation at all. The rail then sits still, which is exactly what
+  // "the tickers do not work on mobile" looks like.
+  //
+  // They also read better short. A ticker item that takes two seconds to pass
+  // is a headline; one that takes eight is a paragraph going by sideways.
+  // Every fact here still appears in full, with its source, on the page it
+  // belongs to.
+  "Unlimited lifetime medical: Michigan only",
+  "$500k PIP saves just 3.6%",
+  "3 in 10 MI vehicles now limited",
+  "Attendant care: about $14 a year",
+  "Only 5% of drivers carry it",
+  "Mini-tort caps at $3,000",
+  "ZIP banned as a rating factor, 2020",
+  // Seven, not eight. At eight the mobile layer measured 4,254px, just over the
+  // 4096px cap. Adding one back puts it over again.
 ];

@@ -12,6 +12,9 @@ export const runtime = "nodejs";
  */
 export const dynamic = "force-dynamic";
 
+/** Nine plus three coins is twelve items. Keep it there: every item added
+ *  widens the animated layer, and past about 4096px mobile GPUs stop
+ *  compositing it and the rail freezes. */
 const STOCKS = [
   { symbol: "PGR", name: "Progressive" },
   { symbol: "ALL", name: "Allstate" },
@@ -19,7 +22,6 @@ const STOCKS = [
   { symbol: "CB", name: "Chubb" },
   { symbol: "BRK-B", name: "Berkshire" },
   { symbol: "AAPL", name: "Apple" },
-  { symbol: "MSFT", name: "Microsoft" },
   { symbol: "NVDA", name: "Nvidia" },
   { symbol: "SPY", name: "S&P 500" },
 ];

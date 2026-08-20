@@ -802,10 +802,19 @@ h1 em svg path, h2 em svg path { stroke-dasharray: 320; stroke-dashoffset: 320; 
 .tick { overflow: hidden; padding: 11px 0; }
 .tick-brick { background: var(--brick); border-top: 3px solid var(--navy); border-bottom: 1px solid rgba(0,0,0,.18); }
 .tick-navy  { background: var(--navy-2); border-bottom: 3px solid var(--navy); }
-.tick-track { display: flex; width: max-content; animation-name: tickL; animation-timing-function: linear; animation-iteration-count: infinite; }
+.tick-track {
+  display: flex; width: max-content;
+  animation-name: tickL; animation-timing-function: linear; animation-iteration-count: infinite;
+  animation-duration: var(--tick-dur, 80s);
+  /* Promote to its own layer and animate on the compositor. translate3d rather
+     than translateX for the same reason. Keep the track narrow: see the note in
+     lib/ticker.ts about the 4096px layer cap on mobile GPUs. */
+  will-change: transform;
+  backface-visibility: hidden;
+}
 .tick-track.tick-rev { animation-name: tickR; }
-@keyframes tickL { from { transform: translateX(0); }    to { transform: translateX(-50%); } }
-@keyframes tickR { from { transform: translateX(-50%); } to { transform: translateX(0); } }
+@keyframes tickL { from { transform: translate3d(0,0,0); }      to { transform: translate3d(-50%,0,0); } }
+@keyframes tickR { from { transform: translate3d(-50%,0,0); }   to { transform: translate3d(0,0,0); } }
 .tick-item {
   font-family: var(--font-mono), ui-monospace, monospace;
   font-size: 12.5px; letter-spacing: .12em; text-transform: uppercase;
@@ -873,7 +882,27 @@ h1 em svg path, h2 em svg path { stroke-dasharray: 320; stroke-dashoffset: 320; 
 .hero-in { display: grid; grid-template-columns: 1.35fr 0.65fr; gap: 40px; align-items: center; }
 @media (max-width: 900px) { .hero-in { grid-template-columns: 1fr; gap: 10px; } .hero-mark { order: -1; } }
 .hero-mark { display: flex; justify-content: center; }
-@media (max-width: 900px) { .hero-mark .ahero { width: 180px; height: 240px; } }
+@media (max-width: 900px) {
+  /* Bigger, and moving more.
+     The swing is a ROTATION, so the arc a point travels is proportional to the
+     radius. At 180px the same 2.6 degrees covers barely a third of the pixels it
+     covers at 300, which reads as a static logo with a slight wobble. The angle
+     goes up so the apparent movement stays roughly constant, and the beat and
+     rope scale with it. */
+  .hero-mark .ahero { width: 215px; height: 287px; }
+  .ahero-swing { animation-name: aheroSwingSm; }
+  .ahero-beat { animation-name: aheroBeatSm; }
+}
+@keyframes aheroSwingSm {
+  0%, 100% { transform: rotate(-4.6deg); }
+  50%      { transform: rotate(4.6deg); }
+}
+@keyframes aheroBeatSm {
+  0%, 62%, 100% { transform: scale(1); }
+  70%           { transform: scale(1.11); }
+  80%           { transform: scale(1.0); }
+  88%           { transform: scale(1.07); }
+}
 .hero-cta { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 30px; }
 .hero-note { margin-top: 18px; font-size: 14.5px; max-width: 46ch; }
 
@@ -984,4 +1013,20 @@ h1 em svg path, h2 em svg path { stroke-dasharray: 320; stroke-dashoffset: 320; 
   /* A printed link is a dead end without its address. */
   main a[href^="http"]::after { content: " (" attr(href) ")"; font-size: 9pt; color: #444; }
   .ph { background: none; border-bottom: 1px solid #000; }
+}
+
+
+/* Narrower rails on a phone. Smaller type and tighter padding cut the animated
+   layer by roughly a third, which is the difference between compositing and
+   not on a mid-range device. */
+@media (max-width: 640px) {
+  .tick { padding: 9px 0; }
+  .tick-item { font-size: 11px; padding: 0 11px; letter-spacing: .08em; }
+  .tick-item > span { gap: 7px; }
+  .q { gap: 6px; }
+  /* Faster on a phone. The track is the same width whatever the viewport, so a
+     fixed duration is a fixed px/sec, and on a narrow screen with only two or
+     three items visible that reads as barely moving. 0.55 is roughly twice the
+     apparent speed. */
+  .tick-track { animation-duration: calc(var(--tick-dur, 80s) * 0.55); }
 }

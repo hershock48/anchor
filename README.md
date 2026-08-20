@@ -136,6 +136,21 @@ measures only 3.79 as text on `--sand`. `--slate` is 6.39 on paper and 4.99 on
 sand. The sand band is a second ground and forgetting it is exactly how two
 violations got in. **Fix contrast at the token, never on the flagged element.**
 
+**The logo has to know where home is.** On a pitch host `/` is the proposal, not
+the site, so a brand link pointing at `/` throws the client out of their own
+site and back into the sales document. `components/HomeLink.tsx` resolves it
+from the hostname, and **its host pattern must stay in sync with `PITCH_HOSTS`
+in `next.config.ts`.** Every other link is fine, because `/coverage` and the
+rest are not rewritten on that host and Next serves them normally. `/` is the
+single path that means something different depending on where you are.
+
+**Ticker rails have a hard width budget.** Mobile GPUs commonly stop
+compositing a layer past 4096px and older ones at 2048. The rails were 4,510px
+and 11,488px, which is why they sat still on a phone while animating fine in a
+desktop browser. They are 3,421px and 3,693px now, measured at 390px wide, and
+`lib/ticker.ts` says so. **Adding items to either rail spends that budget.**
+Re-measure if you add any.
+
 **Wide tables scroll inside themselves.** `.tablewrap` carries `tabIndex={0}` and a
 `role`, because a scroll container is otherwise unreachable by keyboard.
 

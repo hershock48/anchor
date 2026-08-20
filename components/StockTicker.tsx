@@ -24,9 +24,7 @@ import type { Quote } from "@/app/api/quotes/route";
  * this in bright sun.
  */
 
-const FALLBACK = [
-  "PGR", "ALL", "TRV", "CB", "BRK-B", "AAPL", "MSFT", "NVDA", "SPY", "BTC", "ETH", "SOL",
-];
+const FALLBACK = ["PGR", "ALL", "TRV", "CB", "BRK-B", "AAPL", "NVDA", "SPY", "BTC", "ETH", "SOL"];
 
 function fmt(n: number): string {
   if (n >= 1000) return n.toLocaleString("en-US", { maximumFractionDigits: 0 });
@@ -77,7 +75,7 @@ export default function StockTicker({ seconds = 70 }: { seconds?: number }) {
 
   return (
     <div className="tick tick-navy" aria-hidden="true">
-      <div className="tick-track" style={{ animationDuration: `${seconds}s` }}>
+      <div className="tick-track" style={{ ["--tick-dur" as string]: `${seconds}s` }}>
         {run.map((item, i) => (
           <span className="tick-item" key={i}>
             {item}

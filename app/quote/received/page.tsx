@@ -1,4 +1,5 @@
 import Link from "next/link";
+import HomeLink from "@/components/HomeLink";
 
 export const metadata = { title: "Request received", robots: { index: false } };
 
@@ -18,7 +19,7 @@ export default function Received() {
           writing.
         </p>
         <p style={{ marginTop: 24 }}>
-          <Link className="btn" href="/">Back to the site</Link>
+          <HomeLink className="btn">Back to the site</HomeLink>
         </p>
       </div>
     </section>

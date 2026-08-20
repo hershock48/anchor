@@ -34,7 +34,7 @@ export default function Ticker({
     <div className={`tick tick-${tone}`} aria-hidden="true">
       <div
         className={reverse ? "tick-track tick-rev" : "tick-track"}
-        style={{ animationDuration: `${seconds}s` }}
+        style={{ ["--tick-dur" as string]: `${seconds}s` }}
       >
         {run.map((item, i) => (
           <span className="tick-item" key={i}>

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import HomeLink from "@/components/HomeLink";
 import { lines } from "@/lib/site";
 
 export const metadata = {
@@ -27,7 +28,7 @@ export default function NotFound() {
 
         <ul className="nf-links">
           <li>
-            <Link href="/">The homepage</Link>
+            <HomeLink>The homepage</HomeLink>
           </li>
           <li>
             <Link href="/quote">Get a quote</Link>

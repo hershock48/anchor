@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { useEffect } from "react";
 import { Lockup } from "./Logo";
 import HeaderMark from "./HeaderMark";
+import { useHomeHref } from "./HomeLink";
 import { site, ph, isPlaceholder } from "@/lib/site";
 
 const nav = [
@@ -17,6 +18,7 @@ const nav = [
 
 export default function Header() {
   const pathname = usePathname();
+  const home = useHomeHref();
   /**
    * THE MOBILE MENU IS A <details>, WITH NO JAVASCRIPT AT ALL.
    *
@@ -43,7 +45,7 @@ export default function Header() {
   return (
     <header className="site-head">
       <div className="wrap head-in">
-        <Link href="/" className="head-brand" aria-label={`${site.name} home`}>
+        <Link href={home} className="head-brand" aria-label={`${site.name} home`}>
           <Lockup markWidth={32} markSlot={<HeaderMark width={32} />} />
         </Link>
 
