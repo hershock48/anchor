@@ -800,8 +800,22 @@ h1 em svg path, h2 em svg path { stroke-dasharray: 320; stroke-dashoffset: 320; 
    Different speeds and opposite directions on purpose. Same speed reads as one
    broken element; same direction reads as a mistake. */
 .tick { overflow: hidden; padding: 11px 0; }
-.tick-brick { background: var(--brick); border-top: 3px solid var(--navy); border-bottom: 1px solid rgba(0,0,0,.18); }
-.tick-navy  { background: var(--navy-2); border-bottom: 3px solid var(--navy); }
+/* THE BORDERS ARE ASYMMETRIC, SO THE PADDING HAS TO BE TOO.
+   Both rails carry a dark edge on one side and a thinner one or none on the
+   other. Against these backgrounds those edges read as part of the band rather
+   than as a line beside it, so equal padding puts the text visibly off centre:
+   the navy rail measured 9px of air above the text and 12px below, and the
+   brick rail was 2px the other way. Padding + border is now equal top and
+   bottom on each. If a border width changes, change its padding with it. */
+.tick-brick {
+  background: var(--brick); border-top: 3px solid var(--navy);
+  border-bottom: 1px solid rgba(0,0,0,.18);
+  padding-top: 8px; padding-bottom: 10px;
+}
+.tick-navy {
+  background: var(--navy-2); border-bottom: 3px solid var(--navy);
+  padding-bottom: 8px;
+}
 .tick-track {
   display: flex; width: max-content;
   animation-name: tickL; animation-timing-function: linear; animation-iteration-count: infinite;
@@ -967,6 +981,34 @@ h1 em svg path, h2 em svg path { stroke-dasharray: 320; stroke-dashoffset: 320; 
 
 /* ── the market rail ── */
 .q { display: inline-flex; align-items: center; gap: 8px; }
+/* 1200px, not 640, and the width is the reason rather than the layout.
+   A quote is the widest thing on either rail: symbol, price, arrow, signed
+   percentage. At full size one measured 194px and the doubled track came to
+   4,285px, which is past the roughly 4096px point where mobile and tablet GPUs
+   stop compositing an animated layer and the rail freezes on the screen. See
+   lib/ticker.ts. 1200 rather than 900 because a landscape iPad is 1024 or 1180
+   CSS pixels wide, so 900 would have left the exact devices this protects on
+   the wrong side of it. Shrinking the quote here keeps every touch-sized
+   viewport under the cap, and has the second effect of fitting three quotes on a phone
+   instead of two and a bit: at 11px one was 161px, which is 41% of a 390px
+   screen, and the rail read as a wall of digits rather than as prices.
+
+   These rules used to live in the 640px block with the rail heights, which
+   meant a 768px tablet took the full-size type and its notes rail came to
+   4,743px. Under the cap on a phone, over it on an iPad, and no amount of
+   testing on a phone would ever have shown it. Rail heights stay at 640;
+   anything that changes the track's WIDTH belongs here.
+
+   Above this the tracks are 4,285 and 4,743px and that is deliberate. The
+   original measurement that produced the cap had desktop browsers compositing
+   an 11,488px layer without complaint; it was only phones that froze. */
+@media (max-width: 1200px) {
+  .tick-item { font-size: 11px; padding: 0 11px; letter-spacing: .08em; }
+  .tick-item > span { gap: 7px; }
+  .q { gap: 5px; font-size: 10px; letter-spacing: .04em; }
+  .q-sym { letter-spacing: .06em; }
+  .tick-navy .tick-item { padding: 0 9px; }
+}
 .q-sym { font-weight: 700; color: #fff; letter-spacing: .1em; }
 .q-px { color: #cbd7e1; letter-spacing: .04em; font-variant-numeric: tabular-nums; }
 .q-chg {
@@ -1021,9 +1063,8 @@ h1 em svg path, h2 em svg path { stroke-dasharray: 320; stroke-dashoffset: 320; 
    not on a mid-range device. */
 @media (max-width: 640px) {
   .tick { padding: 9px 0; }
-  .tick-item { font-size: 11px; padding: 0 11px; letter-spacing: .08em; }
-  .tick-item > span { gap: 7px; }
-  .q { gap: 6px; }
+  .tick-brick { padding-top: 6px; padding-bottom: 8px; }
+  .tick-navy { padding-bottom: 6px; }
   /* Faster on a phone. The track is the same width whatever the viewport, so a
      fixed duration is a fixed px/sec, and on a narrow screen with only two or
      three items visible that reads as barely moving. 0.55 is roughly twice the

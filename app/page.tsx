@@ -7,6 +7,17 @@ import Wave from "@/components/Wave";
 import Ticker from "@/components/Ticker";
 import StockTicker from "@/components/StockTicker";
 import { marketNotes } from "@/lib/ticker";
+import { getQuotes } from "@/lib/quotes";
+
+/**
+ * The market rail's prices are baked into this page's HTML so the rail is full
+ * and the right width on first paint. 300 seconds because that matches the CDN
+ * cache on /api/quotes, and the client corrects whatever this bakes within a
+ * few hundred milliseconds of arrival, so a stale regeneration is never what a
+ * reader ends up looking at. The reasoning, and why the page must NOT be made
+ * dynamic instead, is in lib/quotes.ts.
+ */
+export const revalidate = 300;
 
 export const metadata = {
   title: `Independent insurance in ${site.contact.city}, Michigan`,
@@ -29,7 +40,8 @@ function Underline() {
   );
 }
 
-export default function Home() {
+export default async function Home() {
+  const quotes = await getQuotes({ revalidate: 300 });
   const cheapDrop = pipLevels.find((l) => l.id === "500k")!;
 
   return (
@@ -83,7 +95,7 @@ export default function Home() {
       {/* Two rails, different speeds, opposite directions. Markets move fast
           one way, the Michigan facts drift the other way slower. Same speed
           reads as one broken element; same direction reads as a mistake. */}
-      <StockTicker seconds={70} />
+      <StockTicker seconds={70} initial={quotes} />
       <Ticker
         tone="brick"
         seconds={112}
