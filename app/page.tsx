@@ -20,7 +20,14 @@ import { getQuotes } from "@/lib/quotes";
 export const revalidate = 300;
 
 export const metadata = {
-  title: `Independent insurance in ${site.contact.city}, Michigan`,
+  /**
+   * The name is written in rather than left to the layout's `%s | name`
+   * template, because a title template only applies to CHILD segments and
+   * this page shares the root segment with the layout that defines it. The
+   * homepage shipped with no brand in its title at all before the August 2026
+   * rename made somebody read the tab.
+   */
+  title: `${site.name} | Independent agency in ${site.contact.city}, Michigan`,
   description:
     "Auto, home and business insurance from an independent Michigan agency. We shop several carriers, and a share of our commission goes to a local cause the town votes for.",
 };
