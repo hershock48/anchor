@@ -24,14 +24,14 @@
     position: relative; overflow: hidden;
   }
   .wash { position: absolute; inset: 0;
-    background: radial-gradient(circle at 12% 20%, rgba(196,54,43,.28), transparent 45%); }
+    background: radial-gradient(circle at 12% 20%, rgba(193,154,73,.22), transparent 45%); }
   .safe { position: relative; z-index: 2; width: 630px; height: 630px;
     display: flex; flex-direction: column; align-items: center; justify-content: center;
     text-align: center; padding: 0 6px; }
   .name { font-size: 62px; font-weight: 700; letter-spacing: -2px; line-height: 1.04; margin-top: 26px; }
-  .rule { width: 84px; height: 3px; background: #E4614F; margin: 22px 0 18px; }
+  .rule { width: 84px; height: 3px; background: #C19A49; margin: 22px 0 18px; }
   .tag { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 21px;
-    letter-spacing: .2em; text-transform: uppercase; color: #F0A093; font-weight: 600; }
+    letter-spacing: .2em; text-transform: uppercase; color: #E3C27E; font-weight: 600; }
   .where { margin-top: 26px; font-size: 26px; color: #C8D4DE; }
 </style>
 </head>
@@ -39,12 +39,17 @@
   <div class="wash"></div>
   <div class="safe">
     <svg width="118" height="148" viewBox="0 0 120 150" aria-hidden="true">
-      <path d="M60 45 C60 45 38.5 32.5 38.5 19.5 C38.5 11.6 44.6 5.4 52.3 5.4 C56.3 5.4 59 7.5 60 10.2 C61 7.5 63.7 5.4 67.7 5.4 C75.4 5.4 81.5 11.6 81.5 19.5 C81.5 32.5 60 45 60 45 Z"
-        fill="none" stroke="#E4614F" stroke-width="10" stroke-linejoin="round"/>
-      <g fill="none" stroke="#FFFFFF" stroke-width="10" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M60 47 L60 120"/><path d="M32 62 L88 62"/>
-        <path d="M22 83 C22 110 39 125 60 125 C81 125 98 110 98 83"/>
-      </g>
+      <circle cx="60" cy="19.5" r="10" fill="none" stroke="#FFFFFF" stroke-width="7.5"/>
+      <path d="M60 32 L60 116" stroke="#FFFFFF" stroke-width="10.5" stroke-linecap="round" fill="none"/>
+      <path d="M28 51 L92 51" stroke="#FFFFFF" stroke-width="9" stroke-linecap="round" fill="none"/>
+      <circle cx="26" cy="51" r="6.2" fill="#FFFFFF"/>
+      <circle cx="94" cy="51" r="6.2" fill="#FFFFFF"/>
+      <path d="M17 86 C21 112 37 127 60 127 C83 127 99 112 103 86" stroke="#FFFFFF" stroke-width="10.5" stroke-linecap="round" fill="none"/>
+      <path d="M8 94 L15 62 L30 87 Q19 82 8 94 Z" fill="#FFFFFF"/>
+      <path d="M112 94 L105 62 L90 87 Q101 82 112 94 Z" fill="#FFFFFF"/>
+      <path d="M6 90 C22 76 40 76 57 88 C74 100 92 100 114 84" stroke="#C19A49" stroke-width="9" stroke-linecap="round" fill="none"/>
+      <path d="M10 103 C26 91 44 91 60 101 C76 111 92 111 110 97" stroke="#A8813A" stroke-width="6.5" stroke-linecap="round" fill="none"/>
+      <path d="M22 114 C36 105 52 105 65 111 C77 117 90 117 102 110" stroke="#C19A49" stroke-width="4.5" stroke-linecap="round" fill="none"/>
     </svg>
     <p class="name">Anchor<br>Insurance</p>
     <div class="rule"></div>

@@ -3,7 +3,13 @@
 The website for **Anchor Insurance and Risk Management**, an independent agency
 in Manchester, Michigan. Customer-facing surfaces say **Anchor Insurance**.
 
-**Two client decisions landed on August 28, 2026, and the build changed shape.**
+**Three client decisions landed on August 28, 2026, and the build changed
+shape.** The third: **she brought her real logo**, a navy anchor with a gold
+wave, and the whole visual system now derives from it. The mark is redrawn
+from it in `components/Logo.tsx`, the palette moved from navy-and-red to
+navy-and-gold (see the tokens trap below), the wordmark is serif capitals via
+Cinzel, and the wave is the site's motion: it flows in the hero and slides in
+once in the header. The first two:
 
 First, the name. The site was built as "Insurance for a Cause," which was the
 DBA, with Anchor as the legal entity behind it. The client folded everything
@@ -140,25 +146,53 @@ visibility will not catch it.
 state. Move the opacity rule out from under that selector and a blocked script
 ships a blank page.
 
+**The mark is the client's own logo, redrawn.** She brought a real logo on
+August 28, 2026 (navy anchor, ring, knobbed stock, barbed flukes, gold wave
+flowing across), and `components/Logo.tsx` is that logo as clean vector
+geometry. The heart-ring mark this build launched with predates it and is
+retired to git history. **The water is drawn last so it flows in front of the
+shank; keep it that way, it is the whole gesture.**
+
 **The mark has no `id` and no gradient, on purpose.** `components/Logo.tsx`
 renders in both the header and the footer. A component that can render twice
 cannot own a fixed id, and two instances sharing a gradient id has painted a dark
 square before. Color comes from props, which is also how the reversed and
-one-color versions work with no duplicated geometry.
+one-color versions work with no duplicated geometry. **The one exception is
+`AnchorHero`, which owns two mask ids and renders once, in the hero. Do not put
+a second one on a page.**
 
-**Two cuts, not one artwork at two sizes.** The rope hole closes into a smudge
-below about 30px, so `Mark` switches to a solid heart under that width. The
-favicon is built from the solid cut for the same reason.
+**The hero's water actually flows.** Each ribbon in `AnchorHero` is a periodic
+path that translates exactly one period (270 user units) and loops, so the loop
+point is invisible; a gradient mask dissolves the ribbons near the frame edges.
+The animated layers are ~1080px wide, far under the ~4096px mobile compositing
+cap, and `motion-check` verifies reduced motion leaves a complete, still mark.
+If you lengthen the ribbon paths, re-check the width budget.
+
+**Two cuts, not one artwork at two sizes.** The three ribbons close into a
+smear below about 30px, so `Mark` switches to one heavier wave, thicker strokes
+and plain triangle flukes under that width. The favicon is built from the small
+cut for the same reason.
+
+**Cinzel is the wordmark face only.** The logo sets the name in Trajan-style
+capitals; Cinzel (self-hosted, `--font-brand`) is the closest free face and it
+appears in exactly two places, the header lockup and the footer wordmark. The
+moment it becomes a heading font the lockup stops being the brand's voice.
 
 **No `new Date()` in a rendered page.** It freezes at build time. That is why the
 footer copyright has no year: a "dynamic" year that silently stops updating is
 worse than no year.
 
-**Three color tokens, each validated against BOTH light grounds.** `--brick` is a
-fill color, white on it is 5.37. `--brick-ink` is red as *text*, because `--brick`
-measures only 3.79 as text on `--sand`. `--slate` is 6.39 on paper and 4.99 on
-sand. The sand band is a second ground and forgetting it is exactly how two
-violations got in. **Fix contrast at the token, never on the flagged element.**
+**The gold needs four tokens because it is quiet, and every one is measured.**
+`--gold` (#C19A49, off her logo) is a FILL: as text it fails everywhere light
+(2.38 on paper) and white on it fails too (2.63), so **gold surfaces always
+carry navy lettering** (5.66) and buttons are navy fills. `--gold-ink`
+(#6F5415) is gold as text on light grounds, 6.43 on paper and 5.01 on sand.
+`--gold-light` (#E3C27E) is gold as text on navy, 8.70. `--gold-deep`
+(#A8813A) is display-size only: 3.24 on paper clears the 3:1 large-text bar
+and nothing else. The auditor has already caught one softened gold (a 4.09 on
+the closeband) and one unstyled link on navy. **Fix contrast at the token,
+never on the flagged element**, and validate against BOTH light grounds; the
+sand band is where earlier faults hid.
 
 **The logo has to know where home is.** On a pitch host `/` is the proposal, not
 the site, so a brand link pointing at `/` throws the client out of their own

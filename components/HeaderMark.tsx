@@ -5,18 +5,17 @@ import { useEffect, useRef, useState } from "react";
 /**
  * The header mark, with an entrance.
  *
- * The idea Kevin described: the anchor falls, and the string it falls on
- * resolves into the heart. So the sequence is rope first, then weight, then
- * the heart forming at the top where the rope was.
+ * The sequence follows the logo's own story: the anchor drops first, then the
+ * water flows in across it, left to right.
  *
- *   0.00s  the rope draws downward, top to bottom
- *   0.28s  the anchor drops from above and overshoots slightly
- *   0.52s  the heart scales up from the point the rope ends
+ *   0.00s  the anchor drops from above and overshoots slightly
+ *   0.30s  the three ribbons slide in from the left and settle
  *
  * ONE SHOT, NOT A LOOP. This sits in a sticky header on every page. A looping
  * animation in persistent chrome is the thing people ask you to remove a week
- * later, and it competes with the page for attention forever. It plays once per
- * page load and then it is a logo.
+ * later, and it competes with the page for attention forever. It plays once
+ * per page load and then it is a logo. The looping water lives in AnchorHero,
+ * which appears once, in the hero, where motion is the point.
  *
  * THE UN-ANIMATED STATE IS THE FINISHED STATE. `played` starts false and the
  * animation classes are only added after mount, so with JavaScript off, before
@@ -47,36 +46,24 @@ export default function HeaderMark({ width = 32 }: { width?: number }) {
       aria-hidden="true"
       focusable="false"
     >
-      {/* The rope. Drawn with a dash offset so it appears to fall downward. */}
-      <path
-        className="hmark-rope"
-        d="M60 2 L60 40"
-        stroke="var(--navy-3)"
-        strokeWidth="4"
-        strokeLinecap="round"
-        fill="none"
-      />
-      <path
-        className="hmark-heart"
-        d="M60 45 C60 45 38.5 32.5 38.5 19.5 C38.5 11.6 44.6 5.4 52.3 5.4
-           C56.3 5.4 59 7.5 60 10.2 C61 7.5 63.7 5.4 67.7 5.4
-           C75.4 5.4 81.5 11.6 81.5 19.5 C81.5 32.5 60 45 60 45 Z"
-        fill="none"
-        stroke="var(--brick)"
-        strokeWidth="10"
-        strokeLinejoin="round"
-      />
-      <g
-        className="hmark-body"
-        fill="none"
-        stroke="var(--navy)"
-        strokeWidth="10"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        <path d="M60 47 L60 120" />
-        <path d="M32 62 L88 62" />
-        <path d="M22 83 C22 110 39 125 60 125 C81 125 98 110 98 83" />
+      <g className="hmark-body" fill="none" stroke="var(--navy)">
+        <circle cx="60" cy="19.5" r="10" strokeWidth="7.5" />
+        <g strokeWidth="10.5" strokeLinecap="round">
+          <path d="M60 32 L60 116" />
+          <path d="M28 51 L92 51" strokeWidth="9" />
+          <path d="M17 86 C21 112 37 127 60 127 C83 127 99 112 103 86" />
+        </g>
+        <g fill="var(--navy)" stroke="none">
+          <circle cx="26" cy="51" r="6.2" />
+          <circle cx="94" cy="51" r="6.2" />
+          <path d="M8 94 L15 62 L30 87 Q19 82 8 94 Z" />
+          <path d="M112 94 L105 62 L90 87 Q101 82 112 94 Z" />
+        </g>
+      </g>
+      <g className="hmark-water" fill="none" strokeLinecap="round">
+        <path d="M6 90 C22 76 40 76 57 88 C74 100 92 100 114 84" stroke="var(--gold)" strokeWidth="9" />
+        <path d="M10 103 C26 91 44 91 60 101 C76 111 92 111 110 97" stroke="var(--gold-deep)" strokeWidth="6.5" />
+        <path d="M22 114 C36 105 52 105 65 111 C77 117 90 117 102 110" stroke="var(--gold)" strokeWidth="4.5" />
       </g>
     </svg>
   );

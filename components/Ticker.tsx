@@ -21,13 +21,13 @@ export default function Ticker({
   items,
   seconds,
   reverse = false,
-  tone = "brick",
+  tone = "gold",
 }: {
   items: React.ReactNode[];
   /** One full loop. Bigger is slower. */
   seconds: number;
   reverse?: boolean;
-  tone?: "brick" | "navy";
+  tone?: "gold" | "navy";
 }) {
   const run = [...items, ...items];
   return (

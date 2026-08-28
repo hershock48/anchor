@@ -40,7 +40,7 @@ function Underline() {
       <path
         d="M4 10 C 42 3, 88 3, 118 7 C 148 11, 178 8, 196 4"
         fill="none"
-        stroke="var(--brick)"
+        stroke="var(--gold)"
         strokeWidth="7"
         strokeLinecap="round"
       />
@@ -80,7 +80,9 @@ export default async function Home() {
               {site.contact.city}.
             </p>
             <div className="hero-cta">
-              <Link className="btn" href="/quote">
+              {/* onnavy: the default .btn is a navy fill now, which would be
+                  invisible on this navy hero. */}
+              <Link className="btn onnavy" href="/quote">
                 Get a quote
               </Link>
               <Link className="btn onnavy ghost-on-navy" href="/giving/causes">
@@ -93,7 +95,7 @@ export default async function Home() {
           </div>
 
           <div className="hero-mark">
-            <AnchorHero width={300} ink="#ffffff" accent="#e4614f" rope="#5d7a94" />
+            <AnchorHero width={300} ink="#ffffff" />
           </div>
         </div>
       </section>
@@ -103,7 +105,7 @@ export default async function Home() {
           reads as one broken element; same direction reads as a mistake. */}
       <StockTicker seconds={70} initial={quotes} />
       <Ticker
-        tone="brick"
+        tone="gold"
         seconds={112}
         reverse
         items={marketNotes.map((n) => (
@@ -277,7 +279,7 @@ export default async function Home() {
         </div>
       </section>
 
-      <Wave fill="var(--brick)" bg="var(--sand)" />
+      <Wave fill="var(--gold)" bg="var(--sand)" />
 
       {/* ── close ────────────────────────────────────────────────────────── */}
       <section className="closeband">
@@ -291,11 +293,14 @@ export default async function Home() {
             </p>
           </div>
           <div className="close-actions">
-            <Link className="btn onnavy" href="/quote">
+            {/* The closeband is GOLD now: the navy-fill default button reads
+                on it, and the white ghost variant does not (white on gold is
+                2.63). Plain ghost carries navy text and passes. */}
+            <Link className="btn" href="/quote">
               Get a quote
             </Link>
             {!isPlaceholder(site.contact.phone) ? (
-              <a className="btn onnavy ghost-on-navy" href={`tel:${site.contact.phoneHref}`}>
+              <a className="btn ghost" href={`tel:${site.contact.phoneHref}`}>
                 Call {site.contact.phone}
               </a>
             ) : (

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Archivo, Inter, JetBrains_Mono } from "next/font/google";
+import { Archivo, Cinzel, Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -31,6 +31,19 @@ const display = Archivo({
   weight: ["600", "700", "800", "900"],
 });
 const body = Inter({ subsets: ["latin"], variable: "--font-body", display: "swap" });
+/**
+ * Cinzel is the wordmark face ONLY. The client's logo sets the name in
+ * Trajan-style capitals and Cinzel is the free face closest to it. It is
+ * deliberately not wired into headings: the moment it becomes a heading font
+ * the lockup stops being the brand's voice. Self-hosted at build time like
+ * the others.
+ */
+const brand = Cinzel({
+  subsets: ["latin"],
+  variable: "--font-brand",
+  display: "swap",
+  weight: ["600", "700"],
+});
 const mono = JetBrains_Mono({
   subsets: ["latin"],
   variable: "--font-mono",
@@ -78,7 +91,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${display.variable} ${body.variable} ${mono.variable}`}>
+    <html lang="en" className={`${display.variable} ${body.variable} ${mono.variable} ${brand.variable}`}>
       <body>
         <a className="skip" href="#main">
           Skip to content
