@@ -1,97 +1,83 @@
+import { ANCHOR_VIEWBOX, AP, AnchorBody } from "./Logo";
+
 /**
- * The hero mark, animated. THE WATER IS THE MOTION.
+ * The hero mark, animated. THE WATER IS THE MOTION, inside the real ribbons.
  *
- * glaze.md: the best effect is usually the client's own brand doing
- * something. Her logo is an anchor with a gold wave flowing across it, so
- * here the wave actually flows. The anchor itself only rocks, slowly, the
- * way a held anchor does in moving water.
+ * The geometry is the traced client logo, imported from Logo.tsx. The
+ * animation never redraws her ribbons: each gold ribbon becomes a clipPath,
+ * and inside it a set of long periodic shimmer strokes translates one period
+ * and loops, so the water visibly flows through the exact shapes she drew.
+ * The whole anchor rocks 1.5 degrees, the way a held anchor does in moving
+ * water. Periods and speeds share no common multiple, so the composition
+ * never visibly repeats.
  *
- * HOW THE FLOW WORKS. Each ribbon is a periodic sine-like path two full
- * periods longer than the frame (period 270 user units, drawn from -540),
- * animated by translating exactly one period and looping. The loop point is
- * therefore invisible. The ribbons run at 9s, 12.5s and 7s with negative
- * delays, and the rock at 7.5s: nothing is a multiple of anything, so the
- * composition never visibly repeats. Desynchronization over amplitude.
+ * THIS FILE OWNS ids ("ahClipLight", "ahClipDark"), WHICH Mark IS NOT
+ * ALLOWED TO DO. The no-id rule exists because Mark renders twice per page;
+ * AnchorHero renders once, in the hero. Do not put a second one on a page.
  *
- * A gradient mask fades the ribbons out near the frame edges so the moving
- * water dissolves instead of being cut off flat.
- *
- * THIS FILE OWNS TWO ids ("aheroFadeG", "aheroFade"), WHICH THE STATIC MARK
- * IS NOT ALLOWED TO DO. The rule against ids exists because Mark renders
- * twice per page. AnchorHero renders in the hero only, once per page, same as
- * the old AnimatedMark pattern. Do not put a second one on a page.
- *
- * WIDTH BUDGET. The animated layers are the ribbon paths: 1080 user units,
- * rendered at 300px wide, so about 1080px per layer, and about 774px at the
- * 215px mobile size. Both are far under the ~4096px point where mobile GPUs
- * stop compositing an animated layer (see lib/ticker.ts). Re-check this if
- * you lengthen the paths.
+ * WIDTH BUDGET. The animated layers are the shimmer strokes: 720 user units
+ * wide, rendered at most ~1.05x scale, far under the ~4096px mobile
+ * compositing cap (see lib/ticker.ts).
  *
  * Reduced motion is handled in globals.css and degrades to the finished
- * state: the anchor sits still with the water drawn in full.
+ * state: the logo, still and complete.
  */
 export default function AnchorHero({
   width = 300,
-  /** Defaults are for a LIGHT ground. On the navy hero pass the light values,
-   *  or the anchor is navy on navy and effectively invisible. */
   ink = "var(--navy)",
-  accent = "var(--gold)",
-  accentDeep = "var(--gold-deep)",
+  gap = "var(--navy)",
+  accent = "var(--gold-light)",
+  accentDeep = "var(--gold)",
 }: {
   width?: number;
   ink?: string;
+  /** The slit color: pass the hero's background so the slits read as ground. */
+  gap?: string;
   accent?: string;
   accentDeep?: string;
 }) {
-  const height = Math.round(width * (400 / 300));
-  // One ribbon period. The animation in globals.css translates by exactly
-  // this many user units; if it changes, change aheroFlow with it.
-  const wave = (y: number, amp: number) =>
-    `M-540 ${y} q 67.5 ${-amp} 135 0 t 135 0 t 135 0 t 135 0 t 135 0 t 135 0 t 135 0 t 135 0`;
+  const height = Math.round(width * (442 / 390));
+  // One shimmer period is 120 user units; globals.css translates by exactly
+  // that. Strokes span two extra periods left so the loop never uncovers.
+  const shimmer = (y: number, amp: number) =>
+    `M-120 ${y} q 30 ${-amp} 60 0 t 60 0 t 60 0 t 60 0 t 60 0 t 60 0 t 60 0 t 60 0 t 60 0 t 60 0`;
 
   return (
     <svg
       className="ahero"
       width={width}
       height={height}
-      viewBox="0 0 300 400"
+      viewBox={ANCHOR_VIEWBOX}
       aria-hidden="true"
       focusable="false"
     >
       <defs>
-        <linearGradient id="aheroFadeG" x1="0" y1="0" x2="1" y2="0">
-          <stop offset="0" stopColor="#000" />
-          <stop offset="0.1" stopColor="#fff" />
-          <stop offset="0.9" stopColor="#fff" />
-          <stop offset="1" stopColor="#000" />
-        </linearGradient>
-        <mask id="aheroFade" maskUnits="userSpaceOnUse" x="0" y="160" width="300" height="155">
-          <rect x="0" y="160" width="300" height="155" fill="url(#aheroFadeG)" />
-        </mask>
+        <clipPath id="ahClipLight">
+          <path d={AP.goldLight} />
+        </clipPath>
+        <clipPath id="ahClipDark">
+          <path d={AP.goldDark} />
+        </clipPath>
       </defs>
 
       <g className="ahero-rock">
-        <g fill="none" stroke={ink}>
-          <circle cx="150" cy="49" r="25" strokeWidth="18.5" />
-          <g strokeWidth="26" strokeLinecap="round">
-            <path d="M150 80 L150 290" />
-            <path d="M70 127.5 L230 127.5" strokeWidth="22.5" />
-            <path d="M42.5 215 C52.5 280 92.5 317.5 150 317.5 C207.5 317.5 247.5 280 257.5 215" />
-          </g>
-          <g fill={ink} stroke="none">
-            <circle cx="65" cy="127.5" r="15.5" />
-            <circle cx="235" cy="127.5" r="15.5" />
-            <path d="M20 235 L37.5 155 L75 217.5 Q47.5 205 20 235 Z" />
-            <path d="M280 235 L262.5 155 L225 217.5 Q252.5 205 280 235 Z" />
+        <AnchorBody ink={ink} gap={gap} />
+
+        {/* the light ribbon, with water moving through it */}
+        <g clipPath="url(#ahClipLight)">
+          <path fill={accent} d={AP.goldLight} />
+          <g fill="none" strokeLinecap="round" opacity="0.55">
+            <path className="ahero-w1" d={shimmer(452, 7)} stroke={accentDeep} strokeWidth="5" />
+            <path className="ahero-w2" d={shimmer(468, 6)} stroke={accentDeep} strokeWidth="3.5" />
           </g>
         </g>
 
-        <g mask="url(#aheroFade)" fill="none" strokeLinecap="round">
-          <path className="ahero-w1" d={wave(220, 34)} stroke={accent} strokeWidth="22.5" />
-          {/* Negative amplitude flips the phase, so the middle ribbon crests
-              where the others trough. */}
-          <path className="ahero-w2" d={wave(254, -27)} stroke={accentDeep} strokeWidth="16" />
-          <path className="ahero-w3" d={wave(283, 20)} stroke={accent} strokeWidth="11" />
+        {/* the dark ribbon */}
+        <g clipPath="url(#ahClipDark)">
+          <path fill={accentDeep} d={AP.goldDark} />
+          <g fill="none" strokeLinecap="round" opacity="0.5">
+            <path className="ahero-w3" d={shimmer(492, 6)} stroke={accent} strokeWidth="4" />
+          </g>
         </g>
       </g>
     </svg>

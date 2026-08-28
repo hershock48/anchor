@@ -1,25 +1,31 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
-  <!-- FULL BLEED, NO CORNER RADIUS.
-       The first version was a rounded rect, which baked pure white into the four
-       corners of the PNG. On any tab or launcher background that is not white
-       that reads as a white frame around a blue blob. It also double-rounds on
-       iOS, which applies its own mask to an apple-touch-icon and expects a full
-       square to mask.
-       The geometry is the client's logo as drawn in components/Logo.tsx: white
-       anchor, gold wave over it. Nudged up because the anchor's visual mass
-       sits low, so a geometric centre reads as sitting too high. -->
-  <rect width="512" height="512" fill="#14293C"/>
-  <g transform="translate(82 32) scale(2.9)">
-    <circle cx="60" cy="19.5" r="10" fill="none" stroke="#FFFFFF" stroke-width="7.5"/>
-    <path d="M60 32 L60 116" stroke="#FFFFFF" stroke-width="10.5" stroke-linecap="round" fill="none"/>
-    <path d="M28 51 L92 51" stroke="#FFFFFF" stroke-width="9" stroke-linecap="round" fill="none"/>
-    <circle cx="26" cy="51" r="6.2" fill="#FFFFFF"/>
-    <circle cx="94" cy="51" r="6.2" fill="#FFFFFF"/>
-    <path d="M17 86 C21 112 37 127 60 127 C83 127 99 112 103 86" stroke="#FFFFFF" stroke-width="10.5" stroke-linecap="round" fill="none"/>
-    <path d="M8 94 L15 62 L30 87 Q19 82 8 94 Z" fill="#FFFFFF"/>
-    <path d="M112 94 L105 62 L90 87 Q101 82 112 94 Z" fill="#FFFFFF"/>
-    <path d="M6 90 C22 76 40 76 57 88 C74 100 92 100 114 84" stroke="#C19A49" stroke-width="9" stroke-linecap="round" fill="none"/>
-    <path d="M10 103 C26 91 44 91 60 101 C76 111 92 111 110 97" stroke="#A8813A" stroke-width="6.5" stroke-linecap="round" fill="none"/>
-    <path d="M22 114 C36 105 52 105 65 111 C77 117 90 117 102 110" stroke="#C19A49" stroke-width="4.5" stroke-linecap="round" fill="none"/>
+  <!-- FULL BLEED, NO CORNER RADIUS (iOS masks its own). The geometry is the
+       traced client logo from components/Logo.tsx, full cut, white on the
+       logo's navy, slits drawn in the ground color. -->
+  <rect width="512" height="512" fill="#F7F3EC"/>
+  <g transform="translate(-43.25 -115.5) scale(0.95)">
+    <path fill-rule="evenodd" fill="#122C4E" d="M310 181.5 A43.5 43.5 0 1 1 309.9 181.5 Z M310 204 A21 21 0 1 0 310.1 204 Z"/>
+    <path d="M281 240 A33 33 0 1 1 339 240" stroke="#F7F3EC" stroke-width="4" fill="none" stroke-linecap="round"/>
+    <path fill="#122C4E" d="M292 250 C294 258 292 264 291 270 L286 470 L308 472 L308 252 Z"/>
+    <path fill="#122C4E" d="M328 250 C326 258 328 264 328 270 L332 470 L314 472 L314 252 Z"/>
+    <path fill="#122C4E" d="M308 283 L277 288 L237 300 L237 320 L308 327 Z"/>
+    <path fill="#122C4E" d="M314 283 L345 288 L383 300 L383 320 L314 327 Z"/>
+    <path d="M246 306 L302 307" stroke="#F7F3EC" stroke-width="3" fill="none"/>
+    <path d="M374 306 L318 307" stroke="#F7F3EC" stroke-width="3" fill="none"/>
+    <rect x="202" y="279" width="31" height="51" rx="14" fill="#122C4E"/>
+    <rect x="387" y="279" width="31" height="51" rx="14" fill="#122C4E"/>
+    <path d="M221 287 L221 322" stroke="#F7F3EC" stroke-width="3.5" fill="none"/>
+    <path d="M399 287 L399 322" stroke="#F7F3EC" stroke-width="3.5" fill="none"/>
+    <path fill="#122C4E" d="M150 400 C165 419 180 440 191 456 L182 464 L191 471 L179 476 L186 483 C170 484 152 480 141 472 C135 449 140 422 150 400 Z"/>
+    <path d="M151 426 C154 443 160 458 168 469" stroke="#F7F3EC" stroke-width="4" fill="none" stroke-linecap="round"/>
+    <path fill="#122C4E" d="M130 474 C155 486 195 492 235 494 C253 495 268 496 280 498 C262 510 228 514 196 511 C168 508 146 498 134 487 C131 483 129 478 130 474 Z"/>
+    <path fill="#122C4E" d="M380 548 C410 531 436 507 450 480 C454 472 457 464 458 457 L441 452 C436 472 425 493 409 512 C399 524 389 536 380 548 Z"/>
+    <path fill="#122C4E" d="M471 397 C476 414 480 431 483 450 C471 452 459 456 448 462 C452 440 460 417 471 397 Z"/>
+    <path fill="#122C4E" d="M471 397 C459 407 448 421 440 437 L433 452 L446 458 C452 438 460 416 471 397 Z"/>
+    <path fill="#122C4E" d="M449 465 L478 466 L456 484 Z"/>
+    <path fill="#122C4E" d="M172 512 C220 524 265 515 300 507 C318 503 332 507 348 514 C375 524 402 514 421 497 C433 532 415 561 384 574 C352 588 327 591 310 602 C291 584 255 570 224 553 C202 541 182 528 172 512 Z"/>
+    <path d="M225 534 C280 540 340 542 412 510" stroke="#F7F3EC" stroke-width="5.5" fill="none" stroke-linecap="round"/>
+    <path fill="#D3BB90" d="M196 468 C232 466 272 458 306 449 C338 440 368 435 396 432 C408 431 418 429 426 427 C419 443 402 456 378 464 C342 476 292 481 254 477 C232 474 212 472 196 468 Z"/>
+    <path fill="#C69F58" d="M262 486 C300 497 344 499 380 491 C398 486 412 478 424 467 C421 486 406 499 384 506 C344 517 296 507 262 486 Z"/>
   </g>
 </svg>

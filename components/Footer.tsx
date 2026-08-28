@@ -11,7 +11,7 @@ export default function Footer() {
     <footer className="site-foot">
       <div className="wrap foot-in">
         <div className="foot-brand">
-          <Mark width={44} ink="#ffffff" />
+          <Mark width={44} ink="#ffffff" gap="var(--navy-2)" />
           <p className="foot-name">{site.name}</p>
           <p className="foot-tag">{site.tagline}</p>
           <p className="foot-legal">

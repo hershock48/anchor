@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
@@ -33,7 +33,7 @@
   --cream:#FDF6EC; --cream-2:#FFFDF8; --taupe:#7F6D5B;
   /* the client's, shown here only inside specimens. Gold straight off her
      logo; gold-ink is the darkened text cut (6.4 on paper). */
-  --navy:#14293C; --gold:#C19A49; --gold-deep:#A8813A; --gold-ink:#6F5415; --sand:#E4D7C3; --paper:#F7F3EC;
+  --navy:#122C4E; --gold:#C69F58; --gold-light:#D3BB90; --gold-ink:#6F5415; --sand:#E4D7C3; --paper:#F7F3EC;
 }
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
@@ -106,7 +106,7 @@ h2.sec-title{font-size:clamp(28px,4vw,40px);font-weight:800;letter-spacing:-1.4p
 .lockh .wm .big{font-size:21px}
 .lockh .wm .tl{font-size:9px}
 .lockh .wm .rule{margin:6px 0 5px}
-.stage.navy .wm{color:#fff}.stage.navy .wm .tl{color:#E3C27E}
+.stage.navy .wm{color:#fff}.stage.navy .wm .tl{color:#D3BB90}
 .stage.gold .wm{color:var(--navy)}.stage.gold .wm .rule{background:var(--navy)}.stage.gold .wm .tl{color:var(--navy)}
 
 .chip{display:flex;flex-direction:column;align-items:center;gap:9px}
@@ -187,15 +187,15 @@ footer .inner{max-width:1100px;margin:0 auto;padding:52px 24px 34px}
 .js .reveal{opacity:0;transform:translateY(26px);transition:opacity .7s ease,transform .7s ease}
 .js .reveal.in{opacity:1;transform:none}
 
-/* the motion specimen: the same flow the site's hero runs, at specimen scale.
-   Each ribbon is periodic (period 54*2=108 user units) and translates exactly
-   one period, so the loop point is invisible. */
-.lg-rock{transform-box:view-box;transform-origin:60px 75px;animation:lgRock 7.5s cubic-bezier(.45,.05,.55,.95) infinite -1.8s}
+/* the motion specimen: the same flow the site's hero runs. Shimmer strokes
+   are periodic (period 120 user units) and translate exactly one period, so
+   the loop point is invisible, clipped inside the logo's own gold ribbons. */
+.lg-rock{transform-box:view-box;transform-origin:195px 215px;animation:lgRock 7.5s cubic-bezier(.45,.05,.55,.95) infinite -1.8s}
 @keyframes lgRock{0%,100%{transform:rotate(-1.5deg)}50%{transform:rotate(1.5deg)}}
 .lg-w1{animation:lgFlow 9s linear infinite}
 .lg-w2{animation:lgFlow 12.5s linear infinite -4s}
 .lg-w3{animation:lgFlow 7s linear infinite -2s}
-@keyframes lgFlow{from{transform:translateX(0)}to{transform:translateX(108px)}}
+@keyframes lgFlow{from{transform:translateX(0)}to{transform:translateX(120px)}}
 @media(prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
   .js .reveal{opacity:1;transform:none;transition:none}
@@ -267,32 +267,50 @@ footer .inner{max-width:1100px;margin:0 auto;padding:52px 24px 34px}
     <path d="M0,0 H1440 V16 C1408 16 1400 44 1378 44 C1356 44 1362 16 1332 16 H1180 C1160 16 1156 52 1132 52 C1110 52 1116 16 1088 16 H880 C862 16 860 38 842 38 C824 38 828 16 802 16 H590 C574 16 572 48 550 48 C528 48 532 16 506 16 H300 C284 16 282 36 264 36 C246 36 250 16 224 16 H0 Z"/>
   </symbol>
 
-  <!-- ===== the client's mark, redrawn from her own logo ===== -->
-  <!-- The geometry is the one shipped in components/Logo.tsx: ring, knobbed
-       stock, barbed flukes, and the gold water drawn last so it flows in
-       front of the shank, which is the whole gesture of the original. -->
+  <!-- ===== the client's mark: HER LOGO, TRACED ===== -->
+  <!-- Traced from the supplied artwork with an overlay-diff harness; the
+       geometry matches components/Logo.tsx exactly. viewBox for both cuts is
+       "120 170 390 442". Slits draw in var(--a-gap): pass the ground color
+       on any non-paper stage. -->
   <g id="ifac">
-    <circle cx="60" cy="19.5" r="10" fill="none" stroke="var(--a-ink,#14293C)" stroke-width="7.5"/>
-    <path d="M60 32 L60 116" stroke="var(--a-ink,#14293C)" stroke-width="10.5" stroke-linecap="round" fill="none"/>
-    <path d="M28 51 L92 51" stroke="var(--a-ink,#14293C)" stroke-width="9" stroke-linecap="round" fill="none"/>
-    <circle cx="26" cy="51" r="6.2" fill="var(--a-ink,#14293C)"/>
-    <circle cx="94" cy="51" r="6.2" fill="var(--a-ink,#14293C)"/>
-    <path d="M17 86 C21 112 37 127 60 127 C83 127 99 112 103 86" stroke="var(--a-ink,#14293C)" stroke-width="10.5" stroke-linecap="round" fill="none"/>
-    <path d="M8 94 L15 62 L30 87 Q19 82 8 94 Z" fill="var(--a-ink,#14293C)"/>
-    <path d="M112 94 L105 62 L90 87 Q101 82 112 94 Z" fill="var(--a-ink,#14293C)"/>
-    <path d="M6 90 C22 76 40 76 57 88 C74 100 92 100 114 84" stroke="var(--a-accent,#C19A49)" stroke-width="9" stroke-linecap="round" fill="none"/>
-    <path d="M10 103 C26 91 44 91 60 101 C76 111 92 111 110 97" stroke="var(--a-accent2,#A8813A)" stroke-width="6.5" stroke-linecap="round" fill="none"/>
-    <path d="M22 114 C36 105 52 105 65 111 C77 117 90 117 102 110" stroke="var(--a-accent,#C19A49)" stroke-width="4.5" stroke-linecap="round" fill="none"/>
+    <path fill-rule="evenodd" fill="var(--a-ink,#122C4E)" d="M310 181.5 A43.5 43.5 0 1 1 309.9 181.5 Z M310 204 A21 21 0 1 0 310.1 204 Z"/>
+    <path d="M281 240 A33 33 0 1 1 339 240" stroke="var(--a-gap,#F7F3EC)" stroke-width="4" fill="none" stroke-linecap="round"/>
+    <path fill="var(--a-ink,#122C4E)" d="M292 250 C294 258 292 264 291 270 L286 470 L308 472 L308 252 Z"/>
+    <path fill="var(--a-ink,#122C4E)" d="M328 250 C326 258 328 264 328 270 L332 470 L314 472 L314 252 Z"/>
+    <path fill="var(--a-ink,#122C4E)" d="M308 283 L277 288 L237 300 L237 320 L308 327 Z"/>
+    <path fill="var(--a-ink,#122C4E)" d="M314 283 L345 288 L383 300 L383 320 L314 327 Z"/>
+    <path d="M246 306 L302 307" stroke="var(--a-gap,#F7F3EC)" stroke-width="3" fill="none"/>
+    <path d="M374 306 L318 307" stroke="var(--a-gap,#F7F3EC)" stroke-width="3" fill="none"/>
+    <rect x="202" y="279" width="31" height="51" rx="14" fill="var(--a-ink,#122C4E)"/>
+    <rect x="387" y="279" width="31" height="51" rx="14" fill="var(--a-ink,#122C4E)"/>
+    <path d="M221 287 L221 322" stroke="var(--a-gap,#F7F3EC)" stroke-width="3.5" fill="none"/>
+    <path d="M399 287 L399 322" stroke="var(--a-gap,#F7F3EC)" stroke-width="3.5" fill="none"/>
+    <path fill="var(--a-ink,#122C4E)" d="M150 400 C165 419 180 440 191 456 L182 464 L191 471 L179 476 L186 483 C170 484 152 480 141 472 C135 449 140 422 150 400 Z"/>
+    <path d="M151 426 C154 443 160 458 168 469" stroke="var(--a-gap,#F7F3EC)" stroke-width="4" fill="none" stroke-linecap="round"/>
+    <path fill="var(--a-ink,#122C4E)" d="M130 474 C155 486 195 492 235 494 C253 495 268 496 280 498 C262 510 228 514 196 511 C168 508 146 498 134 487 C131 483 129 478 130 474 Z"/>
+    <path fill="var(--a-ink,#122C4E)" d="M380 548 C410 531 436 507 450 480 C454 472 457 464 458 457 L441 452 C436 472 425 493 409 512 C399 524 389 536 380 548 Z"/>
+    <path fill="var(--a-ink,#122C4E)" d="M471 397 C476 414 480 431 483 450 C471 452 459 456 448 462 C452 440 460 417 471 397 Z"/>
+    <path fill="var(--a-ink,#122C4E)" d="M471 397 C459 407 448 421 440 437 L433 452 L446 458 C452 438 460 416 471 397 Z"/>
+    <path fill="var(--a-ink,#122C4E)" d="M449 465 L478 466 L456 484 Z"/>
+    <path fill="var(--a-ink,#122C4E)" d="M172 512 C220 524 265 515 300 507 C318 503 332 507 348 514 C375 524 402 514 421 497 C433 532 415 561 384 574 C352 588 327 591 310 602 C291 584 255 570 224 553 C202 541 182 528 172 512 Z"/>
+    <path d="M225 534 C280 540 340 542 412 510" stroke="var(--a-gap,#F7F3EC)" stroke-width="5.5" fill="none" stroke-linecap="round"/>
+    <path fill="var(--a-accent,#D3BB90)" d="M196 468 C232 466 272 458 306 449 C338 440 368 435 396 432 C408 431 418 429 426 427 C419 443 402 456 378 464 C342 476 292 481 254 477 C232 474 212 472 196 468 Z"/>
+    <path fill="var(--a-accent2,#C69F58)" d="M262 486 C300 497 344 499 380 491 C398 486 412 478 424 467 C421 486 406 499 384 506 C344 517 296 507 262 486 Z"/>
   </g>
-  <!-- small cut: one heavier wave, plain flukes, mass kept -->
+  <!-- small cut: no slits, merged stock, one heavy gold band -->
   <g id="ifacS">
-    <circle cx="60" cy="20" r="10.5" fill="none" stroke="var(--a-ink,#14293C)" stroke-width="9"/>
-    <path d="M60 34 L60 114" stroke="var(--a-ink,#14293C)" stroke-width="13" stroke-linecap="round" fill="none"/>
-    <path d="M28 54 L92 54" stroke="var(--a-ink,#14293C)" stroke-width="11" stroke-linecap="round" fill="none"/>
-    <path d="M16 84 C20 111 37 126 60 126 C83 126 100 111 104 84" stroke="var(--a-ink,#14293C)" stroke-width="13" stroke-linecap="round" fill="none"/>
-    <path d="M7 95 L15 60 L32 87 Z" fill="var(--a-ink,#14293C)"/>
-    <path d="M113 95 L105 60 L88 87 Z" fill="var(--a-ink,#14293C)"/>
-    <path d="M6 94 C24 80 42 80 58 91 C74 102 92 102 114 86" stroke="var(--a-accent,#C19A49)" stroke-width="12" stroke-linecap="round" fill="none"/>
+    <circle cx="310" cy="223" r="38" fill="none" stroke="var(--a-ink,#122C4E)" stroke-width="23"/>
+    <path fill="var(--a-ink,#122C4E)" d="M298 252 L322 252 L331 470 L289 470 Z"/>
+    <path fill="var(--a-ink,#122C4E)" d="M230 294 L390 294 L390 324 L230 324 Z"/>
+    <rect x="196" y="276" width="40" height="56" rx="16" fill="var(--a-ink,#122C4E)"/>
+    <rect x="384" y="276" width="40" height="56" rx="16" fill="var(--a-ink,#122C4E)"/>
+    <path fill="var(--a-ink,#122C4E)" d="M148 398 C166 420 182 443 194 460 L186 484 C166 486 148 480 138 470 C133 447 138 420 148 398 Z"/>
+    <path fill="var(--a-ink,#122C4E)" d="M375 550 C408 530 436 504 452 474 L436 462 C428 486 412 512 392 532 Z"/>
+    <path fill="var(--a-ink,#122C4E)" d="M472 394 C478 416 483 436 485 456 L446 466 C452 440 460 414 472 394 Z"/>
+    <path fill="var(--a-ink,#122C4E)" d="M446 468 L480 468 L454 490 Z"/>
+    <path fill="var(--a-ink,#122C4E)" d="M172 512 C220 524 265 515 300 507 C318 503 332 507 348 514 C375 524 402 514 421 497 C433 532 415 561 384 574 C352 588 327 591 310 602 C291 584 255 570 224 553 C202 541 182 528 172 512 Z"/>
+    <path fill="var(--a-ink,#122C4E)" d="M130 474 C155 486 195 492 235 494 C253 495 268 496 280 498 C262 510 228 514 196 511 C168 508 146 498 134 487 C131 483 129 478 130 474 Z"/>
+    <path fill="var(--a-accent2,#C69F58)" d="M190 470 C240 462 300 448 360 440 C390 436 412 432 428 426 C420 448 398 462 368 472 C320 486 250 486 190 470 Z"/>
   </g>
 </defs></svg>
 
@@ -322,52 +340,37 @@ footer .inner{max-width:1100px;margin:0 auto;padding:52px 24px 34px}
 <section id="new">
   <div class="inner">
     <p class="sec-kicker reveal">The refinement</p>
-    <h2 class="sec-title reveal">Same logo. Cleaner cut.</h2>
-    <p class="sec-sub reveal">Nothing about the idea changed: a navy anchor holding, gold water moving over it. What changed is the drawing. The linework is regularized so it survives every size, the flukes come to real points, the stock keeps its knobs, and the wave is rebuilt as three ribbons, because three ribbons can move.</p>
+    <h2 class="sec-title reveal">Your logo, traced into vectors.</h2>
+    <p class="sec-sub reveal">This is your artwork, traced shape by shape into exact vector geometry: the ring with its inner highlight, the split shank, the slit caps on the stock, the sail and the arrow, the layered water. Vectors stay sharp from a billboard down to a favicon, and they make the one thing a flat image cannot do possible: the water can move.</p>
 
     <div class="stage paper reveal">
-      <svg width="188" height="235" viewBox="0 0 120 150" aria-hidden="true"><use href="#ifac"/></svg>
+      <svg width="188" height="213" viewBox="120 170 390 442" aria-hidden="true"><use href="#ifac"/></svg>
     </div>
     <p class="cap">The mark</p>
 
-    <div class="stage navy reveal">
-      <svg width="188" height="235" viewBox="0 0 120 150" aria-hidden="true">
+    <div class="stage paper reveal">
+      <svg width="188" height="213" viewBox="120 170 390 442" aria-hidden="true">
         <defs>
-          <linearGradient id="lgFadeG" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0" stop-color="#000"/><stop offset="0.1" stop-color="#fff"/>
-            <stop offset="0.9" stop-color="#fff"/><stop offset="1" stop-color="#000"/>
-          </linearGradient>
-          <mask id="lgFade" maskUnits="userSpaceOnUse" x="0" y="64" width="120" height="62">
-            <rect x="0" y="64" width="120" height="62" fill="url(#lgFadeG)"/>
-          </mask>
+          <clipPath id="lgClipLight"><path d="M196 468 C232 466 272 458 306 449 C338 440 368 435 396 432 C408 431 418 429 426 427 C419 443 402 456 378 464 C342 476 292 481 254 477 C232 474 212 472 196 468 Z"/></clipPath>
+          <clipPath id="lgClipDark"><path d="M262 486 C300 497 344 499 380 491 C398 486 412 478 424 467 C421 486 406 499 384 506 C344 517 296 507 262 486 Z"/></clipPath>
         </defs>
         <g class="lg-rock">
-          <g fill="none" stroke="#fff">
-            <circle cx="60" cy="19.5" r="10" stroke-width="7.5"/>
-            <g stroke-width="10.5" stroke-linecap="round">
-              <path d="M60 32 L60 116"/>
-              <path d="M28 51 L92 51" stroke-width="9"/>
-              <path d="M17 86 C21 112 37 127 60 127 C83 127 99 112 103 86"/>
-            </g>
-            <g fill="#fff" stroke="none">
-              <circle cx="26" cy="51" r="6.2"/><circle cx="94" cy="51" r="6.2"/>
-              <path d="M8 94 L15 62 L30 87 Q19 82 8 94 Z"/>
-              <path d="M112 94 L105 62 L90 87 Q101 82 112 94 Z"/>
-            </g>
+          <use href="#ifac"/>
+          <g clip-path="url(#lgClipLight)" fill="none" stroke-linecap="round" opacity="0.55">
+            <path class="lg-w1" stroke="#C69F58" stroke-width="5" d="M-120 452 q 30 -7 60 0 t 60 0 t 60 0 t 60 0 t 60 0 t 60 0 t 60 0 t 60 0 t 60 0 t 60 0"/>
+            <path class="lg-w2" stroke="#C69F58" stroke-width="3.5" d="M-120 468 q 30 -6 60 0 t 60 0 t 60 0 t 60 0 t 60 0 t 60 0 t 60 0 t 60 0 t 60 0 t 60 0"/>
           </g>
-          <g mask="url(#lgFade)" fill="none" stroke-linecap="round">
-            <path class="lg-w1" stroke="#C19A49" stroke-width="9"    d="M-216 88  q 27 -13.6 54 0 t 54 0 t 54 0 t 54 0 t 54 0 t 54 0 t 54 0 t 54 0"/>
-            <path class="lg-w2" stroke="#A8813A" stroke-width="6.5"  d="M-216 101 q 27 10.8  54 0 t 54 0 t 54 0 t 54 0 t 54 0 t 54 0 t 54 0 t 54 0"/>
-            <path class="lg-w3" stroke="#C19A49" stroke-width="4.5"  d="M-216 112 q 27 -8    54 0 t 54 0 t 54 0 t 54 0 t 54 0 t 54 0 t 54 0 t 54 0"/>
+          <g clip-path="url(#lgClipDark)" fill="none" stroke-linecap="round" opacity="0.5">
+            <path class="lg-w3" stroke="#D3BB90" stroke-width="4" d="M-120 492 q 30 -6 60 0 t 60 0 t 60 0 t 60 0 t 60 0 t 60 0 t 60 0 t 60 0 t 60 0 t 60 0"/>
           </g>
         </g>
       </svg>
     </div>
-    <p class="cap">The motion. The water flows and the anchor rocks; this exact animation runs in the site's hero.</p>
+    <p class="cap">The motion. The water flows through your ribbons and the anchor rocks; this exact animation runs in the site's hero.</p>
 
     <div class="stage paper reveal" style="padding-top:52px;padding-bottom:52px">
       <div class="lock">
-        <svg width="96" height="120" viewBox="0 0 120 150" aria-hidden="true"><use href="#ifac"/></svg>
+        <svg width="96" height="109" viewBox="120 170 390 442" aria-hidden="true"><use href="#ifac"/></svg>
         <div class="wm">
           <span class="big">Anchor Insurance</span>
           <span class="rule"></span>
@@ -379,7 +382,7 @@ footer .inner{max-width:1100px;margin:0 auto;padding:52px 24px 34px}
 
     <div class="stage navy reveal">
       <div class="lockh">
-        <svg width="62" height="78" viewBox="0 0 120 150" style="--a-ink:#ffffff" aria-hidden="true"><use href="#ifac"/></svg>
+        <svg width="62" height="70" viewBox="120 170 390 442" style="--a-ink:#ffffff;--a-gap:#122C4E" aria-hidden="true"><use href="#ifac"/></svg>
         <div class="wm"><span class="big">Anchor Insurance</span><span class="rule"></span><span class="tl">And Risk Management</span></div>
       </div>
     </div>
@@ -387,20 +390,20 @@ footer .inner{max-width:1100px;margin:0 auto;padding:52px 24px 34px}
 
     <div class="stage gold reveal">
       <div class="lockh">
-        <svg width="62" height="78" viewBox="0 0 120 150" style="--a-ink:#ffffff;--a-accent:#ffffff;--a-accent2:#ffffff" aria-hidden="true"><use href="#ifac"/></svg>
+        <svg width="62" height="70" viewBox="120 170 390 442" style="--a-ink:#ffffff;--a-accent:#ffffff;--a-accent2:#ffffff;--a-gap:#C69F58" aria-hidden="true"><use href="#ifac"/></svg>
         <div class="wm"><span class="big">Anchor Insurance</span><span class="rule"></span><span class="tl">And Risk Management</span></div>
       </div>
     </div>
     <p class="cap">On the loud one</p>
 
     <div class="stage sand reveal" style="gap:40px;align-items:flex-end">
-      <div class="chip"><svg width="70" height="88" viewBox="0 0 120 150" aria-hidden="true"><use href="#ifac"/></svg><span class="lbl">full</span></div>
-      <div class="chip"><svg width="34" height="43" viewBox="0 0 120 150" aria-hidden="true"><use href="#ifac"/></svg><span class="lbl">34px</span></div>
-      <div class="chip"><svg width="22" height="28" viewBox="0 0 120 150" aria-hidden="true"><use href="#ifacS"/></svg><span class="lbl">22px &middot; small cut</span></div>
-      <div class="chip"><svg width="16" height="20" viewBox="0 0 120 150" aria-hidden="true"><use href="#ifacS"/></svg><span class="lbl">16px &middot; small cut</span></div>
-      <div class="chip"><svg width="70" height="88" viewBox="0 0 120 150" style="--a-ink:#14293C;--a-accent:#14293C" aria-hidden="true"><use href="#ifac"/></svg><span class="lbl">one color</span></div>
+      <div class="chip"><svg width="70" height="79" viewBox="120 170 390 442" style="--a-gap:#E4D7C3" aria-hidden="true"><use href="#ifac"/></svg><span class="lbl">full</span></div>
+      <div class="chip"><svg width="34" height="39" viewBox="120 170 390 442" style="--a-gap:#E4D7C3" aria-hidden="true"><use href="#ifac"/></svg><span class="lbl">34px</span></div>
+      <div class="chip"><svg width="22" height="25" viewBox="120 170 390 442" aria-hidden="true"><use href="#ifacS"/></svg><span class="lbl">22px &middot; small cut</span></div>
+      <div class="chip"><svg width="16" height="18" viewBox="120 170 390 442" aria-hidden="true"><use href="#ifacS"/></svg><span class="lbl">16px &middot; small cut</span></div>
+      <div class="chip"><svg width="70" height="79" viewBox="120 170 390 442" style="--a-ink:#122C4E;--a-accent:#122C4E;--a-accent2:#122C4E;--a-gap:#E4D7C3" aria-hidden="true"><use href="#ifac"/></svg><span class="lbl">one color</span></div>
     </div>
-    <p class="cap">Two cuts. Below about 30px the three ribbons become one and the strokes go heavier.</p>
+    <p class="cap">Two cuts. Below about 30px the slits close, the ribbons merge and the strokes go heavier.</p>
   </div>
 </section>
 
@@ -413,13 +416,13 @@ footer .inner{max-width:1100px;margin:0 auto;padding:52px 24px 34px}
     <p class="sec-sub reveal">Your logo already answers the color question: navy and gold. What we added is the arithmetic. Every pairing on the site is computed for contrast, which is why the gold has a darker cut for text and why gold surfaces always carry navy lettering rather than white.</p>
 
     <div class="sw">
-      <div style="background:#14293C;color:#fff;border-color:#14293C">
-        <b>Anchor Navy</b><code>#14293C</code>
-        <em>Carries the trust. Text, the mark, buttons, dark surfaces.</em>
+      <div style="background:#122C4E;color:#fff;border-color:#122C4E">
+        <b>Anchor Navy</b><code>#122C4E</code>
+        <em>Sampled from your anchor. Text, the mark, buttons, dark surfaces.</em>
       </div>
-      <div style="background:#C19A49;color:#14293C;border-color:#C19A49">
-        <b>Anchor Gold</b><code>#C19A49</code>
-        <em>The water. Marks the giving, and always carries navy lettering.</em>
+      <div style="background:#C69F58;color:#122C4E;border-color:#C69F58">
+        <b>Anchor Gold</b><code>#C69F58</code>
+        <em>Your lower ribbon. Marks the giving, and always carries navy lettering.</em>
       </div>
       <div style="background:#E4D7C3;border-color:#d3c3aa">
         <b>Sand</b><code>#E4D7C3</code>
@@ -459,7 +462,7 @@ footer .inner{max-width:1100px;margin:0 auto;padding:52px 24px 34px}
         <div class="screen">
           <div class="sitenav">
             <div class="lk">
-              <svg width="26" height="33" viewBox="0 0 120 150" aria-hidden="true"><use href="#ifac"/></svg>
+              <svg width="26" height="29" viewBox="120 170 390 442" aria-hidden="true"><use href="#ifac"/></svg>
               <span class="n">Anchor Insurance<em>And Risk Management</em></span>
             </div>
             <ul><li>Auto</li><li>Home</li><li>Our giving</li><li>About</li><li>Contact</li></ul>
@@ -479,7 +482,7 @@ footer .inner{max-width:1100px;margin:0 auto;padding:52px 24px 34px}
       <div class="smallmocks">
         <div class="card2 reveal">
           <div class="top">
-            <svg width="30" height="38" viewBox="0 0 120 150" aria-hidden="true"><use href="#ifac"/></svg>
+            <svg width="30" height="34" viewBox="120 170 390 442" aria-hidden="true"><use href="#ifac"/></svg>
             <span class="n">Anchor Insurance<em>And Risk Management</em></span>
           </div>
           <div class="who">
@@ -490,7 +493,7 @@ footer .inner{max-width:1100px;margin:0 auto;padding:52px 24px 34px}
         </div>
         <div class="card2 back reveal">
           <div class="mid">
-            <svg width="46" height="58" viewBox="0 0 120 150" style="--a-ink:#ffffff" aria-hidden="true"><use href="#ifac"/></svg>
+            <svg width="46" height="52" viewBox="120 170 390 442" style="--a-ink:#ffffff;--a-gap:#122C4E" aria-hidden="true"><use href="#ifac"/></svg>
             <b style="margin-top:12px">Coverage that gives back</b>
             <span>A share of what we earn stays in <span class="ph" style="background:rgba(255,255,255,.22);border-color:rgba(255,255,255,.6);color:#fff">[your county]</span>.</span>
           </div>
@@ -499,10 +502,10 @@ footer .inner{max-width:1100px;margin:0 auto;padding:52px 24px 34px}
 
       <div class="stage sand reveal" style="margin-top:0">
         <div class="avatars">
-          <div class="chip"><div class="av" style="width:92px;height:92px"><svg width="44" height="55" viewBox="0 0 120 150" style="--a-ink:#ffffff" aria-hidden="true"><use href="#ifac"/></svg></div><span class="lbl">profile, 92px</span></div>
-          <div class="chip"><div class="av b" style="width:64px;height:64px"><svg width="30" height="38" viewBox="0 0 120 150" style="--a-ink:#ffffff;--a-accent:#ffffff;--a-accent2:#ffffff" aria-hidden="true"><use href="#ifacS"/></svg></div><span class="lbl">64px</span></div>
-          <div class="chip"><div class="av" style="width:40px;height:40px"><svg width="19" height="24" viewBox="0 0 120 150" style="--a-ink:#ffffff" aria-hidden="true"><use href="#ifacS"/></svg></div><span class="lbl">40px</span></div>
-          <div class="chip"><div class="av" style="width:26px;height:26px"><svg width="13" height="16" viewBox="0 0 120 150" style="--a-ink:#ffffff" aria-hidden="true"><use href="#ifacS"/></svg></div><span class="lbl">26px</span></div>
+          <div class="chip"><div class="av" style="width:92px;height:92px"><svg width="44" height="50" viewBox="120 170 390 442" style="--a-ink:#ffffff;--a-gap:#122C4E" aria-hidden="true"><use href="#ifac"/></svg></div><span class="lbl">profile, 92px</span></div>
+          <div class="chip"><div class="av b" style="width:64px;height:64px"><svg width="30" height="34" viewBox="120 170 390 442" style="--a-ink:#ffffff;--a-accent:#ffffff;--a-accent2:#ffffff;--a-gap:#C69F58" aria-hidden="true"><use href="#ifacS"/></svg></div><span class="lbl">64px</span></div>
+          <div class="chip"><div class="av" style="width:40px;height:40px"><svg width="19" height="22" viewBox="120 170 390 442" style="--a-ink:#ffffff;--a-gap:#122C4E" aria-hidden="true"><use href="#ifacS"/></svg></div><span class="lbl">40px</span></div>
+          <div class="chip"><div class="av" style="width:26px;height:26px"><svg width="13" height="15" viewBox="120 170 390 442" style="--a-ink:#ffffff;--a-gap:#122C4E" aria-hidden="true"><use href="#ifacS"/></svg></div><span class="lbl">26px</span></div>
         </div>
       </div>
       <p class="cap">Round crops, because Google and Facebook will cut the corners off a square one</p>

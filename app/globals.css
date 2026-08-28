@@ -22,24 +22,26 @@
  */
 
 :root {
-  /* Anchor Navy. 13.4 on paper. Body ink and every dark ground. */
-  --navy: #14293c;
-  --navy-2: #0e1f2e; /* Footers and the deepest bands. */
-  --navy-3: #24405a; /* Borders and dividers on light grounds. */
+  /* Anchor Navy, SAMPLED FROM THE CLIENT'S LOGO (its anchor measures
+     #112D4D-#132C51 through the JPEG; this is the center). 12.69 on paper.
+     Body ink and every dark ground. */
+  --navy: #122c4e;
+  --navy-2: #0e2038; /* Footers and the deepest bands. */
+  --navy-3: #26496f; /* Borders and dividers on light grounds. */
 
-  /* Anchor Gold, straight off the logo's wave. FILL ONLY. Navy text on it is
-     5.66. As text it fails everywhere light (2.38 paper, 1.85 sand) and white
-     on it fails too (2.63). */
-  --gold: #c19a49;
+  /* The logo's richer gold, its LOWER ribbon. FILL ONLY. Navy text on it is
+     5.68. As text it fails everywhere light (2.23 paper) and white on it
+     fails too (2.47). */
+  --gold: #c69f58;
   /* Darker gold for large display type on light grounds and decorative
      hovers. 3.24 on paper, which clears the 3:1 large-text bar and nothing
-     else: never use it for body-size text, and navy text on it is 4.15, so it
-     cannot carry normal-size text either. */
+     else: never use it for body-size text. */
   --gold-deep: #a8813a;
   /* Gold as TEXT on light grounds. 6.43 on paper, 5.01 on sand. */
   --gold-ink: #6f5415;
-  /* Gold as TEXT on navy grounds. 8.70 on navy, 9.80 on navy-2. */
-  --gold-light: #e3c27e;
+  /* The logo's paler gold, its UPPER ribbon, and gold as TEXT on navy
+     grounds: 7.54 on navy, 8.99 on navy-2. */
+  --gold-light: #d3bb90;
 
   --paper: #f7f3ec; /* The page. */
   --paper-2: #fffdf9; /* Cards and raised panels. */
@@ -53,7 +55,7 @@
      every one of them was a color that passed before somebody softened it. */
   --slate: #4d5a66;
 
-  --focus: #14293c;
+  --focus: #122c4e;
 
   --wrap: 1120px;
   --radius: 14px;
@@ -791,7 +793,7 @@ section {
 .ahero { display: block; overflow: visible; }
 .ahero-rock {
   transform-box: view-box;
-  transform-origin: 150px 200px;
+  transform-origin: 195px 215px; /* view-box relative: user point (315, 385) */
   animation: aheroRock 7.5s cubic-bezier(.45,.05,.55,.95) infinite -1.8s;
 }
 @keyframes aheroRock {
@@ -804,7 +806,7 @@ section {
 .ahero-w1, .ahero-w2, .ahero-w3 { will-change: transform; }
 @keyframes aheroFlow {
   from { transform: translate3d(0, 0, 0); }
-  to   { transform: translate3d(270px, 0, 0); }
+  to   { transform: translate3d(120px, 0, 0); }
 }
 
 /* ── the drawn underline ──
@@ -932,7 +934,7 @@ h1 em svg path, h2 em svg path { stroke-dasharray: 320; stroke-dashoffset: 320; 
      water's apparent speed scales with the mark, which is what water should
      do. The rock angle goes up so the apparent movement stays roughly
      constant. */
-  .hero-mark .ahero { width: 215px; height: 287px; }
+  .hero-mark .ahero { width: 215px; height: 244px; }
   .ahero-rock { animation-name: aheroRockSm; }
 }
 @keyframes aheroRockSm {
