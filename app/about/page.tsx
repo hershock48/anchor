@@ -3,7 +3,7 @@ import { site, giving, ph, isPlaceholder } from "@/lib/site";
 
 export const metadata = {
   title: "About",
-  description: `${site.name} is the trade name of ${site.legalName}, an independent insurance agency in ${site.contact.city}, Michigan.`,
+  description: `${site.legalName}, an independent insurance agency in ${site.contact.city}, Michigan.`,
 };
 
 export default function About() {
@@ -60,10 +60,13 @@ export default function About() {
           <aside className="side">
             <h2>The agency</h2>
             <dl className="factlist">
+              {/* There was a "Doing business as" row here when the site ran
+                  under the Insurance for a Cause name. The client folded
+                  everything under Anchor Insurance on August 28, 2026, and
+                  "Anchor Insurance" is a short form, not a registered DBA, so
+                  claiming it as one would be a false fact on the about page. */}
               <dt>Legal name</dt>
               <dd>{site.legalName}</dd>
-              <dt>Doing business as</dt>
-              <dd>{site.name}</dd>
               <dt>Owner</dt>
               <dd><span className="ph">{ph(site.owner.name)}</span></dd>
               <dt>Licensed in</dt>

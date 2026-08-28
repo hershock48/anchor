@@ -1,7 +1,7 @@
 /**
- * The Insurance for a Cause mark.
+ * The Anchor Insurance mark.
  *
- * An anchor, because the licensed agency is Anchor Insurance and Risk
+ * An anchor, because the agency is Anchor Insurance and Risk
  * Management and it is already the best symbol in the category: stability,
  * holding fast, not drifting. The one change is the ring at the top, the part
  * the rope passes through, which is a heart. It is not decoration attached to
@@ -102,6 +102,12 @@ export function Mark({
  * The full lockup. The tagline sits under the name because the client asked for
  * the promise to live in the logo itself, which also means it appears on every
  * page without having to be worked into a headline.
+ *
+ * The two strings flipped on August 28, 2026: "Insurance for a Cause" was the
+ * customer-facing name until the client folded everything under Anchor
+ * Insurance, and the old name became the tagline. The strings are literals
+ * rather than reads from lib/site.ts because this is artwork, not copy: the
+ * lockup's sizes and spacing are tuned to these exact words.
  */
 export function Lockup({
   markWidth = 34,
@@ -142,7 +148,7 @@ export function Lockup({
             color: ink,
           }}
         >
-          Insurance for a Cause
+          Anchor Insurance
         </span>
         {compact ? null : (
           <span
@@ -157,7 +163,7 @@ export function Lockup({
               marginTop: 4,
             }}
           >
-            Coverage that gives back
+            Insurance for a cause
           </span>
         )}
       </span>

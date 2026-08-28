@@ -42,7 +42,9 @@ export default function LocalBusinessSchema() {
     "@type": "InsuranceAgency",
     name: site.name,
     legalName: site.legalName,
-    alternateName: site.legalName,
+    // The former DBA, kept as an alternate name so anything that indexed the
+    // agency under it before the August 2026 rename still resolves here.
+    alternateName: "Insurance for a Cause",
     url: origin,
     logo: `${origin}/icon.png`,
     image: `${origin}/og.jpg`,

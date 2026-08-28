@@ -20,18 +20,32 @@ export const ph = (v: string): string =>
   isPlaceholder(v) ? `[${v.slice("PLACEHOLDER:".length)}]` : v;
 
 export const site = {
-  /** The DBA. What is on the door and what customers say. */
-  name: "Insurance for a Cause",
+  /**
+   * What is on the door and what customers say. The short form of the
+   * licensed entity below.
+   *
+   * This was "Insurance for a Cause" until August 28, 2026, when the client
+   * decided at the pitch meeting that everything runs under the Anchor name.
+   * The old name did not die: it moved into `tagline`. Do not resurrect it as
+   * the customer-facing name.
+   */
+  name: "Anchor Insurance",
   /** The licensed entity. Has to appear, and is not the same string. */
   legalName: "Anchor Insurance and Risk Management",
-  tagline: "Coverage that gives back",
+  /**
+   * "Insurance for a cause" is the retired DBA demoted to the tagline, per the
+   * client on August 28, 2026. It replaced "Coverage that gives back"
+   * everywhere the tagline renders: the lockup, the footer, the cards.
+   */
+  tagline: "Insurance for a cause",
   /**
    * PLACEHOLDER in effect: the domain is not bought yet. This is an assumption,
    * and it is load-bearing because `metadataBase` and the sitemap are both
-   * built from it. Confirm the real domain before launch and change it here
-   * only; nothing else hardcodes it.
+   * built from it. It changed with the rename (the old assumption was
+   * insuranceforacause.com). Confirm the real domain before launch and change
+   * it here only; nothing else hardcodes it.
    */
-  url: "https://insuranceforacause.com" as string,
+  url: "https://anchorinsurancemi.com" as string,
   urlConfirmed: false,
 
   owner: {

@@ -1,7 +1,14 @@
-# Insurance for a Cause
+# Anchor Insurance
 
-The website for **Insurance for a Cause**, the trade name of **Anchor Insurance
-and Risk Management**, an independent agency in Manchester, Michigan.
+The website for **Anchor Insurance and Risk Management**, an independent agency
+in Manchester, Michigan. Customer-facing surfaces say **Anchor Insurance**.
+
+**The name flipped on August 28, 2026.** The site was built as "Insurance for a
+Cause," which was the DBA, with Anchor as the legal entity behind it. At the
+pitch meeting the client folded everything under the Anchor name, and
+"Insurance for a cause" became the tagline, replacing "Coverage that gives
+back." The giving program itself is unchanged. If you find the old name used as
+a name anywhere other than history notes like this one, that is a bug.
 
 Next.js App Router, TypeScript, plain CSS, deployed on Vercel. **Prospect, not
 signed** as of August 2026: this is a concept build, and the pitch that goes with
@@ -48,7 +55,7 @@ program. A correction is one edit.
 | `lib/guides.ts` | The local explainer articles |
 
 **The one surface that cannot read from `lib/site.ts`** is the pitch, at
-`public/pitch/insuranceforacause/`. Those are hand-written static HTML on purpose
+`public/pitch/anchor/`. Those are hand-written static HTML on purpose
 so they can be edited on a phone if a call goes sideways. If a fact changes
 before she signs, it has to change in both places. After she signs the pitch gets
 deleted and the problem goes away.
@@ -77,8 +84,9 @@ customers on another build.
       in her words. The single most damaging thing on this site to invent
 - [ ] **Privacy retention period** — `app/privacy/page.tsx`
 - [ ] **Real photographs.** There are none. No stock, on purpose
-- [ ] **The domain.** `site.url` assumes `insuranceforacause.com` and it is not
-      bought. `site.urlConfirmed` is `false`. It feeds `metadataBase` and the
+- [ ] **The domain.** `site.url` assumes `anchorinsurancemi.com` and it is not
+      bought, and after the rename the assumption is even softer than it was.
+      `site.urlConfirmed` is `false`. It feeds `metadataBase` and the
       sitemap, so it is load-bearing
 
 ---
@@ -283,14 +291,14 @@ HTML so nothing moves, open without JavaScript so every link is reachable.
 
 | Path | What it is |
 |---|---|
-| `public/pitch/insuranceforacause/index.html` | The proposal. Self-contained, no build step |
-| `public/pitch/insuranceforacause/logo.html` | The logo presentation and mockups. **Send this first** |
-| `public/pitch/insuranceforacause/og.jpg` | The proposal's link card, 1200x630 |
+| `public/pitch/anchor/index.html` | The proposal. Self-contained, no build step |
+| `public/pitch/anchor/logo.html` | The logo presentation and mockups. **Send this first** |
+| `public/pitch/anchor/og.jpg` | The proposal's link card, 1200x630 |
 | `public/og.jpg` | The **demo's** link card. Hers, not Glazed's |
 | `tools/og-card.html` | The proposal card is rendered from this |
 | `tools/demo-og-card.html` | The demo card is rendered from this |
 
-On `insuranceforacause.glazedweb.com`: proposal at `/`, logo at `/logo`, the whole
+On `anchor.glazedweb.com`: proposal at `/`, logo at `/logo`, the whole
 site at `/demo`. Every path on that host sends `X-Robots-Tag: noindex, nofollow`,
 and so does any `.vercel.app` host, which is indexable by default and the same
 duplicate-content risk.
@@ -314,7 +322,7 @@ purpose.** This repo began life as a static-only pitch with
 `"outputDirectory": "public"`, and Vercel saved that into the *project settings*
 when it was first imported. Dashboard settings survive deleting the file, so the
 project kept serving `public/` as a flat directory: `next build` ran and
-succeeded, `/pitch/insuranceforacause/index.html` returned 200, and every route
+succeeded, the pitch's `index.html` returned 200, and every route
 that needed the Next app returned Vercel&rsquo;s own `NOT_FOUND`. **A green build
 proves nothing about what is being served.** `vercel.json` takes precedence over
 project settings, which is what clears it from in here.

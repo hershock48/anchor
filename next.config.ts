@@ -42,8 +42,8 @@ const nextConfig: NextConfig = {
      */
     return {
       beforeFiles: [
-        { source: "/", destination: "/pitch/insuranceforacause/index.html", has: onPitchHost },
-        { source: "/logo", destination: "/pitch/insuranceforacause/logo.html", has: onPitchHost },
+        { source: "/", destination: "/pitch/anchor/index.html", has: onPitchHost },
+        { source: "/logo", destination: "/pitch/anchor/logo.html", has: onPitchHost },
         { source: "/demo", destination: "/", has: onPitchHost },
         { source: "/demo/:path*", destination: "/:path*", has: onPitchHost },
       ],

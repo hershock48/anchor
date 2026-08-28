@@ -44,7 +44,7 @@ export const metadata: Metadata = {
      host and at /x on hers competes with itself. */
   alternates: { canonical: "/" },
   title: {
-    default: `${site.name} | Independent insurance in ${site.contact.city}, Michigan`,
+    default: `${site.name} | Independent agency in ${site.contact.city}, Michigan`,
     template: `%s | ${site.name}`,
   },
   description:
@@ -59,7 +59,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     siteName: site.name,
-    title: `${site.name} | Coverage that gives back`,
+    title: `${site.name} | ${site.tagline}`,
     description:
       "Independent auto, home and business insurance in Michigan. We give a share of every commission to a local cause and publish the ledger.",
     url: "/",
@@ -68,7 +68,7 @@ export const metadata: Metadata = {
         url: "/og.jpg",
         width: 1200,
         height: 630,
-        alt: `${site.name}. Coverage that gives back. An independent agency in ${site.contact.city}, Michigan.`,
+        alt: `${site.name}. ${site.tagline}. An independent agency in ${site.contact.city}, Michigan.`,
       },
     ],
   },

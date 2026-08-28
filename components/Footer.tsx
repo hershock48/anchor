@@ -13,9 +13,9 @@ export default function Footer() {
         <div className="foot-brand">
           <Mark width={44} ink="#ffffff" accent="#f0a093" />
           <p className="foot-name">{site.name}</p>
-          <p className="foot-tag">Coverage that gives back</p>
+          <p className="foot-tag">{site.tagline}</p>
           <p className="foot-legal">
-            A trade name of {site.legalName}. An independent agency, which means we shop several carriers for you instead of selling one company&rsquo;s product.
+            The full name on the license is {site.legalName}. An independent agency, which means we shop several carriers for you instead of selling one company&rsquo;s product.
           </p>
         </div>
 
