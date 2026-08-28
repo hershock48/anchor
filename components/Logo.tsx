@@ -103,11 +103,13 @@ export function Mark({
  * the promise to live in the logo itself, which also means it appears on every
  * page without having to be worked into a headline.
  *
- * The two strings flipped on August 28, 2026: "Insurance for a Cause" was the
+ * The name changed on August 28, 2026: "Insurance for a Cause" was the
  * customer-facing name until the client folded everything under Anchor
- * Insurance, and the old name became the tagline. The strings are literals
- * rather than reads from lib/site.ts because this is artwork, not copy: the
- * lockup's sizes and spacing are tuned to these exact words.
+ * Insurance. The tagline stayed "Coverage that gives back" (the old name
+ * auditioned as the tagline for a few hours the same day and the client said
+ * no). The strings are literals rather than reads from lib/site.ts because
+ * this is artwork, not copy: the lockup's sizes and spacing are tuned to
+ * these exact words.
  */
 export function Lockup({
   markWidth = 34,
@@ -163,7 +165,7 @@ export function Lockup({
               marginTop: 4,
             }}
           >
-            Insurance for a cause
+            Coverage that gives back
           </span>
         )}
       </span>

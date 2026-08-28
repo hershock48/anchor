@@ -523,18 +523,15 @@ section {
 .hero-note { margin-top: 18px; font-size: 14.5px; color: var(--slate); max-width: 52ch; }
 
 /* ═══ goal ═══ */
-.goal { background: var(--navy); color: #fff; border-radius: 18px; padding: 28px 26px; }
-.goal .kicker { color: #f0a093; display: block; }
-.goal-org { font-size: clamp(22px, 3vw, 28px); color: #fff; margin-top: 10px; }
-.goal-nums { display: flex; align-items: baseline; gap: 10px; margin-top: 18px; }
-.goal-raised { font-family: var(--font-mono), ui-monospace, monospace; font-size: 30px; font-weight: 600; }
-.goal-target { font-size: 14px; color: #c8d4de; }
-.goal-track { height: 14px; background: rgba(255,255,255,.22); border-radius: 7px; overflow: hidden; margin-top: 10px; }
-.goal-fill { display: block; height: 100%; background: #fff; border-radius: 7px; }
-.goal-foot { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-top: 10px; font-size: 13px; color: #c8d4de; }
-.goal-pre { margin-top: 14px; font-size: 15px; line-height: 1.6; color: #c8d4de; }
-.goal-link { display: inline-block; margin-top: 20px; color: #fff; font-weight: 600; font-size: 15px; }
-.goal-link:hover { color: #f0a093; }
+/* The giving card. It replaced the goal bar on 2026-08-28 when the client
+   dropped the set percentage and the ledger; the colors are the ones the goal
+   card already measured on navy, so nothing here needs re-validating. */
+.givecard { background: var(--navy); color: #fff; border-radius: 18px; padding: 28px 26px; }
+.givecard .kicker { color: #f0a093; display: block; }
+.givecard-line { font-size: clamp(22px, 3vw, 28px); color: #fff; margin-top: 10px; }
+.givecard-sub { margin-top: 14px; font-size: 15px; line-height: 1.6; color: #c8d4de; }
+.givecard-link { display: inline-block; margin-top: 20px; color: #fff; font-weight: 600; font-size: 15px; }
+.givecard-link:hover { color: #f0a093; }
 
 /* ═══ coverage grid ═══ */
 .cov-grid { list-style: none; display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 34px; }
@@ -562,6 +559,12 @@ section {
 .steps h3 { font-size: 21px; }
 .steps p { margin-top: 8px; font-size: 15.5px; line-height: 1.6; }
 .band-navy .steps p { color: #c8d4de; }
+/* Inline links inside navy steps. The page link color measures a fail on
+   navy, which the auditor caught the first time one of these existed. White
+   passes on --navy at any size; the hover salmon is the same one the kickers
+   already use on this ground. */
+.band-navy .steps p a { color: #fff; text-decoration: underline; text-underline-offset: 3px; }
+.band-navy .steps p a:hover { color: #f0a093; }
 .give-cta { margin-top: 40px; display: flex; gap: 22px; align-items: center; flex-wrap: wrap; }
 .give-cta p { font-size: 14.5px; color: #c8d4de; max-width: 56ch; }
 
@@ -652,18 +655,24 @@ section {
 .rules p { margin-top: 8px; font-size: 15px; color: var(--slate); line-height: 1.6; }
 .fineprint { margin-top: 26px; font-size: 13.5px; color: var(--slate); max-width: 76ch; }
 
-/* ═══ ledger ═══ */
-.ledger { width: 100%; border-collapse: collapse; font-size: 15.5px; }
-.ledger th, .ledger td { text-align: left; padding: 14px 12px; border-bottom: 1px solid var(--line); }
-.ledger thead th { font-family: var(--font-mono), ui-monospace, monospace; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--slate); border-bottom: 2px solid var(--navy); }
-.ledger .num { text-align: right; }
-.ledger .mono { font-family: var(--font-mono), ui-monospace, monospace; }
-.ledger-city { display: block; font-size: 13px; color: var(--slate); font-weight: 400; }
-.ledger tfoot th, .ledger tfoot td { border-top: 2px solid var(--navy); border-bottom: 0; font-weight: 700; padding-top: 16px; }
-.ledger-empty { background: var(--paper-2); border: 1px solid var(--line); border-radius: var(--radius); padding: 34px 30px; max-width: 68ch; }
-.ledger-empty h2 { font-size: clamp(22px, 3vw, 28px); }
-.ledger-empty p { margin-top: 14px; color: var(--slate); }
-.ledger-empty-cta { margin-top: 22px; }
+/* ═══ the causes we support ═══ */
+.causes-empty { background: var(--paper-2); border: 1px solid var(--line); border-radius: var(--radius); padding: 34px 30px; max-width: 68ch; }
+.causes-empty h2 { font-size: clamp(22px, 3vw, 28px); }
+.causes-empty p { margin-top: 14px; color: var(--slate); }
+.causes-empty-cta { margin-top: 22px; }
+.stories { max-width: 68ch; }
+.story { border-top: 1px solid var(--line); padding: 30px 0 34px; }
+.story:first-child { border-top: 0; padding-top: 0; }
+.story-date { font-family: var(--font-mono), ui-monospace, monospace; font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--slate); }
+.story h2 { font-size: clamp(21px, 2.6vw, 26px); margin-top: 8px; }
+.story-org { margin-top: 6px; font-size: 14.5px; color: var(--slate); }
+.story p + p { margin-top: 12px; }
+
+/* ═══ the review ask ═══ */
+.reviewband { background: var(--paper-2); border: 1px solid var(--line); border-radius: var(--radius); padding: 30px 30px; display: flex; align-items: center; justify-content: space-between; gap: 26px; flex-wrap: wrap; }
+.reviewband h2 { font-size: clamp(20px, 2.6vw, 25px); }
+.reviewband p { margin-top: 8px; color: var(--slate); max-width: 56ch; }
+.review-ph { font-size: 15px; }
 
 /* ═══ contact ═══ */
 .contact-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
@@ -721,7 +730,6 @@ section {
 .tablewrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
 .tablewrap:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
 .pip { min-width: 560px; }
-.ledger { min-width: 520px; }
 
 /* Stepping is CSS applied by a class the client adds, never markup the server
    emits. With JavaScript off there is no `.stepped`, so both fieldsets show,
@@ -920,7 +928,7 @@ h1 em svg path, h2 em svg path { stroke-dasharray: 320; stroke-dashoffset: 320; 
 .hero-cta { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 30px; }
 .hero-note { margin-top: 18px; font-size: 14.5px; max-width: 46ch; }
 
-/* ── the goal band, sand, with the ledger argument beside it ── */
+/* ── the giving band, sand, with the giving card beside the argument ── */
 .goalband { background: var(--sand); padding: 60px 0 66px; }
 .goalband-in { display: grid; grid-template-columns: 0.85fr 1.15fr; gap: 44px; align-items: center; }
 @media (max-width: 900px) { .goalband-in { grid-template-columns: 1fr; gap: 30px; } }
@@ -1037,7 +1045,7 @@ h1 em svg path, h2 em svg path { stroke-dasharray: 320; stroke-dashoffset: 320; 
 .foot-col ul { gap: 0; }
 .foot-col li a, .foot-col li > span { display: inline-block; padding: 9px 0; }
 .foot-addr { padding: 9px 0; }
-.goal-link { padding: 11px 0; }
+.givecard-link { padding: 11px 0; }
 .qf-consent input { width: 24px; height: 24px; margin-top: 2px; }
 
 /* ── print ──

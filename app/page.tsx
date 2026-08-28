@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { site, giving, lines, ph, isPlaceholder } from "@/lib/site";
 import { pipLevels } from "@/lib/pip";
-import GoalBar from "@/components/GoalBar";
+import GivingCard from "@/components/GivingCard";
+import ReviewBand from "@/components/ReviewBand";
 import AnchorHero from "@/components/AnchorHero";
 import Wave from "@/components/Wave";
 import Ticker from "@/components/Ticker";
@@ -29,7 +30,7 @@ export const metadata = {
    */
   title: `${site.name} | Independent agency in ${site.contact.city}, Michigan`,
   description:
-    "Auto, home and business insurance from an independent Michigan agency. We shop several carriers, and a share of our commission goes to a local cause the town votes for.",
+    "Auto, home and business insurance from an independent Michigan agency. We shop several carriers, and a percentage of what we earn goes back to local causes.",
 };
 
 /** The hand-drawn underline. Glazed's own h1 puts one under "crave". */
@@ -74,18 +75,16 @@ export default async function Home() {
               .
             </h1>
             <p className="lede hero-lede">
-              We compare several carriers instead of selling one company&rsquo;s product. Then{" "}
-              <strong>
-                <span className="ph">{ph(giving.rate)}</span> of what we earn
-              </strong>{" "}
-              goes to a local cause this town votes for, published to the dollar.
+              We compare several carriers instead of selling one company&rsquo;s product.
+              Then <strong>{giving.share}</strong> goes back to local causes in and around{" "}
+              {site.contact.city}.
             </p>
             <div className="hero-cta">
               <Link className="btn" href="/quote">
                 Get a quote
               </Link>
-              <Link className="btn onnavy ghost-on-navy" href="/giving/ledger">
-                See where the money went
+              <Link className="btn onnavy ghost-on-navy" href="/giving/causes">
+                See who we support
               </Link>
             </div>
             <p className="hero-note">
@@ -119,17 +118,18 @@ export default async function Home() {
              phone rather than buried beside the hero ── */}
       <section className="goalband">
         <div className="wrap goalband-in">
-          <GoalBar />
+          <GivingCard />
           <div>
             <h2>
               Everybody says they give back.
               <br />
-              We <em>publish the receipts<Underline /></em>.
+              We <em>built it in<Underline /></em>.
             </h2>
             <p className="lede" style={{ marginTop: 16 }}>
-              Almost every independent agency in the country donates to something. Almost none
-              of them will show you an amount. We would rather be checkable, and we would
-              rather start small and honest than vague and impressive.
+              Almost every independent agency in the country donates to something, and it
+              usually amounts to one sentence in a footer. Ours is part of how the agency is
+              set up, and every cause we support gets told about properly: the organization,
+              the reason, the result.
             </p>
             <p style={{ marginTop: 20 }}>
               <Link className="btn" href="/giving">
@@ -173,39 +173,38 @@ export default async function Home() {
       {/* ── how the giving works ─────────────────────────────────────────── */}
       <section className="band-navy" style={{ paddingTop: 40 }}>
         <div className="wrap">
-          <p className="kicker reveal">How a cause gets picked</p>
-          <h2 className="reveal">Nominated by anyone. Chosen by everyone.</h2>
+          <p className="kicker reveal">Our giving</p>
+          <h2 className="reveal">What giving back looks like here</h2>
 
           <ol className="steps">
             <li className="reveal">
               <span className="step-n" aria-hidden="true">
                 1
               </span>
-              <h3>Anyone nominates</h3>
+              <h3>We set a share aside</h3>
               <p>
-                A school program, a shelter, a food bank, a department fund. Open to the whole
-                town, not just to customers, and it always will be.
+                A percentage of what this agency earns goes to local giving. It comes out of
+                our commission, so nothing is ever added to your premium.
               </p>
             </li>
             <li className="reveal">
               <span className="step-n" aria-hidden="true">
                 2
               </span>
-              <h3>The public votes</h3>
+              <h3>We pick close to home</h3>
               <p>
-                We shortlist and everyone votes. Michigan rules say a policyholder cannot direct
-                where their own policy&rsquo;s money goes, and an open vote is how this stays
-                clean and still belongs to the town.
+                A school program, a shelter, a food bank, the fund a neighbor set up. In and
+                around {site.contact.city}, where the policies come from.
               </p>
             </li>
             <li className="reveal">
               <span className="step-n" aria-hidden="true">
                 3
               </span>
-              <h3>We publish the check</h3>
+              <h3>We tell you about it</h3>
               <p>
-                Date, organization, amount, and a photo of the handoff, in a ledger that adds
-                itself up and shows when it was last touched.
+                Every cause gets its own write-up on this site: who they are, why we picked
+                them, and what came of it.
               </p>
             </li>
           </ol>
@@ -215,8 +214,8 @@ export default async function Home() {
               Read the whole program
             </Link>
             <p>
-              Nominations are open to anyone and always will be. You do not have to be a
-              customer to put a cause forward or to vote for one.
+              A donation is never tied to a particular policy, and no customer can direct one.
+              Michigan rules require both, and we would run it that way anyway.
             </p>
           </div>
         </div>
@@ -268,6 +267,13 @@ export default async function Home() {
               than filled with logos we are not entitled to show.
             </p>
           )}
+        </div>
+      </section>
+
+      {/* ── the review ask, on the same sand ground as the carriers ──────── */}
+      <section className="band-sand" style={{ paddingTop: 0, paddingBottom: 52 }}>
+        <div className="wrap reveal">
+          <ReviewBand />
         </div>
       </section>
 

@@ -60,9 +60,9 @@ export default function Privacy() {
 
           <h2>The giving program</h2>
           <p>
-            Nominating a cause or voting does not require you to be a customer and does not put
-            you on a list. We do not connect votes to policies, and Michigan rules would not
-            allow us to.
+            The giving pages ask nothing of you. There is no signup and no list, and no
+            donation is ever connected to a policy. Michigan rules would not allow a
+            policyholder to direct one anyway.
           </p>
 
           <h2>Questions</h2>

@@ -50,7 +50,7 @@ export default function LocalBusinessSchema() {
     image: `${origin}/og.jpg`,
     slogan: site.tagline,
     description:
-      "An independent Michigan insurance agency. We compare several carriers instead of selling one company’s product, and a share of every commission goes to a local cause chosen by public vote.",
+      "An independent Michigan insurance agency. We compare several carriers instead of selling one company’s product, and a percentage of what we earn goes back to local causes.",
     address,
     areaServed: { "@type": "State", name: "Michigan" },
     knowsAbout: [

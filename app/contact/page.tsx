@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { site, ph, isPlaceholder } from "@/lib/site";
+import ReviewBand from "@/components/ReviewBand";
 
 export const metadata = {
   title: "Contact",
@@ -78,6 +79,10 @@ export default function Contact() {
             Want a quote instead of a conversation?{" "}
             <Link href="/quote">The form takes about a minute.</Link>
           </p>
+        </div>
+
+        <div className="wrap" style={{ marginTop: 44 }}>
+          <ReviewBand />
         </div>
       </section>
     </>

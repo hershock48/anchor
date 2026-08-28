@@ -3,12 +3,25 @@
 The website for **Anchor Insurance and Risk Management**, an independent agency
 in Manchester, Michigan. Customer-facing surfaces say **Anchor Insurance**.
 
-**The name flipped on August 28, 2026.** The site was built as "Insurance for a
-Cause," which was the DBA, with Anchor as the legal entity behind it. At the
-pitch meeting the client folded everything under the Anchor name, and
-"Insurance for a cause" became the tagline, replacing "Coverage that gives
-back." The giving program itself is unchanged. If you find the old name used as
-a name anywhere other than history notes like this one, that is a bug.
+**Two client decisions landed on August 28, 2026, and the build changed shape.**
+
+First, the name. The site was built as "Insurance for a Cause," which was the
+DBA, with Anchor as the legal entity behind it. The client folded everything
+under the Anchor name. The old name auditioned as the tagline for a few hours
+the same day and the client said no to that too: the tagline is **"Coverage
+that gives back"** and the old name survives only as the structured-data
+`alternateName`. If you find it anywhere else outside a history note, that is
+a bug.
+
+Second, the giving program. The build shipped as a receipts argument: a set
+percentage, a published ledger, a homepage goal bar and a public vote. The
+client dropped all of it. The program now says **a percentage of what we earn
+goes back** without committing to the number, and the effort goes into
+content: every cause gets a write-up on `/giving/causes` (who they are, why we
+picked them, what came of it), with no amounts anywhere. The receipts suite
+lives in git history before this date if it is ever wanted back. There is also
+a Google-review ask on the homepage and contact page, gated on
+`site.social.googleReview` like every other placeholder.
 
 Next.js App Router, TypeScript, plain CSS, deployed on Vercel. **Prospect, not
 signed** as of August 2026: this is a concept build, and the pitch that goes with
@@ -37,7 +50,7 @@ npm install axe-core playwright-core --no-save
 npx next start -p 4502
 PLAYWRIGHT_BROWSERS_PATH=/opt/pw-browsers \
   node ../glazedweb/glaze/scripts/audit.mjs --base http://127.0.0.1:4502 \
-  --routes /,/coverage,/coverage/auto,/coverage/home,/coverage/renters,/coverage/umbrella,/coverage/life,/coverage/business,/giving,/giving/ledger,/tools/michigan-pip,/guides,/guides/mini-tort,/guides/excess-attendant-care,/guides/storm-claims-after-march-6,/guides/why-your-rate-depends-on-where-you-live,/about,/contact,/quote,/quote/received,/privacy
+  --routes /,/coverage,/coverage/auto,/coverage/home,/coverage/renters,/coverage/umbrella,/coverage/life,/coverage/business,/giving,/giving/causes,/tools/michigan-pip,/guides,/guides/mini-tort,/guides/excess-attendant-care,/guides/storm-claims-after-march-6,/guides/why-your-rate-depends-on-where-you-live,/about,/contact,/quote,/quote/received,/privacy
 ```
 
 ---
@@ -78,8 +91,11 @@ customers on another build.
 - [ ] **Michigan producer license number and NPN**
 - [ ] **Carrier appointments** — `site.carriers` is an empty array and the homepage
       says so in words rather than showing a logo wall we are not entitled to
-- [ ] **The giving percentage** — `giving.rate`. Never ship "a portion of proceeds"
-- [ ] **First cause, target, deadline** — `giving.goal`
+- [ ] **The Google review link** — `site.social.googleReview`. The direct
+      write-a-review URL from the Business Profile dashboard, not the profile
+      URL. The review ask renders a marked blank until it lands
+- [ ] **The first cause write-up** — `giving.stories` is empty and
+      `/giving/causes` says so honestly. Content comes from her, not from us
 - [ ] **Her story** — `app/about/page.tsx`. Comes out of a recorded hour with her,
       in her words. The single most damaging thing on this site to invent
 - [ ] **Privacy retention period** — `app/privacy/page.tsx`
@@ -190,18 +206,25 @@ it.**
 
 ## The giving program, and why it is shaped this way
 
-Michigan DIFS publishes six conditions on a producer donating commission. Two are
-load-bearing here:
+The shape is the client's, chosen August 28, 2026: **no set percentage, no
+ledger, no goal bar, no vote.** The site says a percentage of what we earn goes
+back, and each supported cause gets a write-up on `/giving/causes` with no
+amounts. The write-ups are the program's public face, and `giving.stories` in
+`lib/site.ts` is where they live. Never seed a fake one.
+
+Michigan DIFS publishes six conditions on a producer donating commission. They
+still apply, because the money is still commission and the giving is still
+advertised. Two are load-bearing here:
 
 - The donation must be **offered uniformly** and not tied to specific
   transactions. So the site never says "your policy bought X."
-- The insured **must not control** which organization receives the donation. So
-  the cause is picked by a **public vote open to anyone**, not by a
-  choose-your-charity control on the quote form. Do not add one.
+- The insured **must not control** which organization receives the donation.
+  The agency picks the causes itself, and there is no choose-your-charity
+  control on the quote form. Do not add one.
 
 A third is operational: **the recipient must not be a client of the producer.**
-That is published on the giving page and in the footer, because saying it out loud
-is both good faith and compliance.
+That is published in the footer, because saying it out loud is both good faith
+and compliance.
 
 Her attorney or E&O carrier signs off on the program, not us. DIFS closes its own
 FAQ recommending counsel.
@@ -217,7 +240,7 @@ handover artifact rather than a private note. Ticked means measured, not assumed
 
 - [x] Zero accessibility violations at 390px and 1440px on every route. **21 routes, 0 violations.**
 - [x] Zero console errors, zero 4xx, on every route.
-- [x] `grep -rn PLACEHOLDER` returns only hits that are on the list above. **21, all in `lib/site.ts`.**
+- [x] `grep -rn PLACEHOLDER` returns only hits that are on the list above. **17, all in `lib/site.ts`, of which three are the marker mechanism itself.**
 - [ ] **Every form actually submitted and confirmed arriving in a real inbox.** Not
       done and cannot be: there is no inbox yet. The handler logs the full payload
       and warns. See below.

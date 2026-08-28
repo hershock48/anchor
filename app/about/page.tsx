@@ -45,15 +45,14 @@ export default function About() {
 
             <h2>The giving is the point, not the marketing</h2>
             <p>
-              <span className="ph">{ph(giving.rate)}</span> of the {giving.base} goes to a
-              local cause every {giving.cadence.replace("ly", "")}. The cause is nominated by
-              the community and chosen by a public vote. Every check is published with a date
-              and an amount.
+              {giving.share.charAt(0).toUpperCase() + giving.share.slice(1)} goes back to
+              local causes in and around {site.contact.city}. We pick them close to home,
+              and every one gets its own write-up on the site: who they are, why we picked
+              them, what came of it.
             </p>
             <p>
-              We are going to be honest about the size of it. We are new, the early numbers are
-              going to be small, and we would still rather publish a small real number than a
-              large vague feeling. <Link href="/giving/ledger">The ledger is here.</Link>
+              We are new, so the list starts short, and we would rather it grow honestly
+              than look padded. <Link href="/giving/causes">The causes we support are here.</Link>
             </p>
           </div>
 

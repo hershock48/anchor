@@ -34,7 +34,7 @@ export default function NotFound() {
             <Link href="/quote">Get a quote</Link>
           </li>
           <li>
-            <Link href="/giving">Our giving, and the ledger</Link>
+            <Link href="/giving">Our giving</Link>
           </li>
           <li>
             <Link href="/tools/michigan-pip">What each Michigan PIP level saves you</Link>

@@ -48,7 +48,7 @@ export const metadata: Metadata = {
     template: `%s | ${site.name}`,
   },
   description:
-    "An independent Michigan insurance agency that gives a share of every commission to a local cause, and publishes every dollar of it.",
+    "An independent Michigan insurance agency that gives a percentage of what it earns back to local causes in and around Manchester.",
   /**
    * NEXT DOES NOT DEEP-MERGE `openGraph`. A page that defines its own block
    * replaces this one wholesale, image included, and that route silently loses
@@ -61,7 +61,7 @@ export const metadata: Metadata = {
     siteName: site.name,
     title: `${site.name} | ${site.tagline}`,
     description:
-      "Independent auto, home and business insurance in Michigan. We give a share of every commission to a local cause and publish the ledger.",
+      "Independent auto, home and business insurance in Michigan. A percentage of what we earn goes back to local causes.",
     url: "/",
     images: [
       {

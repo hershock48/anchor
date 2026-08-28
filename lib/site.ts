@@ -26,18 +26,14 @@ export const site = {
    *
    * This was "Insurance for a Cause" until August 28, 2026, when the client
    * decided at the pitch meeting that everything runs under the Anchor name.
-   * The old name did not die: it moved into `tagline`. Do not resurrect it as
-   * the customer-facing name.
+   * The old name is retired outright: it briefly served as the tagline the
+   * same day and the client said no to that too. It survives only as the
+   * structured-data alternateName. Do not resurrect it anywhere visible.
    */
   name: "Anchor Insurance",
   /** The licensed entity. Has to appear, and is not the same string. */
   legalName: "Anchor Insurance and Risk Management",
-  /**
-   * "Insurance for a cause" is the retired DBA demoted to the tagline, per the
-   * client on August 28, 2026. It replaced "Coverage that gives back"
-   * everywhere the tagline renders: the lockup, the footer, the cards.
-   */
-  tagline: "Insurance for a cause",
+  tagline: "Coverage that gives back",
   /**
    * PLACEHOLDER in effect: the domain is not bought yet. This is an assumption,
    * and it is load-bearing because `metadataBase` and the sitemap are both
@@ -117,35 +113,53 @@ export const site = {
   social: {
     facebook: "PLACEHOLDER:Facebook URL" as string,
     google: "PLACEHOLDER:Google Business Profile URL" as string,
+    /**
+     * The direct write-a-review link, which is NOT the same string as the
+     * profile URL above. Google issues it from the Business Profile dashboard
+     * (a g.page/r/…/review URL). Until the profile exists, the review ask on
+     * the homepage and contact page renders a marked blank instead of a
+     * button, so nothing on the site links to a dead end.
+     */
+    googleReview: "PLACEHOLDER:Google review link" as string,
   },
 } as const;
 
 /**
  * The giving program.
  *
+ * RESHAPED ON AUGUST 28, 2026, BY THE CLIENT, and the old shape is worth a
+ * paragraph because this file used to forbid the new one. The build shipped
+ * with a set percentage, a published ledger, a goal bar and a public vote,
+ * and a rule here that read: never "a portion of proceeds." The client chose
+ * the opposite: say a percentage of what we earn goes back, do not commit to
+ * the number, drop the receipts, and put the effort into content about each
+ * donation instead. So the vague phrasing is the program now, on purpose,
+ * and the retired rule is recorded rather than silently deleted. If she ever
+ * wants the ledger back, it lives in git history before this date.
+ *
  * Michigan DIFS publishes six conditions on a producer donating commission.
- * Two of them shape this code directly and are why the site is built the way
- * it is:
+ * They still apply, because the money is still commission and the giving is
+ * still advertised on the site:
  *
  *   - The donation must be offered uniformly to all applicants and not tied to
  *     specific transactions. So the site never says "your policy bought X."
  *   - The insured must not control which organization receives the donation.
- *     So the cause is chosen by a public vote open to anyone, not by a
- *     pick-your-charity control on the quote form.
+ *     The agency picks the causes itself, and there is no pick-your-charity
+ *     control on the quote form. Do not add one.
  *
  * A third condition matters operationally: the recipient must not be a client
- * of the producer. That one is NOT published on the site, deliberately. See the
- * note on it below.
+ * of the producer. That one is published in the footer only. See the note
+ * below.
  *
  * None of this is legal advice and the program needs her attorney or E&O
  * carrier to sign off. DIFS closes its own FAQ recommending counsel.
  */
 export const giving = {
-  /** e.g. "10% of every commission we earn". Never "a portion of proceeds". */
-  rate: "PLACEHOLDER:percentage" as string,
-  /** What the percentage is taken from, in plain words. */
-  base: "commission we earn on every policy",
-  cadence: "quarterly",
+  /**
+   * Deliberately not a number, per the client. Keep the phrase in this one
+   * field so a change of heart is one edit.
+   */
+  share: "a percentage of what we earn",
 
   /**
    * THE FOOTER ONLY. Michigan DIFS condition six is that the organization
@@ -165,42 +179,20 @@ export const giving = {
     "No purchase necessary. The donation is the same whether or not you buy a policy, and no customer can direct where their own policy’s money goes.",
 
   /**
-   * The live ledger. Empty on purpose at launch.
-   *
-   * An empty ledger with an honest "we opened in <month>" line is a better
-   * page than a counter reading $0, and far better than a number nobody can
-   * check. Add a row when a check is written, not when one is promised.
+   * The causes we support, newest first. Each one is a short write-up rather
+   * than a ledger row: who they are, why we picked them, what the gift did.
+   * No amounts, per the client. An empty list renders an honest "we are new"
+   * state on /giving/causes; never seed it with an invented first story.
    */
-  ledger: [] as {
+  stories: [] as {
+    /** Prose-friendly, e.g. "March 2027". Rendered as written. */
     date: string;
+    title: string;
     org: string;
     orgUrl?: string;
     city: string;
-    amount: number;
-    period: string;
-    proof?: string;
+    body: string;
   }[],
-
-  /** The one active goal. Small enough to finish. */
-  goal: {
-    org: "PLACEHOLDER:first cause" as string,
-    orgUrl: "" as string,
-    city: "PLACEHOLDER:city" as string,
-    target: 0,
-    raised: 0,
-    deadline: "PLACEHOLDER:deadline" as string,
-    why: "PLACEHOLDER:why this cause" as string,
-  },
-
-  /**
-   * The public vote. Open to anyone, which is what keeps it clear of the
-   * DIFS condition about the insured directing the donation.
-   */
-  vote: {
-    open: false,
-    closes: "" as string,
-    options: [] as { org: string; city: string; blurb: string; votes: number }[],
-  },
 } as const;
 
 /** Lines she writes. Each one gets its own page: still the strongest local
