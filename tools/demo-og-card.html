@@ -5,11 +5,10 @@
 <title>demo og card source</title>
 <!--
   Source page for public/og.jpg, the DEMO card. This is the client's own card,
-  not Glazed's: link-cards.md is explicit that a pitch host serves two, and that
-  getting them backwards is the most common mistake. The proposal card wears
-  Glazed's argument in Glazed's colors and asks a question. This one wears her
-  brand entirely and says what the business is, because the demo is a full copy
-  of her site and should look like it everywhere, including here.
+  not Glazed's: it wears her brand entirely and says what the business is.
+  The mark is her actual artwork (public/brand/anchor-mark.png, referenced
+  relatively so a file:// render finds it), on the paper ground the artwork
+  was made for.
 
   Screenshot at 1200x630, 1x. Everything that must be read sits inside the
   centre 630x630 band, x 285 to x 915, because iOS crops toward square.
@@ -19,53 +18,28 @@
   html, body { width: 1200px; height: 630px; }
   body {
     font-family: Georgia, "Times New Roman", serif;
-    background: #122C4E; color: #fff;
+    background: #F7F3EC; color: #122C4E;
     display: flex; align-items: center; justify-content: center;
     position: relative; overflow: hidden;
   }
   .wash { position: absolute; inset: 0;
-    background: radial-gradient(circle at 12% 20%, rgba(193,154,73,.22), transparent 45%); }
+    background: radial-gradient(circle at 12% 20%, rgba(198,159,88,.16), transparent 45%); }
   .safe { position: relative; z-index: 2; width: 630px; height: 630px;
     display: flex; flex-direction: column; align-items: center; justify-content: center;
     text-align: center; padding: 0 6px; }
-  .name { font-size: 62px; font-weight: 700; letter-spacing: -2px; line-height: 1.04; margin-top: 26px; }
-  .rule { width: 84px; height: 3px; background: #C69F58; margin: 22px 0 18px; }
-  .tag { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 21px;
-    letter-spacing: .2em; text-transform: uppercase; color: #D3BB90; font-weight: 600; }
-  .where { margin-top: 26px; font-size: 26px; color: #C8D4DE; }
+  .name { font-size: 54px; font-weight: 700; letter-spacing: .1em; line-height: 1.1;
+    margin-top: 24px; text-transform: uppercase; }
+  .rule { width: 84px; height: 3px; background: #C69F58; margin: 20px 0 16px; }
+  .tag { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 20px;
+    letter-spacing: .2em; text-transform: uppercase; color: #6F5415; font-weight: 600; }
+  .where { margin-top: 24px; font-size: 25px; color: #4D5A66; }
 </style>
 </head>
 <body>
   <div class="wash"></div>
   <div class="safe">
-    <!-- The traced client logo, reversed for the navy card. Geometry from
-         components/Logo.tsx; slits drawn in the card's navy. -->
-    <svg width="160" height="181" viewBox="120 170 390 442" aria-hidden="true">
-      <path fill-rule="evenodd" fill="#FFFFFF" d="M310 181.5 A43.5 43.5 0 1 1 309.9 181.5 Z M310 204 A21 21 0 1 0 310.1 204 Z"/>
-      <path d="M281 240 A33 33 0 1 1 339 240" stroke="#122C4E" stroke-width="4" fill="none" stroke-linecap="round"/>
-      <path fill="#FFFFFF" d="M292 250 C294 258 292 264 291 270 L286 470 L308 472 L308 252 Z"/>
-      <path fill="#FFFFFF" d="M328 250 C326 258 328 264 328 270 L332 470 L314 472 L314 252 Z"/>
-      <path fill="#FFFFFF" d="M308 283 L277 288 L237 300 L237 320 L308 327 Z"/>
-      <path fill="#FFFFFF" d="M314 283 L345 288 L383 300 L383 320 L314 327 Z"/>
-      <path d="M246 306 L302 307" stroke="#122C4E" stroke-width="3" fill="none"/>
-      <path d="M374 306 L318 307" stroke="#122C4E" stroke-width="3" fill="none"/>
-      <rect x="202" y="279" width="31" height="51" rx="14" fill="#FFFFFF"/>
-      <rect x="387" y="279" width="31" height="51" rx="14" fill="#FFFFFF"/>
-      <path d="M221 287 L221 322" stroke="#122C4E" stroke-width="3.5" fill="none"/>
-      <path d="M399 287 L399 322" stroke="#122C4E" stroke-width="3.5" fill="none"/>
-      <path fill="#FFFFFF" d="M150 400 C165 419 180 440 191 456 L182 464 L191 471 L179 476 L186 483 C170 484 152 480 141 472 C135 449 140 422 150 400 Z"/>
-      <path d="M151 426 C154 443 160 458 168 469" stroke="#122C4E" stroke-width="4" fill="none" stroke-linecap="round"/>
-      <path fill="#FFFFFF" d="M130 474 C155 486 195 492 235 494 C253 495 268 496 280 498 C262 510 228 514 196 511 C168 508 146 498 134 487 C131 483 129 478 130 474 Z"/>
-      <path fill="#FFFFFF" d="M380 548 C410 531 436 507 450 480 C454 472 457 464 458 457 L441 452 C436 472 425 493 409 512 C399 524 389 536 380 548 Z"/>
-      <path fill="#FFFFFF" d="M471 397 C476 414 480 431 483 450 C471 452 459 456 448 462 C452 440 460 417 471 397 Z"/>
-      <path fill="#FFFFFF" d="M471 397 C459 407 448 421 440 437 L433 452 L446 458 C452 438 460 416 471 397 Z"/>
-      <path fill="#FFFFFF" d="M449 465 L478 466 L456 484 Z"/>
-      <path fill="#FFFFFF" d="M172 512 C220 524 265 515 300 507 C318 503 332 507 348 514 C375 524 402 514 421 497 C433 532 415 561 384 574 C352 588 327 591 310 602 C291 584 255 570 224 553 C202 541 182 528 172 512 Z"/>
-      <path d="M225 534 C280 540 340 542 412 510" stroke="#122C4E" stroke-width="5.5" fill="none" stroke-linecap="round"/>
-      <path fill="#D3BB90" d="M196 468 C232 466 272 458 306 449 C338 440 368 435 396 432 C408 431 418 429 426 427 C419 443 402 456 378 464 C342 476 292 481 254 477 C232 474 212 472 196 468 Z"/>
-      <path fill="#C69F58" d="M262 486 C300 497 344 499 380 491 C398 486 412 478 424 467 C421 486 406 499 384 506 C344 517 296 507 262 486 Z"/>
-    </svg>
-    <p class="name">Anchor<br>Insurance</p>
+    <img src="../public/brand/anchor-mark.png" width="196" height="232" alt="">
+    <p class="name">Anchor Insurance</p>
     <div class="rule"></div>
     <p class="tag">Coverage that gives back</p>
     <p class="where">Independent agency &middot; Manchester, Michigan</p>

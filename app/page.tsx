@@ -95,7 +95,7 @@ export default async function Home() {
           </div>
 
           <div className="hero-mark">
-            <AnchorHero width={300} ink="#ffffff" />
+            <AnchorHero />
           </div>
         </div>
       </section>

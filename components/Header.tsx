@@ -4,7 +4,6 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect } from "react";
 import { Lockup } from "./Logo";
-import HeaderMark from "./HeaderMark";
 import { useHomeHref } from "./HomeLink";
 import { site, ph, isPlaceholder } from "@/lib/site";
 
@@ -46,7 +45,7 @@ export default function Header() {
     <header className="site-head">
       <div className="wrap head-in">
         <Link href={home} className="head-brand" aria-label={`${site.name} home`}>
-          <Lockup markWidth={32} markSlot={<HeaderMark width={32} />} />
+          <Lockup markWidth={32} />
         </Link>
 
         <nav className="head-nav" aria-label="Main">

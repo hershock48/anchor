@@ -774,40 +774,39 @@ section {
    board and a news crawl. Neither is decoration; in both cases it is the
    client's own brand doing the moving.
 
-   Her brand is an anchor with gold water flowing across it, so the water is
-   the motion: it flows in the hero, it slides in once in the header, and the
-   bands are separated by water rather than by a hairline. The anchor itself
-   only rocks. The client asked for exactly this on August 28, 2026.
+   Her brand is her own logo, used as-is, and the motion is a swing: the logo
+   hangs from a line in the hero and swings, the way an anchor held on a line
+   does. The client asked for exactly this on August 31, 2026, after two
+   vector recreations tried to be cleverer than the artwork. The bands are
+   still separated by water rather than by a hairline.
    ═══════════════════════════════════════════════════════════════════════════ */
 
 .wave { display: block; width: 100%; height: 52px; margin-bottom: -1px; }
 @media (max-width: 640px) { .wave { height: 34px; } }
 
-/* ── the hero mark ──
-   THE WATER FLOWS, THE ANCHOR ROCKS. Each ribbon translates exactly one
-   period (270 user units, see AnchorHero.tsx) and loops, so the loop point is
-   invisible. Four schedules, none a multiple of another, all with negative
-   delays so nothing ever arrives together. Desynchronization matters more
-   than amplitude. CSS translate on an SVG child is in user units, so these
-   distances stay correct when the mark renders at 215px on a phone. */
-.ahero { display: block; overflow: visible; }
-.ahero-rock {
-  transform-box: view-box;
-  transform-origin: 195px 215px; /* view-box relative: user point (315, 385) */
-  animation: aheroRock 7.5s cubic-bezier(.45,.05,.55,.95) infinite -1.8s;
+/* ── the hero mark: the real logo on a plate, hanging, swinging ──
+   One motion, per the client. The pivot is the top of the line, because an
+   anchor on a line rotates about where it is held; the negative delay means
+   it arrives mid-swing rather than starting from a pose. */
+.ahero { display: flex; justify-content: center; }
+.ahero-swing {
+  display: flex; flex-direction: column; align-items: center;
+  transform-origin: 50% 0;
+  animation: aheroSwing 5.6s cubic-bezier(.45,.05,.55,.95) infinite -1.2s;
+  will-change: transform;
 }
-@keyframes aheroRock {
-  0%, 100% { transform: rotate(-1.5deg); }
-  50%      { transform: rotate(1.5deg); }
+@keyframes aheroSwing {
+  0%, 100% { transform: rotate(-3deg); }
+  50%      { transform: rotate(3deg); }
 }
-.ahero-w1 { animation: aheroFlow 9s    linear infinite; }
-.ahero-w2 { animation: aheroFlow 12.5s linear infinite -4s; }
-.ahero-w3 { animation: aheroFlow 7s    linear infinite -2s; }
-.ahero-w1, .ahero-w2, .ahero-w3 { will-change: transform; }
-@keyframes aheroFlow {
-  from { transform: translate3d(0, 0, 0); }
-  to   { transform: translate3d(120px, 0, 0); }
+.ahero-rope { display: block; width: 3px; height: 46px; border-radius: 2px; background: #52708e; }
+.ahero-plate {
+  background: var(--paper); border-radius: 22px; padding: 26px 26px 20px;
+  box-shadow: 0 26px 52px -26px rgba(0,0,0,.55);
 }
+.ahero-plate img { display: block; }
+/* The footer's small plate for the same navy-ground reason. */
+.mark-plate { display: inline-flex; background: var(--paper); border-radius: 10px; padding: 7px 8px; }
 
 /* ── the drawn underline ──
    Under one word in the h1, the way Glazed's swoosh sits under "crave". Drawn
@@ -918,7 +917,7 @@ h1 em svg path, h2 em svg path { stroke-dasharray: 320; stroke-dashoffset: 320; 
 .band-navy .step-n { border-color: #fff; background: var(--gold); }
 
 @media (prefers-reduced-motion: reduce) {
-  .ahero-rock, .ahero-w1, .ahero-w2, .ahero-w3, .ticker-inner { animation: none !important; }
+  .ahero-swing, .ticker-inner { animation: none !important; }
   .js h1 em svg path, .js h2 em svg path { animation: none !important; stroke-dashoffset: 0 !important; }
   .cov-card:hover { transform: none; }
 }
@@ -928,18 +927,16 @@ h1 em svg path, h2 em svg path { stroke-dasharray: 320; stroke-dashoffset: 320; 
 @media (max-width: 900px) { .hero-in { grid-template-columns: 1fr; gap: 10px; } .hero-mark { order: -1; } }
 .hero-mark { display: flex; justify-content: center; }
 @media (max-width: 900px) {
-  /* The rock is a ROTATION, so the arc a point travels is proportional to the
-     radius: at 215px the same angle covers fewer pixels. The flow needs no
-     small-screen variant, because the ribbons translate in user units and the
-     water's apparent speed scales with the mark, which is what water should
-     do. The rock angle goes up so the apparent movement stays roughly
-     constant. */
-  .hero-mark .ahero { width: 215px; height: 244px; }
-  .ahero-rock { animation-name: aheroRockSm; }
+  /* The swing is a ROTATION, so the arc a point travels is proportional to
+     the radius: at the smaller size the angle goes up so the apparent
+     movement stays roughly constant. */
+  .ahero-plate { padding: 20px 20px 15px; }
+  .ahero-plate img { width: 176px; height: 208px; }
+  .ahero-swing { animation-name: aheroSwingSm; }
 }
-@keyframes aheroRockSm {
-  0%, 100% { transform: rotate(-2.4deg); }
-  50%      { transform: rotate(2.4deg); }
+@keyframes aheroSwingSm {
+  0%, 100% { transform: rotate(-4.2deg); }
+  50%      { transform: rotate(4.2deg); }
 }
 .hero-cta { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 30px; }
 .hero-note { margin-top: 18px; font-size: 14.5px; max-width: 46ch; }
@@ -969,31 +966,9 @@ h1 em svg path, h2 em svg path { stroke-dasharray: 320; stroke-dashoffset: 320; 
   .tick-track { animation: none !important; }
 }
 
-/* ── the header mark's entrance ──
-   Only the `.playing` class animates, and it is added after mount. Without it
-   every element sits at its finished value, so no-JS and reduced motion both
-   get a complete logo rather than an invisible one. The sequence is the
-   logo's own story: the anchor drops, then the water flows in across it. One
-   shot; the looping water lives in the hero only. */
-.hmark-body { transform-box: fill-box; transform-origin: 50% 50%; }
-.hmark-water { transform-box: fill-box; transform-origin: 50% 50%; }
-
-.hmark.playing .hmark-body { animation: hmDrop .46s cubic-bezier(.34,1.42,.64,1) both; }
-.hmark.playing .hmark-water { animation: hmWater .5s cubic-bezier(.2,.7,.2,1) both .3s; }
-
-@keyframes hmDrop {
-  from { transform: translateY(-16px); opacity: 0; }
-  60%  { transform: translateY(2px);   opacity: 1; }
-  to   { transform: translateY(0);     opacity: 1; }
-}
-@keyframes hmWater {
-  from { transform: translateX(-14px); opacity: 0; }
-  to   { transform: translateX(0);     opacity: 1; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .hmark.playing .hmark-body,
-  .hmark.playing .hmark-water { animation: none !important; }
-}
+/* The header mark has no entrance any more: it is the client's artwork, an
+   image, and it simply is there. The animated header mark retired with the
+   vector recreations on 2026-08-31. */
 
 /* ── the market rail ── */
 .q { display: inline-flex; align-items: center; gap: 8px; }

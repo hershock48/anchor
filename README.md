@@ -5,11 +5,10 @@ in Manchester, Michigan. Customer-facing surfaces say **Anchor Insurance**.
 
 **Three client decisions landed on August 28, 2026, and the build changed
 shape.** The third: **she brought her real logo**, a navy anchor with a gold
-wave, and the whole visual system now derives from it. The mark is redrawn
-from it in `components/Logo.tsx`, the palette moved from navy-and-red to
-navy-and-gold (see the tokens trap below), the wordmark is serif capitals via
-Cinzel, and the wave is the site's motion: it flows in the hero and slides in
-once in the header. The first two:
+wave, and the whole visual system now derives from it. The mark is the
+artwork itself (see the mark trap below), the palette is sampled from it, the
+wordmark is serif capitals via Cinzel, and the motion is a swing: the logo
+hangs from a line in the hero. The first two:
 
 First, the name. The site was built as "Insurance for a Cause," which was the
 DBA, with Anchor as the legal entity behind it. The client folded everything
@@ -146,37 +145,31 @@ visibility will not catch it.
 state. Move the opacity rule out from under that selector and a blocked script
 ships a blank page.
 
-**The mark is the client's own logo, TRACED, not approximated.** She brought
-the logo on August 28, 2026, and the first vector attempt simplified it into a
-generic anchor, which Kevin rejected on sight (the "it's not MY donut" failure
-from glaze.md). `components/Logo.tsx` now carries a trace built with an
-overlay-diff harness against the supplied image (Downloads/IMG_6500.jpg):
-masks thresholded, landmark rows measured, paths iterated on top of the real
-artwork. Every part is hers: the ring's inner highlight, the split shank, the
-slit capsule caps, the sail fluke, the swoosh arrow, the layered water. **If a
-change makes the mark "cleaner" but less like the image, it is wrong.** If her
-original vector file ever lands, lift its paths verbatim and retire the trace.
-The slits render in a `gap` color: pass the ground's color on dark grounds.
+**The mark is the client's artwork ITSELF. Do not vectorize it again.** Two
+recreations died here in three days: a simplified generic anchor (rejected on
+sight, the "it's not MY donut" failure from glaze.md) and then a faithful
+trace (still not the thing). The client's call on August 31, 2026: use the
+logo they have. `public/brand/anchor-mark.png` is her file
+(Downloads/IMG_6500.jpg) cropped with the white background keyed to alpha,
+and `components/Logo.tsx` renders that image. Nothing draws the anchor
+anywhere in this repo any more.
 
-**The mark has no `id` and no gradient, on purpose.** `components/Logo.tsx`
-renders in both the header and the footer. A component that can render twice
-cannot own a fixed id, and two instances sharing a gradient id has painted a dark
-square before. Color comes from props, which is also how the reversed and
-one-color versions work with no duplicated geometry. **The one exception is
-`AnchorHero`, which owns two mask ids and renders once, in the hero. Do not put
-a second one on a page.**
+**The artwork is navy-on-light and that is the only version that exists.** No
+reversed cut, no one-color cut. On any dark ground the mark sits on a paper
+plate (`Mark`'s `plate` prop, the hero's plate, the favicon's light tile).
+**Never place the bare transparent PNG on navy**: the anchor disappears into
+the ground and the keyed edges halo.
 
-**The hero's water flows INSIDE her ribbons.** `AnchorHero` never redraws the
-gold: each ribbon shape becomes a clipPath and periodic shimmer strokes
-translate exactly one period (120 user units) through it, looping invisibly,
-while the whole anchor rocks. The animated layers are ~720 user units wide,
-far under the ~4096px mobile compositing cap, and `motion-check` verifies
-reduced motion leaves the still, complete logo.
+**The motion is a swing, and only a swing.** Per the client, explicitly. The
+hero hangs the plated logo from a line and rotates it about the top of the
+line, because an anchor on a line rotates about where it is held. Reduced
+motion leaves it hanging still, which is the finished state. The header mark
+does not animate at all.
 
-**Two cuts, not one artwork at two sizes.** The three ribbons close into a
-smear below about 30px, so `Mark` switches to one heavier wave, thicker strokes
-and plain triangle flukes under that width. The favicon is built from the small
-cut for the same reason.
+**The source is a phone-screenshot JPEG, and that is a known limit.** It is
+sharp at every size the site renders (the largest is ~230px against a 380px
+asset), but print work or anything larger needs her original file. When it
+lands, re-key `anchor-mark.png` from it and nothing else changes.
 
 **Cinzel is the wordmark face only.** The logo sets the name in Trajan-style
 capitals; Cinzel (self-hosted, `--font-brand`) is the closest free face and it

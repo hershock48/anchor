@@ -162,8 +162,9 @@ h2.sec-title{font-size:clamp(28px,4vw,40px);font-weight:800;letter-spacing:-1.4p
 .card2.back .mid b{display:block;font-size:16px;font-weight:800;letter-spacing:-.02em}
 .card2.back .mid span{display:block;font-size:11px;opacity:.8;margin-top:5px}
 .avatars{display:flex;gap:16px;align-items:center;flex-wrap:wrap;justify-content:center}
-.av{border-radius:50%;background:var(--navy);display:grid;place-items:center}
-.av.b{background:var(--gold)}
+/* Avatar tiles are LIGHT: the artwork is navy-on-light and has no reversed
+   version, so the round crop is a paper tile with the logo on it. */
+.av{border-radius:50%;background:var(--paper);border:2px solid var(--navy);display:grid;place-items:center}
 
 .drip-divider{display:block;width:100%;height:54px;margin-bottom:-1px}
 .ctaband{background:var(--raspberry-deep);color:#fff}
@@ -187,20 +188,19 @@ footer .inner{max-width:1100px;margin:0 auto;padding:52px 24px 34px}
 .js .reveal{opacity:0;transform:translateY(26px);transition:opacity .7s ease,transform .7s ease}
 .js .reveal.in{opacity:1;transform:none}
 
-/* the motion specimen: the same flow the site's hero runs. Shimmer strokes
-   are periodic (period 120 user units) and translate exactly one period, so
-   the loop point is invisible, clipped inside the logo's own gold ribbons. */
-.lg-rock{transform-box:view-box;transform-origin:195px 215px;animation:lgRock 7.5s cubic-bezier(.45,.05,.55,.95) infinite -1.8s}
-@keyframes lgRock{0%,100%{transform:rotate(-1.5deg)}50%{transform:rotate(1.5deg)}}
-.lg-w1{animation:lgFlow 9s linear infinite}
-.lg-w2{animation:lgFlow 12.5s linear infinite -4s}
-.lg-w3{animation:lgFlow 7s linear infinite -2s}
-@keyframes lgFlow{from{transform:translateX(0)}to{transform:translateX(120px)}}
+/* the motion specimen: the same swing the site's hero runs. The pivot is the
+   top of the line, because an anchor on a line rotates about where it is
+   held. */
+.lgswing{display:flex;flex-direction:column;align-items:center;transform-origin:50% 0;animation:lgSwing 5.6s cubic-bezier(.45,.05,.55,.95) infinite -1.2s}
+.lgrope{display:block;width:3px;height:40px;border-radius:2px;background:#52708e}
+.lgplate{background:#F7F3EC;border-radius:18px;padding:20px 20px 15px;box-shadow:0 22px 44px -22px rgba(0,0,0,.55)}
+.lgplate img{display:block}
+@keyframes lgSwing{0%,100%{transform:rotate(-3deg)}50%{transform:rotate(3deg)}}
 @media(prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
   .js .reveal{opacity:1;transform:none;transition:none}
   .ticker-inner{animation:none}
-  .lg-rock,.lg-w1,.lg-w2,.lg-w3{animation:none}
+  .lgswing{animation:none}
 }
 @media(max-width:760px){
   .sitenav ul{display:none}
@@ -267,50 +267,16 @@ footer .inner{max-width:1100px;margin:0 auto;padding:52px 24px 34px}
     <path d="M0,0 H1440 V16 C1408 16 1400 44 1378 44 C1356 44 1362 16 1332 16 H1180 C1160 16 1156 52 1132 52 C1110 52 1116 16 1088 16 H880 C862 16 860 38 842 38 C824 38 828 16 802 16 H590 C574 16 572 48 550 48 C528 48 532 16 506 16 H300 C284 16 282 36 264 36 C246 36 250 16 224 16 H0 Z"/>
   </symbol>
 
-  <!-- ===== the client's mark: HER LOGO, TRACED ===== -->
-  <!-- Traced from the supplied artwork with an overlay-diff harness; the
-       geometry matches components/Logo.tsx exactly. viewBox for both cuts is
-       "120 170 390 442". Slits draw in var(--a-gap): pass the ground color
-       on any non-paper stage. -->
+  <!-- ===== the client's mark: HER ARTWORK, AS-IS ===== -->
+  <!-- The supplied logo with its background keyed out, served from
+       /brand/anchor-mark.png (380x450). No redraws, no cuts, no recolors:
+       the artwork is navy-on-light, so on any dark ground it sits on a
+       paper plate rather than being reversed. -->
   <g id="ifac">
-    <path fill-rule="evenodd" fill="var(--a-ink,#122C4E)" d="M310 181.5 A43.5 43.5 0 1 1 309.9 181.5 Z M310 204 A21 21 0 1 0 310.1 204 Z"/>
-    <path d="M281 240 A33 33 0 1 1 339 240" stroke="var(--a-gap,#F7F3EC)" stroke-width="4" fill="none" stroke-linecap="round"/>
-    <path fill="var(--a-ink,#122C4E)" d="M292 250 C294 258 292 264 291 270 L286 470 L308 472 L308 252 Z"/>
-    <path fill="var(--a-ink,#122C4E)" d="M328 250 C326 258 328 264 328 270 L332 470 L314 472 L314 252 Z"/>
-    <path fill="var(--a-ink,#122C4E)" d="M308 283 L277 288 L237 300 L237 320 L308 327 Z"/>
-    <path fill="var(--a-ink,#122C4E)" d="M314 283 L345 288 L383 300 L383 320 L314 327 Z"/>
-    <path d="M246 306 L302 307" stroke="var(--a-gap,#F7F3EC)" stroke-width="3" fill="none"/>
-    <path d="M374 306 L318 307" stroke="var(--a-gap,#F7F3EC)" stroke-width="3" fill="none"/>
-    <rect x="202" y="279" width="31" height="51" rx="14" fill="var(--a-ink,#122C4E)"/>
-    <rect x="387" y="279" width="31" height="51" rx="14" fill="var(--a-ink,#122C4E)"/>
-    <path d="M221 287 L221 322" stroke="var(--a-gap,#F7F3EC)" stroke-width="3.5" fill="none"/>
-    <path d="M399 287 L399 322" stroke="var(--a-gap,#F7F3EC)" stroke-width="3.5" fill="none"/>
-    <path fill="var(--a-ink,#122C4E)" d="M150 400 C165 419 180 440 191 456 L182 464 L191 471 L179 476 L186 483 C170 484 152 480 141 472 C135 449 140 422 150 400 Z"/>
-    <path d="M151 426 C154 443 160 458 168 469" stroke="var(--a-gap,#F7F3EC)" stroke-width="4" fill="none" stroke-linecap="round"/>
-    <path fill="var(--a-ink,#122C4E)" d="M130 474 C155 486 195 492 235 494 C253 495 268 496 280 498 C262 510 228 514 196 511 C168 508 146 498 134 487 C131 483 129 478 130 474 Z"/>
-    <path fill="var(--a-ink,#122C4E)" d="M380 548 C410 531 436 507 450 480 C454 472 457 464 458 457 L441 452 C436 472 425 493 409 512 C399 524 389 536 380 548 Z"/>
-    <path fill="var(--a-ink,#122C4E)" d="M471 397 C476 414 480 431 483 450 C471 452 459 456 448 462 C452 440 460 417 471 397 Z"/>
-    <path fill="var(--a-ink,#122C4E)" d="M471 397 C459 407 448 421 440 437 L433 452 L446 458 C452 438 460 416 471 397 Z"/>
-    <path fill="var(--a-ink,#122C4E)" d="M449 465 L478 466 L456 484 Z"/>
-    <path fill="var(--a-ink,#122C4E)" d="M172 512 C220 524 265 515 300 507 C318 503 332 507 348 514 C375 524 402 514 421 497 C433 532 415 561 384 574 C352 588 327 591 310 602 C291 584 255 570 224 553 C202 541 182 528 172 512 Z"/>
-    <path d="M225 534 C280 540 340 542 412 510" stroke="var(--a-gap,#F7F3EC)" stroke-width="5.5" fill="none" stroke-linecap="round"/>
-    <path fill="var(--a-accent,#D3BB90)" d="M196 468 C232 466 272 458 306 449 C338 440 368 435 396 432 C408 431 418 429 426 427 C419 443 402 456 378 464 C342 476 292 481 254 477 C232 474 212 472 196 468 Z"/>
-    <path fill="var(--a-accent2,#C69F58)" d="M262 486 C300 497 344 499 380 491 C398 486 412 478 424 467 C421 486 406 499 384 506 C344 517 296 507 262 486 Z"/>
+    <image href="/brand/anchor-mark.png" x="120" y="170" width="390" height="442" preserveAspectRatio="xMidYMid meet"/>
   </g>
-  <!-- small cut: no slits, merged stock, one heavy gold band -->
   <g id="ifacS">
-    <circle cx="310" cy="223" r="38" fill="none" stroke="var(--a-ink,#122C4E)" stroke-width="23"/>
-    <path fill="var(--a-ink,#122C4E)" d="M298 252 L322 252 L331 470 L289 470 Z"/>
-    <path fill="var(--a-ink,#122C4E)" d="M230 294 L390 294 L390 324 L230 324 Z"/>
-    <rect x="196" y="276" width="40" height="56" rx="16" fill="var(--a-ink,#122C4E)"/>
-    <rect x="384" y="276" width="40" height="56" rx="16" fill="var(--a-ink,#122C4E)"/>
-    <path fill="var(--a-ink,#122C4E)" d="M148 398 C166 420 182 443 194 460 L186 484 C166 486 148 480 138 470 C133 447 138 420 148 398 Z"/>
-    <path fill="var(--a-ink,#122C4E)" d="M375 550 C408 530 436 504 452 474 L436 462 C428 486 412 512 392 532 Z"/>
-    <path fill="var(--a-ink,#122C4E)" d="M472 394 C478 416 483 436 485 456 L446 466 C452 440 460 414 472 394 Z"/>
-    <path fill="var(--a-ink,#122C4E)" d="M446 468 L480 468 L454 490 Z"/>
-    <path fill="var(--a-ink,#122C4E)" d="M172 512 C220 524 265 515 300 507 C318 503 332 507 348 514 C375 524 402 514 421 497 C433 532 415 561 384 574 C352 588 327 591 310 602 C291 584 255 570 224 553 C202 541 182 528 172 512 Z"/>
-    <path fill="var(--a-ink,#122C4E)" d="M130 474 C155 486 195 492 235 494 C253 495 268 496 280 498 C262 510 228 514 196 511 C168 508 146 498 134 487 C131 483 129 478 130 474 Z"/>
-    <path fill="var(--a-accent2,#C69F58)" d="M190 470 C240 462 300 448 360 440 C390 436 412 432 428 426 C420 448 398 462 368 472 C320 486 250 486 190 470 Z"/>
+    <image href="/brand/anchor-mark.png" x="120" y="170" width="390" height="442" preserveAspectRatio="xMidYMid meet"/>
   </g>
 </defs></svg>
 
@@ -339,34 +305,22 @@ footer .inner{max-width:1100px;margin:0 auto;padding:52px 24px 34px}
 
 <section id="new">
   <div class="inner">
-    <p class="sec-kicker reveal">The refinement</p>
-    <h2 class="sec-title reveal">Your logo, traced into vectors.</h2>
-    <p class="sec-sub reveal">This is your artwork, traced shape by shape into exact vector geometry: the ring with its inner highlight, the split shank, the slit caps on the stock, the sail and the arrow, the layered water. Vectors stay sharp from a billboard down to a favicon, and they make the one thing a flat image cannot do possible: the water can move.</p>
+    <p class="sec-kicker reveal">The mark</p>
+    <h2 class="sec-title reveal">Your logo, exactly as it is.</h2>
+    <p class="sec-sub reveal">No redrawing and no reinterpretation: this is your artwork, prepared for the web. The background is lifted out so it sits on any of the site's grounds, it is cut to every size a website asks for, and because your logo is navy on light, dark surfaces give it a paper plate the way a real sign gets a board.</p>
 
     <div class="stage paper reveal">
       <svg width="188" height="213" viewBox="120 170 390 442" aria-hidden="true"><use href="#ifac"/></svg>
     </div>
     <p class="cap">The mark</p>
 
-    <div class="stage paper reveal">
-      <svg width="188" height="213" viewBox="120 170 390 442" aria-hidden="true">
-        <defs>
-          <clipPath id="lgClipLight"><path d="M196 468 C232 466 272 458 306 449 C338 440 368 435 396 432 C408 431 418 429 426 427 C419 443 402 456 378 464 C342 476 292 481 254 477 C232 474 212 472 196 468 Z"/></clipPath>
-          <clipPath id="lgClipDark"><path d="M262 486 C300 497 344 499 380 491 C398 486 412 478 424 467 C421 486 406 499 384 506 C344 517 296 507 262 486 Z"/></clipPath>
-        </defs>
-        <g class="lg-rock">
-          <use href="#ifac"/>
-          <g clip-path="url(#lgClipLight)" fill="none" stroke-linecap="round" opacity="0.55">
-            <path class="lg-w1" stroke="#C69F58" stroke-width="5" d="M-120 452 q 30 -7 60 0 t 60 0 t 60 0 t 60 0 t 60 0 t 60 0 t 60 0 t 60 0 t 60 0 t 60 0"/>
-            <path class="lg-w2" stroke="#C69F58" stroke-width="3.5" d="M-120 468 q 30 -6 60 0 t 60 0 t 60 0 t 60 0 t 60 0 t 60 0 t 60 0 t 60 0 t 60 0 t 60 0"/>
-          </g>
-          <g clip-path="url(#lgClipDark)" fill="none" stroke-linecap="round" opacity="0.5">
-            <path class="lg-w3" stroke="#D3BB90" stroke-width="4" d="M-120 492 q 30 -6 60 0 t 60 0 t 60 0 t 60 0 t 60 0 t 60 0 t 60 0 t 60 0 t 60 0 t 60 0"/>
-          </g>
-        </g>
-      </svg>
+    <div class="stage navy reveal" style="padding-top:26px;padding-bottom:56px">
+      <div class="lgswing">
+        <span class="lgrope"></span>
+        <div class="lgplate"><img src="/brand/anchor-mark.png" width="150" height="178" alt=""></div>
+      </div>
     </div>
-    <p class="cap">The motion. The water flows through your ribbons and the anchor rocks; this exact animation runs in the site's hero.</p>
+    <p class="cap">The motion. It hangs and it swings; this exact animation runs in the site's hero.</p>
 
     <div class="stage paper reveal" style="padding-top:52px;padding-bottom:52px">
       <div class="lock">
@@ -382,28 +336,19 @@ footer .inner{max-width:1100px;margin:0 auto;padding:52px 24px 34px}
 
     <div class="stage navy reveal">
       <div class="lockh">
-        <svg width="62" height="70" viewBox="120 170 390 442" style="--a-ink:#ffffff;--a-gap:#122C4E" aria-hidden="true"><use href="#ifac"/></svg>
-        <div class="wm"><span class="big">Anchor Insurance</span><span class="rule"></span><span class="tl">And Risk Management</span></div>
+        <span class="lgplate" style="border-radius:12px;padding:10px 11px 7px"><img src="/brand/anchor-mark.png" width="52" height="62" alt=""></span>
+        <div class="wm" style="color:#fff"><span class="big">Anchor Insurance</span><span class="rule"></span><span class="tl" style="color:#D3BB90">And Risk Management</span></div>
       </div>
     </div>
-    <p class="cap">Horizontal, reversed</p>
-
-    <div class="stage gold reveal">
-      <div class="lockh">
-        <svg width="62" height="70" viewBox="120 170 390 442" style="--a-ink:#ffffff;--a-accent:#ffffff;--a-accent2:#ffffff;--a-gap:#C69F58" aria-hidden="true"><use href="#ifac"/></svg>
-        <div class="wm"><span class="big">Anchor Insurance</span><span class="rule"></span><span class="tl">And Risk Management</span></div>
-      </div>
-    </div>
-    <p class="cap">On the loud one</p>
+    <p class="cap">On dark grounds the mark rides its plate. Your logo is navy on light; that is the version that exists, and we do not fake a reversed one.</p>
 
     <div class="stage sand reveal" style="gap:40px;align-items:flex-end">
-      <div class="chip"><svg width="70" height="79" viewBox="120 170 390 442" style="--a-gap:#E4D7C3" aria-hidden="true"><use href="#ifac"/></svg><span class="lbl">full</span></div>
-      <div class="chip"><svg width="34" height="39" viewBox="120 170 390 442" style="--a-gap:#E4D7C3" aria-hidden="true"><use href="#ifac"/></svg><span class="lbl">34px</span></div>
-      <div class="chip"><svg width="22" height="25" viewBox="120 170 390 442" aria-hidden="true"><use href="#ifacS"/></svg><span class="lbl">22px &middot; small cut</span></div>
-      <div class="chip"><svg width="16" height="18" viewBox="120 170 390 442" aria-hidden="true"><use href="#ifacS"/></svg><span class="lbl">16px &middot; small cut</span></div>
-      <div class="chip"><svg width="70" height="79" viewBox="120 170 390 442" style="--a-ink:#122C4E;--a-accent:#122C4E;--a-accent2:#122C4E;--a-gap:#E4D7C3" aria-hidden="true"><use href="#ifac"/></svg><span class="lbl">one color</span></div>
+      <div class="chip"><svg width="70" height="79" viewBox="120 170 390 442" aria-hidden="true"><use href="#ifac"/></svg><span class="lbl">full</span></div>
+      <div class="chip"><svg width="34" height="39" viewBox="120 170 390 442" aria-hidden="true"><use href="#ifac"/></svg><span class="lbl">34px</span></div>
+      <div class="chip"><svg width="22" height="25" viewBox="120 170 390 442" aria-hidden="true"><use href="#ifac"/></svg><span class="lbl">22px</span></div>
+      <div class="chip"><svg width="16" height="18" viewBox="120 170 390 442" aria-hidden="true"><use href="#ifac"/></svg><span class="lbl">16px</span></div>
     </div>
-    <p class="cap">Two cuts. Below about 30px the slits close, the ribbons merge and the strokes go heavier.</p>
+    <p class="cap">One artwork at every size. The favicon rides a light tile for the same plate reason.</p>
   </div>
 </section>
 
@@ -493,7 +438,7 @@ footer .inner{max-width:1100px;margin:0 auto;padding:52px 24px 34px}
         </div>
         <div class="card2 back reveal">
           <div class="mid">
-            <svg width="46" height="52" viewBox="120 170 390 442" style="--a-ink:#ffffff;--a-gap:#122C4E" aria-hidden="true"><use href="#ifac"/></svg>
+            <span class="lgplate" style="border-radius:10px;padding:8px 9px 5px;display:inline-block"><img src="/brand/anchor-mark.png" width="40" height="47" alt=""></span>
             <b style="margin-top:12px">Coverage that gives back</b>
             <span>A share of what we earn stays in <span class="ph" style="background:rgba(255,255,255,.22);border-color:rgba(255,255,255,.6);color:#fff">[your county]</span>.</span>
           </div>
@@ -502,13 +447,13 @@ footer .inner{max-width:1100px;margin:0 auto;padding:52px 24px 34px}
 
       <div class="stage sand reveal" style="margin-top:0">
         <div class="avatars">
-          <div class="chip"><div class="av" style="width:92px;height:92px"><svg width="44" height="50" viewBox="120 170 390 442" style="--a-ink:#ffffff;--a-gap:#122C4E" aria-hidden="true"><use href="#ifac"/></svg></div><span class="lbl">profile, 92px</span></div>
-          <div class="chip"><div class="av b" style="width:64px;height:64px"><svg width="30" height="34" viewBox="120 170 390 442" style="--a-ink:#ffffff;--a-accent:#ffffff;--a-accent2:#ffffff;--a-gap:#C69F58" aria-hidden="true"><use href="#ifacS"/></svg></div><span class="lbl">64px</span></div>
-          <div class="chip"><div class="av" style="width:40px;height:40px"><svg width="19" height="22" viewBox="120 170 390 442" style="--a-ink:#ffffff;--a-gap:#122C4E" aria-hidden="true"><use href="#ifacS"/></svg></div><span class="lbl">40px</span></div>
-          <div class="chip"><div class="av" style="width:26px;height:26px"><svg width="13" height="15" viewBox="120 170 390 442" style="--a-ink:#ffffff;--a-gap:#122C4E" aria-hidden="true"><use href="#ifacS"/></svg></div><span class="lbl">26px</span></div>
+          <div class="chip"><div class="av" style="width:92px;height:92px"><img src="/brand/anchor-mark.png" width="52" height="62" alt=""></div><span class="lbl">profile, 92px</span></div>
+          <div class="chip"><div class="av" style="width:64px;height:64px"><img src="/brand/anchor-mark.png" width="36" height="43" alt=""></div><span class="lbl">64px</span></div>
+          <div class="chip"><div class="av" style="width:40px;height:40px"><img src="/brand/anchor-mark.png" width="23" height="27" alt=""></div><span class="lbl">40px</span></div>
+          <div class="chip"><div class="av" style="width:26px;height:26px"><img src="/brand/anchor-mark.png" width="15" height="18" alt=""></div><span class="lbl">26px</span></div>
         </div>
       </div>
-      <p class="cap">Round crops, because Google and Facebook will cut the corners off a square one</p>
+      <p class="cap">Round crops on the light tile, because Google and Facebook will cut the corners off a square one</p>
     </div>
   </div>
 </section>
