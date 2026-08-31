@@ -1,18 +1,16 @@
-import { MARK_SRC } from "./Logo";
+import { MARK_REVERSE_SRC } from "./Logo";
 
 /**
- * The hero mark: the client's logo, hanging and swinging.
+ * The hero mark: the client's anchor, hanging from a line, swinging.
  *
- * Per the client on August 31, 2026: use the logo they have, and have it
- * swing. So: the real artwork on a paper plate, hung from a line, swinging
- * about the point it hangs from, because an anchor on a line rotates about
- * where it is held. One motion, one schedule; the negative delay means it is
- * already mid-swing on arrival rather than starting from a pose.
+ * Just the anchor, per the client on August 31, 2026: no plate, no card. The
+ * hero ground is navy, so this is the reversed cut, her artwork recolored
+ * pixel for pixel (see Logo.tsx). The line runs into the ring, and the whole
+ * thing swings about the point it hangs from, because an anchor on a line
+ * rotates about where it is held. The negative delay means it is already
+ * mid-swing on arrival rather than starting from a pose.
  *
- * The plate is not decoration: the artwork is navy-on-light and this hero is
- * navy, so the bare PNG would vanish into the ground (see Logo.tsx).
- *
- * Reduced motion is handled in globals.css: the sign simply hangs still,
+ * Reduced motion is handled in globals.css: the anchor simply hangs still,
  * which is the finished state.
  */
 export default function AnchorHero() {
@@ -20,10 +18,8 @@ export default function AnchorHero() {
     <div className="ahero" aria-hidden="true">
       <div className="ahero-swing">
         <span className="ahero-rope" />
-        <div className="ahero-plate">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={MARK_SRC} width={228} height={270} alt="" />
-        </div>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={MARK_REVERSE_SRC} width={264} height={313} alt="" />
       </div>
     </div>
   );

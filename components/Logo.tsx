@@ -9,11 +9,12 @@
  * as /brand/anchor-mark.png. Do not redraw it, do not "clean it up", do not
  * trace it again.
  *
- * THE ARTWORK IS NAVY-ON-LIGHT AND THAT IS THE ONLY VERSION THAT EXISTS.
- * There is no reversed cut and no one-color cut. On any dark ground the mark
- * sits on a paper plate (`plate` prop), the way a real sign does. Never place
- * the bare transparent PNG on navy: the anchor disappears and the keyed edge
- * halos.
+ * TWO FILES, ONE ARTWORK. The original is navy-on-light. The reversed cut
+ * (anchor-mark-reverse.png) is for dark grounds and is made by RECOLORING her
+ * pixels, navy to white with the gold untouched, never by redrawing; the
+ * slits let the ground show through, which is what a real reversed logo does.
+ * Never place the navy original on a dark ground (it vanishes) and never
+ * place the reversed cut on a light one.
  *
  * The source is a phone-screenshot JPEG, 380x450 at the crop. It is sharp at
  * every size the site uses (largest render is ~260px). If the client's
@@ -23,25 +24,26 @@
 
 export const MARK_RATIO = 450 / 380;
 export const MARK_SRC = "/brand/anchor-mark.png";
+export const MARK_REVERSE_SRC = "/brand/anchor-mark-reverse.png";
 
 type MarkProps = {
   /** Rendered width in px. Height derives from the artwork's ratio. */
   width?: number;
-  /** Wrap in a paper plate. REQUIRED on dark grounds; see above. */
-  plate?: boolean;
+  /** Use the reversed cut. REQUIRED on dark grounds; see above. */
+  reverse?: boolean;
   className?: string;
   /** Set when the mark is the only thing naming the site, e.g. a bare link. */
   title?: string;
 };
 
-export function Mark({ width = 40, plate = false, className, title }: MarkProps) {
+export function Mark({ width = 40, reverse = false, className, title }: MarkProps) {
   const height = Math.round(width * MARK_RATIO);
-  const img = (
+  return (
     // Plain <img>: the asset is a static file in /public and the render sizes
     // are fixed, so next/image would only add indirection.
     // eslint-disable-next-line @next/next/no-img-element
     <img
-      src={MARK_SRC}
+      src={reverse ? MARK_REVERSE_SRC : MARK_SRC}
       width={width}
       height={height}
       alt={title ?? ""}
@@ -49,7 +51,6 @@ export function Mark({ width = 40, plate = false, className, title }: MarkProps)
       style={{ display: "block" }}
     />
   );
-  return plate ? <span className="mark-plate">{img}</span> : img;
 }
 
 /**

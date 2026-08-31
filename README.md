@@ -154,17 +154,21 @@ logo they have. `public/brand/anchor-mark.png` is her file
 and `components/Logo.tsx` renders that image. Nothing draws the anchor
 anywhere in this repo any more.
 
-**The artwork is navy-on-light and that is the only version that exists.** No
-reversed cut, no one-color cut. On any dark ground the mark sits on a paper
-plate (`Mark`'s `plate` prop, the hero's plate, the favicon's light tile).
-**Never place the bare transparent PNG on navy**: the anchor disappears into
-the ground and the keyed edges halo.
+**Two files, one artwork, and each belongs to its ground.** The original
+(`anchor-mark.png`) is navy-on-light. The reversed cut
+(`anchor-mark-reverse.png`, `Mark`'s `reverse` prop) exists for dark grounds
+and is made by RECOLORING her pixels, navy to white with the gold untouched,
+never by redrawing; the keyed slits let the ground show through, which is
+what a real reversed logo does. **Never put the navy original on a dark
+ground** (it vanishes) **or the reversed cut on a light one.** The favicon
+keeps its light tile because launcher and tab grounds are unknowable.
 
-**The motion is a swing, and only a swing.** Per the client, explicitly. The
-hero hangs the plated logo from a line and rotates it about the top of the
-line, because an anchor on a line rotates about where it is held. Reduced
-motion leaves it hanging still, which is the finished state. The header mark
-does not animate at all.
+**The motion is a swing, and only a swing.** Per the client, explicitly, and
+with no plate behind it, also per the client. The hero hangs the reversed
+anchor from a line and rotates it about the top of the line, because an
+anchor on a line rotates about where it is held. Reduced motion leaves it
+hanging still, which is the finished state. The header mark does not animate
+at all.
 
 **The source is a phone-screenshot JPEG, and that is a known limit.** It is
 sharp at every size the site renders (the largest is ~230px against a 380px

@@ -193,8 +193,6 @@ footer .inner{max-width:1100px;margin:0 auto;padding:52px 24px 34px}
    held. */
 .lgswing{display:flex;flex-direction:column;align-items:center;transform-origin:50% 0;animation:lgSwing 5.6s cubic-bezier(.45,.05,.55,.95) infinite -1.2s}
 .lgrope{display:block;width:3px;height:40px;border-radius:2px;background:#52708e}
-.lgplate{background:#F7F3EC;border-radius:18px;padding:20px 20px 15px;box-shadow:0 22px 44px -22px rgba(0,0,0,.55)}
-.lgplate img{display:block}
 @keyframes lgSwing{0%,100%{transform:rotate(-3deg)}50%{transform:rotate(3deg)}}
 @media(prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
@@ -269,9 +267,8 @@ footer .inner{max-width:1100px;margin:0 auto;padding:52px 24px 34px}
 
   <!-- ===== the client's mark: HER ARTWORK, AS-IS ===== -->
   <!-- The supplied logo with its background keyed out, served from
-       /brand/anchor-mark.png (380x450). No redraws, no cuts, no recolors:
-       the artwork is navy-on-light, so on any dark ground it sits on a
-       paper plate rather than being reversed. -->
+       /brand/anchor-mark.png (380x450). No redraws. Dark grounds use
+       /brand/anchor-mark-reverse.png, her pixels recolored navy-to-white. -->
   <g id="ifac">
     <image href="/brand/anchor-mark.png" x="120" y="170" width="390" height="442" preserveAspectRatio="xMidYMid meet"/>
   </g>
@@ -307,7 +304,7 @@ footer .inner{max-width:1100px;margin:0 auto;padding:52px 24px 34px}
   <div class="inner">
     <p class="sec-kicker reveal">The mark</p>
     <h2 class="sec-title reveal">Your logo, exactly as it is.</h2>
-    <p class="sec-sub reveal">No redrawing and no reinterpretation: this is your artwork, prepared for the web. The background is lifted out so it sits on any of the site's grounds, it is cut to every size a website asks for, and because your logo is navy on light, dark surfaces give it a paper plate the way a real sign gets a board.</p>
+    <p class="sec-sub reveal">No redrawing and no reinterpretation: this is your artwork, prepared for the web. The background is lifted out so it sits on any of the site's grounds, it is cut to every size a website asks for, and for dark surfaces there is a reversed cut made by recoloring your own pixels, navy to white, gold untouched.</p>
 
     <div class="stage paper reveal">
       <svg width="188" height="213" viewBox="120 170 390 442" aria-hidden="true"><use href="#ifac"/></svg>
@@ -317,7 +314,7 @@ footer .inner{max-width:1100px;margin:0 auto;padding:52px 24px 34px}
     <div class="stage navy reveal" style="padding-top:26px;padding-bottom:56px">
       <div class="lgswing">
         <span class="lgrope"></span>
-        <div class="lgplate"><img src="/brand/anchor-mark.png" width="150" height="178" alt=""></div>
+        <img src="/brand/anchor-mark-reverse.png" width="160" height="190" alt="" style="margin-top:-8px">
       </div>
     </div>
     <p class="cap">The motion. It hangs and it swings; this exact animation runs in the site's hero.</p>
@@ -336,11 +333,11 @@ footer .inner{max-width:1100px;margin:0 auto;padding:52px 24px 34px}
 
     <div class="stage navy reveal">
       <div class="lockh">
-        <span class="lgplate" style="border-radius:12px;padding:10px 11px 7px"><img src="/brand/anchor-mark.png" width="52" height="62" alt=""></span>
+        <img src="/brand/anchor-mark-reverse.png" width="58" height="69" alt="">
         <div class="wm" style="color:#fff"><span class="big">Anchor Insurance</span><span class="rule"></span><span class="tl" style="color:#D3BB90">And Risk Management</span></div>
       </div>
     </div>
-    <p class="cap">On dark grounds the mark rides its plate. Your logo is navy on light; that is the version that exists, and we do not fake a reversed one.</p>
+    <p class="cap">Reversed for dark grounds: your pixels recolored, navy to white, nothing redrawn.</p>
 
     <div class="stage sand reveal" style="gap:40px;align-items:flex-end">
       <div class="chip"><svg width="70" height="79" viewBox="120 170 390 442" aria-hidden="true"><use href="#ifac"/></svg><span class="lbl">full</span></div>
@@ -348,7 +345,7 @@ footer .inner{max-width:1100px;margin:0 auto;padding:52px 24px 34px}
       <div class="chip"><svg width="22" height="25" viewBox="120 170 390 442" aria-hidden="true"><use href="#ifac"/></svg><span class="lbl">22px</span></div>
       <div class="chip"><svg width="16" height="18" viewBox="120 170 390 442" aria-hidden="true"><use href="#ifac"/></svg><span class="lbl">16px</span></div>
     </div>
-    <p class="cap">One artwork at every size. The favicon rides a light tile for the same plate reason.</p>
+    <p class="cap">One artwork at every size. The favicon rides a light tile because a tab's ground is unknowable.</p>
   </div>
 </section>
 
@@ -438,7 +435,7 @@ footer .inner{max-width:1100px;margin:0 auto;padding:52px 24px 34px}
         </div>
         <div class="card2 back reveal">
           <div class="mid">
-            <span class="lgplate" style="border-radius:10px;padding:8px 9px 5px;display:inline-block"><img src="/brand/anchor-mark.png" width="40" height="47" alt=""></span>
+            <img src="/brand/anchor-mark-reverse.png" width="46" height="55" alt="" style="display:inline-block">
             <b style="margin-top:12px">Coverage that gives back</b>
             <span>A share of what we earn stays in <span class="ph" style="background:rgba(255,255,255,.22);border-color:rgba(255,255,255,.6);color:#fff">[your county]</span>.</span>
           </div>
