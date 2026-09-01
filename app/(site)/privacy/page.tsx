@@ -34,10 +34,15 @@ export default function Privacy() {
 
           <h2>Where it goes</h2>
           <p>
-            A submission is delivered to one mailbox belonging to{" "}
-            {site.legalName} and it stops there. It is not sold, not shared with a lead
-            broker, and not handed to any third party other than a carrier we are actually
-            quoting you with, at your request.
+            A submission goes to {site.legalName} in two places and stops there: a private
+            list only this agency can open, so your request is not lost between calls, and a
+            mailbox belonging to the agency. It is not sold, not shared with a lead broker,
+            and not handed to any third party other than a carrier we are actually quoting
+            you with, at your request.
+          </p>
+          <p>
+            Nobody outside the agency can see that list. It holds what you typed on the form
+            and the notes we make while working on your quote, and nothing else about you.
           </p>
           <p className="ph-block">
             <span className="ph">Retention period to confirm</span>. Quote requests we do not

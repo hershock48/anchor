@@ -59,7 +59,7 @@ npm install axe-core playwright-core --no-save
 npx next start -p 4502
 PLAYWRIGHT_BROWSERS_PATH=/opt/pw-browsers \
   node ../glazedweb/glaze/scripts/audit.mjs --base http://127.0.0.1:4502 \
-  --routes /,/coverage,/coverage/auto,/coverage/home,/coverage/renters,/coverage/umbrella,/coverage/life,/coverage/business,/giving,/tools/michigan-pip,/guides,/guides/mini-tort,/guides/excess-attendant-care,/guides/storm-claims-after-march-6,/guides/why-your-rate-depends-on-where-you-live,/about,/contact,/quote,/quote/received,/privacy,/intake,/intake/sent,/pay,/pay/received
+  --routes /,/coverage,/coverage/auto,/coverage/home,/coverage/renters,/coverage/umbrella,/coverage/life,/coverage/business,/giving,/tools/michigan-pip,/guides,/guides/mini-tort,/guides/excess-attendant-care,/guides/storm-claims-after-march-6,/guides/why-your-rate-depends-on-where-you-live,/about,/contact,/quote,/quote/received,/privacy,/intake,/intake/sent,/pay,/pay/received,/workroom
 ```
 
 ---
@@ -106,9 +106,9 @@ customers on another build.
 - [ ] **The Facebook page URL** — `site.social.facebook`. It is where the giving
       specifics will live now, so the giving page and the giving card point at it
       once it lands; until then they read as plain copy with no link
-- [ ] **Her story** — `app/about/page.tsx`. Comes out of a recorded hour with her,
+- [ ] **Her story** — `app/(site)/about/page.tsx`. Comes out of a recorded hour with her,
       in her words. The single most damaging thing on this site to invent
-- [ ] **Privacy retention period** — `app/privacy/page.tsx`
+- [ ] **Privacy retention period** — `app/(site)/privacy/page.tsx`
 - [ ] **Real photographs.** There are none. No stock, on purpose
 - [ ] **The domain.** `site.url` assumes `anchorinsurancemi.com` and it is not
       bought, and after the rename the assumption is even softer than it was.
@@ -121,7 +121,7 @@ customers on another build.
 
 **The host split is in `beforeFiles` and has to stay there.** A plain `rewrites()`
 array is `afterFiles`, which only runs once Next has failed to find a page, and
-`app/page.tsx` already answers `/`. Put these in the wrong bucket and the pitch
+`app/(site)/page.tsx` already answers `/`. Put these in the wrong bucket and the pitch
 host silently serves the client's homepage. Host scoping rather than
 `basePath: "/demo"`, because basePath is global to a build and would bury the real
 site under `/demo` the day the domain goes live.
@@ -240,9 +240,11 @@ from a `glazedweb.com` address with `replyTo` set to the customer so her DNS wor
 is never on the critical path. See `.env.example`.
 
 **PII.** The form deliberately does not ask for dates of birth, license numbers or
-VINs. Those come up on the call. What it does collect is logged, not stored, and
-`app/privacy/page.tsx` says so. **If the handler changes, that page changes with
-it.**
+VINs. Those come up on the call. What it does collect is logged AND stored as a
+lead in the workroom, and `app/(site)/privacy/page.tsx` says so in those words.
+**If the handler changes, that page changes with it** — it already had to once:
+the page read "logged, not stored" until the leads queue made that untrue, which
+is exactly the failure this note exists to catch.
 
 ---
 
@@ -285,6 +287,62 @@ On the pitch host `/intake` needs no rewrite: only `/`, `/logo` and `/demo` are
 rewritten, so the Next app serves it there like any other route, wrapped in the
 site's own header and footer, which is the point. She fills in her site from
 inside her site.
+
+## The workroom: her dashboard, at /workroom
+
+**The agency's own tool, not part of the customer site.** Two screens behind a
+passcode: the **leads queue** (every quote request, worked through statuses
+new → called → quoted → won/lost, with her own notes per lead) and
+**payments** (a read-only window onto Stripe: recent payments and running
+autopays, each labelled with the payer, policy number and carrier that
+`/api/pay` writes into the session metadata).
+
+**It is not in the nav, not in the sitemap, and carries its own noindex.** It
+lives outside `/demo` on purpose (devine's reasoning): it is hers, and it does
+not move when the site graduates to the real domain.
+
+**Quote requests are now STORED, not just logged.** Before this they existed
+only in the Vercel log, which loses nothing but is not a list you can call
+through on a Tuesday. `/api/quote` writes a lead row and still logs the full
+payload, so a storage failure costs the list, never the submission.
+
+**The gate is a passcode, deliberately not devine's four-digit PIN.** Devine's
+PIN is right for a shared screen behind a flower counter; this guards customer
+names, phones, emails and addresses for one owner on her own phone, so it is
+`WORKROOM_PASSCODE`, minimum eight characters. Two rules inherited and one
+added: an unset (or too short) variable **closes** the door in production
+rather than fitting a known lock (devine's fallback was the shop's own
+published phone number), the login route is rate limited, and **the cookie
+carries a hash rather than the passcode itself**, so a stolen cookie does not
+hand over a secret that outlives the session.
+
+**Nothing behind the gate can move money.** The payments screen reads; refunds
+happen in the Stripe dashboard behind Stripe's own login. If a screen ever
+grows a refund button it needs a real login before it ships.
+
+**Storage is `DATABASE_URL`, or memory.** Postgres when set (Vercel > Storage
+> Neon, free tier, part of the hosting she already has, so the "nothing
+rented" rule holds); tables create themselves. Without it the workroom runs on
+in-memory storage and **says so on screen**, because on serverless the queue
+can then miss leads that landed on another instance. Ported from devine's
+store, including the lesson in its header: a failed schema init must not be
+cached, or one unlucky cold start leaves that instance permanently broken.
+
+**`lib/workroom/leads.ts` must stay free of `server-only` and of `pg`.** The
+screens import `LEAD_STATUSES` as a value, and a value import reaches through
+to the whole module: `pg` followed it into the client bundle and the build
+failed on `util/types`. Types alone are erased; a constant is not. Anything
+touching a connection belongs in `store.ts`.
+
+**The route group is why the workroom has no shopfront.** `app/(site)/` holds
+every customer page and owns the header, footer, skip link, reveal system,
+structured data and the `<main>` landmark; the root layout is now the document
+and nothing else. Route groups do not appear in URLs, so every path is
+unchanged. This was not tidying: rendering the workroom inside the old root
+layout gave it the customer header **and** a second nested `<main id="main">`,
+which the auditor caught as three landmark violations on every workroom screen
+at both widths. **If you add a top-level route that is not part of the
+customer site, it belongs beside `(site)`, not inside it.**
 
 ## Payments: /pay is live, the card form is parked
 
@@ -432,7 +490,7 @@ handover artifact rather than a private note. Ticked means measured, not assumed
 
 ### Correctness
 
-- [x] Zero accessibility violations at 390px and 1440px on every route. **23 routes, 0 violations, re-measured September 1 with /intake and /intake/sent included.**
+- [x] Zero accessibility violations at 390px and 1440px on every route. **25 routes, 0 violations, re-measured September 1 after the route-group refactor. The workroom's signed-in screens audit separately (the house auditor cannot open the gate) and are also at 0.**
 - [x] Zero console errors, zero 4xx, on every route.
 - [x] `grep -rn PLACEHOLDER` returns only hits that are on the list above. **17, all in `lib/site.ts`, of which three are the marker mechanism itself.**
 - [ ] **Every form actually submitted and confirmed arriving in a real inbox.**
@@ -440,8 +498,10 @@ handover artifact rather than a private note. Ticked means measured, not assumed
       production endpoint on September 1, 2026, delivery ran on the deployment
       with `INTAKE_TO` and `RESEND_API_KEY` set (both live in Vercel now), and
       Kevin saw the email land in his inbox. The QUOTE form is still the open
-      half: there is no agency inbox yet, so its handler logs the full payload
-      and warns. See below.
+      half for EMAIL: there is no agency inbox yet, so its handler logs the
+      full payload and warns. It is no longer the open half for DELIVERY,
+      though: every quote request is now a row in the workroom's leads queue,
+      which is where she works them. See below.
 - [x] Any remote data source verified on the deployment, not locally. **The market
       rail degrades to symbols with no prices if either upstream is down, so a
       failure is visible rather than silent. Re-check it on the deployment.**

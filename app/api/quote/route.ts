@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { getStore, newId, type Lead } from "@/lib/workroom/store";
 
 export const runtime = "nodejs";
 /** A page or handler whose behavior depends on the request cannot be cached. */
@@ -77,6 +78,43 @@ export async function POST(req: Request) {
     "[quote] submission",
     JSON.stringify({ receivedAt: new Date().toISOString(), ...payload })
   );
+
+  /*
+    THE LEAD IS STORED FIRST, and the log above still runs either way.
+
+    Before the workroom existed, a quote request lived only in the Vercel log:
+    nothing lost, but nothing workable either, because a log is not a list you
+    can call through on a Tuesday. It is now a row in the leads queue.
+
+    Storing must never cost the visitor their submission, so a failure here is
+    caught and logged rather than raised. On the memory backend a deployed
+    lambda may not be the one the queue reads from, which is why every
+    workroom screen says out loud when it is running on memory.
+  */
+  const now = Date.now();
+  const lead: Lead = {
+    id: newId("ld"),
+    createdAt: now,
+    updatedAt: now,
+    status: "new",
+    line: payload.line,
+    name: payload.name,
+    phone: payload.phone,
+    email: payload.email,
+    zip: payload.zip,
+    about: payload.about,
+    address: payload.address,
+    currentCarrier: payload.current_carrier,
+    renewal: payload.renewal,
+    notes: payload.notes,
+    consent: payload.consent,
+    workNotes: "",
+  };
+  try {
+    await getStore().createLead(lead);
+  } catch (err) {
+    console.error("[quote] the lead could not be stored; it is in the log above", err);
+  }
 
   const to = process.env.QUOTE_TO;
   if (!to) {

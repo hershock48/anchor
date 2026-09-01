@@ -1,12 +1,26 @@
 import type { Metadata } from "next";
 import { Archivo, Cinzel, Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
-import Reveal from "@/components/Reveal";
 import { site } from "@/lib/site";
 import { siteOrigin } from "@/lib/url";
-import LocalBusinessSchema from "@/components/LocalBusinessSchema";
+
+/**
+ * THE ROOT LAYOUT IS THE DOCUMENT, AND NOTHING ELSE.
+ *
+ * The header, footer, skip link, reveal system, structured data and the
+ * `<main>` landmark used to live here, which was right while every route was
+ * a customer page. The workroom broke that assumption: it is the agency's own
+ * tool and must carry none of the marketing chrome. Rendering it inside this
+ * layout gave it the customer header AND a second nested `<main id="main">`,
+ * which the auditor caught as three separate landmark violations on every
+ * workroom screen at both widths.
+ *
+ * So the customer site now lives in the `(site)` route group with its own
+ * layout, and the workroom has its own. Route groups do not appear in URLs,
+ * so every path is exactly what it was. What stays here is what genuinely
+ * belongs to every document: the html and body elements, the fonts, the
+ * stylesheet, and the metadata base that relative URLs resolve against.
+ */
 
 /**
  * Fonts are downloaded at build time and served from this site's own origin.
@@ -53,55 +67,18 @@ const mono = JetBrains_Mono({
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteOrigin()),
-  /* Canonical. Without one, the same page reachable at /demo/x on the pitch
-     host and at /x on hers competes with itself. */
-  alternates: { canonical: "/" },
   title: {
     default: `${site.name} | Independent agency in ${site.contact.city}, Michigan`,
     template: `%s | ${site.name}`,
   },
   description:
     "An independent Michigan insurance agency that gives a percentage of what it earns back to local causes in and around Manchester.",
-  /**
-   * NEXT DOES NOT DEEP-MERGE `openGraph`. A page that defines its own block
-   * replaces this one wholesale, image included, and that route silently loses
-   * its card. Every page in this app sets only `title` and `description` at the
-   * top level, which merge fine. If you ever add an `openGraph` block to a
-   * page, set the image on it too.
-   */
-  openGraph: {
-    type: "website",
-    siteName: site.name,
-    title: `${site.name} | ${site.tagline}`,
-    description:
-      "Independent auto, home and business insurance in Michigan. A percentage of what we earn goes back to local causes.",
-    url: "/",
-    images: [
-      {
-        url: "/og.jpg",
-        width: 1200,
-        height: 630,
-        alt: `${site.name}. ${site.tagline}. An independent agency in ${site.contact.city}, Michigan.`,
-      },
-    ],
-  },
-  twitter: { card: "summary_large_image" },
-  robots: { index: true, follow: true },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${display.variable} ${body.variable} ${mono.variable} ${brand.variable}`}>
-      <body>
-        <a className="skip" href="#main">
-          Skip to content
-        </a>
-        <LocalBusinessSchema />
-        <Reveal />
-        <Header />
-        <main id="main">{children}</main>
-        <Footer />
-      </body>
+      <body>{children}</body>
     </html>
   );
 }
