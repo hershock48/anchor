@@ -30,6 +30,9 @@ const havePhone = () => !isPlaceholder(site.contact.phone);
 
 export default function Pay() {
   const carriers = site.carriers;
+  /** Carriers whose agreements let the agency collect. These route INTO the
+   *  checkout below instead of out to the carrier's portal. */
+  const payable = payments.agencyBillCheckout ? carriers.filter((c) => c.payableHere) : [];
 
   return (
     <>
@@ -72,7 +75,12 @@ export default function Pay() {
                 <div className="card" key={c.name}>
                   <h3>{c.name}</h3>
                   <p>
-                    {c.payUrl ? (
+                    {c.payableHere && payments.agencyBillCheckout ? (
+                      <>
+                        Pay it right here: <a href="#pay-here">jump to the payment form</a>{" "}
+                        and pick {c.name}. Your card, one page, done.
+                      </>
+                    ) : c.payUrl ? (
                       <>
                         <a href={c.payUrl}>Pay at {c.name}</a>
                         {c.billingPhone ? <>, or call billing at {c.billingPhone}.</> : "."}
@@ -90,9 +98,9 @@ export default function Pay() {
         </div>
       </section>
 
-      <section style={{ paddingTop: 0 }}>
+      <section style={{ paddingTop: 0 }} id="pay-here">
         <div className="wrap">
-          <h2>Billed by us</h2>
+          <h2>{payments.agencyBillCheckout ? "Pay here by card" : "Billed by us"}</h2>
           {payments.agencyBillCheckout ? (
             <div className="wrap qf-grid" style={{ padding: 0, marginTop: 18 }}>
               <form className="qf" method="post" action="/api/pay">
@@ -102,11 +110,10 @@ export default function Pay() {
                   <input id="pay-company" name="company" type="text" tabIndex={-1} autoComplete="off" />
                 </div>
                 <fieldset>
-                  <legend>Pay an agency invoice</legend>
+                  <legend>{payable.length > 0 ? "Pay your bill here" : "Pay an agency invoice"}</legend>
                   <p className="qf-optnote">
-                    For policies we bill directly. Copy the amount and policy number
-                    from your invoice; the card form itself is Stripe&rsquo;s, and we
-                    never see your card number.
+                    Copy the amount and policy number from your bill; the card form
+                    itself is Stripe&rsquo;s, and we never see your card number.
                   </p>
                   {payments.convenienceFeeCents > 0 && (
                     <p className="qf-optnote">
@@ -118,6 +125,19 @@ export default function Pay() {
                       payment fee (Glazed Web, payment technology), itemized at checkout.
                       Check and phone payments have none.
                     </p>
+                  )}
+                  {payable.length > 0 && (
+                    <div className="qf-row">
+                      <label htmlFor="pay-carrier">Who is this payment for?</label>
+                      <select id="pay-carrier" name="carrier">
+                        <option value="agency">An invoice from {site.name}</option>
+                        {payable.map((c) => (
+                          <option key={c.name} value={c.name}>
+                            {c.name}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
                   )}
                   <div className="qf-two">
                     <div className="qf-row">
@@ -149,6 +169,30 @@ export default function Pay() {
                       <input id="pay-email" name="email" type="text" maxLength={200} />
                     </div>
                   </div>
+                  <fieldset className="qf-row">
+                    <legend
+                      style={{
+                        fontFamily: "inherit",
+                        fontSize: 15,
+                        fontWeight: 600,
+                        letterSpacing: 0,
+                        marginBottom: 6,
+                      }}
+                    >
+                      Payment schedule
+                    </legend>
+                    <div className="qf-consent">
+                      <input type="radio" id="pay-once" name="mode" value="once" defaultChecked />
+                      <label htmlFor="pay-once">One-time payment.</label>
+                    </div>
+                    <div className="qf-consent">
+                      <input type="radio" id="pay-monthly" name="mode" value="monthly" />
+                      <label htmlFor="pay-monthly">
+                        Monthly autopay. This amount charges each month until you cancel,
+                        and canceling is one call or email to us.
+                      </label>
+                    </div>
+                  </fieldset>
                   <div className="qf-actions">
                     <button className="btn" type="submit">Continue to payment</button>
                     <p className="qf-note">

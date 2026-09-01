@@ -112,8 +112,23 @@ export const site = {
    * billed by gets a row pointing at that carrier's own payment portal and
    * billing line. Fill them from the carrier's site when the appointment is
    * confirmed; a carrier without them still renders, minus the links.
+   *
+   * `payableHere` is the pay-at-anchor switch, per carrier: true ONLY when
+   * that carrier's agency agreement authorizes the agency to collect its
+   * premium. The /pay page then routes that carrier INTO the on-site
+   * checkout instead of out to the carrier's portal, and the checkout's
+   * carrier selector lists it so every payment names who it is for. Set it
+   * from the agreement, never from optimism: where collection is
+   * unauthorized, payment to the agency does not count as payment to the
+   * insurer and a lapse lands on the customer.
    */
-  carriers: [] as { name: string; logo?: string; payUrl?: string; billingPhone?: string }[],
+  carriers: [] as {
+    name: string;
+    logo?: string;
+    payUrl?: string;
+    billingPhone?: string;
+    payableHere?: boolean;
+  }[],
 
   social: {
     facebook: "PLACEHOLDER:Facebook URL" as string,

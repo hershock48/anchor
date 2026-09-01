@@ -325,6 +325,26 @@ amount and policy number from the bill they already have: the bill is the
 ledger, the site is the till. This was the client-call answer to "how do we
 know what they owe": the carrier or the agency already told them.
 
+**Pay-at-anchor routing, per carrier.** Each carrier row in `site.carriers`
+carries `payableHere`: true only when that carrier's agency agreement
+authorizes the agency to collect its premium, set from the agreement and
+never from optimism. A payable carrier's row on /pay routes INTO the
+checkout ("pay it right here") instead of out to the carrier's portal, and
+the checkout grows a carrier selector so every payment names who it is for
+(the API collapses any unlisted carrier to "agency", so a hand-crafted POST
+cannot label money for a carrier she may not collect). This is the whole
+"send everyone to anchor.com" experience, and its ceiling is set by carrier
+selection, which the intake sheet asks about per carrier.
+
+**Autopay.** The checkout offers one-time or monthly autopay. Monthly is a
+Stripe subscription: the premium AND the .99 both recur, because each month
+is a payment and each payment carries the fee, and the form says so in one
+plain sentence. Name, policy and pay-to ride on the subscription's own
+metadata so the Stripe dashboard answers "whose autopay is this" directly.
+Canceling is a call or email, done in the Stripe dashboard; deliberately no
+customer portal until there is a customer base to need one. Stripe emails
+the receipts.
+
 **The agency is emailed BEFORE the customer reaches Stripe** (louies' lesson:
 with no webhook, a paid session is otherwise a charge nobody has a record
 of). The session carries name and policy in metadata, so the Stripe dashboard

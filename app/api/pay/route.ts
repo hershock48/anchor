@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { payments } from "@/lib/site";
+import { payments, site } from "@/lib/site";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -39,7 +39,14 @@ function toCents(raw: string): number | null {
   return Number.isSafeInteger(cents) ? cents : null;
 }
 
-async function notify(fields: { name: string; policy: string; cents: number; email: string }) {
+async function notify(fields: {
+  name: string;
+  policy: string;
+  cents: number;
+  email: string;
+  carrier: string;
+  monthly: boolean;
+}) {
   const to = process.env.PAY_NOTIFY_TO;
   const key = process.env.RESEND_API_KEY;
   if (!to || !key) {
@@ -57,6 +64,8 @@ async function notify(fields: { name: string; policy: string; cents: number; ema
         text:
           `A customer just started an agency-invoice payment on the site.\n\n` +
           `Name: ${fields.name}\nPolicy: ${fields.policy}\n` +
+          `Pay to: ${fields.carrier === "agency" ? "agency invoice" : fields.carrier}\n` +
+          `Schedule: ${fields.monthly ? "MONTHLY AUTOPAY, recurs until canceled in Stripe" : "one-time"}\n` +
           `Invoice amount: $${(fields.cents / 100).toFixed(2)}\n` +
           (payments.convenienceFeeCents > 0
             ? `Online payment fee: $${(payments.convenienceFeeCents / 100).toFixed(2)} (separate line item)\n`
@@ -94,6 +103,14 @@ export async function POST(req: Request) {
   const policy = clean(form.get("policy"));
   const email = clean(form.get("email"));
   const cents = toCents(clean(form.get("amount")));
+  const monthly = clean(form.get("mode")) === "monthly";
+  // The carrier must be one whose agreement authorizes collection, or the
+  // payment is an agency invoice. Anything else collapses to "agency" so a
+  // hand-crafted POST cannot label money for a carrier she may not collect.
+  const carrierRaw = clean(form.get("carrier"));
+  const carrier = site.carriers.some((c) => c.payableHere && c.name === carrierRaw)
+    ? carrierRaw
+    : "agency";
 
   if (!name || !policy || cents === null || cents < 100 || cents > payments.maxOnlineCents) {
     console.warn("[pay] rejected submission", JSON.stringify({ name: !!name, policy: !!policy, cents }));
@@ -109,19 +126,28 @@ export async function POST(req: Request) {
 
   console.log(
     "[pay] payment attempt",
-    JSON.stringify({ receivedAt: new Date().toISOString(), name, policy, cents })
+    JSON.stringify({ receivedAt: new Date().toISOString(), name, policy, cents, carrier, monthly })
   );
-  await notify({ name, policy, cents, email });
+  await notify({ name, policy, cents, email, carrier, monthly });
 
   const origin = new URL(req.url).origin;
+  const paidTo = carrier === "agency" ? "" : `${carrier} `;
   const body = new URLSearchParams();
-  body.set("mode", "payment");
+  // Monthly autopay is a Stripe subscription: both the premium and the fee
+  // recur monthly, because each month IS a payment and each payment carries
+  // the fee. Canceling is done in the Stripe dashboard on a call or email;
+  // no customer portal until there is a customer base to need one.
+  body.set("mode", monthly ? "subscription" : "payment");
   body.set("success_url", `${origin}/pay/received`);
   body.set("cancel_url", `${origin}/pay`);
   body.set("line_items[0][quantity]", "1");
   body.set("line_items[0][price_data][currency]", "usd");
   body.set("line_items[0][price_data][unit_amount]", String(cents));
-  body.set("line_items[0][price_data][product_data][name]", `Premium payment, policy ${policy}`);
+  body.set(
+    "line_items[0][price_data][product_data][name]",
+    monthly ? `${paidTo}monthly premium autopay, policy ${policy}` : `${paidTo}premium payment, policy ${policy}`
+  );
+  if (monthly) body.set("line_items[0][price_data][recurring][interval]", "month");
   // The online-channel fee is its OWN line item, so the Stripe receipt shows
   // premium and fee separately and the fee is never inside premium. The
   // disclosure lives on the form, before the customer gets here.
@@ -133,9 +159,18 @@ export async function POST(req: Request) {
       "line_items[1][price_data][product_data][name]",
       "Online payment fee, Glazed Web (payment technology provider)"
     );
+    if (monthly) body.set("line_items[1][price_data][recurring][interval]", "month");
   }
   body.set("metadata[payer_name]", name);
   body.set("metadata[policy]", policy);
+  body.set("metadata[pay_to]", carrier);
+  if (monthly) {
+    // The same facts on the subscription object itself, so the dashboard's
+    // recurring view answers "whose autopay is this" without opening sessions.
+    body.set("subscription_data[metadata][payer_name]", name);
+    body.set("subscription_data[metadata][policy]", policy);
+    body.set("subscription_data[metadata][pay_to]", carrier);
+  }
   if (email.includes("@")) body.set("customer_email", email);
 
   try {

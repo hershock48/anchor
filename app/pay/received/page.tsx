@@ -18,8 +18,10 @@ export default function PayReceived() {
         <p className="lede" style={{ marginTop: 14 }}>
           If Stripe showed your payment going through, your card receipt is your
           record and we see the payment on our side. It is applied to your policy the
-          same business day. Close to a cancellation date? Call us so we can confirm
-          it landed before anything lapses.
+          same business day. If you chose monthly autopay, the same amount charges
+          each month until you tell us to stop, and one call or email cancels it.
+          Close to a cancellation date? Call us so we can confirm it landed before
+          anything lapses.
         </p>
         <p style={{ marginTop: 22 }}>
           While the policy is in front of you: if you have never priced{" "}
