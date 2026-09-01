@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { site, giving, lines, ph, isPlaceholder } from "@/lib/site";
+import { getFacts } from "@/lib/content";
 import { pipLevels } from "@/lib/pip";
 import GivingCard from "@/components/GivingCard";
 import ReviewBand from "@/components/ReviewBand";
@@ -20,18 +21,24 @@ import { getQuotes } from "@/lib/quotes";
  */
 export const revalidate = 300;
 
-export const metadata = {
+export async function generateMetadata() {
+  const facts = await getFacts();
+  return {
   /**
-   * The name is written in rather than left to the layout's `%s | name`
-   * template, because a title template only applies to CHILD segments and
-   * this page shares the root segment with the layout that defines it. The
-   * homepage shipped with no brand in its title at all before the August 2026
-   * rename made somebody read the tab.
+   * `absolute`, because this page has moved relative to the template. As
+   * app/page.tsx it shared the root segment with the layout defining the
+   * `%s | name` template, which only applies to CHILD segments, so the name
+   * had to be written in (the homepage shipped with no brand in its title at
+   * all before the August 2026 rename made somebody read the tab). The (site)
+   * route group then made it a child segment, the template started applying,
+   * and the tab read "Anchor Insurance | ... | Anchor Insurance" on
+   * production for a day. `absolute` opts out of the template either way.
    */
-  title: `${site.name} | Independent agency in ${site.contact.city}, Michigan`,
+  title: { absolute: `${site.name} | Independent agency in ${facts.contact.city}, Michigan` },
   description:
     "Auto, home and business insurance from an independent Michigan agency. We shop several carriers, and a percentage of what we earn goes back to local causes.",
-};
+  };
+}
 
 /** The hand-drawn underline. Glazed's own h1 puts one under "crave". */
 function Underline() {
@@ -49,6 +56,7 @@ function Underline() {
 }
 
 export default async function Home() {
+  const facts = await getFacts();
   const quotes = await getQuotes({ revalidate: 300 });
   const cheapDrop = pipLevels.find((l) => l.id === "500k")!;
 
@@ -63,7 +71,7 @@ export default async function Home() {
       <section className="hero">
         <div className="wrap hero-in">
           <div>
-            <p className="kicker">Independent agency &middot; {site.contact.city}, Michigan</p>
+            <p className="kicker">Independent agency &middot; {facts.contact.city}, Michigan</p>
             <h1>
               Your policy, shopped.
               <br />
@@ -77,7 +85,7 @@ export default async function Home() {
             <p className="lede hero-lede">
               We compare several carriers instead of selling one company&rsquo;s product.
               Then <strong>{giving.share}</strong> goes back to local causes in and around{" "}
-              {site.contact.city}.
+              {facts.contact.city}.
             </p>
             <div className="hero-cta">
               {/* onnavy: the default .btn is a navy fill now, which would be
@@ -196,7 +204,7 @@ export default async function Home() {
               <h3>We pick close to home</h3>
               <p>
                 A school program, a shelter, a food bank, the fund a neighbor set up. In and
-                around {site.contact.city}, where the policies come from.
+                around {facts.contact.city}, where the policies come from.
               </p>
             </li>
             <li className="reveal">
@@ -299,13 +307,13 @@ export default async function Home() {
             <Link className="btn" href="/quote">
               Get a quote
             </Link>
-            {!isPlaceholder(site.contact.phone) ? (
-              <a className="btn ghost" href={`tel:${site.contact.phoneHref}`}>
-                Call {site.contact.phone}
+            {!isPlaceholder(facts.contact.phone) ? (
+              <a className="btn ghost" href={`tel:${facts.contact.phoneHref}`}>
+                Call {facts.contact.phone}
               </a>
             ) : (
               <span className="close-ph">
-                Phone: <span className="ph">{ph(site.contact.phone)}</span>
+                Phone: <span className="ph">{ph(facts.contact.phone)}</span>
               </span>
             )}
           </div>

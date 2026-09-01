@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { pipLevels, pipMisconceptions, PIP_SOURCE } from "@/lib/pip";
-import { site } from "@/lib/site";
+import { getFacts } from "@/lib/content";
 
 export const metadata = {
   title: "What each Michigan PIP level actually saves you",
@@ -14,7 +14,8 @@ const verdictLabel = {
   restricted: "Eligibility rules apply",
 } as const;
 
-export default function PipTool() {
+export default async function PipTool() {
+  const facts = await getFacts();
   return (
     <>
       <section className="pagehead">
@@ -114,7 +115,7 @@ export default function PipTool() {
             <h2>Want somebody to go through this with you?</h2>
             <p className="lede" style={{ marginTop: 12 }}>
               This is a decision worth twenty minutes and a real conversation. We are an
-              independent agency in {site.contact.city} and we will walk your household through
+              independent agency in {facts.contact.city} and we will walk your household through
               it whether or not you end up buying from us.
             </p>
           </div>

@@ -1,12 +1,17 @@
 import Link from "next/link";
 import { site, giving, ph, isPlaceholder } from "@/lib/site";
+import { getFacts } from "@/lib/content";
 
-export const metadata = {
+export async function generateMetadata() {
+  const facts = await getFacts();
+  return {
   title: "About",
-  description: `${site.legalName}, an independent insurance agency in ${site.contact.city}, Michigan.`,
-};
+  description: `${site.legalName}, an independent insurance agency in ${facts.contact.city}, Michigan.`,
+  };
+}
 
-export default function About() {
+export default async function About() {
+  const facts = await getFacts();
   return (
     <>
       <section className="pagehead">
@@ -46,7 +51,7 @@ export default function About() {
             <h2>The giving is the point, not the marketing</h2>
             <p>
               {giving.share.charAt(0).toUpperCase() + giving.share.slice(1)} goes back to
-              local causes in and around {site.contact.city}. We pick them close to home,
+              local causes in and around {facts.contact.city}. We pick them close to home,
               and we post each one as it happens on our social pages: who they are, why we
               picked them, what came of it.
             </p>
@@ -67,13 +72,13 @@ export default function About() {
               <dt>Legal name</dt>
               <dd>{site.legalName}</dd>
               <dt>Owner</dt>
-              <dd><span className="ph">{ph(site.owner.name)}</span></dd>
+              <dd><span className="ph">{ph(facts.owner.name)}</span></dd>
               <dt>Licensed in</dt>
-              <dd>{site.license.states.join(", ")}</dd>
+              <dd>{facts.license.states.join(", ")}</dd>
               <dt>Producer license</dt>
-              <dd><span className="ph">{ph(site.license.producerNumber)}</span></dd>
+              <dd><span className="ph">{ph(facts.license.producerNumber)}</span></dd>
               <dt>NPN</dt>
-              <dd><span className="ph">{ph(site.license.npn)}</span></dd>
+              <dd><span className="ph">{ph(facts.license.npn)}</span></dd>
             </dl>
             <p className="side-fine">
               You can check any Michigan producer&rsquo;s license and complaint history through

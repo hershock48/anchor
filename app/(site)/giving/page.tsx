@@ -1,11 +1,14 @@
 import { giving, site, isPlaceholder } from "@/lib/site";
+import { getFacts } from "@/lib/content";
 import GivingCard from "@/components/GivingCard";
 
-export const metadata = {
+export async function generateMetadata() {
+  const facts = await getFacts();
+  return {
   title: "Our giving",
-  description:
-    "We give a percentage of what we earn back to local causes in and around Manchester, and we post each one as it happens.",
-};
+  description: `We give a percentage of what we earn back to local causes in and around ${facts.contact.city}, and we post each one as it happens.`,
+  };
+}
 
 /**
  * REWRITTEN TWICE, per the client both times. August 28, 2026: the receipts
@@ -16,10 +19,11 @@ export const metadata = {
  * Both old pages are in git history before their dates.
  *
  * The Facebook pointer is gated on the placeholder the same way the review
- * ask is: until the real URL lands in lib/site.ts, the copy stands without a
+ * ask is: until the real URL lands (lib/site.ts or the workroom), the copy stands without a
  * link rather than linking to nothing.
  */
-export default function Giving() {
+export default async function Giving() {
+  const facts = await getFacts();
   return (
     <>
       <section className="pagehead">
@@ -28,7 +32,7 @@ export default function Giving() {
           <h1>The giving is built in.</h1>
           <p className="lede" style={{ marginTop: 14 }}>
             {giving.share.charAt(0).toUpperCase() + giving.share.slice(1)} goes back to
-            local causes in and around {site.contact.city}. This page says how that works.
+            local causes in and around {facts.contact.city}. This page says how that works.
             The causes themselves go up on our social pages as we support them.
           </p>
         </div>
@@ -81,10 +85,10 @@ export default function Giving() {
               <p>
                 Each cause goes up on our social pages as it happens: who they are, why we
                 picked them, and what came of it.
-                {!isPlaceholder(site.social.facebook) && (
+                {!isPlaceholder(facts.social.facebook) && (
                   <>
                     {" "}
-                    <a href={site.social.facebook}>Follow along on Facebook.</a>
+                    <a href={facts.social.facebook}>Follow along on Facebook.</a>
                   </>
                 )}
               </p>

@@ -62,6 +62,16 @@ PLAYWRIGHT_BROWSERS_PATH=/opt/pw-browsers \
   --routes /,/coverage,/coverage/auto,/coverage/home,/coverage/renters,/coverage/umbrella,/coverage/life,/coverage/business,/giving,/tools/michigan-pip,/guides,/guides/mini-tort,/guides/excess-attendant-care,/guides/storm-claims-after-march-6,/guides/why-your-rate-depends-on-where-you-live,/about,/contact,/quote,/quote/received,/privacy,/intake,/intake/sent,/pay,/pay/received,/workroom
 ```
 
+The workroom's signed-in screens sit behind the passcode, so audit them with
+the auditors' `--cookie` flag. The cookie value is the sha256 hex of
+`anchor-workroom-v1:<passcode>` (see `lib/workroom/auth.ts`), and the server
+must have been started with that same `WORKROOM_PASSCODE`:
+
+```bash
+node ../glazedweb/glaze/scripts/audit.mjs --base http://127.0.0.1:4502 \
+  --cookie anchor_workroom=<sha256 hex> --routes /workroom,/workroom/payments,/workroom/facts
+```
+
 ---
 
 ## Where content lives
@@ -70,17 +80,34 @@ PLAYWRIGHT_BROWSERS_PATH=/opt/pw-browsers \
 phone, the address, hours, license numbers, carriers, and the whole giving
 program. A correction is one edit.
 
+**Since September 1, 2026, she can make some of those edits herself**, from
+the site-facts screen in the workroom (`/workroom/facts`). The fields she can
+touch are whitelisted in `lib/workroom/facts-def.ts` (owner name, phone,
+email, street, city, ZIP, the three hours rows, producer number, NPN, the
+Facebook page and the Google review link) and nothing else. `lib/content.ts`
+lays her stored edits over `lib/site.ts`, and **every customer page reads
+those fields through `getFacts()`**, never from `site` directly. `site.ts` is
+still the seed and the safety net: an edit never destroys a value there, and
+clearing a box restores it. A fact that is still a placeholder shows on that
+screen as an empty box marked "Blank on the site", which makes the screen the
+handover checklist she can work through on her own phone.
+
 | File | What it holds |
 |---|---|
 | `lib/site.ts` | Agency facts, contact, license, carriers, the giving program |
+| `lib/content.ts` | The seam: `site.ts` with her workroom edits laid over it. Read this on customer pages |
+| `lib/workroom/facts-def.ts` | Which facts the workroom may edit, with labels, kinds and checks. Client-safe |
 | `lib/pip.ts` | Michigan PIP levels and savings. **Source of truth for those numbers** |
 | `lib/guides.ts` | The local explainer articles |
 
-**The one surface that cannot read from `lib/site.ts`** is the pitch, at
-`public/pitch/anchor/`. Those are hand-written static HTML on purpose
-so they can be edited on a phone if a call goes sideways. If a fact changes
-before she signs, it has to change in both places. After she signs the pitch gets
-deleted and the problem goes away.
+**Two surfaces cannot read from `lib/content.ts`.** The pitch, at
+`public/pitch/anchor/`, is hand-written static HTML on purpose so it can be
+edited on a phone if a call goes sideways; if a fact changes before she signs,
+it has to change in both places, and after she signs the pitch gets deleted
+and the problem goes away. And `components/Header.tsx` is a client component
+(it reads the pathname), so it cannot call the server-only seam: the site
+layout resolves the phone and hands it down as props. Any new client
+component that shows a fact gets it the same way.
 
 ---
 
@@ -90,6 +117,11 @@ Everything below renders as a visibly marked blank rather than a guess. **Say
 this out loud at handover.** A placeholder that ships silently reads to a visitor
 as a real number, and that has already put invented prices in front of real
 customers on another build.
+
+Most of these she can now fill in herself at `/workroom/facts` (the ones
+marked with a `site.` path below, plus hours and the review link); the rest
+still need an edit here. Either way the box stays unticked until the value is
+real.
 
 - [ ] **Owner name** — `site.owner.name`. Also on the logo page in the pitch.
 - [ ] **Amanda's role** — `site.owner.second`. We know she exists, not what she does.
@@ -290,12 +322,27 @@ inside her site.
 
 ## The workroom: her dashboard, at /workroom
 
-**The agency's own tool, not part of the customer site.** Two screens behind a
+**The agency's own tool, not part of the customer site.** Three screens behind a
 passcode: the **leads queue** (every quote request, worked through statuses
-new → called → quoted → won/lost, with her own notes per lead) and
+new → called → quoted → won/lost, with her own notes per lead),
 **payments** (a read-only window onto Stripe: recent payments and running
 autopays, each labelled with the payer, policy number and carrier that
-`/api/pay` writes into the session metadata).
+`/api/pay` writes into the session metadata), and **site facts** (her phone,
+email, address, hours, license numbers and two links, edited in place and
+live on the site within seconds).
+
+**The facts screen is a form over a whitelist, and the whitelist is the
+safety.** `lib/workroom/facts-def.ts` says which fields exist, what kind each
+is and what a bad value looks like; the screen renders from it, the save
+route validates against it, and `lib/content.ts` merges by it, so a field
+that is not listed cannot be edited from the workroom at all. Saves are
+stored as EDITS over `lib/site.ts`, never as replacements: only a value that
+differs from the checked-in one is kept, a box cleared back to the original
+drops its edit, and deleting the whole table puts the site back exactly as
+built. After a save the route calls `revalidatePath("/", "layout")`, so every
+customer page stays static and re-renders with the new value on its next
+request. On the memory backend the screen says so, because an edit that
+vanishes on the next cold start is worse than one that was refused.
 
 **It is not in the nav, not in the sitemap, and carries its own noindex.** It
 lives outside `/demo` on purpose (devine's reasoning): it is hers, and it does
@@ -306,27 +353,37 @@ only in the Vercel log, which loses nothing but is not a list you can call
 through on a Tuesday. `/api/quote` writes a lead row and still logs the full
 payload, so a storage failure costs the list, never the submission.
 
-**The gate is a passcode, deliberately not devine's four-digit PIN.** Devine's
-PIN is right for a shared screen behind a flower counter; this guards customer
-names, phones, emails and addresses for one owner on her own phone, so it is
-`WORKROOM_PASSCODE`, minimum eight characters. Two rules inherited and one
-added: an unset (or too short) variable **closes** the door in production
-rather than fitting a known lock (devine's fallback was the shop's own
-published phone number), the login route is rate limited, and **the cookie
-carries a hash rather than the passcode itself**, so a stolen cookie does not
-hand over a secret that outlives the session.
+**The gate is `WORKROOM_PASSCODE`, and the minimum is four characters.** It
+shipped at eight, on the argument that this guards customer names, phones,
+emails and addresses and a four-digit code on the public internet is 10,000
+guesses. Kevin set her code at four digits on September 1, 2026, for the
+better reason that a code she keeps in her head beats a longer one written on
+a sticky note, and the minimum came down to match with the login rate limiter
+tightened from ten misses to five per ten minutes per address. Two rules
+inherited from devine and one added still hold: an unset (or too short)
+variable **closes** the door in production rather than fitting a known lock
+(devine's fallback was the shop's own published phone number), the login
+route is rate limited, and **the cookie carries a hash rather than the
+passcode itself**, so a stolen cookie does not hand over a secret that
+outlives the session.
 
 **Nothing behind the gate can move money.** The payments screen reads; refunds
-happen in the Stripe dashboard behind Stripe's own login. If a screen ever
-grows a refund button it needs a real login before it ships.
+happen in the Stripe dashboard behind Stripe's own login. The facts screen
+changes only what the site already publishes, and the built-in value is one
+clear-and-save away. If a screen ever grows a refund button it needs a real
+login before it ships.
 
 **Storage is `DATABASE_URL`, or memory.** Postgres when set (Vercel > Storage
 > Neon, free tier, part of the hosting she already has, so the "nothing
-rented" rule holds); tables create themselves. Without it the workroom runs on
-in-memory storage and **says so on screen**, because on serverless the queue
-can then miss leads that landed on another instance. Ported from devine's
-store, including the lesson in its header: a failed schema init must not be
-cached, or one unlucky cold start leaves that instance permanently broken.
+rented" rule holds); tables create themselves, one for leads and one
+key-to-jsonb table for the facts. The store accepts any variable ending in
+`_DATABASE_URL` or `_POSTGRES_URL` too, because the Neon integration has
+injected prefixed names on other projects and nobody should hand-copy a
+secret between env rows. Without it the workroom runs on in-memory storage
+and **says so on screen**, because on serverless the queue can then miss
+leads that landed on another instance. Ported from devine's store, including
+the lesson in its header: a failed schema init must not be cached, or one
+unlucky cold start leaves that instance permanently broken.
 
 **`lib/workroom/leads.ts` must stay free of `server-only` and of `pg`.** The
 screens import `LEAD_STATUSES` as a value, and a value import reaches through
@@ -490,7 +547,7 @@ handover artifact rather than a private note. Ticked means measured, not assumed
 
 ### Correctness
 
-- [x] Zero accessibility violations at 390px and 1440px on every route. **25 routes, 0 violations, re-measured September 1 after the route-group refactor. The workroom's signed-in screens audit separately (the house auditor cannot open the gate) and are also at 0.**
+- [x] Zero accessibility violations at 390px and 1440px on every route. **27 routes, 0 violations, re-measured September 1 with the facts screen added; the three signed-in workroom screens audited through the gate with `--cookie`, and the facts screen separately in its typed-error and just-saved states at 320, 390 and 1440, all at 0.**
 - [x] Zero console errors, zero 4xx, on every route.
 - [x] `grep -rn PLACEHOLDER` returns only hits that are on the list above. **17, all in `lib/site.ts`, of which three are the marker mechanism itself.**
 - [ ] **Every form actually submitted and confirmed arriving in a real inbox.**

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Archivo, Cinzel, Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { site } from "@/lib/site";
+import { getFacts } from "@/lib/content";
 import { siteOrigin } from "@/lib/url";
 
 /**
@@ -65,15 +66,17 @@ const mono = JetBrains_Mono({
   weight: ["400", "600"],
 });
 
-export const metadata: Metadata = {
+export async function generateMetadata(): Promise<Metadata> {
+  const facts = await getFacts();
+  return {
   metadataBase: new URL(siteOrigin()),
   title: {
-    default: `${site.name} | Independent agency in ${site.contact.city}, Michigan`,
+    default: `${site.name} | Independent agency in ${facts.contact.city}, Michigan`,
     template: `%s | ${site.name}`,
   },
-  description:
-    "An independent Michigan insurance agency that gives a percentage of what it earns back to local causes in and around Manchester.",
-};
+  description: `An independent Michigan insurance agency that gives a percentage of what it earns back to local causes in and around ${facts.contact.city}.`,
+  };
+}
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (

@@ -15,9 +15,10 @@ import { cookies } from "next/headers";
  * own phone, and behind it sit quote requests carrying a customer's name,
  * phone, email, street address and current carrier. So:
  *
- *   1. A PASSCODE, not a PIN. Minimum length enforced below, because a short
- *      one on the public internet is 10,000 guesses and the rate limiter only
- *      makes that slow, not impossible.
+ *   1. A PASSCODE, not a PIN, in shape: the value is whatever WORKROOM_PASSCODE
+ *      says, with a minimum length enforced below (and lowered since; see the
+ *      note on MIN_LENGTH), because on the public internet the rate limiter
+ *      only makes guessing slow, not impossible.
  *   2. THE COOKIE DOES NOT CARRY THE SECRET. Devine stores the PIN itself as
  *      the cookie value, so a leaked cookie is a leaked PIN. Here the cookie
  *      carries a hash of it: a stolen cookie still opens the door until it
@@ -31,14 +32,25 @@ import { cookies } from "next/headers";
  * footer. The fallback here is dev-only and is not a real-world string.
  *
  * This is still a gate, not a vault. Nothing behind it can charge a card or
- * move money: the leads queue reads, the payments screen reads. If a screen
- * ever gains a refund button, it needs a real login before it ships.
+ * move money: the leads queue reads, the payments screen reads, and the facts
+ * screen changes only what the site already publishes, with the built-in
+ * value one clear-and-save away. If a screen ever gains a refund button, it
+ * needs a real login before it ships.
  */
 
 const COOKIE = "anchor_workroom";
 /** Local development only. See workroomPasscode(). */
 const DEV_FALLBACK = "workroom-dev";
-const MIN_LENGTH = 8;
+/**
+ * Was 8. Lowered to 4 on September 1, 2026, when Kevin set the client's
+ * passcode to a four-digit code she will actually remember: a passcode she
+ * writes on a sticky note is worse than a shorter one she keeps in her head.
+ * The compensating control is the login route's rate limiter, tightened the
+ * same day to five misses per ten minutes per address, which turns 10,000
+ * guesses into weeks of slow, obvious noise from any one place. Still a
+ * gate, not a vault; see the header.
+ */
+const MIN_LENGTH = 4;
 
 /** The passcode, or null meaning "this deployment has no workroom". */
 export function workroomPasscode(): string | null {

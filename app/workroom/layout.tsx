@@ -19,7 +19,7 @@ import WorkroomChrome from "@/components/workroom/Chrome";
  */
 export const metadata: Metadata = {
   title: { default: "Workroom · Anchor Insurance", template: "%s · Workroom" },
-  description: "The agency's leads queue and payments.",
+  description: "The agency's leads queue, payments and the facts on the site.",
   robots: { index: false, follow: false },
 };
 
@@ -43,7 +43,10 @@ export default function WorkroomLayout({ children }: { children: React.ReactNode
         /* ── chrome ── */
         .wr-chrome { position: sticky; top: 0; z-index: 30; background: var(--paper-2); border-bottom: 1px solid var(--line); }
         .wr-chrome-in { max-width: 900px; margin: 0 auto; padding: 8px 20px; display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
-        .wr-brand { display: flex; align-items: baseline; gap: 8px; flex: 0 0 auto; text-decoration: none; color: inherit; }
+        /* Vertical padding so the link measures 24px tall: the lockup's text
+           alone is ~17px, which the facts-screen audit caught as the one
+           small tap target in the chrome. */
+        .wr-brand { display: flex; align-items: baseline; gap: 8px; flex: 0 0 auto; text-decoration: none; color: inherit; padding: 6px 0; }
         .wr-shop { font-family: var(--font-brand), serif; font-size: 15px; line-height: 1; color: var(--navy); letter-spacing: .04em; }
         .wr-word { font-size: 10px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--slate); }
         .wr-tabs { display: flex; gap: 18px; flex: 1 1 auto; flex-wrap: wrap; }
@@ -109,6 +112,17 @@ export default function WorkroomLayout({ children }: { children: React.ReactNode
         .wr-notes { width: 100%; font: inherit; font-size: 15px; padding: 12px 14px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--paper-2); color: var(--navy); }
         .wr-notes:focus { border-color: var(--navy); }
         .wr-save-row { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; margin-top: 12px; }
+
+        /* ── the facts form ── */
+        .wr-group-note { margin: -4px 0 14px; }
+        .wr-form { display: grid; gap: 16px; }
+        .wr-field label { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; font-weight: 600; font-size: 15px; color: var(--navy); margin-bottom: 6px; }
+        .wr-field input { width: 100%; font: inherit; font-size: 16px; padding: 12px 14px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--paper-2); color: var(--navy); }
+        .wr-field input:focus { border-color: var(--navy); }
+        .wr-field input[aria-invalid="true"] { border-color: #8c2b21; }
+        .wr-help { font-size: 13.5px; color: var(--slate); margin-top: 6px; line-height: 1.5; }
+        .wr-field-error { font-size: 13.5px; color: #8c2b21; font-weight: 600; margin-top: 6px; line-height: 1.5; }
+        .wr-save-sticky { position: sticky; bottom: 0; background: var(--paper); padding: 14px 0 16px; margin-top: 30px; border-top: 1px solid var(--line); }
 
         /* ── gate, buttons, empty ── */
         .wr-gate { max-width: 380px; margin: 40px auto; }

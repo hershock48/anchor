@@ -18,6 +18,7 @@ import { site } from "@/lib/site";
 const TABS = [
   { href: "/workroom", label: "Leads" },
   { href: "/workroom/payments", label: "Payments" },
+  { href: "/workroom/facts", label: "Site facts" },
 ];
 
 export default function WorkroomChrome() {

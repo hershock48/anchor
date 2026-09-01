@@ -1,11 +1,13 @@
 import { site, ph, isPlaceholder } from "@/lib/site";
+import { getFacts } from "@/lib/content";
 
 export const metadata = {
   title: "Privacy",
   description: "What this site collects, where it goes, and how long it is kept.",
 };
 
-export default function Privacy() {
+export default async function Privacy() {
+  const facts = await getFacts();
   return (
     <>
       <section className="pagehead">
@@ -72,10 +74,10 @@ export default function Privacy() {
 
           <h2>Questions</h2>
           <p>
-            Ask us. {isPlaceholder(site.contact.email) ? (
-              <span className="ph">{ph(site.contact.email)}</span>
+            Ask us. {isPlaceholder(facts.contact.email) ? (
+              <span className="ph">{ph(facts.contact.email)}</span>
             ) : (
-              <a href={`mailto:${site.contact.email}`}>{site.contact.email}</a>
+              <a href={`mailto:${facts.contact.email}`}>{facts.contact.email}</a>
             )}
             .
           </p>

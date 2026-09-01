@@ -4,6 +4,7 @@ import Footer from "@/components/Footer";
 import Reveal from "@/components/Reveal";
 import LocalBusinessSchema from "@/components/LocalBusinessSchema";
 import { site } from "@/lib/site";
+import { getFacts } from "@/lib/content";
 
 /**
  * The CUSTOMER site's shell: everything a visitor should see wrapped around
@@ -19,7 +20,9 @@ import { site } from "@/lib/site";
  * same reason: a canonical URL and an og:image belong to the public site, and
  * the workroom is noindex and has no card.
  */
-export const metadata: Metadata = {
+export async function generateMetadata(): Promise<Metadata> {
+  const facts = await getFacts();
+  return {
   /* Canonical. Without one, the same page reachable at /demo/x on the pitch
      host and at /x on hers competes with itself. */
   alternates: { canonical: "/" },
@@ -42,15 +45,17 @@ export const metadata: Metadata = {
         url: "/og.jpg",
         width: 1200,
         height: 630,
-        alt: `${site.name}. ${site.tagline}. An independent agency in ${site.contact.city}, Michigan.`,
+        alt: `${site.name}. ${site.tagline}. An independent agency in ${facts.contact.city}, Michigan.`,
       },
     ],
   },
   twitter: { card: "summary_large_image" },
   robots: { index: true, follow: true },
-};
+  };
+}
 
-export default function SiteLayout({ children }: { children: React.ReactNode }) {
+export default async function SiteLayout({ children }: { children: React.ReactNode }) {
+  const facts = await getFacts();
   return (
     <>
       <a className="skip" href="#main">
@@ -58,7 +63,9 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
       </a>
       <LocalBusinessSchema />
       <Reveal />
-      <Header />
+      {/* Header is a client component (it reads the pathname), so it takes
+          the one editable fact it shows as props instead of calling the seam. */}
+      <Header phone={facts.contact.phone} phoneHref={facts.contact.phoneHref} />
       <main id="main">{children}</main>
       <Footer />
     </>

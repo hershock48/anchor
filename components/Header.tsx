@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import { useEffect } from "react";
 import { Lockup } from "./Logo";
 import { useHomeHref } from "./HomeLink";
-import { site, ph, isPlaceholder } from "@/lib/site";
+import { site, isPlaceholder } from "@/lib/site";
 
 const nav = [
   { href: "/coverage", label: "Coverage" },
@@ -15,7 +15,12 @@ const nav = [
   { href: "/contact", label: "Contact" },
 ];
 
-export default function Header() {
+/**
+ * The phone arrives as props: this is a client component and cannot read the
+ * workroom's edits through lib/content.ts, so the site layout resolves the
+ * effective value and hands it down.
+ */
+export default function Header({ phone, phoneHref }: { phone: string; phoneHref: string }) {
   const pathname = usePathname();
   const home = useHomeHref();
   /**
@@ -39,7 +44,7 @@ export default function Header() {
    * The animation is not worth either failure.
    */
 
-  const phoneReady = !isPlaceholder(site.contact.phone);
+  const phoneReady = !isPlaceholder(phone);
 
   return (
     <header className="site-head">
@@ -65,8 +70,8 @@ export default function Header() {
 
         <div className="head-cta">
           {phoneReady ? (
-            <a className="head-phone" href={`tel:${site.contact.phoneHref}`}>
-              {site.contact.phone}
+            <a className="head-phone" href={`tel:${phoneHref}`}>
+              {phone}
             </a>
           ) : null}
           <Link className="btn" href="/quote">
@@ -94,7 +99,7 @@ export default function Header() {
           </li>
           {phoneReady ? (
             <li>
-              <a href={`tel:${site.contact.phoneHref}`}>{site.contact.phone}</a>
+              <a href={`tel:${phoneHref}`}>{phone}</a>
             </li>
           ) : null}
         </ul>

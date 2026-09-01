@@ -1,15 +1,20 @@
 import Link from "next/link";
 import { site, ph, isPlaceholder } from "@/lib/site";
+import { getFacts } from "@/lib/content";
 import ReviewBand from "@/components/ReviewBand";
 
-export const metadata = {
+export async function generateMetadata() {
+  const facts = await getFacts();
+  return {
   title: "Contact",
-  description: `Reach ${site.name} in ${site.contact.city}, Michigan. Phone, email and hours.`,
-};
+  description: `Reach ${site.name} in ${facts.contact.city}, Michigan. Phone, email and hours.`,
+  };
+}
 
-export default function Contact() {
-  const phoneReady = !isPlaceholder(site.contact.phone);
-  const emailReady = !isPlaceholder(site.contact.email);
+export default async function Contact() {
+  const facts = await getFacts();
+  const phoneReady = !isPlaceholder(facts.contact.phone);
+  const emailReady = !isPlaceholder(facts.contact.email);
 
   return (
     <>
@@ -29,9 +34,9 @@ export default function Contact() {
           <div className="card">
             <h2>Phone</h2>
             {phoneReady ? (
-              <p className="contact-big"><a href={`tel:${site.contact.phoneHref}`}>{site.contact.phone}</a></p>
+              <p className="contact-big"><a href={`tel:${facts.contact.phoneHref}`}>{facts.contact.phone}</a></p>
             ) : (
-              <p className="contact-big"><span className="ph">{ph(site.contact.phone)}</span></p>
+              <p className="contact-big"><span className="ph">{ph(facts.contact.phone)}</span></p>
             )}
             <p>Fastest way to get a real answer.</p>
           </div>
@@ -39,9 +44,9 @@ export default function Contact() {
           <div className="card">
             <h2>Email</h2>
             {emailReady ? (
-              <p className="contact-big"><a href={`mailto:${site.contact.email}`}>{site.contact.email}</a></p>
+              <p className="contact-big"><a href={`mailto:${facts.contact.email}`}>{facts.contact.email}</a></p>
             ) : (
-              <p className="contact-big"><span className="ph">{ph(site.contact.email)}</span></p>
+              <p className="contact-big"><span className="ph">{ph(facts.contact.email)}</span></p>
             )}
             <p>Send a declarations page and we will read it.</p>
           </div>
@@ -49,12 +54,12 @@ export default function Contact() {
           <div className="card">
             <h2>Where we are</h2>
             <p className="contact-addr">
-              <span className="ph">{ph(site.contact.street)}</span>
+              <span className="ph">{ph(facts.contact.street)}</span>
               <br />
-              {site.contact.city}, {site.contact.state}{" "}
-              <span className="ph">{ph(site.contact.zip)}</span>
+              {facts.contact.city}, {facts.contact.state}{" "}
+              <span className="ph">{ph(facts.contact.zip)}</span>
             </p>
-            {site.contact.byAppointmentOnly ? (
+            {facts.contact.byAppointmentOnly ? (
               <p>Visits by appointment, so call before you drive over.</p>
             ) : null}
           </div>
@@ -62,7 +67,7 @@ export default function Contact() {
           <div className="card">
             <h2>Hours</h2>
             <dl className="hours">
-              {site.hours.map((h) => (
+              {facts.hours.map((h) => (
                 <div key={h.days}>
                   <dt>{h.days}</dt>
                   <dd>

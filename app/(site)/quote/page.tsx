@@ -1,5 +1,6 @@
 import QuoteForm from "@/components/QuoteForm";
-import { site, ph, isPlaceholder } from "@/lib/site";
+import { ph, isPlaceholder } from "@/lib/site";
+import { getFacts } from "@/lib/content";
 
 export const metadata = {
   title: "Get a quote",
@@ -14,7 +15,8 @@ export const metadata = {
  * QuoteForm instead, which is already a client component, so the page is
  * static and the prefetch is clean.
  */
-export default function Quote() {
+export default async function Quote() {
+  const facts = await getFacts();
   return (
     <>
       <section className="pagehead">
@@ -32,10 +34,10 @@ export default function Quote() {
           <QuoteForm />
           <aside className="side">
             <h2>Rather just talk?</h2>
-            {!isPlaceholder(site.contact.phone) ? (
-              <p><a className="btn ghost" href={`tel:${site.contact.phoneHref}`}>Call {site.contact.phone}</a></p>
+            {!isPlaceholder(facts.contact.phone) ? (
+              <p><a className="btn ghost" href={`tel:${facts.contact.phoneHref}`}>Call {facts.contact.phone}</a></p>
             ) : (
-              <p>Phone: <span className="ph">{ph(site.contact.phone)}</span></p>
+              <p>Phone: <span className="ph">{ph(facts.contact.phone)}</span></p>
             )}
             <h2 style={{ marginTop: 26 }}>What happens next</h2>
             <ol className="sidesteps">

@@ -2,10 +2,12 @@ import Link from "next/link";
 import { Mark } from "./Logo";
 import GlazedPlate from "./GlazedPlate";
 import { site, giving, lines, ph, isPlaceholder } from "@/lib/site";
+import { getFacts } from "@/lib/content";
 
-export default function Footer() {
-  const phoneReady = !isPlaceholder(site.contact.phone);
-  const emailReady = !isPlaceholder(site.contact.email);
+export default async function Footer() {
+  const facts = await getFacts();
+  const phoneReady = !isPlaceholder(facts.contact.phone);
+  const emailReady = !isPlaceholder(facts.contact.email);
 
   return (
     <footer className="site-foot">
@@ -48,30 +50,30 @@ export default function Footer() {
           <ul>
             <li>
               {phoneReady ? (
-                <a href={`tel:${site.contact.phoneHref}`}>{site.contact.phone}</a>
+                <a href={`tel:${facts.contact.phoneHref}`}>{facts.contact.phone}</a>
               ) : (
-                <span className="ph">{ph(site.contact.phone)}</span>
+                <span className="ph">{ph(facts.contact.phone)}</span>
               )}
             </li>
             <li>
               {emailReady ? (
-                <a href={`mailto:${site.contact.email}`}>{site.contact.email}</a>
+                <a href={`mailto:${facts.contact.email}`}>{facts.contact.email}</a>
               ) : (
-                <span className="ph">{ph(site.contact.email)}</span>
+                <span className="ph">{ph(facts.contact.email)}</span>
               )}
             </li>
             <li className="foot-addr">
-              <span className="ph">{ph(site.contact.street)}</span>
+              <span className="ph">{ph(facts.contact.street)}</span>
               <br />
-              {site.contact.city}, {site.contact.state} <span className="ph">{ph(site.contact.zip)}</span>
+              {facts.contact.city}, {facts.contact.state} <span className="ph">{ph(facts.contact.zip)}</span>
             </li>
           </ul>
           <p className="foot-lic">
-            Michigan producer license <span className="ph">{ph(site.license.producerNumber)}</span>
+            Michigan producer license <span className="ph">{ph(facts.license.producerNumber)}</span>
             <br />
-            NPN <span className="ph">{ph(site.license.npn)}</span>
+            NPN <span className="ph">{ph(facts.license.npn)}</span>
             <br />
-            Licensed in {site.license.states.join(", ")}.
+            Licensed in {facts.license.states.join(", ")}.
           </p>
         </div>
       </div>

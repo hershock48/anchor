@@ -1,4 +1,5 @@
 import { site, ph, isPlaceholder, payments } from "@/lib/site";
+import { getFacts } from "@/lib/content";
 
 /**
  * Pay your bill.
@@ -26,9 +27,9 @@ export const metadata = {
     "Most premiums are paid straight to your carrier. Start with the name on your bill, and call us if you are not sure.",
 };
 
-const havePhone = () => !isPlaceholder(site.contact.phone);
-
-export default function Pay() {
+export default async function Pay() {
+  const facts = await getFacts();
+  const havePhone = () => !isPlaceholder(facts.contact.phone);
   const carriers = site.carriers;
   /** Carriers whose agreements let the agency collect. These route INTO the
    *  checkout below instead of out to the carrier's portal. */
@@ -61,9 +62,9 @@ export default function Pay() {
                   listed right here. Until then, the name on your bill is the place to
                   pay, and we are happy to walk you to it:{" "}
                   {havePhone() ? (
-                    <a href={`tel:${site.contact.phoneHref}`}>call {site.contact.phone}</a>
+                    <a href={`tel:${facts.contact.phoneHref}`}>call {facts.contact.phone}</a>
                   ) : (
-                    <span className="ph">{ph(site.contact.phone)}</span>
+                    <span className="ph">{ph(facts.contact.phone)}</span>
                   )}
                   .
                 </p>
@@ -208,9 +209,9 @@ export default function Pay() {
                   Anything over ${Math.round(payments.maxOnlineCents / 100).toLocaleString()}
                   {" "}or anything you are unsure about, do it with a person:{" "}
                   {havePhone() ? (
-                    <a href={`tel:${site.contact.phoneHref}`}>call {site.contact.phone}</a>
+                    <a href={`tel:${facts.contact.phoneHref}`}>call {facts.contact.phone}</a>
                   ) : (
-                    <span className="ph">{ph(site.contact.phone)}</span>
+                    <span className="ph">{ph(facts.contact.phone)}</span>
                   )}
                   .
                 </p>
@@ -225,9 +226,9 @@ export default function Pay() {
                   the agency rather than a carrier. Those are paid by check or by card
                   over the phone:{" "}
                   {havePhone() ? (
-                    <a href={`tel:${site.contact.phoneHref}`}>call {site.contact.phone}</a>
+                    <a href={`tel:${facts.contact.phoneHref}`}>call {facts.contact.phone}</a>
                   ) : (
-                    <span className="ph">{ph(site.contact.phone)}</span>
+                    <span className="ph">{ph(facts.contact.phone)}</span>
                   )}{" "}
                   and it takes two minutes.
                 </p>

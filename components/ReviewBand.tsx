@@ -1,4 +1,5 @@
-import { site, ph, isPlaceholder } from "@/lib/site";
+import { ph, isPlaceholder } from "@/lib/site";
+import { getFacts } from "@/lib/content";
 
 /**
  * The Google review ask. Added August 28, 2026, at the client's request, and
@@ -8,10 +9,11 @@ import { site, ph, isPlaceholder } from "@/lib/site";
  *
  * Until the Google Business Profile exists the button renders as a marked
  * blank rather than a dead link, gated the same way as every other
- * placeholder on the site. The link itself lives in lib/site.ts.
+ * placeholder on the site. The link itself lives in lib/site.ts, or in the workroom's facts screen once she pastes it there.
  */
-export default function ReviewBand() {
-  const ready = !isPlaceholder(site.social.googleReview);
+export default async function ReviewBand() {
+  const facts = await getFacts();
+  const ready = !isPlaceholder(facts.social.googleReview);
 
   return (
     <div className="reviewband">
@@ -23,12 +25,12 @@ export default function ReviewBand() {
         </p>
       </div>
       {ready ? (
-        <a className="btn" href={site.social.googleReview} rel="noopener">
+        <a className="btn" href={facts.social.googleReview} rel="noopener">
           Review us on Google
         </a>
       ) : (
         <p className="review-ph">
-          Review link: <span className="ph">{ph(site.social.googleReview)}</span>
+          Review link: <span className="ph">{ph(facts.social.googleReview)}</span>
         </p>
       )}
     </div>

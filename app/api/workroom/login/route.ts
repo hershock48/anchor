@@ -18,7 +18,9 @@ export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 const WINDOW_MS = 10 * 60 * 1000;
-const MAX_FAILURES = 10;
+// Five, down from ten on September 1, 2026, the day the passcode minimum
+// dropped to four characters (lib/workroom/auth.ts says why).
+const MAX_FAILURES = 5;
 
 type Bucket = { failures: number[] };
 function buckets(): Map<string, Bucket> {

@@ -7,6 +7,16 @@
  * `public/pitch/`, which are hand-written static HTML on purpose so they can be
  * edited on a phone.
  *
+ * SINCE SEPTEMBER 1, 2026, THE CLIENT CAN EDIT SOME OF THESE HERSELF. The
+ * workroom's facts screen stores edits for the fields whitelisted in
+ * `lib/workroom/facts-def.ts` (owner name, phone, email, address, hours,
+ * license numbers, two links), and `lib/content.ts` lays those over this
+ * file for every customer page. This file is still the seed and the safety
+ * net: an edit never destroys a value here, and clearing the edit restores
+ * it. Read `getFacts()` on a customer page, never this object directly, for
+ * any field on that whitelist. Everything else (names, tagline, carriers,
+ * the giving program, payments) is still only here, on purpose.
+ *
  * PLACEHOLDER means the client has not supplied it yet. Every one of these is
  * an unchecked box in the README and must be said out loud at handover.
  * A placeholder that ships silently reads to a visitor as a real number.

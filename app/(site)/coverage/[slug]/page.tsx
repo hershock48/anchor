@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { lines, site, ph, isPlaceholder } from "@/lib/site";
+import { lines, ph, isPlaceholder } from "@/lib/site";
+import { getFacts } from "@/lib/content";
 
 export function generateStaticParams() {
   return lines.map((l) => ({ slug: l.slug }));
@@ -10,16 +11,18 @@ export function generateStaticParams() {
  *  we make about other people's sites. */
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
+  const facts = await getFacts();
   const line = lines.find((l) => l.slug === slug);
   if (!line) return {};
   return {
-    title: `${line.name} insurance in ${site.contact.city}, Michigan`,
+    title: `${line.name} insurance in ${facts.contact.city}, Michigan`,
     description: line.short,
   };
 }
 
 export default async function CoveragePage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
+  const facts = await getFacts();
   const line = lines.find((l) => l.slug === slug);
   if (!line) notFound();
 
@@ -90,10 +93,10 @@ export default async function CoveragePage({ params }: { params: Promise<{ slug:
               Send the declarations page from your current policy and we will read it and tell
               you plainly what is missing and what is overbought.
             </p>
-            {!isPlaceholder(site.contact.phone) ? (
-              <p><a className="btn ghost" href={`tel:${site.contact.phoneHref}`}>Call {site.contact.phone}</a></p>
+            {!isPlaceholder(facts.contact.phone) ? (
+              <p><a className="btn ghost" href={`tel:${facts.contact.phoneHref}`}>Call {facts.contact.phone}</a></p>
             ) : (
-              <p>Phone: <span className="ph">{ph(site.contact.phone)}</span></p>
+              <p>Phone: <span className="ph">{ph(facts.contact.phone)}</span></p>
             )}
             <h2 style={{ marginTop: 26 }}>Other coverage</h2>
             <ul className="sidelist">
