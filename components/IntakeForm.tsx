@@ -293,6 +293,13 @@ export default function IntakeForm() {
           label="How long do you keep quote information?"
           hint="This goes in the privacy policy, in plain language."
         />
+        <Row
+          name="agency_billed"
+          label="Do you bill any policies yourself?"
+          hint="Most premiums are billed by the carrier and paid there. If any of your policies are agency-billed, often small commercial, tell us which, and whether you want those payable by card on the site."
+          area
+          rows={2}
+        />
       </fieldset>
 
       <div className="qf-actions">

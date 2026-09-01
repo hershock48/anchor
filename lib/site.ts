@@ -107,8 +107,13 @@ export const site = {
    * Do not add a carrier here without confirming the appointment AND the
    * carrier's marketing rules. Several carriers restrict how an agency may use
    * their mark, and a few require marketing review before anything publishes.
+   *
+   * `payUrl` and `billingPhone` feed /pay: each carrier a customer can be
+   * billed by gets a row pointing at that carrier's own payment portal and
+   * billing line. Fill them from the carrier's site when the appointment is
+   * confirmed; a carrier without them still renders, minus the links.
    */
-  carriers: [] as { name: string; logo?: string }[],
+  carriers: [] as { name: string; logo?: string; payUrl?: string; billingPhone?: string }[],
 
   social: {
     facebook: "PLACEHOLDER:Facebook URL" as string,
@@ -192,6 +197,41 @@ export const giving = {
    * just says the promise and points there. The field and the page are in
    * git history before this date if the write-ups ever come back.
    */
+} as const;
+
+/**
+ * On-site payments, for /pay and /api/pay.
+ *
+ * THE SWITCH IS OFF ON PURPOSE, the same way Copper's ordering is parked: the
+ * page and the API are built, and the card form does not render until the
+ * client can lawfully take the money. Premium an agency collects is fiduciary
+ * money under Michigan insurance law, and most personal-lines policies are
+ * billed by the carrier under agency agreements that say the agent does not
+ * collect at all. So the carrier rows above are the live layer, and this
+ * checkout exists for AGENCY-BILLED invoices only.
+ *
+ * Flip `agencyBillCheckout` to true only when all of these are true, and
+ * record the date here when you do:
+ *
+ *   1. She has confirmed which policies are agency-billed. Direct-billed
+ *      policies keep routing to the carrier, whatever this flag says.
+ *   2. She has a Stripe account settling into a separate premium/trust bank
+ *      account, not operating money.
+ *   3. Her attorney or E&O carrier has OK'd the flow, including the fee
+ *      model. NO convenience fee is charged here on purpose: passing card
+ *      fees on premium is regulated differently from passing them on a
+ *      sandwich, so the safe default is that the agency absorbs processing
+ *      until counsel says otherwise.
+ *   4. STRIPE_SECRET_KEY and PAY_NOTIFY_TO are set in the Vercel dashboard.
+ *
+ * There are no customer accounts and no stored balances BY DESIGN: the
+ * customer types what their bill says, because the bill is the ledger and
+ * the site is only the till.
+ */
+export const payments = {
+  agencyBillCheckout: false,
+  /** Above this, the form says call us instead. Typos add zeros. */
+  maxOnlineCents: 2_500_000,
 } as const;
 
 /** Lines she writes. Each one gets its own page: still the strongest local

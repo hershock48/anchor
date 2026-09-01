@@ -34,6 +34,7 @@ export default function Footer() {
           <h2>More</h2>
           <ul>
             <li><Link href="/giving">Our giving</Link></li>
+            <li><Link href="/pay">Pay your bill</Link></li>
             <li><Link href="/tools/michigan-pip">Michigan PIP tool</Link></li>
             <li><Link href="/guides">Guides</Link></li>
             <li><Link href="/about">About</Link></li>

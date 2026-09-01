@@ -59,7 +59,7 @@ npm install axe-core playwright-core --no-save
 npx next start -p 4502
 PLAYWRIGHT_BROWSERS_PATH=/opt/pw-browsers \
   node ../glazedweb/glaze/scripts/audit.mjs --base http://127.0.0.1:4502 \
-  --routes /,/coverage,/coverage/auto,/coverage/home,/coverage/renters,/coverage/umbrella,/coverage/life,/coverage/business,/giving,/tools/michigan-pip,/guides,/guides/mini-tort,/guides/excess-attendant-care,/guides/storm-claims-after-march-6,/guides/why-your-rate-depends-on-where-you-live,/about,/contact,/quote,/quote/received,/privacy,/intake,/intake/sent
+  --routes /,/coverage,/coverage/auto,/coverage/home,/coverage/renters,/coverage/umbrella,/coverage/life,/coverage/business,/giving,/tools/michigan-pip,/guides,/guides/mini-tort,/guides/excess-attendant-care,/guides/storm-claims-after-march-6,/guides/why-your-rate-depends-on-where-you-live,/about,/contact,/quote,/quote/received,/privacy,/intake,/intake/sent,/pay,/pay/received
 ```
 
 ---
@@ -285,6 +285,39 @@ On the pitch host `/intake` needs no rewrite: only `/`, `/logo` and `/demo` are
 rewritten, so the Next app serves it there like any other route, wrapped in the
 site's own header and footer, which is the point. She fills in her site from
 inside her site.
+
+## Payments: /pay is live, the card form is parked
+
+The client wants customers paying premium on the site, and the page exists in
+the only shape that is honest for an insurance agency. **Two layers:**
+
+**Layer one, live: carrier routing.** Nearly all personal-lines premium is
+billed by the carrier, and agency agreements usually say the agent does not
+collect it. So `/pay` gives each appointed carrier a row pointing at that
+carrier's own payment portal and billing phone, fed from `site.carriers`
+(`payUrl`, `billingPhone`). With the list empty it renders a call-us state.
+
+**Layer two, parked: a Stripe checkout for agency-billed invoices**, exactly
+the way Copper's ordering is parked: `/api/pay` is built and live, the card
+form renders only when `payments.agencyBillCheckout` in `lib/site.ts` is
+flipped, and the API refuses independently while the flag is off so a
+hand-crafted POST cannot take money she is not cleared to take. The flip
+conditions are documented on the flag: confirmed agency-billed policies, a
+Stripe account settling into a premium/trust bank account (collected premium
+is fiduciary money under Michigan law), her attorney or E&O carrier's nod on
+the flow and fee model, and `STRIPE_SECRET_KEY` plus `PAY_NOTIFY_TO` in
+Vercel. **No convenience fee, on purpose**, until counsel says otherwise.
+
+**No accounts and no stored balances, by design.** The customer types the
+amount and policy number from the bill they already have: the bill is the
+ledger, the site is the till. This was the client-call answer to "how do we
+know what they owe": the carrier or the agency already told them.
+
+**The agency is emailed BEFORE the customer reaches Stripe** (louies' lesson:
+with no webhook, a paid session is otherwise a charge nobody has a record
+of). The session carries name and policy in metadata, so the Stripe dashboard
+matches the email. Amounts are capped at `payments.maxOnlineCents`; above it
+the page says call us, because typos add zeros.
 
 ## The giving program, and why it is shaped this way
 
