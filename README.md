@@ -266,10 +266,13 @@ honeypot as the quote form.
 
 **Delivery is implemented here, unlike the quote form**, because this form's
 destination is Kevin rather than a mailbox that does not exist yet. It sends
-over Resend from the verified `glazedweb.com` domain. Set `INTAKE_TO` and
-`RESEND_API_KEY` in the Vercel dashboard; until both are set, submissions are
-logged in full and a warning appears in the log, and the visitor still
-succeeds. The subscription rule in glaze.md protects the client from renting
+over Resend from the verified `glazedweb.com` domain. `INTAKE_TO` and
+`RESEND_API_KEY` (a sending-only key scoped to this project) are set in the
+Vercel dashboard, and delivery is confirmed: a labeled test submitted through
+production on September 1, 2026 arrived in Kevin's inbox. If either variable
+is ever removed, submissions are still logged in full, a warning appears in
+the log, and the visitor still succeeds, so nothing is lost while it is down.
+The subscription rule in glaze.md protects the client from renting
 infrastructure; this is studio mail on the studio's account, and she can leave
 with her site and never touch it.
 
@@ -315,8 +318,12 @@ handover artifact rather than a private note. Ticked means measured, not assumed
 - [x] Zero accessibility violations at 390px and 1440px on every route. **23 routes, 0 violations, re-measured September 1 with /intake and /intake/sent included.**
 - [x] Zero console errors, zero 4xx, on every route.
 - [x] `grep -rn PLACEHOLDER` returns only hits that are on the list above. **17, all in `lib/site.ts`, of which three are the marker mechanism itself.**
-- [ ] **Every form actually submitted and confirmed arriving in a real inbox.** Not
-      done and cannot be: there is no inbox yet. The handler logs the full payload
+- [ ] **Every form actually submitted and confirmed arriving in a real inbox.**
+      Half done. The INTAKE form is confirmed: a labeled test went through the
+      production endpoint on September 1, 2026, delivery ran on the deployment
+      with `INTAKE_TO` and `RESEND_API_KEY` set (both live in Vercel now), and
+      Kevin saw the email land in his inbox. The QUOTE form is still the open
+      half: there is no agency inbox yet, so its handler logs the full payload
       and warns. See below.
 - [x] Any remote data source verified on the deployment, not locally. **The market
       rail degrades to symbols with no prices if either upstream is down, so a
