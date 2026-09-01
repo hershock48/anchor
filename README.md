@@ -319,12 +319,25 @@ of). The session carries name and policy in metadata, so the Stripe dashboard
 matches the email. Amounts are capped at `payments.maxOnlineCents`; above it
 the page says call us, because typos add zeros.
 
-**A per-payment tech fee is deliberately NOT wired in.** The .99 model from
-the ordering rail is a convenience fee when it rides on premium, and whether
-a third party may charge the insured one in Michigan is an attorney question,
-written into the attorney packet alongside the giving program, not a switch
-we flip. The no-lawyer way to charge for this plumbing is a payments tier on
-the monthly when the checkout turns on.
+**A per-payment tech fee is deliberately NOT wired in, and this was
+researched, not assumed** (September 1, 2026). Michigan DIFS's own
+compensation-and-rebating FAQ (Sections 1236; 2111, updated 05/09/16, on
+michigan.gov/difs) asks the exact question and answers it: "May a producer
+charge a processing fee to collect payment of premium via credit card? No.
+Although a producer may collect premium via credit card if allowed by the
+insurer, an additional processing fee may not be charged. Insurance rates
+are filed with DIFS and allowable fees are included in the premium charged."
+The vendors that DO pass fees to insureds (ePayPolicy and that class,
+roughly $20 a month plus pass-through convenience fees) do it as the
+PROCESSOR charging for an optional channel, claim 50-state compliance, and
+the states genuinely differ (New York prohibits agents passing the fee,
+Georgia recently allowed it, Arizona allows it on commercial only). Whether
+the processor-charges-it structure survives DIFS scrutiny on a Michigan
+personal-lines book is the attorney question, written into the attorney
+packet alongside the giving program. Surplus-lines business has an explicit
+Michigan fee path with written disclosure, which matters only if she ever
+places E&S. The no-lawyer way to charge for this plumbing is a payments
+tier on the monthly when the checkout turns on.
 
 **The cross-sell, per the client:** each coverage line in `lib/site.ts`
 carries `pairs`, up to two other lines worth pricing on the same call with
