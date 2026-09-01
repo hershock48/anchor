@@ -304,9 +304,9 @@ flipped, and the API refuses independently while the flag is off so a
 hand-crafted POST cannot take money she is not cleared to take. The flip
 conditions are documented on the flag: confirmed agency-billed policies, a
 Stripe account settling into a premium/trust bank account (collected premium
-is fiduciary money under Michigan law), her attorney or E&O carrier's nod on
-the flow and fee model, and `STRIPE_SECRET_KEY` plus `PAY_NOTIFY_TO` in
-Vercel. **No convenience fee, on purpose**, until counsel says otherwise.
+is fiduciary money under Michigan law), her written go-ahead on the fee
+after reading the counsel review packet (counsel at her discretion; see the
+research below), and `STRIPE_SECRET_KEY` plus `PAY_NOTIFY_TO` in Vercel.
 
 **No accounts and no stored balances, by design.** The customer types the
 amount and policy number from the bill they already have: the bill is the
@@ -336,10 +336,20 @@ finding that reframes it: **Big I Michigan (the Michigan Association of
 Insurance Agents, ~1,300 agencies) endorses ePayPolicy as its preferred
 payment processor**, fee pass-through and all, while the DIFS FAQ stands
 un-tested against that structure. So the structure is association-endorsed
-in this state and still unblessed by the regulator in writing, which is
-precisely an attorney question, and it is now Question 3 of the counsel
-review packet Glazed prepared September 1, 2026 (giving program is
-Question 1). Do not enable a fee before that answer comes back. Surplus-lines business has an explicit
+in this state and still unblessed by the regulator in writing. **The .99 is
+now built into the parked checkout** (`payments.convenienceFeeCents`): a
+flat fee, disclosed on the form with the no-fee alternatives named, its own
+Stripe line item so it is never inside premium, charged in the name of the
+payment technology provider. Kevin's call, September 1, 2026: existing
+Michigan use (the MAIA-endorsed processor) stands in for a counsel opinion.
+The gate that remains is the CLIENT'S: the fee rides on her license
+posture, so flip condition 3 on the flag is her written go-ahead after
+reading the counsel review packet, and whether her attorney sees it first
+is her choice. Set `convenienceFeeCents` to 0 to absorb fees; the
+disclosure line disappears with it. Routing the fee revenue to Glazed is a
+Stripe Connect application-fee job later (devine holds the Square version
+of that rail); until then it settles with the payment and Glazed's share is
+handled on the invoice. Surplus-lines business has an explicit
 Michigan fee path with written disclosure, which matters only if she ever
 places E&S. The no-lawyer way to charge for this plumbing is a payments
 tier on the monthly when the checkout turns on.

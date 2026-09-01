@@ -57,7 +57,10 @@ async function notify(fields: { name: string; policy: string; cents: number; ema
         text:
           `A customer just started an agency-invoice payment on the site.\n\n` +
           `Name: ${fields.name}\nPolicy: ${fields.policy}\n` +
-          `Amount: $${(fields.cents / 100).toFixed(2)}\n` +
+          `Invoice amount: $${(fields.cents / 100).toFixed(2)}\n` +
+          (payments.convenienceFeeCents > 0
+            ? `Online payment fee: $${(payments.convenienceFeeCents / 100).toFixed(2)} (separate line item)\n`
+            : "") +
           `Receipt email: ${fields.email || "(none given)"}\n\n` +
           `This is sent BEFORE Stripe, so match it against the Stripe dashboard. ` +
           `No charge exists unless Stripe shows one.`,
@@ -119,6 +122,18 @@ export async function POST(req: Request) {
   body.set("line_items[0][price_data][currency]", "usd");
   body.set("line_items[0][price_data][unit_amount]", String(cents));
   body.set("line_items[0][price_data][product_data][name]", `Premium payment, policy ${policy}`);
+  // The online-channel fee is its OWN line item, so the Stripe receipt shows
+  // premium and fee separately and the fee is never inside premium. The
+  // disclosure lives on the form, before the customer gets here.
+  if (payments.convenienceFeeCents > 0) {
+    body.set("line_items[1][quantity]", "1");
+    body.set("line_items[1][price_data][currency]", "usd");
+    body.set("line_items[1][price_data][unit_amount]", String(payments.convenienceFeeCents));
+    body.set(
+      "line_items[1][price_data][product_data][name]",
+      "Online payment fee, Glazed Web (payment technology provider)"
+    );
+  }
   body.set("metadata[payer_name]", name);
   body.set("metadata[policy]", policy);
   if (email.includes("@")) body.set("customer_email", email);

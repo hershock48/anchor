@@ -217,11 +217,12 @@ export const giving = {
  *      policies keep routing to the carrier, whatever this flag says.
  *   2. She has a Stripe account settling into a separate premium/trust bank
  *      account, not operating money.
- *   3. Her attorney or E&O carrier has OK'd the flow, including the fee
- *      model. NO convenience fee is charged here on purpose: passing card
- *      fees on premium is regulated differently from passing them on a
- *      sandwich, so the safe default is that the agency absorbs processing
- *      until counsel says otherwise.
+ *   3. She has given a written go-ahead after reading the counsel review
+ *      packet (September 1, 2026), which puts the DIFS FAQ's "no producer
+ *      processing fees" answer next to the Big I Michigan-endorsed
+ *      ePayPolicy structure that passes fees to the payer anyway. The fee
+ *      below rides on HER license posture, so the informed yes is hers to
+ *      give, and whether counsel reads it first is her call, not a gate.
  *   4. STRIPE_SECRET_KEY and PAY_NOTIFY_TO are set in the Vercel dashboard.
  *
  * There are no customer accounts and no stored balances BY DESIGN: the
@@ -232,6 +233,22 @@ export const payments = {
   agencyBillCheckout: false,
   /** Above this, the form says call us instead. Typos add zeros. */
   maxOnlineCents: 2_500_000,
+  /**
+   * The flat online-channel fee, itemized as its own Stripe line item so it
+   * is never inside premium, charged by the payment technology provider
+   * (Glazed) rather than the producer, disclosed on the form before the
+   * customer continues, with the no-fee alternatives named right next to
+   * it. Flat-not-percentage on purpose: that is the card networks' own
+   * definition of a compliant convenience fee for an optional channel, and
+   * it is the structure the association-endorsed processor uses. Set to 0
+   * to absorb fees instead; the disclosure line disappears with it.
+   *
+   * Routing this revenue to Glazed is a Stripe Connect application-fee job
+   * later (the Square version of that rail already exists in devine); until
+   * then the fee settles with the payment and Glazed's share is handled on
+   * the invoice.
+   */
+  convenienceFeeCents: 99,
 } as const;
 
 /**

@@ -108,6 +108,17 @@ export default function Pay() {
                     from your invoice; the card form itself is Stripe&rsquo;s, and we
                     never see your card number.
                   </p>
+                  {payments.convenienceFeeCents > 0 && (
+                    <p className="qf-optnote">
+                      Online payments carry a flat{" "}
+                      {(payments.convenienceFeeCents / 100).toLocaleString("en-US", {
+                        style: "currency",
+                        currency: "USD",
+                      })}{" "}
+                      payment fee (Glazed Web, payment technology), itemized at checkout.
+                      Check and phone payments have none.
+                    </p>
+                  )}
                   <div className="qf-two">
                     <div className="qf-row">
                       <label htmlFor="pay-name">Name on the policy</label>
