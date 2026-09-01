@@ -83,7 +83,7 @@ const SECTIONS: [string, [string, string][]][] = [
     [
       ["quote_inbox", "Where quote requests should go"],
       ["retention", "How long quote information is kept"],
-      ["agency_billed", "Agency-billed policies, and card payment on the site"],
+      ["agency_billed", "Premiums payable to the agency (agency-billed, and per-carrier collection authority)"],
     ],
   ],
 ];

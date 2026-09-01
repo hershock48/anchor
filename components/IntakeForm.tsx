@@ -295,10 +295,10 @@ export default function IntakeForm() {
         />
         <Row
           name="agency_billed"
-          label="Do you bill any policies yourself?"
-          hint="Most premiums are billed by the carrier and paid there. If any of your policies are agency-billed, often small commercial, tell us which, and whether you want those payable by card on the site."
+          label="Which premiums can be paid to the agency?"
+          hint="Two parts: which policies do you bill yourself, and for each carrier you are appointed with, does the agency agreement let you accept premium payments? Every payment you may take is one the site can take by card."
           area
-          rows={2}
+          rows={3}
         />
       </fieldset>
 

@@ -291,11 +291,23 @@ inside her site.
 The client wants customers paying premium on the site, and the page exists in
 the only shape that is honest for an insurance agency. **Two layers:**
 
-**Layer one, live: carrier routing.** Nearly all personal-lines premium is
-billed by the carrier, and agency agreements usually say the agent does not
-collect it. So `/pay` gives each appointed carrier a row pointing at that
-carrier's own payment portal and billing phone, fed from `site.carriers`
-(`payUrl`, `billingPhone`). With the list empty it renders a call-us state.
+**Layer one, live: carrier routing.** Most modern standard personal-lines
+premium is billed by the carrier, so `/pay` gives each appointed carrier a
+row pointing at that carrier's own payment portal and billing phone, fed
+from `site.carriers` (`payUrl`, `billingPhone`). With the list empty it
+renders a call-us state.
+
+**Corrected September 1, 2026: "the agent does not collect" is per-carrier,
+not a law of nature.** An earlier version of this section flatly said agency
+agreements bar the agent from collecting premium. Kevin's own experience
+(paying an independent agent directly, on an Allied policy) is the
+counterexample: agency bill has covered personal lines at plenty of
+carriers, and many agreements authorize the agency to accept payments even
+on direct-billed policies. So the volume the checkout below can lawfully
+take is decided by WHICH CARRIERS she signs with and what each agreement
+authorizes, which is why the intake sheet now asks, per carrier, whether
+the agency may accept premium payments. Every payment she may take is one
+the site can take.
 
 **Layer two, parked: a Stripe checkout for agency-billed invoices**, exactly
 the way Copper's ordering is parked: `/api/pay` is built and live, the card
