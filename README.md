@@ -331,10 +331,15 @@ The vendors that DO pass fees to insureds (ePayPolicy and that class,
 roughly $20 a month plus pass-through convenience fees) do it as the
 PROCESSOR charging for an optional channel, claim 50-state compliance, and
 the states genuinely differ (New York prohibits agents passing the fee,
-Georgia recently allowed it, Arizona allows it on commercial only). Whether
-the processor-charges-it structure survives DIFS scrutiny on a Michigan
-personal-lines book is the attorney question, written into the attorney
-packet alongside the giving program. Surplus-lines business has an explicit
+Georgia recently allowed it, Arizona allows it on commercial only). The
+finding that reframes it: **Big I Michigan (the Michigan Association of
+Insurance Agents, ~1,300 agencies) endorses ePayPolicy as its preferred
+payment processor**, fee pass-through and all, while the DIFS FAQ stands
+un-tested against that structure. So the structure is association-endorsed
+in this state and still unblessed by the regulator in writing, which is
+precisely an attorney question, and it is now Question 3 of the counsel
+review packet Glazed prepared September 1, 2026 (giving program is
+Question 1). Do not enable a fee before that answer comes back. Surplus-lines business has an explicit
 Michigan fee path with written disclosure, which matters only if she ever
 places E&S. The no-lawyer way to charge for this plumbing is a payments
 tier on the monthly when the checkout turns on.
