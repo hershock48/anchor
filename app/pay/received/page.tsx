@@ -21,6 +21,12 @@ export default function PayReceived() {
           same business day. Close to a cancellation date? Call us so we can confirm
           it landed before anything lapses.
         </p>
+        <p style={{ marginTop: 22 }}>
+          While the policy is in front of you: if you have never priced{" "}
+          <a href="/coverage/umbrella">an umbrella</a>, ask the next time you call.
+          It is the coverage most people are underweight on, and it costs less than
+          people guess.
+        </p>
       </div>
     </section>
   );

@@ -234,8 +234,16 @@ export const payments = {
   maxOnlineCents: 2_500_000,
 } as const;
 
-/** Lines she writes. Each one gets its own page: still the strongest local
- *  search factor there is, and a single "coverage" page will not rank. */
+/**
+ * Lines she writes. Each one gets its own page: still the strongest local
+ * search factor there is, and a single "coverage" page will not rank.
+ *
+ * `pairs` is the cross-sell, per the client September 1: each line names up
+ * to two other lines worth pricing on the same call, with the reason said
+ * plainly. Rendered as ask-us prompts linking into /quote?line=, never as
+ * advice about anyone's specific policy, because the site has no idea what
+ * anyone's policy says and is built not to know.
+ */
 export const lines = [
   {
     slug: "auto",
@@ -248,6 +256,18 @@ export const lines = [
       "Mini-tort, which covers your vehicle damage and almost nothing else",
       "Uninsured and underinsured motorist",
       "Multi-car and multi-policy",
+    ],
+    pairs: [
+      {
+        line: "umbrella",
+        reason:
+          "Your auto liability stops at its limit, and an umbrella is the inexpensive layer above it. It is the coverage most people are underweight on.",
+      },
+      {
+        line: "home",
+        reason:
+          "Carriers price auto better when the house rides along, and if you rent, a renters policy does the same job for the bundle.",
+      },
     ],
   },
   {
@@ -262,6 +282,18 @@ export const lines = [
       "Water backup, service line and other things people find out about late",
       "Scheduled items for the ring, the tools, the collection",
     ],
+    pairs: [
+      {
+        line: "umbrella",
+        reason:
+          "A serious injury on your property can pass your liability limit. The umbrella picks up where the homeowners policy stops.",
+      },
+      {
+        line: "auto",
+        reason:
+          "The bundle usually pays for itself: same carrier, both policies priced together.",
+      },
+    ],
   },
   {
     slug: "renters",
@@ -275,6 +307,18 @@ export const lines = [
       "Loss of use if you cannot live there for a while",
       "Bundles with auto, which usually pays for itself",
     ],
+    pairs: [
+      {
+        line: "auto",
+        reason:
+          "Bundling renters with auto usually covers the cost of the renters policy outright.",
+      },
+      {
+        line: "life",
+        reason:
+          "Term life is cheapest while you are young and healthy, which is usually when you are renting.",
+      },
+    ],
   },
   {
     slug: "umbrella",
@@ -287,6 +331,18 @@ export const lines = [
       "Defense costs",
       "Usually requires certain underlying limits, which we set up first",
     ],
+    pairs: [
+      {
+        line: "auto",
+        reason:
+          "An umbrella requires certain underlying auto limits. We set those first, and it sometimes changes the auto price for the better.",
+      },
+      {
+        line: "home",
+        reason:
+          "Same story on the house: the umbrella sits on top of homeowners liability, so both get looked at together.",
+      },
+    ],
   },
   {
     slug: "life",
@@ -295,6 +351,13 @@ export const lines = [
     blurb:
       "Most people need term and are sold something more complicated. We start from what would actually need to be paid for if you were gone, then work back to a number and a length.",
     points: ["Term", "Whole and universal where it fits", "Coverage through work, and its gaps"],
+    pairs: [
+      {
+        line: "home",
+        reason:
+          "The mortgage is the reason most people buy term. While we are at it, we check the rebuild number on the house it protects, because that figure drifts.",
+      },
+    ],
   },
   {
     slug: "business",
@@ -307,6 +370,18 @@ export const lines = [
       "Commercial auto",
       "Workers compensation",
       "Nonprofits, churches and schools",
+    ],
+    pairs: [
+      {
+        line: "life",
+        reason:
+          "Key-person and buy-sell coverage are life policies wearing work clothes. If the business depends on one person, price it.",
+      },
+      {
+        line: "umbrella",
+        reason:
+          "A commercial umbrella sits above the general liability the same way a personal one sits above auto, and hard-market limits make it worth pricing.",
+      },
     ],
   },
 ] as const;

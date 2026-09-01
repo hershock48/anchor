@@ -55,6 +55,34 @@ export default async function CoveragePage({ params }: { params: Promise<{ slug:
                 actually saves. <Link href="/tools/michigan-pip">We built a tool for it.</Link>
               </p>
             ) : null}
+
+            {/* The cross-sell, per the client: prompts to ask, never advice
+                about anyone's specific policy. The site has no idea what a
+                visitor's policy says, and is built not to know, so every card
+                is an invitation into the quote flow with the line preselected. */}
+            {line.pairs.length > 0 && (
+              <>
+                <h2 style={{ marginTop: 34 }}>Worth pricing on the same call</h2>
+                <div className="rules" style={{ marginTop: 18 }}>
+                  {line.pairs.map((p) => {
+                    const other = lines.find((l) => l.slug === p.line);
+                    if (!other) return null;
+                    return (
+                      <div className="card" key={p.line}>
+                        <h3>{other.name}</h3>
+                        <p>{p.reason}</p>
+                        <p style={{ marginTop: 10 }}>
+                          <Link href={`/quote?line=${other.slug}`}>
+                            Ask for {/^[aeiou]/i.test(other.name) ? "an" : "a"}{" "}
+                            {other.name.toLowerCase()} price too
+                          </Link>
+                        </p>
+                      </div>
+                    );
+                  })}
+                </div>
+              </>
+            )}
           </div>
           <aside className="side">
             <h2>Ask a person</h2>

@@ -319,6 +319,21 @@ of). The session carries name and policy in metadata, so the Stripe dashboard
 matches the email. Amounts are capped at `payments.maxOnlineCents`; above it
 the page says call us, because typos add zeros.
 
+**A per-payment tech fee is deliberately NOT wired in.** The .99 model from
+the ordering rail is a convenience fee when it rides on premium, and whether
+a third party may charge the insured one in Michigan is an attorney question,
+written into the attorney packet alongside the giving program, not a switch
+we flip. The no-lawyer way to charge for this plumbing is a payments tier on
+the monthly when the checkout turns on.
+
+**The cross-sell, per the client:** each coverage line in `lib/site.ts`
+carries `pairs`, up to two other lines worth pricing on the same call with
+the reason said plainly, rendered on the coverage pages as ask-us cards
+linking into `/quote?line=`. The payment thank-you page carries one generic
+umbrella prompt. Prompts, never advice: the site has no idea what a
+visitor's policy says and is built not to know, so nothing here may ever be
+worded as a recommendation about someone's specific coverage.
+
 ## The giving program, and why it is shaped this way
 
 The shape is the client's, chosen twice. August 28, 2026: **no set percentage,
