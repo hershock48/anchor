@@ -55,7 +55,7 @@ npm install axe-core playwright-core --no-save
 npx next start -p 4502
 PLAYWRIGHT_BROWSERS_PATH=/opt/pw-browsers \
   node ../glazedweb/glaze/scripts/audit.mjs --base http://127.0.0.1:4502 \
-  --routes /,/coverage,/coverage/auto,/coverage/home,/coverage/renters,/coverage/umbrella,/coverage/life,/coverage/business,/giving,/giving/causes,/tools/michigan-pip,/guides,/guides/mini-tort,/guides/excess-attendant-care,/guides/storm-claims-after-march-6,/guides/why-your-rate-depends-on-where-you-live,/about,/contact,/quote,/quote/received,/privacy
+  --routes /,/coverage,/coverage/auto,/coverage/home,/coverage/renters,/coverage/umbrella,/coverage/life,/coverage/business,/giving,/giving/causes,/tools/michigan-pip,/guides,/guides/mini-tort,/guides/excess-attendant-care,/guides/storm-claims-after-march-6,/guides/why-your-rate-depends-on-where-you-live,/about,/contact,/quote,/quote/received,/privacy,/intake,/intake/sent
 ```
 
 ---
@@ -241,6 +241,33 @@ it.**
 
 ---
 
+## The intake sheet, at /intake
+
+**Every placeholder above has a matching question on `/intake`**, a form the
+client fills in herself, linked from the proposal's closing band. Everything on
+it is optional except her name, because the intake standard's point is that a
+half-filled sheet still unblocks half the site. It is not in the nav, not in the
+sitemap, and carries its own robots noindex, because the pitch host's noindex
+header stops protecting it the day the real domain goes live.
+
+**The form has deliberately zero client JavaScript.** It is a plain POST to
+`/api/intake`, so the no-JS rule is satisfied by construction and there is no
+stepping to break. Same honeypot as the quote form.
+
+**Delivery is implemented here, unlike the quote form**, because this form's
+destination is Kevin rather than a mailbox that does not exist yet. It sends
+over Resend from the verified `glazedweb.com` domain. Set `INTAKE_TO` and
+`RESEND_API_KEY` in the Vercel dashboard; until both are set, submissions are
+logged in full and a warning appears in the log, and the visitor still
+succeeds. The subscription rule in glaze.md protects the client from renting
+infrastructure; this is studio mail on the studio's account, and she can leave
+with her site and never touch it.
+
+On the pitch host `/intake` needs no rewrite: only `/`, `/logo` and `/demo` are
+rewritten, so the Next app serves it there like any other route, wrapped in the
+site's own header and footer, which is the point. She fills in her site from
+inside her site.
+
 ## The giving program, and why it is shaped this way
 
 The shape is the client's, chosen August 28, 2026: **no set percentage, no
@@ -275,7 +302,7 @@ handover artifact rather than a private note. Ticked means measured, not assumed
 
 ### Correctness
 
-- [x] Zero accessibility violations at 390px and 1440px on every route. **21 routes, 0 violations.**
+- [x] Zero accessibility violations at 390px and 1440px on every route. **23 routes, 0 violations, re-measured September 1 with /intake and /intake/sent included.**
 - [x] Zero console errors, zero 4xx, on every route.
 - [x] `grep -rn PLACEHOLDER` returns only hits that are on the list above. **17, all in `lib/site.ts`, of which three are the marker mechanism itself.**
 - [ ] **Every form actually submitted and confirmed arriving in a real inbox.** Not
