@@ -152,9 +152,25 @@ async function pgPool(): Promise<PgPool> {
       recovered. On failure the pool and the promise are dropped so the next
       request retries.
     */
+    /*
+      THE INIT TAKES A LOCK, because the customer pages now read the facts
+      at BUILD time and Next prerenders with several workers at once. The
+      first deploy of the facts editor failed exactly here: two workers ran
+      CREATE TABLE IF NOT EXISTS in the same instant on a database that had
+      no tables yet, and Postgres's IF NOT EXISTS is not atomic against a
+      concurrent creator, so the loser died on the pg_type unique index
+      (code 23505, "workroom_leads already exists") and took the build with
+      it. A multi-statement simple query runs in one implicit transaction,
+      so the advisory lock below is held until the CREATEs commit and every
+      other worker or lambda waits its turn. The catch keeps the belt with
+      the braces: a duplicate-object error from a racer that slipped past
+      the lock still means "the table is there", which is the outcome we
+      wanted.
+    */
     g.__anchorPgReady = g.__anchorPgPool
       .query(
-        `CREATE TABLE IF NOT EXISTS workroom_leads (
+        `SELECT pg_advisory_xact_lock(4213701);
+         CREATE TABLE IF NOT EXISTS workroom_leads (
            id text PRIMARY KEY,
            status text NOT NULL,
            created_at bigint NOT NULL,
@@ -166,6 +182,10 @@ async function pgPool(): Promise<PgPool> {
          );`
       )
       .catch((err: unknown) => {
+        const code = (err as { code?: string } | null)?.code;
+        // 23505 unique_violation on pg_type, 42P07 duplicate_table: both
+        // mean another creator won, and the tables exist.
+        if (code === "23505" || code === "42P07") return;
         g.__anchorPgPool = undefined;
         g.__anchorPgReady = undefined;
         throw err;
