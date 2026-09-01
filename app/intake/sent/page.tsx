@@ -1,4 +1,5 @@
 import HomeLink from "@/components/HomeLink";
+import IntakeDraftClear from "@/components/IntakeDraftClear";
 
 /**
  * Where /api/intake sends the browser after a successful post. Static, tiny,
@@ -15,6 +16,7 @@ export const metadata = {
 export default function IntakeSent() {
   return (
     <section className="pagehead">
+      <IntakeDraftClear />
       <div className="wrap">
         <p className="kicker">The intake sheet</p>
         <h1>Got it. Thank you.</h1>

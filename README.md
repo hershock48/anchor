@@ -250,9 +250,19 @@ half-filled sheet still unblocks half the site. It is not in the nav, not in the
 sitemap, and carries its own robots noindex, because the pitch host's noindex
 header stops protecting it the day the real domain goes live.
 
-**The form has deliberately zero client JavaScript.** It is a plain POST to
-`/api/intake`, so the no-JS rule is satisfied by construction and there is no
-stepping to break. Same honeypot as the quote form.
+**The form is a plain POST underneath, with JavaScript layered on for the two
+things that protect her time.** With scripts off it submits like any form (no
+stepping, so nothing to break). With scripts on: every answer saves to
+localStorage on her own device as she types (debounced, flushed on pagehide
+because a phone discards backgrounded tabs) and restores into empty fields on
+return, so closing the page loses nothing; and submit goes over fetch, so a
+network failure shows an error next to the button with her answers still on
+screen and still saved, instead of a browser error page. The draft clears only
+after a confirmed send, from both the fetch path and `/intake/sent`, and the
+key both sides share lives in `lib/intake-draft.ts`. Restore fills EMPTY fields
+only, so the browser's own back-forward restore is never clobbered, and the
+"saved on this device" promise renders only after a probe write succeeds. Same
+honeypot as the quote form.
 
 **Delivery is implemented here, unlike the quote form**, because this form's
 destination is Kevin rather than a mailbox that does not exist yet. It sends
