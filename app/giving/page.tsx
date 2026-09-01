@@ -1,19 +1,23 @@
-import Link from "next/link";
-import { giving, site } from "@/lib/site";
+import { giving, site, isPlaceholder } from "@/lib/site";
 import GivingCard from "@/components/GivingCard";
 
 export const metadata = {
   title: "Our giving",
   description:
-    "We give a percentage of what we earn back to local causes in and around Manchester, and every cause we support gets its own write-up.",
+    "We give a percentage of what we earn back to local causes in and around Manchester, and we post each one as it happens.",
 };
 
 /**
- * REWRITTEN AUGUST 28, 2026, per the client. The first build of this page was
- * a receipts argument: a set percentage, a goal bar, a public vote and a
- * ledger link. The client chose the opposite shape, so this page now explains
- * the program in plain words and points at the write-ups. The old page is in
- * git history before this date.
+ * REWRITTEN TWICE, per the client both times. August 28, 2026: the receipts
+ * argument (set percentage, goal bar, public vote, ledger) became plain words
+ * plus per-cause write-ups. September 1, 2026: the write-ups went too. The
+ * site is the landing page; the causes themselves go up on her social
+ * accounts as they happen, and this page says the promise and points there.
+ * Both old pages are in git history before their dates.
+ *
+ * The Facebook pointer is gated on the placeholder the same way the review
+ * ask is: until the real URL lands in lib/site.ts, the copy stands without a
+ * link rather than linking to nothing.
  */
 export default function Giving() {
   return (
@@ -24,8 +28,8 @@ export default function Giving() {
           <h1>The giving is built in.</h1>
           <p className="lede" style={{ marginTop: 14 }}>
             {giving.share.charAt(0).toUpperCase() + giving.share.slice(1)} goes back to
-            local causes in and around {site.contact.city}. This page says how that works,
-            and every cause we support gets its own write-up.
+            local causes in and around {site.contact.city}. This page says how that works.
+            The causes themselves go up on our social pages as we support them.
           </p>
         </div>
       </section>
@@ -38,11 +42,12 @@ export default function Giving() {
             <p>
               Almost every independent agency in the country donates to charity. It is one of
               the more generous corners of American small business, and most of it never gets
-              past one line in a footer. We would rather show you the actual causes: who they
-              are, why we picked them, and what came of it.
+              past one line in a footer. We would rather show you the actual causes, and we
+              show them where you already are: posted as they happen, with who they are and
+              why we picked them.
             </p>
             <p>
-              We are new, so the list starts short. It will grow the way real things grow,
+              We are new, so the record starts short. It will grow the way real things grow,
               one at a time.
             </p>
           </div>
@@ -72,10 +77,16 @@ export default function Giving() {
             </li>
             <li>
               <span className="step-n" aria-hidden="true">3</span>
-              <h3>Every cause gets a write-up</h3>
+              <h3>We post it where you already are</h3>
               <p>
-                Who they are, why we picked them, and what came of it, with a date on it,
-                on <Link href="/giving/causes">the causes page</Link>.
+                Each cause goes up on our social pages as it happens: who they are, why we
+                picked them, and what came of it.
+                {!isPlaceholder(site.social.facebook) && (
+                  <>
+                    {" "}
+                    <a href={site.social.facebook}>Follow along on Facebook.</a>
+                  </>
+                )}
               </p>
             </li>
           </ol>

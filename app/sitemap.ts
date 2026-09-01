@@ -9,7 +9,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "",
     "/coverage",
     "/giving",
-    "/giving/causes",
     "/tools/michigan-pip",
     "/guides",
     "/about",

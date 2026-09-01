@@ -47,12 +47,12 @@ export default function About() {
             <p>
               {giving.share.charAt(0).toUpperCase() + giving.share.slice(1)} goes back to
               local causes in and around {site.contact.city}. We pick them close to home,
-              and every one gets its own write-up on the site: who they are, why we picked
-              them, what came of it.
+              and we post each one as it happens on our social pages: who they are, why we
+              picked them, what came of it.
             </p>
             <p>
-              We are new, so the list starts short, and we would rather it grow honestly
-              than look padded. <Link href="/giving/causes">The causes we support are here.</Link>
+              We are new, so the record starts short, and we would rather it grow honestly
+              than look padded. <Link href="/giving">How the giving works.</Link>
             </p>
           </div>
 

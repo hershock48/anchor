@@ -679,18 +679,10 @@ section {
 .rules p { margin-top: 8px; font-size: 15px; color: var(--slate); line-height: 1.6; }
 .fineprint { margin-top: 26px; font-size: 13.5px; color: var(--slate); max-width: 76ch; }
 
-/* ═══ the causes we support ═══ */
-.causes-empty { background: var(--paper-2); border: 1px solid var(--line); border-radius: var(--radius); padding: 34px 30px; max-width: 68ch; }
-.causes-empty h2 { font-size: clamp(22px, 3vw, 28px); }
-.causes-empty p { margin-top: 14px; color: var(--slate); }
-.causes-empty-cta { margin-top: 22px; }
-.stories { max-width: 68ch; }
-.story { border-top: 1px solid var(--line); padding: 30px 0 34px; }
-.story:first-child { border-top: 0; padding-top: 0; }
-.story-date { font-family: var(--font-mono), ui-monospace, monospace; font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--slate); }
-.story h2 { font-size: clamp(21px, 2.6vw, 26px); margin-top: 8px; }
-.story-org { margin-top: 6px; font-size: 14.5px; color: var(--slate); }
-.story p + p { margin-top: 12px; }
+/* The "causes we support" styles (.causes-empty, .stories, .story) lived
+   here until September 1, 2026, when the client dropped the write-up page:
+   causes are posted on her social accounts instead. In git history with the
+   page if the write-ups ever come back. */
 
 /* ═══ the review ask ═══ */
 .reviewband { background: var(--paper-2); border: 1px solid var(--line); border-radius: var(--radius); padding: 30px 30px; display: flex; align-items: center; justify-content: space-between; gap: 26px; flex-wrap: wrap; }

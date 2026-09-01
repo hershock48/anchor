@@ -1,14 +1,16 @@
-import Link from "next/link";
-import { site } from "@/lib/site";
+import { site, isPlaceholder } from "@/lib/site";
 
 /**
  * The navy giving card.
  *
  * It replaced GoalBar on August 28, 2026, when the client dropped the set
  * percentage, the goal and the ledger: with no number to fill a progress bar,
- * the card states the program in a sentence and points at the write-ups.
- * GoalBar and the ledger live in git history before that date if the program
- * ever grows numbers again.
+ * the card states the program in a sentence. Its link pointed at the causes
+ * write-up page until September 1, 2026, when the client simplified again:
+ * causes are posted on her social accounts, so the link is Facebook, gated on
+ * the placeholder like the review ask, and the card stands without a link
+ * until the real URL lands. GoalBar, the ledger and the causes page all live
+ * in git history if the program ever grows them back.
  */
 export default function GivingCard() {
   return (
@@ -23,11 +25,13 @@ export default function GivingCard() {
           on already say that once, and twice on a page is the limit. */}
       <p className="givecard-sub">
         Our money, not a charge on your policy. The causes we pick are close to home,
-        and each one gets its own write-up.
+        and we post each one as it happens.
       </p>
-      <Link className="givecard-link" href="/giving/causes">
-        See who we support
-      </Link>
+      {!isPlaceholder(site.social.facebook) && (
+        <a className="givecard-link" href={site.social.facebook}>
+          Follow along on Facebook
+        </a>
+      )}
     </div>
   );
 }

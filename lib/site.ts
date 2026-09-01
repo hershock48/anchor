@@ -127,15 +127,22 @@ export const site = {
 /**
  * The giving program.
  *
- * RESHAPED ON AUGUST 28, 2026, BY THE CLIENT, and the old shape is worth a
- * paragraph because this file used to forbid the new one. The build shipped
- * with a set percentage, a published ledger, a goal bar and a public vote,
- * and a rule here that read: never "a portion of proceeds." The client chose
- * the opposite: say a percentage of what we earn goes back, do not commit to
- * the number, drop the receipts, and put the effort into content about each
- * donation instead. So the vague phrasing is the program now, on purpose,
- * and the retired rule is recorded rather than silently deleted. If she ever
- * wants the ledger back, it lives in git history before this date.
+ * RESHAPED TWICE BY THE CLIENT, and both old shapes are recorded because
+ * this file used to forbid each new one.
+ *
+ * August 28, 2026: the build's original receipts argument (a set percentage,
+ * a published ledger, a goal bar, a public vote, and a rule here that read
+ * never "a portion of proceeds") was dropped for the opposite: say a
+ * percentage of what we earn goes back, commit to no number, and put the
+ * effort into a write-up for each cause instead.
+ *
+ * September 1, 2026: the write-ups went too. The site is the landing page
+ * and the business card; the specifics live on her social accounts, posted
+ * as they happen. The site states the promise plainly and points at the
+ * posts. /giving/causes is deleted and redirects to /giving, and the
+ * `stories` field that fed it is retired below. Ledger, goal bar, causes
+ * page and write-ups are all in git history if any of them is ever wanted
+ * back.
  *
  * Michigan DIFS publishes six conditions on a producer donating commission.
  * They still apply, because the money is still commission and the giving is
@@ -179,20 +186,12 @@ export const giving = {
     "No purchase necessary. The donation is the same whether or not you buy a policy, and no customer can direct where their own policy’s money goes.",
 
   /**
-   * The causes we support, newest first. Each one is a short write-up rather
-   * than a ledger row: who they are, why we picked them, what the gift did.
-   * No amounts, per the client. An empty list renders an honest "we are new"
-   * state on /giving/causes; never seed it with an invented first story.
+   * RETIRED, SEPTEMBER 1, 2026. A `stories` array lived here, one entry per
+   * supported cause, feeding write-ups on /giving/causes. The client's
+   * direction is simpler: specifics go up on her social accounts, the site
+   * just says the promise and points there. The field and the page are in
+   * git history before this date if the write-ups ever come back.
    */
-  stories: [] as {
-    /** Prose-friendly, e.g. "March 2027". Rendered as written. */
-    date: string;
-    title: string;
-    org: string;
-    orgUrl?: string;
-    city: string;
-    body: string;
-  }[],
 } as const;
 
 /** Lines she writes. Each one gets its own page: still the strongest local

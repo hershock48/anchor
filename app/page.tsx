@@ -85,8 +85,8 @@ export default async function Home() {
               <Link className="btn onnavy" href="/quote">
                 Get a quote
               </Link>
-              <Link className="btn onnavy ghost-on-navy" href="/giving/causes">
-                See who we support
+              <Link className="btn onnavy ghost-on-navy" href="/giving">
+                How the giving works
               </Link>
             </div>
             <p className="hero-note">
@@ -205,8 +205,8 @@ export default async function Home() {
               </span>
               <h3>We tell you about it</h3>
               <p>
-                Every cause gets its own write-up on this site: who they are, why we picked
-                them, and what came of it.
+                Each cause goes up on our social pages as it happens: who they are, why we
+                picked them, and what came of it.
               </p>
             </li>
           </ol>

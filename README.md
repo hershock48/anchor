@@ -18,14 +18,18 @@ that gives back"** and the old name survives only as the structured-data
 `alternateName`. If you find it anywhere else outside a history note, that is
 a bug.
 
-Second, the giving program. The build shipped as a receipts argument: a set
-percentage, a published ledger, a homepage goal bar and a public vote. The
-client dropped all of it. The program now says **a percentage of what we earn
-goes back** without committing to the number, and the effort goes into
-content: every cause gets a write-up on `/giving/causes` (who they are, why we
-picked them, what came of it), with no amounts anywhere. The receipts suite
-lives in git history before this date if it is ever wanted back. There is also
-a Google-review ask on the homepage and contact page, gated on
+Second, the giving program, which has now simplified TWICE. The build shipped
+as a receipts argument: a set percentage, a published ledger, a homepage goal
+bar and a public vote. On August 28 the client dropped all of it for plain
+words plus a write-up per cause on `/giving/causes`. On September 1 the
+write-ups went too: the site is the landing page and the business card, and
+**the causes themselves are posted on her social accounts as they happen.**
+The site says **a percentage of what we earn goes back** without committing to
+the number, and points at the posts; the Facebook pointer is gated on
+`site.social.facebook` and renders as plain copy until the real URL lands.
+`/giving/causes` is deleted and 308-redirects to `/giving`. Receipts suite,
+causes page and `giving.stories` all live in git history if ever wanted back.
+There is also a Google-review ask on the homepage and contact page, gated on
 `site.social.googleReview` like every other placeholder.
 
 Next.js App Router, TypeScript, plain CSS, deployed on Vercel. **Prospect, not
@@ -55,7 +59,7 @@ npm install axe-core playwright-core --no-save
 npx next start -p 4502
 PLAYWRIGHT_BROWSERS_PATH=/opt/pw-browsers \
   node ../glazedweb/glaze/scripts/audit.mjs --base http://127.0.0.1:4502 \
-  --routes /,/coverage,/coverage/auto,/coverage/home,/coverage/renters,/coverage/umbrella,/coverage/life,/coverage/business,/giving,/giving/causes,/tools/michigan-pip,/guides,/guides/mini-tort,/guides/excess-attendant-care,/guides/storm-claims-after-march-6,/guides/why-your-rate-depends-on-where-you-live,/about,/contact,/quote,/quote/received,/privacy,/intake,/intake/sent
+  --routes /,/coverage,/coverage/auto,/coverage/home,/coverage/renters,/coverage/umbrella,/coverage/life,/coverage/business,/giving,/tools/michigan-pip,/guides,/guides/mini-tort,/guides/excess-attendant-care,/guides/storm-claims-after-march-6,/guides/why-your-rate-depends-on-where-you-live,/about,/contact,/quote,/quote/received,/privacy,/intake,/intake/sent
 ```
 
 ---
@@ -99,8 +103,9 @@ customers on another build.
 - [ ] **The Google review link** — `site.social.googleReview`. The direct
       write-a-review URL from the Business Profile dashboard, not the profile
       URL. The review ask renders a marked blank until it lands
-- [ ] **The first cause write-up** — `giving.stories` is empty and
-      `/giving/causes` says so honestly. Content comes from her, not from us
+- [ ] **The Facebook page URL** — `site.social.facebook`. It is where the giving
+      specifics will live now, so the giving page and the giving card point at it
+      once it lands; until then they read as plain copy with no link
 - [ ] **Her story** — `app/about/page.tsx`. Comes out of a recorded hour with her,
       in her words. The single most damaging thing on this site to invent
 - [ ] **Privacy retention period** — `app/privacy/page.tsx`
@@ -283,11 +288,15 @@ inside her site.
 
 ## The giving program, and why it is shaped this way
 
-The shape is the client's, chosen August 28, 2026: **no set percentage, no
-ledger, no goal bar, no vote.** The site says a percentage of what we earn goes
-back, and each supported cause gets a write-up on `/giving/causes` with no
-amounts. The write-ups are the program's public face, and `giving.stories` in
-`lib/site.ts` is where they live. Never seed a fake one.
+The shape is the client's, chosen twice. August 28, 2026: **no set percentage,
+no ledger, no goal bar, no vote**, plain words plus a write-up per cause.
+September 1, 2026: **no write-ups either.** The site is the landing page and
+the business card; the causes are posted on her social accounts as they
+happen, and the site says a percentage of what we earn goes back and points
+at the posts. `/giving/causes` is deleted (a 308 in `next.config.ts` covers
+the old links) and `giving.stories` is retired from `lib/site.ts`. The
+Facebook pointer is gated on `site.social.facebook` exactly like the review
+ask: plain copy until the real URL lands, one edit to light up.
 
 Michigan DIFS publishes six conditions on a producer donating commission. They
 still apply, because the money is still commission and the giving is still

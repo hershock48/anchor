@@ -52,6 +52,18 @@ const nextConfig: NextConfig = {
     };
   },
 
+  async redirects() {
+    /**
+     * /giving/causes existed from August 28 to September 1, 2026, when the
+     * client simplified the program again: specifics live on her social
+     * accounts, so the write-up page is gone. The proposal deep-linked it
+     * and it sat in the sitemap, so it redirects rather than 404s.
+     * `permanent: true` is a 308, which preserves method; see the /api trap
+     * in glaze.md for why not 301.
+     */
+    return [{ source: "/giving/causes", destination: "/giving", permanent: true }];
+  },
+
   async headers() {
     return [
       {
