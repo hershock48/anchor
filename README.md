@@ -343,6 +343,21 @@ built. After a save the route calls `revalidatePath("/", "layout")`, so every
 customer page stays static and re-renders with the new value on its next
 request. On the memory backend the screen says so, because an edit that
 vanishes on the next cold start is worse than one that was refused.
+**Measured on production, September 1, 2026:** a phone saved through the
+API showed on `/demo`, `/demo/contact`, `/demo/about` and `/demo/quote` one
+second later (Vercel reporting `REVALIDATED` on that first hit, `HIT` after),
+and clearing it emptied all four in the same second. Against her real Neon
+database, with the test value cleared afterward.
+
+**The first deploy of this screen failed, and the fix is in the store.** The
+customer pages now read the facts at build time, Next prerenders with
+several workers, and two of them ran `CREATE TABLE IF NOT EXISTS` in the
+same instant on a database with no tables yet; Postgres's `IF NOT EXISTS`
+is not atomic against a concurrent creator, so the loser died on the
+`pg_type` unique index and took the build with it. The init now takes an
+advisory lock in its transaction and treats a duplicate-object error as
+"the table is there". If a build ever fails on `23505` or `42P07` again,
+look here first.
 
 **It is not in the nav, not in the sitemap, and carries its own noindex.** It
 lives outside `/demo` on purpose (devine's reasoning): it is hers, and it does
@@ -561,7 +576,10 @@ handover artifact rather than a private note. Ticked means measured, not assumed
       which is where she works them. See below.
 - [x] Any remote data source verified on the deployment, not locally. **The market
       rail degrades to symbols with no prices if either upstream is down, so a
-      failure is visible rather than silent. Re-check it on the deployment.**
+      failure is visible rather than silent. Re-check it on the deployment.
+      The facts editor's full flow (passcode, bad values refused, save, four
+      pages fresh within a second, clear, pages blank again) ran against
+      production and her Neon database on September 1, 2026.**
 - [x] Every heading, button and body run measured for contrast, not glanced at.
 
 ### The visitor's experience

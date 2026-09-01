@@ -2,6 +2,7 @@
 
 import { usePathname } from "next/navigation";
 import { site } from "@/lib/site";
+import { useHomeHref } from "@/components/HomeLink";
 
 /**
  * THE WORKROOM'S HEADER. One place, every page.
@@ -23,6 +24,10 @@ const TABS = [
 
 export default function WorkroomChrome() {
   const path = usePathname() || "/workroom";
+  // "/" on the pitch host is the proposal, not her site. Same resolver the
+  // customer header's logo uses, so the facts she just saved are one tap away
+  // instead of one tap plus a sales document.
+  const siteHref = useHomeHref();
 
   const isActive = (href: string) =>
     href === "/workroom" ? path === href || path.startsWith("/workroom/leads") : path === href || path.startsWith(href + "/");
@@ -51,7 +56,7 @@ export default function WorkroomChrome() {
 
         <div className="wr-right">
           {/* New tab, so the queue is never lost behind a marketing page. */}
-          <a href="/" target="_blank" rel="noreferrer">
+          <a href={siteHref} target="_blank" rel="noreferrer">
             The site <span aria-hidden="true">↗</span>
           </a>
           <button type="button" onClick={lock}>Lock</button>
