@@ -119,6 +119,11 @@ export async function createCheckout(opts: {
 
   const body = new URLSearchParams();
   body.set("mode", recurring ? "subscription" : "payment");
+  // Card only. Left to the account's defaults, Stripe offered Klarna, Cash
+  // App Pay and bank debit on the first walk; buy-now-pay-later on an
+  // insurance premium is the wrong offer, and bank debits settle days later
+  // and can return, which a lapse date does not wait for. Cards clear now.
+  body.set("payment_method_types[0]", "card");
   body.set("success_url", `${origin}/pay/received?session_id={CHECKOUT_SESSION_ID}`);
   body.set("cancel_url", `${origin}/pay`);
   body.set("line_items[0][quantity]", "1");
@@ -126,7 +131,7 @@ export async function createCheckout(opts: {
   body.set("line_items[0][price_data][unit_amount]", String(policy.amountCents));
   body.set(
     "line_items[0][price_data][product_data][name]",
-    `${paidTo}: ${what}policy ${policy.policyNumber}${recurring ? " (autopay)" : ""}`
+    `${paidTo}: ${what}policy ${policy.policyNumber}`
   );
   if (recurring) {
     body.set("line_items[0][price_data][recurring][interval]", recurring.interval);
