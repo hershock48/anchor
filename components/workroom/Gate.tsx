@@ -53,7 +53,7 @@ export default function Gate({
   return (
     <div className="wr-gate">
       <h1>Workroom</h1>
-      <p className="wr-muted">Your leads, payments and the facts on the site. Locked to you.</p>
+      <p className="wr-muted">Your leads, your book, payments and the facts on the site. Locked to you.</p>
       <form onSubmit={submit}>
         <label htmlFor="wr-pass">Passcode</label>
         <input

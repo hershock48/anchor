@@ -1,13 +1,15 @@
 import "server-only";
 
 /**
- * Workroom storage: leads, and the site's editable facts.
+ * Workroom storage: leads, the book (customers, policies, payments), and the
+ * site's editable facts.
  *
  * Ported from devine's `lib/workroom/store.ts` (itself from pjs). The
  * two-backend shape, the jsonb-blob decision, the self-creating tables and the
- * do-not-cache-a-failed-init rule are all inherited; the domain is different
- * and much smaller, because this workroom keeps TWO kinds of row: a lead, and
- * one key -> jsonb value for content the workroom edits (today, the facts).
+ * do-not-cache-a-failed-init rule are all inherited. What grew here is a
+ * GENERIC COLLECTION: one jsonb row per record, keyed by id, with equality
+ * lookups on top-level string fields. The book needed three of them and
+ * writing three copies of get/put/list was the wrong kind of tidy.
  *
  *   postgres   when a database URL is set. One click in Vercel: project >
  *              Storage > Create Database > Neon, free tier, part of the
@@ -24,20 +26,30 @@ import "server-only";
  *              PAYLOAD EITHER WAY, so a lead is never lost to a missing
  *              database, only harder to find.
  *
- * THIS IS THE FIRST STORED DATA IN THIS REPO, and it is worth naming what it
- * is: quote requests, which carry a name, phone, email, ZIP and possibly an
- * address and current carrier. Not policy data, not card data, not a date of
- * birth or a licence number, because the quote form deliberately does not ask
- * for those (see /privacy, which says so and has to keep agreeing with this
- * file). One jsonb column keyed by id; nothing queries inside the blob.
- *
- * The content table holds only what the site already publishes (her phone,
- * her hours), keyed by name, whitelisted in lib/workroom/facts-def.ts.
+ * WHAT IS STORED, named because /privacy has to keep agreeing with this file:
+ * quote requests (name, phone, email, ZIP, maybe an address and current
+ * carrier); the book (customer name, phone, email, ZIP; policy carrier,
+ * number, installment amount and due date; a record of each payment made
+ * through the site, by Stripe's id and amount). NO card numbers, ever: the
+ * card is typed on Stripe's page and never reaches this server. No dates of
+ * birth, no licence numbers, no policy documents.
  */
 
 import type { Lead, LeadStatus } from "./leads";
+import type { Customer, Policy, Payment } from "./book";
 
 export type { Lead, LeadStatus };
+
+type Row = { id: string; createdAt: number };
+
+export type Collection<T extends Row> = {
+  get(id: string): Promise<T | null>;
+  /** Insert or replace. */
+  put(row: T): Promise<void>;
+  remove(id: string): Promise<void>;
+  /** Newest first. `where` is equality on top-level string fields. */
+  list(where?: Partial<Record<keyof T & string, string>>, limit?: number): Promise<T[]>;
+};
 
 export type Store = {
   backend: "postgres" | "memory";
@@ -45,6 +57,9 @@ export type Store = {
   listLeads(limit?: number): Promise<Lead[]>;
   getLead(id: string): Promise<Lead | null>;
   updateLead(id: string, patch: { status?: LeadStatus; workNotes?: string }): Promise<Lead | null>;
+  customers: Collection<Customer>;
+  policies: Collection<Policy>;
+  payments: Collection<Payment>;
   /** One named jsonb value. Null when nothing has been saved under the key. */
   getValue<T>(key: string): Promise<T | null>;
   setValue(key: string, value: unknown): Promise<void>;
@@ -57,15 +72,45 @@ export function newId(prefix: string): string {
 
 /* ------------------------------ memory ------------------------------ */
 
-type Bag = { leads: Map<string, Lead>; content: Map<string, unknown> };
+type Bag = {
+  leads: Map<string, Lead>;
+  content: Map<string, unknown>;
+  tables: Map<string, Map<string, Row>>;
+};
 
 function bag(): Bag {
   const g = globalThis as typeof globalThis & { __anchorWorkroomBag?: Bag };
-  if (!g.__anchorWorkroomBag) g.__anchorWorkroomBag = { leads: new Map(), content: new Map() };
-  // The bag predates the content map; a warm instance from before it still
-  // gets one rather than a TypeError on the first save.
+  if (!g.__anchorWorkroomBag) g.__anchorWorkroomBag = { leads: new Map(), content: new Map(), tables: new Map() };
+  // The bag predates the later maps; a warm instance from before still gets
+  // them rather than a TypeError on the first save.
   if (!g.__anchorWorkroomBag.content) g.__anchorWorkroomBag.content = new Map();
+  if (!g.__anchorWorkroomBag.tables) g.__anchorWorkroomBag.tables = new Map();
   return g.__anchorWorkroomBag;
+}
+
+function memoryCollection<T extends Row>(table: string): Collection<T> {
+  const rows = () => {
+    const t = bag().tables;
+    if (!t.has(table)) t.set(table, new Map());
+    return t.get(table)! as Map<string, T>;
+  };
+  return {
+    async get(id) {
+      return rows().get(id) ?? null;
+    },
+    async put(row) {
+      rows().set(row.id, row);
+    },
+    async remove(id) {
+      rows().delete(id);
+    },
+    async list(where, limit = 1000) {
+      return [...rows().values()]
+        .filter((r) => !where || Object.entries(where).every(([k, v]) => (r as Record<string, unknown>)[k] === v))
+        .sort((a, b) => b.createdAt - a.createdAt)
+        .slice(0, limit);
+    },
+  };
 }
 
 const memoryStore: Store = {
@@ -86,6 +131,9 @@ const memoryStore: Store = {
     bag().leads.set(id, next);
     return next;
   },
+  customers: memoryCollection<Customer>("workroom_customers"),
+  policies: memoryCollection<Policy>("workroom_policies"),
+  payments: memoryCollection<Payment>("workroom_payments"),
   async getValue(key) {
     return (bag().content.get(key) as never) ?? null;
   },
@@ -127,6 +175,9 @@ type PgPool = {
   query: (sql: string, params?: unknown[]) => Promise<{ rows: Record<string, unknown>[] }>;
 };
 
+/** Every jsonb table the store owns. Adding one here is the whole migration. */
+const JSON_TABLES = ["workroom_content", "workroom_customers", "workroom_policies", "workroom_payments"] as const;
+
 async function pgPool(): Promise<PgPool> {
   const g = globalThis as typeof globalThis & {
     __anchorPgPool?: PgPool;
@@ -145,28 +196,25 @@ async function pgPool(): Promise<PgPool> {
       max: 3,
     }) as unknown as PgPool;
     /*
-      A FAILED SCHEMA INIT MUST NOT BE CACHED. Devine's header records the
-      cost: storing this promise and never clearing it meant one unlucky cold
-      start (Neon still waking, a blip) left that warm instance permanently
-      broken, awaiting the same rejected promise long after the database
-      recovered. On failure the pool and the promise are dropped so the next
+      THE INIT TAKES A LOCK, because the customer pages read the facts at
+      BUILD time and Next prerenders with several workers at once. The first
+      deploy of the facts editor failed exactly here: two workers ran CREATE
+      TABLE IF NOT EXISTS in the same instant on a database that had no
+      tables yet, and Postgres's IF NOT EXISTS is not atomic against a
+      concurrent creator, so the loser died on the pg_type unique index (code
+      23505, "workroom_leads already exists") and took the build with it. A
+      multi-statement simple query runs in one implicit transaction, so the
+      advisory lock below is held until the CREATEs commit and every other
+      worker or lambda waits its turn. The catch keeps the belt with the
+      braces: a duplicate-object error from a racer that slipped past the
+      lock still means "the table is there", which is the outcome we wanted.
+
+      A FAILED SCHEMA INIT MUST NOT BE CACHED (devine's header records the
+      cost: one unlucky cold start left a warm instance permanently broken).
+      On any other failure the pool and the promise are dropped so the next
       request retries.
     */
-    /*
-      THE INIT TAKES A LOCK, because the customer pages now read the facts
-      at BUILD time and Next prerenders with several workers at once. The
-      first deploy of the facts editor failed exactly here: two workers ran
-      CREATE TABLE IF NOT EXISTS in the same instant on a database that had
-      no tables yet, and Postgres's IF NOT EXISTS is not atomic against a
-      concurrent creator, so the loser died on the pg_type unique index
-      (code 23505, "workroom_leads already exists") and took the build with
-      it. A multi-statement simple query runs in one implicit transaction,
-      so the advisory lock below is held until the CREATEs commit and every
-      other worker or lambda waits its turn. The catch keeps the belt with
-      the braces: a duplicate-object error from a racer that slipped past
-      the lock still means "the table is there", which is the outcome we
-      wanted.
-    */
+    const creates = JSON_TABLES.map((t) => `CREATE TABLE IF NOT EXISTS ${t} (key text PRIMARY KEY, data jsonb NOT NULL);`).join("\n");
     g.__anchorPgReady = g.__anchorPgPool
       .query(
         `SELECT pg_advisory_xact_lock(4213701);
@@ -176,10 +224,7 @@ async function pgPool(): Promise<PgPool> {
            created_at bigint NOT NULL,
            data jsonb NOT NULL
          );
-         CREATE TABLE IF NOT EXISTS workroom_content (
-           key text PRIMARY KEY,
-           data jsonb NOT NULL
-         );`
+         ${creates}`
       )
       .catch((err: unknown) => {
         const code = (err as { code?: string } | null)?.code;
@@ -193,6 +238,45 @@ async function pgPool(): Promise<PgPool> {
   }
   await g.__anchorPgReady;
   return g.__anchorPgPool!;
+}
+
+function pgCollection<T extends Row>(table: (typeof JSON_TABLES)[number]): Collection<T> {
+  return {
+    async get(id) {
+      const pool = await pgPool();
+      const { rows } = await pool.query(`SELECT data FROM ${table} WHERE key = $1`, [id]);
+      return rows.length ? (rows[0].data as T) : null;
+    },
+    async put(row) {
+      const pool = await pgPool();
+      await pool.query(
+        `INSERT INTO ${table} (key, data) VALUES ($1, $2) ON CONFLICT (key) DO UPDATE SET data = $2`,
+        [row.id, JSON.stringify(row)]
+      );
+    },
+    async remove(id) {
+      const pool = await pgPool();
+      await pool.query(`DELETE FROM ${table} WHERE key = $1`, [id]);
+    },
+    async list(where, limit = 1000) {
+      const pool = await pgPool();
+      const params: unknown[] = [];
+      const clauses: string[] = [];
+      for (const [k, v] of Object.entries(where ?? {})) {
+        // Field names come from code, never from a request; values are bound.
+        if (!/^[a-zA-Z_][a-zA-Z0-9_]*$/.test(k)) throw new Error(`bad field ${k}`);
+        params.push(v);
+        clauses.push(`data->>'${k}' = $${params.length}`);
+      }
+      params.push(limit);
+      const { rows } = await pool.query(
+        `SELECT data FROM ${table}${clauses.length ? " WHERE " + clauses.join(" AND ") : ""}
+         ORDER BY (data->>'createdAt')::bigint DESC NULLS LAST LIMIT $${params.length}`,
+        params
+      );
+      return rows.map((r) => r.data as T);
+    },
+  };
 }
 
 const postgresStore: Store = {
@@ -229,6 +313,9 @@ const postgresStore: Store = {
     ]);
     return next;
   },
+  customers: pgCollection<Customer>("workroom_customers"),
+  policies: pgCollection<Policy>("workroom_policies"),
+  payments: pgCollection<Payment>("workroom_payments"),
   async getValue(key) {
     const pool = await pgPool();
     const { rows } = await pool.query(`SELECT data FROM workroom_content WHERE key = $1`, [key]);

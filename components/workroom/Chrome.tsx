@@ -18,6 +18,7 @@ import { useHomeHref } from "@/components/HomeLink";
 
 const TABS = [
   { href: "/workroom", label: "Leads" },
+  { href: "/workroom/book", label: "Book" },
   { href: "/workroom/payments", label: "Payments" },
   { href: "/workroom/facts", label: "Site facts" },
 ];

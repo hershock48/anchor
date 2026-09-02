@@ -59,7 +59,7 @@ npm install axe-core playwright-core --no-save
 npx next start -p 4502
 PLAYWRIGHT_BROWSERS_PATH=/opt/pw-browsers \
   node ../glazedweb/glaze/scripts/audit.mjs --base http://127.0.0.1:4502 \
-  --routes /,/coverage,/coverage/auto,/coverage/home,/coverage/renters,/coverage/umbrella,/coverage/life,/coverage/business,/giving,/tools/michigan-pip,/guides,/guides/mini-tort,/guides/excess-attendant-care,/guides/storm-claims-after-march-6,/guides/why-your-rate-depends-on-where-you-live,/about,/contact,/quote,/quote/received,/privacy,/intake,/intake/sent,/pay,/pay/received,/workroom
+  --routes /,/coverage,/coverage/auto,/coverage/home,/coverage/renters,/coverage/umbrella,/coverage/life,/coverage/business,/giving,/tools/michigan-pip,/guides,/guides/mini-tort,/guides/excess-attendant-care,/guides/storm-claims-after-march-6,/guides/why-your-rate-depends-on-where-you-live,/about,/contact,/quote,/quote/received,/privacy,/intake,/intake/sent,/pay,/pay/no-match,/pay/received,/workroom
 ```
 
 The workroom's signed-in screens sit behind the passcode, so audit them with
@@ -69,7 +69,7 @@ must have been started with that same `WORKROOM_PASSCODE`:
 
 ```bash
 node ../glazedweb/glaze/scripts/audit.mjs --base http://127.0.0.1:4502 \
-  --cookie anchor_workroom=<sha256 hex> --routes /workroom,/workroom/payments,/workroom/facts
+  --cookie anchor_workroom=<sha256 hex> --routes /workroom,/workroom/book,/workroom/book/import,/workroom/payments,/workroom/facts
 ```
 
 ---
@@ -274,6 +274,9 @@ is never on the critical path. See `.env.example`.
 **PII.** The form deliberately does not ask for dates of birth, license numbers or
 VINs. Those come up on the call. What it does collect is logged AND stored as a
 lead in the workroom, and `app/(site)/privacy/page.tsx` says so in those words.
+The same page has a "Paying your bill" section describing the book and the
+payment records, and no card number ever reaches this server; keep all three
+in agreement.
 **If the handler changes, that page changes with it** — it already had to once:
 the page read "logged, not stored" until the leads queue made that untrue, which
 is exactly the failure this note exists to catch.
@@ -322,14 +325,16 @@ inside her site.
 
 ## The workroom: her dashboard, at /workroom
 
-**The agency's own tool, not part of the customer site.** Three screens behind a
+**The agency's own tool, not part of the customer site.** Four screens behind a
 passcode: the **leads queue** (every quote request, worked through statuses
-new → called → quoted → won/lost, with her own notes per lead),
-**payments** (a read-only window onto Stripe: recent payments and running
-autopays, each labelled with the payer, policy number and carrier that
-`/api/pay` writes into the session metadata), and **site facts** (her phone,
-email, address, hours, license numbers and two links, edited in place and
-live on the site within seconds).
+new → called → quoted → won/lost, with her own notes per lead), the
+**book** (every customer and policy she bills, with the pay link, the
+"email them the bill" button and the payment history for each; see the
+payments section below), **payments** (a read-only window onto Stripe:
+recent payments and running autopays, each labelled with the payer, policy
+number and carrier that the checkout writes into the session metadata), and
+**site facts** (her phone, email, address, hours, license numbers and two
+links, edited in place and live on the site within seconds).
 
 **The facts screen is a form over a whitelist, and the whitelist is the
 safety.** `lib/workroom/facts-def.ts` says which fields exist, what kind each
@@ -416,70 +421,105 @@ which the auditor caught as three landmark violations on every workroom screen
 at both widths. **If you add a top-level route that is not part of the
 customer site, it belongs beside `(site)`, not inside it.**
 
-## Payments: /pay is live, the card form is parked
+## Payments: the customer never types an amount and never has a password
 
-The client wants customers paying premium on the site, and the page exists in
-the only shape that is honest for an insurance agency. **Two layers:**
+**Reshaped September 2, 2026.** The first version of /pay had the customer
+copy the amount and policy number off their bill into a form, because the
+site had no way to know either. Now it does, and the whole flow is built
+around that. Three pieces:
 
-**Layer one, live: carrier routing.** Most modern standard personal-lines
-premium is billed by the carrier, so `/pay` gives each appointed carrier a
-row pointing at that carrier's own payment portal and billing phone, fed
-from `site.carriers` (`payUrl`, `billingPhone`). With the list empty it
-renders a call-us state.
+**The book, in the workroom.** Her customers and their policies: installment
+amount, how often it is billed, the next due date, and who collects it (an
+agency invoice, or the carrier). Entered one at a time, or imported from her
+agency management system's CSV export at `/workroom/book/import`, which is
+additive and idempotent (customers matched by email or name and ZIP,
+policies by carrier and policy number, nothing ever deleted, autopay and
+payment history untouched), so "export again next month, import again" is
+how the book stays current. **The book is the only source of an amount.**
 
-**Corrected September 1, 2026: "the agent does not collect" is per-carrier,
-not a law of nature.** An earlier version of this section flatly said agency
-agreements bar the agent from collecting premium. Kevin's own experience
-(paying an independent agent directly, on an Allied policy) is the
-counterexample: agency bill has covered personal lines at plenty of
-carriers, and many agreements authorize the agency to accept payments even
-on direct-billed policies. So the volume the checkout below can lawfully
-take is decided by WHICH CARRIERS she signs with and what each agreement
-authorizes, which is why the intake sheet now asks, per carrier, whether
-the agency may accept premium payments. Every payment she may take is one
-the site can take.
+**The pay link.** From any policy the workroom mints a signed, expiring link
+(`lib/paylink.ts`, HMAC over the policy id and an expiry, signed by
+`PAY_LINK_SECRET`). It opens `/pay/p/<token>`: "Hi Dana, your $142.10 for
+the Civic is due March 3," the policy details, and one choice: pay this
+once, or this and every one after it automatically. The card form is
+Stripe's hosted checkout under her name, the .99 is its own plain line item
+("Online payment fee"), and the sentence under the button says who charges
+it. A customer with no link finds the same page at /pay with the two things
+they know, policy number and ZIP (rate limited, eight misses per address per
+ten minutes; a miss lands on a static no-match page that does not say which
+field was wrong). No accounts, no passwords, by design: a customer will not
+keep a password for an insurance agent and should not have to.
 
-**Layer two, parked: a Stripe checkout for agency-billed invoices**, exactly
-the way Copper's ordering is parked: `/api/pay` is built and live, the card
-form renders only when `payments.agencyBillCheckout` in `lib/site.ts` is
-flipped, and the API refuses independently while the flag is off so a
-hand-crafted POST cannot take money she is not cleared to take. The flip
-conditions are documented on the flag: confirmed agency-billed policies, a
-Stripe account settling into a premium/trust bank account (collected premium
-is fiduciary money under Michigan law), her written go-ahead on the fee
-after reading the counsel review packet (counsel at her discretion; see the
-research below), and `STRIPE_SECRET_KEY` plus `PAY_NOTIFY_TO` in Vercel.
+**Where the money goes is decided per carrier, not per bill.** A policy
+marked "the carrier bills it" pays on the site only when that carrier's
+`payableHere` flag in `lib/site.ts` is true, set from the agency agreement
+and never from a book entry. Otherwise the very same bill page says "this
+one is paid at Progressive" in Anchor's voice, with the carrier's portal
+link and billing line, so the customer never has to work out which of two
+names to pay and never sees a second brand on our page. Embedding a
+carrier's login inside our page was considered and ruled out: carriers
+block framing, and a Progressive password box on an Anchor page is what a
+phishing page looks like.
 
-**No accounts and no stored balances, by design.** The customer types the
-amount and policy number from the bill they already have: the bill is the
-ledger, the site is the till. This was the client-call answer to "how do we
-know what they owe": the carrier or the agency already told them.
+**Autopay** is a Stripe subscription on the policy's own cadence (monthly,
+quarterly, every six months, yearly). When the due date is more than two
+days out, the subscription starts on the due date (Stripe's `trial_end`),
+so turning on autopay in February does not charge February twice. Each
+cycle arrives as `invoice.paid` and is recorded like any payment. Stopping
+it is a call or email: the workroom's "Stop autopay" cancels the
+subscription, the one thing behind the gate that reaches into Stripe, and
+it can only ever stop money moving. Refunds stay in the Stripe dashboard.
 
-**Pay-at-anchor routing, per carrier.** Each carrier row in `site.carriers`
-carries `payableHere`: true only when that carrier's agency agreement
-authorizes the agency to collect its premium, set from the agreement and
-never from optimism. A payable carrier's row on /pay routes INTO the
-checkout ("pay it right here") instead of out to the carrier's portal, and
-the checkout grows a carrier selector so every payment names who it is for
-(the API collapses any unlisted carrier to "agency", so a hand-crafted POST
-cannot label money for a carrier she may not collect). This is the whole
-"send everyone to anchor.com" experience, and its ceiling is set by carrier
-selection, which the intake sheet asks about per carrier.
+**Recording is idempotent by Stripe's own id**, and it happens in two
+places on purpose: the return page (`/pay/received?session_id=`) fetches
+the session from Stripe and records it, and the signed webhook
+(`/api/stripe/webhook`) does the same for `checkout.session.completed`,
+`invoice.paid` and `customer.subscription.deleted`. The second writer is a
+no-op. So a closed tab is survivable (the webhook records) and an
+unconfigured webhook is survivable (the return page records one-time
+payments; autopay cycles record once the secret is set and Stripe
+replays). Every record rolls the policy's due date forward by its cadence
+and emails the agency. Premium and fee are stored apart, always. **The
+webhook verifies Stripe's signature on the raw body first**; an unset
+`STRIPE_WEBHOOK_SECRET` answers 503 so Stripe keeps retrying, which is the
+visible failure we want.
 
-**Autopay.** The checkout offers one-time or monthly autopay. Monthly is a
-Stripe subscription: the premium AND the .99 both recur, because each month
-is a payment and each payment carries the fee, and the form says so in one
-plain sentence. Name, policy and pay-to ride on the subscription's own
-metadata so the Stripe dashboard answers "whose autopay is this" directly.
-Canceling is a call or email, done in the Stripe dashboard; deliberately no
-customer portal until there is a customer base to need one. Stripe emails
-the receipts.
+**The reminders are the automation.** A Vercel cron (`vercel.json`, 14:00
+UTC daily, signed with `CRON_SECRET`) emails "your payment is due" seven
+days out and on the day, once each per due date, to active policies not on
+autopay whose customer has an email. The same note is behind "Email them
+the bill" on the customer screen. It goes out over Resend from the studio's
+verified domain with reply-to set to her address, because she has no
+mailbox yet (glaze.md allows exactly this); move it to her SMTP when she
+does. **Text messages are not built:** they need a paid provider such as
+Twilio, which she hears the cost of before it goes in.
 
-**The agency is emailed BEFORE the customer reaches Stripe** (louies' lesson:
-with no webhook, a paid session is otherwise a charge nobody has a record
-of). The session carries name and policy in metadata, so the Stripe dashboard
-matches the email. Amounts are capped at `payments.maxOnlineCents`; above it
-the page says call us, because typos add zeros.
+**What is left alone until the switch flips.** `payments.checkoutEnabled`
+is off and `STRIPE_SECRET_KEY` is unset, so no card can be taken: the bill
+page shows the bill and says "pay it with a person", carrier-billed
+policies still route to the carrier, pay links and the lookup still work
+once `PAY_LINK_SECRET` is set. The flip conditions are on the flag in
+`lib/site.ts`. The Stripe request itself (`createCheckout` in
+`lib/pay.ts`) is the one path not exercised end to end yet, because there
+is no key: run it in Stripe test mode before the flag flips for real.
+
+**Verified locally, September 2, 2026**, against a production build with
+test secrets: 55 checks covering the gate, customer and policy validation,
+routing (carrier vs agency), pay-link minting and expiry, the bill page in
+every state, the lookup (hit, wrong ZIP, honeypot, rate limit), checkout
+refused while off, the reminder's honest failure without a mail key, the
+cron's auth and selection, the webhook (bad signature, stale timestamp, $0
+trial invoice, a real invoice recorded once with premium and fee apart, the
+due date rolled a quarter, autopay remembered and then cleared), the
+policy rules (paid policies close rather than delete), and the CSV import
+twice (creates, then updates without duplicates, reporting the bad row).
+Nine new routes at 0 violations and no overflow at 320, 390, 768 and 1440.
+
+**Stripe Connect is the product-scale version of the .99** and is not
+built: today the fee settles into her Stripe account and Glazed's share is
+an invoice line. With several agencies, Glazed becomes the platform, each
+agency a connected account, and the fee an application fee taken
+automatically, with branding per connected account.
 
 **A per-payment tech fee is deliberately NOT wired in, and this was
 researched, not assumed** (September 1, 2026). Michigan DIFS's own

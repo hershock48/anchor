@@ -225,21 +225,22 @@ export const giving = {
 } as const;
 
 /**
- * On-site payments, for /pay and /api/pay.
+ * On-site payments: /pay, the pay links, the checkout and the book behind it.
  *
  * THE SWITCH IS OFF ON PURPOSE, the same way Copper's ordering is parked: the
- * page and the API are built, and the card form does not render until the
- * client can lawfully take the money. Premium an agency collects is fiduciary
- * money under Michigan insurance law, and most personal-lines policies are
- * billed by the carrier under agency agreements that say the agent does not
- * collect at all. So the carrier rows above are the live layer, and this
- * checkout exists for AGENCY-BILLED invoices only.
+ * pages, the checkout and the workroom book are built, and no card can be
+ * taken until the client can lawfully take the money. Premium an agency
+ * collects is fiduciary money under Michigan insurance law, and which
+ * carriers' premium she may collect is per carrier (`payableHere` above,
+ * set from each agency agreement). The carrier rows on /pay are the live
+ * layer for everything else.
  *
- * Flip `agencyBillCheckout` to true only when all of these are true, and
- * record the date here when you do:
+ * Flip `checkoutEnabled` to true only when all of these are true, and record
+ * the date here when you do:
  *
- *   1. She has confirmed which policies are agency-billed. Direct-billed
- *      policies keep routing to the carrier, whatever this flag says.
+ *   1. She has confirmed which policies are agency-billed and which carrier
+ *      agreements authorize collection. Everything else routes to the
+ *      carrier, whatever this flag says.
  *   2. She has a Stripe account settling into a separate premium/trust bank
  *      account, not operating money.
  *   3. She has given a written go-ahead after reading the counsel review
@@ -248,16 +249,28 @@ export const giving = {
  *      ePayPolicy structure that passes fees to the payer anyway. The fee
  *      below rides on HER license posture, so the informed yes is hers to
  *      give, and whether counsel reads it first is her call, not a gate.
- *   4. STRIPE_SECRET_KEY and PAY_NOTIFY_TO are set in the Vercel dashboard.
+ *   4. STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET, PAY_LINK_SECRET and
+ *      PAY_NOTIFY_TO are set in the Vercel dashboard.
  *
- * There are no customer accounts and no stored balances BY DESIGN: the
- * customer types what their bill says, because the bill is the ledger and
- * the site is only the till.
+ * RESHAPED SEPTEMBER 2, 2026. The first version had the customer type the
+ * amount and policy number off their bill, because the site had no way to
+ * know either. Now it does: the workroom's BOOK holds each customer's
+ * policies, installment amounts and due dates (entered by her, or imported
+ * from her agency system), and the customer gets a signed pay link that
+ * opens their bill already filled in, or finds it with a policy number and
+ * ZIP. The amount ALWAYS comes from the book, never from the customer.
+ * There are still no customer accounts and no passwords, by design.
  */
 export const payments = {
-  agencyBillCheckout: false,
-  /** Above this, the form says call us instead. Typos add zeros. */
+  checkoutEnabled: false,
+  /** Above this, the book refuses the installment and the page says call us. */
   maxOnlineCents: 2_500_000,
+  /** How long a pay link in an email keeps working. A bill sits in an inbox
+   *  for weeks, and the link only ever shows one bill. */
+  payLinkDays: 120,
+  /** When the nightly job emails a reminder: days before the due date,
+   *  0 being the day itself. Each fires once per due date. */
+  reminderDaysBefore: [7, 0] as readonly number[],
   /**
    * The flat online-channel fee, itemized as its own Stripe line item so it
    * is never inside premium, charged by the payment technology provider

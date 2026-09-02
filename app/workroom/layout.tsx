@@ -70,7 +70,8 @@ export default function WorkroomLayout({ children }: { children: React.ReactNode
         .wr-fine { font-size: 13.5px; margin-top: 20px; }
         .wr-error { color: #8c2b21; font-weight: 600; font-size: 15px; margin-top: 12px; }
         .wr-saved { color: var(--gold-ink); font-weight: 600; font-size: 14px; }
-        .wr-back { font-size: 14px; color: var(--slate); }
+        /* inline-block with vertical padding so the link measures 24px tall. */
+        .wr-back { display: inline-block; font-size: 14px; color: var(--slate); padding: 6px 0; }
         .wr-warn { background: var(--sand); color: var(--navy); border-radius: var(--radius); padding: 16px 18px; font-size: 14.5px; line-height: 1.6; margin-bottom: 22px; }
 
         /* ── filters ── */
@@ -123,6 +124,30 @@ export default function WorkroomLayout({ children }: { children: React.ReactNode
         .wr-help { font-size: 13.5px; color: var(--slate); margin-top: 6px; line-height: 1.5; }
         .wr-field-error { font-size: 13.5px; color: #8c2b21; font-weight: 600; margin-top: 6px; line-height: 1.5; }
         .wr-save-sticky { position: sticky; bottom: 0; background: var(--paper); padding: 14px 0 16px; margin-top: 30px; border-top: 1px solid var(--line); }
+
+        /* ── the book ── */
+        .wr-toolbar { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; margin-bottom: 18px; }
+        .wr-search { flex: 1 1 260px; }
+        .wr-search input { width: 100%; font: inherit; font-size: 16px; padding: 11px 14px; border: 1px solid var(--line); border-radius: 999px; background: var(--paper-2); color: var(--navy); }
+        .wr-search input:focus { border-color: var(--navy); }
+        .wr-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+        .wr-link { font: inherit; font-size: 14px; font-weight: 600; color: var(--gold-ink); background: none; border: 0; cursor: pointer; padding: 9px 2px; text-decoration: underline; text-underline-offset: 3px; }
+        .wr-link:hover { color: var(--navy); }
+        .wr-panel { background: var(--paper-2); border: 1px solid var(--line); border-radius: var(--radius); padding: 20px 20px 18px; margin-bottom: 18px; }
+        .wr-panel .wr-save-row { margin-top: 18px; }
+        .wr-field select, .wr-field input[type="date"], .wr-field input[type="file"] { width: 100%; font: inherit; font-size: 16px; padding: 11px 14px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--paper-2); color: var(--navy); }
+        .wr-field select:focus, .wr-field input[type="date"]:focus { border-color: var(--navy); }
+        .wr-fieldset { border: 0; padding: 0; margin: 0; }
+        .wr-fieldset legend { font-weight: 600; font-size: 15px; color: var(--navy); margin-bottom: 8px; padding: 0; }
+        .wr-radio { display: flex; gap: 10px; align-items: center; font-size: 15px; color: var(--navy); padding: 6px 0; }
+        .wr-radio input { width: 24px; height: 24px; accent-color: var(--navy); flex-shrink: 0; }
+        .wr-pol { padding: 16px 18px; }
+        .wr-pol-head { display: flex; justify-content: space-between; gap: 12px; align-items: flex-start; flex-wrap: wrap; }
+        .wr-pol-chips { display: flex; gap: 6px; flex-wrap: wrap; }
+        .wr-actions { display: flex; gap: 8px 14px; align-items: center; flex-wrap: wrap; margin-top: 14px; }
+        .wr-code { font-family: var(--font-mono), ui-monospace, monospace; font-size: 12.5px; line-height: 1.5; background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius); padding: 12px 14px; overflow-x: auto; margin: 12px 0; color: var(--navy); }
+        .wr-errors { margin: 8px 0 0; padding-left: 20px; font-size: 14px; color: #8c2b21; line-height: 1.6; }
+        .wr-panel code { font-family: var(--font-mono), ui-monospace, monospace; font-size: 13px; }
 
         /* ── gate, buttons, empty ── */
         .wr-gate { max-width: 380px; margin: 40px auto; }

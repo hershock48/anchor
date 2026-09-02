@@ -51,6 +51,25 @@ export default async function Privacy() {
             write get deleted on a schedule; the exact one goes here once the agency sets it.
           </p>
 
+          <h2>Paying your bill</h2>
+          <p>
+            To show you your bill, the agency keeps a list of its own customers and policies:
+            your name, phone, email and ZIP, your carrier and policy number, the installment
+            amount and its due date. That is the same information printed on the bill itself,
+            entered by the agency, and it lives in the same private list as quote requests.
+          </p>
+          <p>
+            <strong>Your card number never touches this site.</strong> Payment is taken on
+            Stripe&rsquo;s own secure page, under the agency&rsquo;s name. What comes back to
+            us is a record that a payment happened: the amount, the date, which policy it was
+            for and Stripe&rsquo;s reference for it. The pay link in an email opens only that
+            one bill, expires on its own, and can be turned off by the agency at any time.
+          </p>
+          <p>
+            Reminder emails go out before a due date. Replying to one reaches the agency
+            directly. There is no marketing list.
+          </p>
+
           <h2>Calls and texts</h2>
           <p>
             The form asks you to agree that we may call or text you about your request. That
