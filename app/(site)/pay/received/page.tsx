@@ -94,11 +94,18 @@ export default async function PayReceived({ searchParams }: { searchParams: Prom
           Close to a cancellation date? Please {callUs} so we can confirm it landed before
           anything lapses.
         </p>
-        <p style={{ marginTop: 22 }}>
-          While the policy is in front of you: if you have never priced{" "}
-          <a href="/coverage/umbrella">an umbrella</a>, ask the next time you call. It is the
-          coverage most people are underweight on, and it costs less than people guess.
-        </p>
+        {recorded && recorded.interest.length > 0 ? (
+          <p style={{ marginTop: 22 }}>
+            <strong>You asked about {recorded.interest.join(" and ")}.</strong> We will call you
+            with a price. Nothing changes on the policy until you say so.
+          </p>
+        ) : (
+          <p style={{ marginTop: 22 }}>
+            While the policy is in front of you: if you have never priced{" "}
+            <a href="/coverage/umbrella">an umbrella</a>, ask the next time you call. It is the
+            coverage most people are underweight on, and it costs less than people guess.
+          </p>
+        )}
       </div>
     </section>
   );

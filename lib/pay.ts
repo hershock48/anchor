@@ -2,7 +2,8 @@ import "server-only";
 
 import { site, payments, isPlaceholder } from "@/lib/site";
 import { getFacts } from "@/lib/content";
-import { getStore } from "@/lib/workroom/store";
+import { getStore, newId, type Lead } from "@/lib/workroom/store";
+import { addOnNames } from "@/lib/addons";
 import {
   AGENCY,
   addMonths,
@@ -107,6 +108,9 @@ export async function createCheckout(opts: {
   customer: Customer;
   autopay: boolean;
   origin: string;
+  /** Add-on keys the customer ticked on the bill page; ride the session so
+   *  the thank-you page can say "we will call you about…". */
+  interest?: string[];
 }): Promise<string> {
   const { policy, customer, autopay, origin } = opts;
   const cadence = cadenceOf(policy.cadence);
@@ -162,6 +166,7 @@ export async function createCheckout(opts: {
     payer_name: customer.name,
     policy: policy.policyNumber,
     pay_to: policy.payTo,
+    interest: (opts.interest ?? []).join(",").slice(0, 400),
   };
   for (const [k, v] of Object.entries(meta)) body.set(`metadata[${k}]`, v);
   if (recurring) {
@@ -215,6 +220,52 @@ export async function createCheckout(opts: {
   return session.url;
 }
 
+/* ------------------------------ interest ------------------------------ */
+
+/**
+ * The customer ticked an add-on on the bill page. Nothing is sold: it
+ * becomes a LEAD in the workroom queue, with the agency emailed, and the
+ * agent calls with a price. Returns the names that were actually offered
+ * for this line, so a hand-crafted key records nothing.
+ */
+export async function recordInterest(policy: Policy, customer: Customer, keys: string[], how: "checkout" | "ask"): Promise<string[]> {
+  const names = addOnNames(policy.line, keys);
+  if (!names.length) return [];
+  const now = Date.now();
+  const what = policy.label || `policy ${policy.policyNumber}`;
+  const lead: Lead = {
+    id: newId("ld"),
+    createdAt: now,
+    updatedAt: now,
+    status: "new",
+    line: policy.line,
+    name: customer.name,
+    phone: customer.phone,
+    email: customer.email,
+    zip: customer.zip,
+    about: `Asked about ${names.join(", ")} while ${how === "checkout" ? "paying" : "looking at"} ${what} (${policy.carrier} ${policy.policyNumber}).`,
+    address: "",
+    currentCarrier: policy.carrier,
+    renewal: "",
+    notes: "",
+    consent: "asked from their bill",
+    workNotes: "",
+  };
+  try {
+    await getStore().createLead(lead);
+  } catch (err) {
+    console.error("[pay] interest could not be stored", err);
+  }
+  console.log("[pay] interest", JSON.stringify({ customer: customer.id, policy: policy.id, names }));
+  await notifyAgency(
+    `${customer.name} asked about ${names.join(", ")}`,
+    `${customer.name} ticked ${names.join(", ")} on their bill for ${what} (${policy.carrier} ${policy.policyNumber}).\n` +
+      `Phone: ${customer.phone || "(none)"}\nEmail: ${customer.email || "(none)"}\n\n` +
+      `It is in the workroom's leads queue as a new lead. Call with a price; nothing has been added to the policy.`
+  );
+  return names;
+}
+
 /* ------------------------------ recording ------------------------------ */
 
 function rollDue(policy: Policy, forDue: string | null): void {
@@ -253,14 +304,16 @@ export async function recordSession(
   via: Payment["recordedVia"],
   /** The connected account the event came from; undefined means the env's. */
   account?: string
-): Promise<{ payment: Payment | null; policy: Policy | null; autopayStarted: boolean }> {
+): Promise<{ payment: Payment | null; policy: Policy | null; autopayStarted: boolean; interest: string[] }> {
   const store = getStore();
-  if (!/^cs_[A-Za-z0-9_]+$/.test(sessionId)) return { payment: null, policy: null, autopayStarted: false };
+  const none = { payment: null, policy: null, autopayStarted: false, interest: [] as string[] };
+  if (!/^cs_[A-Za-z0-9_]+$/.test(sessionId)) return none;
   const session = await stripe<StripeSession>(`/v1/checkout/sessions/${sessionId}`, account ? { account } : {});
   const policyId = session.metadata?.policyId;
-  if (!policyId) return { payment: null, policy: null, autopayStarted: false };
+  if (!policyId) return none;
   const policy = await store.policies.get(policyId);
-  if (!policy) return { payment: null, policy: null, autopayStarted: false };
+  if (!policy) return none;
+  const interest = addOnNames(policy.line, (session.metadata?.interest ?? "").split(",").filter(Boolean));
 
   if (session.mode === "subscription") {
     // Autopay switched on. The money for each cycle arrives as invoice.paid
@@ -274,12 +327,12 @@ export async function recordSession(
       await store.policies.put(policy);
       changed = true;
     }
-    return { payment: null, policy, autopayStarted: changed || !!subId };
+    return { payment: null, policy, autopayStarted: changed || !!subId, interest };
   }
 
-  if (session.payment_status !== "paid") return { payment: null, policy, autopayStarted: false };
+  if (session.payment_status !== "paid") return { payment: null, policy, autopayStarted: false, interest };
   const existing = await store.payments.get(session.id);
-  if (existing) return { payment: existing, policy, autopayStarted: false };
+  if (existing) return { payment: existing, policy, autopayStarted: false, interest };
 
   const total = session.amount_total ?? 0;
   const fee = payments.convenienceFeeCents > 0 && total > policy.amountCents ? payments.convenienceFeeCents : 0;
@@ -299,7 +352,7 @@ export async function recordSession(
     stripe: { sessionId: session.id, paymentIntentId: session.payment_intent ?? undefined },
   };
   await saveRecorded(payment, policy);
-  return { payment, policy, autopayStarted: false };
+  return { payment, policy, autopayStarted: false, interest };
 }
 
 /** Record a paid subscription invoice (one autopay cycle). Webhook only. */

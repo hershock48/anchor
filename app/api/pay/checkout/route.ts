@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { getStore } from "@/lib/workroom/store";
 import { readPayLink, payLinkPath } from "@/lib/paylink";
-import { checkoutLive, createCheckout, payRoute } from "@/lib/pay";
+import { checkoutLive, createCheckout, payRoute, recordInterest } from "@/lib/pay";
 import { cadenceOf, money } from "@/lib/workroom/book";
 
 /**
@@ -41,12 +41,17 @@ export async function POST(req: Request) {
   if (payRoute(policy).kind !== "here" || policy.autopay) return back(bill);
 
   const autopay = mode === "autopay" && !!cadenceOf(policy.cadence)?.stripe;
+  // Add-ons ticked on the bill become a lead NOW, before Stripe, so a closed
+  // tab at the card form does not lose the ask; the names also ride the
+  // session so the thank-you page can repeat them.
+  const keys = form.getAll("interest").filter((v): v is string => typeof v === "string").slice(0, 8);
+  const interest = keys.length ? await recordInterest(policy, customer, keys, "checkout") : [];
   console.log(
     "[pay] checkout",
-    JSON.stringify({ at: new Date().toISOString(), policyId: policy.id, amount: money(policy.amountCents), autopay, payTo: policy.payTo })
+    JSON.stringify({ at: new Date().toISOString(), policyId: policy.id, amount: money(policy.amountCents), autopay, payTo: policy.payTo, interest })
   );
   try {
-    const url = await createCheckout({ policy, customer, autopay, origin: new URL(req.url).origin });
+    const url = await createCheckout({ policy, customer, autopay, origin: new URL(req.url).origin, interest: keys });
     return NextResponse.redirect(url, 303);
   } catch (err) {
     console.error("[pay] stripe refused or was unreachable:", err);

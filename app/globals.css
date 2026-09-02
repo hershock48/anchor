@@ -729,6 +729,29 @@ section {
 .qf-consent input { margin-top: 4px; width: 20px; height: 20px; flex-shrink: 0; accent-color: var(--navy); cursor: pointer; }
 .qf-consent label { font-size: 14px; line-height: 1.55; color: var(--slate); cursor: pointer; }
 .qf-actions { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; margin-top: 8px; }
+
+/* The add-on strip on a bill: the chocolates by the register. */
+.addons { border: 1px solid var(--line); border-radius: var(--radius); padding: 16px 18px 6px; margin: 6px 0 22px; background: var(--paper-2); }
+.addons legend { font-family: var(--font-display), sans-serif; font-size: 18px; font-weight: 700; letter-spacing: -0.01em; padding: 0 6px; color: var(--navy); }
+.addons-note { font-size: 14px; color: var(--slate); line-height: 1.55; margin: 2px 0 10px; }
+.addons-list { list-style: none; margin: 0; padding: 0; }
+/* The plus sits absolutely at the row's right, so the closed <details> takes
+   no height and the explanation opens underneath the label at full width. */
+.addon { position: relative; padding: 10px 46px 10px 0; border-top: 1px solid var(--line); }
+.addon-pick { display: flex; gap: 12px; align-items: flex-start; cursor: pointer; font-size: 15px; line-height: 1.45; color: var(--navy); }
+.addon-pick input { margin-top: 3px; width: 20px; height: 20px; flex-shrink: 0; accent-color: var(--navy); cursor: pointer; }
+.addon-short { color: var(--slate); }
+.addon-more summary { list-style: none; cursor: pointer; position: absolute; right: 0; top: 8px; width: 32px; height: 32px; border-radius: 999px; border: 1px solid var(--line); background: var(--paper); display: grid; place-items: center; }
+.addon-more summary::-webkit-details-marker { display: none; }
+.addon-more summary:hover, .addon-more summary:focus-visible { border-color: var(--navy); }
+.addon-plus { position: relative; width: 12px; height: 12px; display: block; }
+.addon-plus::before, .addon-plus::after { content: ""; position: absolute; background: var(--navy); border-radius: 1px; }
+.addon-plus::before { left: 0; right: 0; top: 5px; height: 2px; }
+.addon-plus::after { top: 0; bottom: 0; left: 5px; width: 2px; transition: transform .18s ease; }
+.addon-more[open] .addon-plus::after { transform: scaleY(0); }
+.addon-more p { font-size: 14px; color: var(--slate); line-height: 1.55; margin: 8px 0 2px; padding-left: 32px; }
+.addon-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+@media (prefers-reduced-motion: reduce) { .addon-plus::after { transition: none; } }
 .qf-note, .qf-optnote { font-size: 14px; color: var(--slate); max-width: 40ch; }
 .qf-optnote { margin: -10px 0 18px; max-width: 60ch; }
 .qf-nodob { font-size: 14px; color: var(--slate); background: var(--sand); padding: 14px 16px; border-radius: 10px; margin-bottom: 20px; }

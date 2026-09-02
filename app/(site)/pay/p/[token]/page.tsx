@@ -5,6 +5,7 @@ import { readPayLink } from "@/lib/paylink";
 import { getStore } from "@/lib/workroom/store";
 import { AGENCY, cadenceOf, dueLabel, money } from "@/lib/workroom/book";
 import { checkoutMode, payRoute, today } from "@/lib/pay";
+import AddOnStrip from "@/components/AddOnStrip";
 
 /**
  * The customer's bill, prefilled. This is the page the pay link opens and
@@ -42,10 +43,10 @@ export default async function PayLinkPage({
   searchParams,
 }: {
   params: Promise<{ token: string }>;
-  searchParams: Promise<{ problem?: string }>;
+  searchParams: Promise<{ problem?: string; asked?: string }>;
 }) {
   const { token } = await params;
-  const { problem } = await searchParams;
+  const { problem, asked } = await searchParams;
   const facts = await getFacts();
   const havePhone = !isPlaceholder(facts.contact.phone);
   const callUs = havePhone ? (
@@ -76,7 +77,13 @@ export default async function PayLinkPage({
   const route = payRoute(policy);
   const cadence = cadenceOf(policy.cadence);
   const canAutopay = !!cadence?.stripe;
-  const due = policy.nextDue ? dueLabel(policy.nextDue, today()) : null;
+  const now = today();
+  const due = policy.nextDue ? dueLabel(policy.nextDue, now) : null;
+  // A bill due today or overdue charges now, on either choice. A bill due
+  // later charges now if paid once, and on the due date if autopay is
+  // chosen (Stripe's "$0.00 due today, then … starting …"). The labels say
+  // which, so the Stripe page never contradicts this one.
+  const dueLater = !!policy.nextDue && policy.nextDue > now;
   const fee = payments.convenienceFeeCents;
   const mode = checkoutMode();
 
@@ -156,11 +163,15 @@ export default async function PayLinkPage({
                     </legend>
                     <div className="qf-consent">
                       <input type="radio" id="pay-once" name="mode" value="once" defaultChecked />
-                      <label htmlFor="pay-once">Just this one.</label>
+                      <label htmlFor="pay-once">Just this one: {money(policy.amountCents)} now.</label>
                     </div>
                     <div className="qf-consent">
                       <input type="radio" id="pay-auto" name="mode" value="autopay" />
-                      <label htmlFor="pay-auto">Autopay: every installment, on its due date.</label>
+                      <label htmlFor="pay-auto">
+                        {dueLater
+                          ? `Autopay: ${money(policy.amountCents)} on ${due}, then every installment on its due date. Nothing today.`
+                          : `Autopay: ${money(policy.amountCents)} now, then every installment on its due date.`}
+                      </label>
                     </div>
                   </fieldset>
                 ) : (
@@ -171,6 +182,7 @@ export default async function PayLinkPage({
                   // not defended). Stripe itemizes it; nothing else repeats it.
                   <p className="qf-optnote">A {money(fee)} online payment fee is added at checkout.</p>
                 )}
+                <AddOnStrip line={policy.line} />
                 <div className="qf-actions">
                   <button className="btn" type="submit">Continue to payment</button>
                   <p className="qf-note">
@@ -211,6 +223,26 @@ export default async function PayLinkPage({
               <h2>Nothing to pay right now</h2>
               <p>If you think that is wrong, {callUs} and we will look it up together.</p>
             </div>
+          )}
+
+          {/* A bill paid somewhere else (or autopay already on) has no checkout to
+              carry the add-on ticks, so the strip gets its own small form. */}
+          {(policy.autopay || route.kind !== "here" || mode === "off") && route.kind !== "nothing" && (
+            <form className="qf" method="post" action="/api/pay/interest" style={{ marginTop: 16 }}>
+              <input type="hidden" name="token" value={token} />
+              {asked ? (
+                <p className="qf-optnote" role="status">
+                  <strong>Got it.</strong> We will call you about {asked === "1" ? "that" : "those"}.
+                </p>
+              ) : (
+                <>
+                  <AddOnStrip line={policy.line} />
+                  <div className="qf-actions">
+                    <button className="btn ghost" type="submit">Ask us about these</button>
+                  </div>
+                </>
+              )}
+            </form>
           )}
 
           <p className="fineprint">
