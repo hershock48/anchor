@@ -16,7 +16,9 @@ export default function AddOnStrip({ line }: { line: string }) {
   if (items.length === 0) return null;
   return (
     <fieldset className="addons">
-      <legend>Worth asking about</legend>
+      <legend>
+        Worth asking about <span className="addons-opt">optional</span>
+      </legend>
       <p className="addons-note">
         Small additions that change a bad day. <strong>Ticking a box adds nothing to your
         policy.</strong> It asks us to call you with a price, and you decide then.

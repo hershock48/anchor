@@ -230,7 +230,7 @@ export default async function PayLinkPage({
           {(policy.autopay || route.kind !== "here" || mode === "off") && route.kind !== "nothing" && (
             <form className="qf" method="post" action="/api/pay/interest" style={{ marginTop: 16 }}>
               <input type="hidden" name="token" value={token} />
-              {asked ? (
+              {asked && asked !== "0" ? (
                 <p className="qf-optnote" role="status">
                   <strong>Got it.</strong> We will call you about {asked === "1" ? "that" : "those"}.
                 </p>
@@ -238,8 +238,8 @@ export default async function PayLinkPage({
                 <>
                   <AddOnStrip line={policy.line} />
                   <div className="qf-actions">
-                    <button className="btn ghost" type="submit">Ask us about these</button>
-                    <p className="qf-note">We call with a price. Nothing changes on the policy until you say so.</p>
+                    <button className="btn ghost" type="submit">Ask us</button>
+                    <p className="qf-note">Tick what you are curious about. We call with a price; nothing changes until you say so.</p>
                   </div>
                 </>
               )}

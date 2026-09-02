@@ -28,6 +28,8 @@ export async function POST(req: Request) {
   const policy = await store.policies.get(read.policyId);
   const customer = policy ? await store.customers.get(policy.customerId) : null;
   if (!policy || !customer) return back("/pay");
+  // Nothing ticked is not a request: back to the bill, no message.
+  if (keys.length === 0) return back(payLinkPath(token));
   const names = await recordInterest(policy, customer, keys, "ask");
-  return back(`${payLinkPath(token)}?asked=${names.length}`);
+  return back(names.length ? `${payLinkPath(token)}?asked=${names.length}` : payLinkPath(token));
 }
