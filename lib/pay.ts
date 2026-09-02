@@ -137,10 +137,10 @@ export async function createCheckout(opts: {
       body.set("line_items[1][price_data][recurring][interval]", recurring.interval);
       body.set("line_items[1][price_data][recurring][interval_count]", String(recurring.count));
     }
-    body.set(
-      "custom_text[submit][message]",
-      `The ${money(payments.convenienceFeeCents)} online payment fee is charged by Glazed Web, the payment technology provider. Paying by check or phone carries no fee.`
-    );
+    // The one sentence the fee posture rests on (charged by the technology
+    // provider, not the producer). Kept short; the line item already says
+    // the amount, and the bill page already said it was coming.
+    body.set("custom_text[submit][message]", "The online payment fee is charged by Glazed Web, the payment technology provider.");
   }
   const meta: Record<string, string> = {
     policyId: policy.id,

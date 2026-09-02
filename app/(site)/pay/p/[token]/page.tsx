@@ -160,20 +160,16 @@ export default async function PayLinkPage({
                     </div>
                     <div className="qf-consent">
                       <input type="radio" id="pay-auto" name="mode" value="autopay" />
-                      <label htmlFor="pay-auto">
-                        This one and every one after it, automatically on the due date. You get
-                        a receipt each time, and one call or email stops it.
-                      </label>
+                      <label htmlFor="pay-auto">Autopay: every installment, on its due date.</label>
                     </div>
                   </fieldset>
                 ) : (
                   <input type="hidden" name="mode" value="once" />
                 )}
                 {fee > 0 && (
-                  <p className="qf-optnote">
-                    Online card payments carry a flat {money(fee)} payment fee, itemized at
-                    checkout. Paying by check or phone carries none.
-                  </p>
+                  // Said once, plainly, before the customer continues (fees stated,
+                  // not defended). Stripe itemizes it; nothing else repeats it.
+                  <p className="qf-optnote">A {money(fee)} online payment fee is added at checkout.</p>
                 )}
                 <div className="qf-actions">
                   <button className="btn" type="submit">Continue to payment</button>

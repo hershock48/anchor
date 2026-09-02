@@ -110,13 +110,6 @@ export default async function Pay() {
               {Math.round(payments.maxOnlineCents / 100).toLocaleString()}, do it with a person:{" "}
               {callUs}.
             </p>
-            {payments.convenienceFeeCents > 0 && cardsOn && (
-              <p className="side-fine">
-                Online card payments carry a flat{" "}
-                {(payments.convenienceFeeCents / 100).toLocaleString("en-US", { style: "currency", currency: "USD" })}{" "}
-                payment fee, itemized at checkout. Check and phone payments have none.
-              </p>
-            )}
           </aside>
         </div>
       </section>
