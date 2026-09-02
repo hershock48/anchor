@@ -492,6 +492,30 @@ webhook verifies Stripe's signature on the raw body first**; an unset
 `STRIPE_WEBHOOK_SECRET` answers 503 so Stripe keeps retrying, which is the
 visible failure we want.
 
+**The add-on strip is the upsell, and nothing on it is sold.** Devine's
+cart keeps three small things by the register; the insurance version
+(`lib/addons.ts`, `components/AddOnStrip.tsx`) is the endorsements that
+cost little and matter a lot for the policy's line (water backup, rental
+car, roadside, cyber) plus the cross-sell pairs the client curated on each
+line in `lib/site.ts`, at most four, with the client's pairs keeping their
+slots. Each has a plus that opens two plain sentences (a native
+`<details>`, so it works with scripts off) and a box that means "ask us".
+A tick becomes a LEAD in the workroom queue with the agency emailed, made
+BEFORE the customer reaches Stripe so a closed tab loses nothing, and the
+names ride the session so the thank-you page repeats them. A bill paid at
+the carrier gets the same strip with its own "Ask us about these" button.
+Prompts, never advice, and never a price: an endorsement is written by the
+agent and priced by the carrier, and the site is built not to know what
+anyone's policy says.
+
+**The bill says what each choice charges.** "Just this one: $142.10 now."
+A bill due later reads "Autopay: $142.10 on Oct 12, then every installment
+on its due date. Nothing today," and a bill due today or overdue reads
+"Autopay: $142.10 now, then every installment on its due date," because
+that is exactly what Stripe will then show. Kevin's first walk hit the gap:
+the page said $12.34 due, the Stripe page said $0.00 today, and both were
+right for a bill due in twenty days.
+
 **The reminders are the automation.** A Vercel cron (`vercel.json`, 14:00
 UTC daily, signed with `CRON_SECRET`) emails "your payment is due" seven
 days out and on the day, once each per due date, to active policies not on
