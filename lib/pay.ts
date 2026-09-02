@@ -233,6 +233,24 @@ export async function recordInterest(policy: Policy, customer: Customer, keys: s
   if (!names.length) return [];
   const now = Date.now();
   const what = policy.label || `policy ${policy.policyNumber}`;
+  // The same person asking about the same things again within a day (a
+  // retried checkout, a second look at the bill) is one ask, not two leads
+  // for her to call about twice. Kevin's first walk produced the pair.
+  const store = getStore();
+  try {
+    const recent = (await store.listLeads(200)).find(
+      (l) =>
+        l.status === "new" &&
+        now - l.createdAt < 24 * 3600 * 1000 &&
+        l.email === customer.email &&
+        l.name === customer.name &&
+        l.about.includes(names.join(", ")) &&
+        l.about.includes(policy.policyNumber)
+    );
+    if (recent) return names;
+  } catch {
+    // A failed read is not a reason to drop the ask; fall through and store it.
+  }
   const lead: Lead = {
     id: newId("ld"),
     createdAt: now,
@@ -252,7 +270,7 @@ export async function recordInterest(policy: Policy, customer: Customer, keys: s
     workNotes: "",
   };
   try {
-    await getStore().createLead(lead);
+    await store.createLead(lead);
   } catch (err) {
     console.error("[pay] interest could not be stored", err);
   }
