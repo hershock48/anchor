@@ -93,9 +93,13 @@ const feeName = "Online payment fee";
 
 /**
  * Build the Stripe Checkout Session for a book entry and return its URL.
- * Autopay is a subscription on the policy's cadence; when the next due date
- * is more than two days out, the subscription starts THEN via trial_end, so
- * turning on autopay in February does not charge February twice.
+ * Autopay is a subscription on the policy's cadence, with its billing cycle
+ * ANCHORED to the next due date and no proration, so nothing is charged
+ * today and the first full installment lands on the due date. It was a
+ * trial ending on the due date first; Stripe presents any trial as "40 days
+ * free" and "Try premium…", which is the wrong story for an insurance
+ * installment, and Kevin saw it on the first autopay walk (September 2,
+ * 2026). The anchor says the same thing in Stripe's plain wording.
  */
 export async function createCheckout(opts: {
   policy: Policy;
@@ -106,7 +110,10 @@ export async function createCheckout(opts: {
   const { policy, customer, autopay, origin } = opts;
   const cadence = cadenceOf(policy.cadence);
   const recurring = autopay && cadence?.stripe ? cadence.stripe : null;
-  const paidTo = policy.payTo === AGENCY ? "" : `${policy.payTo} `;
+  // "Premium: the Civic, policy PRG-1234" or "Progressive premium: …". Stripe
+  // puts this name in its own sentences ("Subscribe to …"), so it reads as a
+  // noun phrase and starts with a capital.
+  const paidTo = policy.payTo === AGENCY ? "Premium" : `${policy.payTo} premium`;
   const what = policy.label ? `${policy.label}, ` : "";
 
   const body = new URLSearchParams();
@@ -118,7 +125,7 @@ export async function createCheckout(opts: {
   body.set("line_items[0][price_data][unit_amount]", String(policy.amountCents));
   body.set(
     "line_items[0][price_data][product_data][name]",
-    `${paidTo}premium, ${what}policy ${policy.policyNumber}${recurring ? " (autopay)" : ""}`
+    `${paidTo}: ${what}policy ${policy.policyNumber}${recurring ? " (autopay)" : ""}`
   );
   if (recurring) {
     body.set("line_items[0][price_data][recurring][interval]", recurring.interval);
@@ -153,11 +160,16 @@ export async function createCheckout(opts: {
   for (const [k, v] of Object.entries(meta)) body.set(`metadata[${k}]`, v);
   if (recurring) {
     for (const [k, v] of Object.entries(meta)) body.set(`subscription_data[metadata][${k}]`, v);
-    // Start on the due date when it is safely in the future (Stripe wants a
-    // trial end at least 48 hours out); otherwise the first charge is now.
+    // Anchor the cycle to the due date when it is in the future, with no
+    // proration, so today's charge is $0 and the first installment is the
+    // full amount on the due date. A due date that is today or past means
+    // the first charge is now and the cycle runs from today.
     if (policy.nextDue) {
       const dueTs = Math.floor(Date.parse(policy.nextDue + "T12:00:00-05:00") / 1000);
-      if (dueTs > Date.now() / 1000 + 49 * 3600) body.set("subscription_data[trial_end]", String(dueTs));
+      if (dueTs > Date.now() / 1000 + 3600) {
+        body.set("subscription_data[billing_cycle_anchor]", String(dueTs));
+        body.set("subscription_data[proration_behavior]", "none");
+      }
     }
   }
   if (customer.email.includes("@")) body.set("customer_email", customer.email);

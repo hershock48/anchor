@@ -462,9 +462,13 @@ block framing, and a Progressive password box on an Anchor page is what a
 phishing page looks like.
 
 **Autopay** is a Stripe subscription on the policy's own cadence (monthly,
-quarterly, every six months, yearly). When the due date is more than two
-days out, the subscription starts on the due date (Stripe's `trial_end`),
-so turning on autopay in February does not charge February twice. Each
+quarterly, every six months, yearly). Its billing cycle is anchored to the
+next due date with no proration, so nothing is charged today and the first
+full installment lands on the due date. **Not a trial:** the first version
+used `trial_end`, and Stripe showed the customer "40 days free" and "Try
+premium…", which is the wrong story for an insurance installment; Kevin saw
+it on the first autopay walk. `billing_cycle_anchor` says the same thing in
+Stripe's plain wording. Each
 cycle arrives as `invoice.paid` and is recorded like any payment. Stopping
 it is a call or email: the workroom's "Stop autopay" cancels the
 subscription, the one thing behind the gate that reaches into Stripe, and
