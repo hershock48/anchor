@@ -239,6 +239,7 @@ export default async function PayLinkPage({
                   <AddOnStrip line={policy.line} />
                   <div className="qf-actions">
                     <button className="btn ghost" type="submit">Ask us about these</button>
+                    <p className="qf-note">We call with a price. Nothing changes on the policy until you say so.</p>
                   </div>
                 </>
               )}

@@ -10,13 +10,19 @@ import { lines } from "@/lib/site";
  * shop. A customer paying a bill is already thinking about the policy, so
  * this is the moment to ask.
  *
- * NOTHING HERE IS SOLD OR ADDED. An endorsement is written by the agent and
- * priced by the carrier, so the customer ticks "ask us" and the interest
- * lands in the workroom's leads queue with the agency emailed; the agent
- * calls. Prompts, never advice: every line says what the coverage IS, never
- * that this customer needs it, and no price is quoted, because the site has
- * no idea what anyone's policy says and is built not to know (README, the
+ * NOTHING HERE IS SOLD OR ADDED, and the strip says so in its own words. An
+ * endorsement is written by the agent and priced by the carrier, so the
+ * customer ticks "ask us" and the interest lands in the workroom's leads
+ * queue with the agency emailed; the agent calls. Prompts, never advice:
+ * every line says what the coverage IS and what it is for, never that this
+ * customer needs it, and no price is quoted, because the site has no idea
+ * what anyone's policy says and is built not to know (README, the
  * cross-sell rule).
+ *
+ * COPY SHAPE, per Kevin (September 2, 2026): the first line is the benefit
+ * in plain words, what the customer gets out of it. The plus opens what it
+ * actually does and when it matters. Nothing about price beyond "usually
+ * small", and only where that is reliably true.
  *
  * Client-safe: no server imports. The cross-line prompts come from the
  * `pairs` the client curated on each line in lib/site.ts, so the two lists
@@ -26,9 +32,9 @@ import { lines } from "@/lib/site";
 export type AddOn = {
   key: string;
   name: string;
-  /** One line, shown closed. */
+  /** The benefit, one line, shown closed. */
   short: string;
-  /** Two plain sentences, shown when the customer opens it. */
+  /** What it does and when it matters, shown when the customer opens it. */
   more: string;
 };
 
@@ -37,100 +43,100 @@ const BY_LINE: Record<string, AddOn[]> = {
     {
       key: "roadside",
       name: "Roadside assistance",
-      short: "Tow, jump, lockout, flat.",
-      more: "Adds roadside help to the policy, so a breakdown is a phone call instead of a search. Usually far less than a motor club membership for the same calls.",
+      short: "A breakdown becomes one phone call.",
+      more: "Adds towing, jump starts, lockouts and flat tires to the policy, on the same number you already call. It usually costs less for the year than a motor club charges, and it is on the card in your wallet.",
     },
     {
       key: "rental",
-      name: "Rental car while yours is in the shop",
-      short: "A car to drive after a covered claim.",
-      more: "Pays for a rental while your car is being repaired after a covered loss. Without it, a two-week repair is two weeks of rides.",
+      name: "Rental car after a claim",
+      short: "You keep driving while yours is in the shop.",
+      more: "After a covered accident, the policy pays for a rental car for the days the repair takes. Without it, a two-week repair is two weeks of asking for rides.",
     },
     {
       key: "glass",
       name: "Full glass",
-      short: "Windshield repair or replacement, no deductible.",
-      more: "Covers glass repair and replacement without your collision deductible applying. Michigan roads in March are why this exists.",
+      short: "A cracked windshield is fixed with no deductible.",
+      more: "Glass repair and replacement without your collision deductible applying, so a rock on I-94 is a phone call instead of a $500 decision. Michigan winters are why this exists.",
     },
     {
       key: "gap",
       name: "Loan or lease payoff",
-      short: "The gap between what you owe and what the car is worth.",
-      more: "If the car is totaled, this pays the difference between its value and what is still owed on the loan or lease. Matters most in the first few years of a new car.",
+      short: "A totaled car does not leave you owing on a car you no longer have.",
+      more: "If the car is totaled, this pays the gap between what it was worth and what you still owe on the loan or lease. Matters most in the first two or three years of a new car, when the loan is ahead of the value.",
     },
   ],
   home: [
     {
       key: "water-backup",
       name: "Water and sewer backup",
-      short: "The flooded basement a standard policy does not cover.",
-      more: "A standard homeowners policy excludes water that backs up through drains or a failed sump pump. This endorsement covers it, and it is the claim we see most often that people assumed they had.",
+      short: "A flooded basement is covered. Without this, it usually is not.",
+      more: "A standard homeowners policy excludes water that backs up through drains or a sump pump that fails. This endorsement covers the cleanup and what was ruined. It is the claim we see most often that people assumed they already had.",
     },
     {
       key: "service-line",
       name: "Service line",
-      short: "The pipes and wires between the street and the house.",
-      more: "Covers the underground water, sewer, power and data lines you own between the property line and the house, which the utility does not. A collapsed sewer lateral is a five-figure dig.",
+      short: "A collapsed sewer or water line to the house is paid for, not dug out of savings.",
+      more: "Covers the underground water, sewer, power and data lines you own between the street and the house. The utility's responsibility stops at the property line, and a sewer lateral replacement is a five-figure dig.",
     },
     {
       key: "equipment",
       name: "Equipment breakdown",
-      short: "Furnace, AC, appliances that fail electrically or mechanically.",
-      more: "Homeowners covers fire and storms, not a compressor that dies. This covers sudden mechanical and electrical breakdown of the systems and appliances in the house.",
+      short: "A furnace or AC that dies is covered like a fire would be.",
+      more: "Homeowners covers fire and storms, not a compressor or a control board that fails. This covers sudden mechanical and electrical breakdown of the systems and appliances in the house, usually for a small amount a year.",
     },
     {
       key: "scheduled",
       name: "Scheduled valuables",
-      short: "The ring, the tools, the collection, above the standard limits.",
-      more: "Standard policies cap jewelry, tools and collections at modest amounts. Scheduling an item covers it for its appraised value, usually with no deductible.",
+      short: "The ring, the tools or the collection are covered for what they are actually worth.",
+      more: "Standard policies cap jewelry, tools and collections at modest amounts. Scheduling an item covers it for its appraised value, usually with no deductible and including loss, not just theft.",
     },
   ],
   renters: [
     {
       key: "replacement-cost",
       name: "Replacement cost on your things",
-      short: "New for old, instead of depreciated value.",
-      more: "Without it, a five-year-old TV pays out as a five-year-old TV. With it, you get what a new one costs.",
+      short: "You get what a new one costs, not what the old one was worth.",
+      more: "Without it, a five-year-old TV pays out as a five-year-old TV. With it, the payout is what it costs to buy one today. A small change to the premium for a big change on the day you need it.",
     },
     {
       key: "scheduled",
       name: "Scheduled valuables",
-      short: "A ring, an instrument, a bike, above the standard limits.",
-      more: "Renters policies cap the expensive single items. Scheduling one covers it for its value, usually with no deductible.",
+      short: "A ring, an instrument or a bike is covered for its full value.",
+      more: "Renters policies cap the expensive single items. Scheduling one covers it for its value, usually with no deductible and including loss, not just theft.",
     },
   ],
   life: [
     {
       key: "waiver",
       name: "Waiver of premium",
-      short: "The policy pays for itself if you are disabled.",
-      more: "If a disability keeps you from working, the premiums are waived and the coverage stays in force. It is the rider that keeps a policy alive exactly when it cannot be replaced.",
+      short: "If you cannot work, the policy keeps itself in force.",
+      more: "If a disability keeps you from working, the premiums are waived and the coverage stays exactly as it was. It is the rider that keeps a policy alive at the moment it could not be replaced.",
     },
     {
       key: "child-rider",
       name: "Child term rider",
       short: "A small amount of coverage on each child, on your policy.",
-      more: "Adds a modest death benefit for each child under one rider, usually convertible to their own policy later without a medical exam.",
+      more: "Adds a modest benefit for each child under one rider, and can usually be converted to their own policy later without a medical exam.",
     },
   ],
   business: [
     {
       key: "hnoa",
       name: "Hired and non-owned auto",
-      short: "Employees running errands in their own cars.",
-      more: "Covers the business when an employee drives their own car, or a rental, on company business. The employee's personal policy does not cover the business.",
+      short: "An employee's fender-bender on a work errand is the business's claim, covered.",
+      more: "Covers the business when an employee drives their own car, or a rental, on company business. The employee's personal policy does not cover the business, and the business is who gets sued.",
     },
     {
       key: "cyber",
       name: "Cyber liability",
-      short: "A breach, a ransomware note, a spoofed invoice.",
-      more: "Covers the costs after a data breach or a ransomware attack, including notifying customers and restoring systems. Small businesses are the usual target because they are the softest.",
+      short: "A ransomware note or a spoofed invoice does not close the business.",
+      more: "Covers the costs after a data breach or a ransomware attack, including notifying customers, restoring systems and the money lost to a fraudulent transfer. Small businesses are the usual target because they are the softest.",
     },
     {
       key: "tools",
       name: "Tools and equipment away from the shop",
-      short: "What is in the truck and on the job site.",
-      more: "Property coverage usually stops at the building. This covers tools and equipment while they are in the truck or on a job.",
+      short: "What is in the truck and on the job site is covered, not just what is in the building.",
+      more: "Property coverage usually stops at the building's door. This covers tools and equipment while they are in the truck, on a job, or stolen from either.",
     },
   ],
   umbrella: [],

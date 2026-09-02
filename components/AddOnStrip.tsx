@@ -16,16 +16,16 @@ export default function AddOnStrip({ line }: { line: string }) {
   if (items.length === 0) return null;
   return (
     <fieldset className="addons">
-      <legend>While the policy is in front of you</legend>
+      <legend>Worth asking about</legend>
       <p className="addons-note">
-        Small things that change a bad day. Tick any and we call you with a price. Nothing is
-        added until you say so.
+        Small additions that change a bad day. <strong>Ticking a box adds nothing to your
+        policy.</strong> It asks us to call you with a price, and you decide then.
       </p>
       <ul className="addons-list">
         {items.map((a) => (
           <li className="addon" key={a.key}>
             <label className="addon-pick">
-              <input type="checkbox" name="interest" value={a.key} />
+              <input type="checkbox" name="interest" value={a.key} aria-label={`Ask us about ${a.name.toLowerCase()}`} />
               <span>
                 <strong>{a.name}</strong>
                 <span className="addon-short"> {a.short}</span>
