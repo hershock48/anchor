@@ -44,7 +44,7 @@ const BY_LINE: Record<string, AddOn[]> = {
       key: "roadside",
       name: "Roadside assistance",
       short: "A breakdown becomes one phone call.",
-      more: "Adds towing, jump starts, lockouts and flat tires to the policy, on the same number you already call. It usually costs less for the year than a motor club charges, and it is on the card in your wallet.",
+      more: "Adds towing, jump starts, lockouts and flat tires to the policy, on the same number you already call. It usually costs less for the year than a motor club charges, and the number to call is on your insurance ID card.",
     },
     {
       key: "rental",
