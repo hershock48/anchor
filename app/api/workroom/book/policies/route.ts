@@ -106,15 +106,24 @@ export async function PUT(req: Request) {
 
 export async function DELETE(req: Request) {
   if (!(await isWorkroomAuthed())) return NextResponse.json({ error: "Locked." }, { status: 401 });
-  const body = (await req.json().catch(() => null)) as { id?: string } | null;
+  const body = (await req.json().catch(() => null)) as { id?: string; purge?: boolean } | null;
   if (!body?.id) return NextResponse.json({ error: "Malformed." }, { status: 400 });
   const store = getStore();
   const existing = await store.policies.get(body.id);
   if (!existing) return NextResponse.json({ error: "No such policy." }, { status: 404 });
   if (existing.autopay) return NextResponse.json({ error: "Stop autopay first." }, { status: 409 });
-  if ((await store.payments.list({ policyId: body.id })).length) {
-    return NextResponse.json({ error: "This policy took payments. Close it instead, so the record keeps its policy." }, { status: 409 });
+  const payments = await store.payments.list({ policyId: body.id });
+  if (payments.length) {
+    // A paid policy closes rather than deletes, so the record keeps its
+    // policy. PURGE is the explicit exception for an entry that should never
+    // have existed (a test, a typo): only a CLOSED policy, only when asked
+    // for by name, and the payment records go with it. Stripe still has the
+    // charges; this is the book's copy.
+    if (!body.purge || existing.status !== "closed") {
+      return NextResponse.json({ error: "This policy took payments. Close it instead, so the record keeps its policy." }, { status: 409 });
+    }
+    for (const p of payments) await store.payments.remove(p.id);
   }
   await store.policies.remove(body.id);
-  return NextResponse.json({ ok: true });
+  return NextResponse.json({ ok: true, purged: payments.length });
 }

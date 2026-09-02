@@ -359,6 +359,17 @@ export default function CustomerDetail({ id }: { id: string }) {
                 {p.status === "closed" && (
                   <div className="wr-actions">
                     <button type="button" className="wr-link" onClick={() => act(p.id, () => call("/api/workroom/book/policies", "PUT", { id: p.id, status: "active" }), "Policy reopened.")}>Reopen</button>
+                    <button
+                      type="button"
+                      className="wr-link"
+                      onClick={() => {
+                        if (window.confirm("Delete this policy for good, including its payment records here? Stripe keeps the charges. Only do this for an entry that should never have existed.")) {
+                          act(p.id, () => call("/api/workroom/book/policies", "DELETE", { id: p.id, purge: true }), "Policy deleted.");
+                        }
+                      }}
+                    >
+                      Delete for good
+                    </button>
                   </div>
                 )}
               </div>
