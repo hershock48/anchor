@@ -4,7 +4,7 @@ import { getFacts } from "@/lib/content";
 import { readPayLink } from "@/lib/paylink";
 import { getStore } from "@/lib/workroom/store";
 import { AGENCY, cadenceOf, dueLabel, money } from "@/lib/workroom/book";
-import { checkoutLive, payRoute, today } from "@/lib/pay";
+import { checkoutMode, payRoute, today } from "@/lib/pay";
 
 /**
  * The customer's bill, prefilled. This is the page the pay link opens and
@@ -78,6 +78,7 @@ export default async function PayLinkPage({
   const canAutopay = !!cadence?.stripe;
   const due = policy.nextDue ? dueLabel(policy.nextDue, today()) : null;
   const fee = payments.convenienceFeeCents;
+  const mode = checkoutMode();
 
   return (
     <>
@@ -132,11 +133,17 @@ export default async function PayLinkPage({
                 {callUs}; it takes a minute.
               </p>
             </div>
-          ) : route.kind === "here" && checkoutLive() ? (
+          ) : route.kind === "here" && mode !== "off" ? (
             <form className="qf" method="post" action="/api/pay/checkout" style={{ marginTop: 16 }}>
               <input type="hidden" name="token" value={token} />
               <fieldset>
                 <legend>Pay {money(policy.amountCents)}</legend>
+                {mode === "test" && (
+                  <p className="qf-optnote" role="status">
+                    <strong>Test mode.</strong> This checkout is connected to a test account; no real
+                    card is charged. Use a Stripe test card such as 4242 4242 4242 4242.
+                  </p>
+                )}
                 {problem === "stripe" && (
                   <p className="qf-optnote" role="alert" style={{ color: "#8c2b21", fontWeight: 600 }}>
                     The payment page did not open. Nothing was charged. Try again, or {callUs}.

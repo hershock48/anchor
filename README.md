@@ -499,9 +499,8 @@ is off and `STRIPE_SECRET_KEY` is unset, so no card can be taken: the bill
 page shows the bill and says "pay it with a person", carrier-billed
 policies still route to the carrier, pay links and the lookup still work
 once `PAY_LINK_SECRET` is set. The flip conditions are on the flag in
-`lib/site.ts`. The Stripe request itself (`createCheckout` in
-`lib/pay.ts`) is the one path not exercised end to end yet, because there
-is no key: run it in Stripe test mode before the flag flips for real.
+`lib/site.ts`. To walk the checkout before the flip, set a test key and a
+test connected account (see the Connect paragraphs below).
 
 **Verified locally, September 2, 2026**, against a production build with
 test secrets: 55 checks covering the gate, customer and policy validation,
@@ -515,11 +514,46 @@ policy rules (paid policies close rather than delete), and the CSV import
 twice (creates, then updates without duplicates, reporting the bad row).
 Nine new routes at 0 violations and no overflow at 320, 390, 768 and 1440.
 
-**Stripe Connect is the product-scale version of the .99** and is not
-built: today the fee settles into her Stripe account and Glazed's share is
-an invoice line. With several agencies, Glazed becomes the platform, each
-agency a connected account, and the fee an application fee taken
-automatically, with branding per connected account.
+**The .99 reaches Glazed through Stripe Connect, wired September 2, 2026.**
+Glazed's Stripe account is the platform and hers is a connected account
+under it (Standard type: her own dashboard, her own payouts into the trust
+account, her own tax reporting). Every call carries a `Stripe-Account`
+header naming her account (`STRIPE_ACCOUNT`), so the charge is hers, under
+her name and statement descriptor, and the fee is an application fee Stripe
+moves to Glazed's balance at the moment of payment. Nothing to invoice, and
+the fee never sits in the producer's account, which is also the cleaner
+compliance posture. One-time payments carry the flat 99 cents
+(`payment_intent_data[application_fee_amount]`); subscriptions can only
+carry a percentage with two decimals, so `feePercentFor` picks the
+percentage of the cycle total that rounds to 99 cents, exact for ordinary
+installments and within a few cents on very large ones, with the variance
+on Glazed's side and never on the customer's charge. Why not the money
+straight into Glazed's account: that would make Glazed the holder of
+insurance premium, fiduciary money in Michigan, and a money transmitter.
+Why not two charges: two authorizations, two receipts, and Stripe's 30
+cent minimum eating a third of the fee. Connect adds no fee of its own on
+Standard accounts.
+
+**Test mode is a first-class state.** A key beginning `sk_test_` opens the
+checkout without the switch in `lib/site.ts`, because a test key cannot
+move real money, and the bill page says "Test mode" with a test card number
+while that is so. That is how the whole flow gets walked on the deployment,
+with a test connected account, before anything is real: swap in the live
+key and the switch is back in charge. The Connect webhook is registered on
+Glazed's platform account with "events on Connected accounts", and each
+event's `account` field is the account the session is fetched from.
+
+**Verified against a Stripe stand-in, September 2, 2026** (`STRIPE_API_BASE`
+pointed at a local mock that records every request): 24 checks covering
+the test key opening the checkout, the session created on her account with
+both lines and the flat fee, the provider named under the button rather
+than in the line, the return page recording once and rolling the due date,
+the subscription with a percentage that rounds to exactly 99 cents and a
+start on the due date, the Connect webhook fetching from the event's
+account, and stop-autopay cancelling on her account. What is NOT yet
+exercised is Stripe itself: the request shapes are Stripe's documented
+ones, and the first run against a real test key and test connected account
+is the remaining step before the flag flips.
 
 **A per-payment tech fee is deliberately NOT wired in, and this was
 researched, not assumed** (September 1, 2026). Michigan DIFS's own

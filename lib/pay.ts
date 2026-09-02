@@ -13,7 +13,17 @@ import {
   type Payment,
   type Policy,
 } from "@/lib/workroom/book";
-import { stripe, stripeKey, invoiceMetadata, invoiceSubscriptionId, type StripeInvoice, type StripeSession } from "@/lib/stripe";
+import {
+  feePercentFor,
+  invoiceMetadata,
+  invoiceSubscriptionId,
+  stripe,
+  stripeAccount,
+  stripeMode,
+  type StripeInvoice,
+  type StripeMode,
+  type StripeSession,
+} from "@/lib/stripe";
 import { mintPayLink, payLinkPath } from "@/lib/paylink";
 
 /**
@@ -55,9 +65,21 @@ export function payRoute(policy: Policy): PayRoute {
   return { kind: "portal", carrier: policy.payTo, url: carrier?.payUrl, phone: carrier?.billingPhone };
 }
 
-/** Whether the site can take a card right now: the flag AND the key. */
+/**
+ * Whether the site can take a card right now. A LIVE key needs the switch
+ * in site.ts as well; a TEST key opens the checkout on its own, because a
+ * test key cannot move real money and walking the whole flow on the
+ * deployment before the flip is the point of test mode. The bill page says
+ * "test mode" while that is the case.
+ */
+export function checkoutMode(): StripeMode {
+  const mode = stripeMode();
+  if (mode === "live" && !payments.checkoutEnabled) return "off";
+  return mode;
+}
+
 export function checkoutLive(): boolean {
-  return payments.checkoutEnabled && stripeKey() !== null;
+  return checkoutMode() !== "off";
 }
 
 /** Today in Manchester, as YYYY-MM-DD. Due dates are calendar dates there. */
@@ -140,6 +162,25 @@ export async function createCheckout(opts: {
   }
   if (customer.email.includes("@")) body.set("customer_email", customer.email);
 
+  // THE .99 GOES TO GLAZED AT THE MOMENT OF PAYMENT. With her account
+  // connected under Glazed's platform, the charge is hers and the fee is an
+  // application fee Stripe moves to the platform balance: nothing to invoice
+  // and the fee never sits in the producer's account. One-time payments take
+  // the flat amount; subscriptions can only take a percentage, so it is the
+  // percentage of the cycle total that rounds to the flat fee (see
+  // feePercentFor). Without a connected account there is no application fee
+  // to set, and the fee simply lands with whoever owns the key.
+  if (payments.convenienceFeeCents > 0 && stripeAccount()) {
+    if (recurring) {
+      body.set(
+        "subscription_data[application_fee_percent]",
+        feePercentFor(policy.amountCents + payments.convenienceFeeCents, payments.convenienceFeeCents)
+      );
+    } else {
+      body.set("payment_intent_data[application_fee_amount]", String(payments.convenienceFeeCents));
+    }
+  }
+
   const session = await stripe<{ url?: string }>("/v1/checkout/sessions", { body });
   if (!session.url) throw new Error("Stripe returned no checkout URL.");
   return session.url;
@@ -178,10 +219,15 @@ async function saveRecorded(payment: Payment, policy: Policy): Promise<void> {
  * id from the URL) and from the webhook (with the event's object). Fetches
  * the session from Stripe either way, so a forged id records nothing.
  */
-export async function recordSession(sessionId: string, via: Payment["recordedVia"]): Promise<{ payment: Payment | null; policy: Policy | null; autopayStarted: boolean }> {
+export async function recordSession(
+  sessionId: string,
+  via: Payment["recordedVia"],
+  /** The connected account the event came from; undefined means the env's. */
+  account?: string
+): Promise<{ payment: Payment | null; policy: Policy | null; autopayStarted: boolean }> {
   const store = getStore();
   if (!/^cs_[A-Za-z0-9_]+$/.test(sessionId)) return { payment: null, policy: null, autopayStarted: false };
-  const session = await stripe<StripeSession>(`/v1/checkout/sessions/${sessionId}`);
+  const session = await stripe<StripeSession>(`/v1/checkout/sessions/${sessionId}`, account ? { account } : {});
   const policyId = session.metadata?.policyId;
   if (!policyId) return { payment: null, policy: null, autopayStarted: false };
   const policy = await store.policies.get(policyId);

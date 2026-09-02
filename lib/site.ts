@@ -249,8 +249,14 @@ export const giving = {
  *      ePayPolicy structure that passes fees to the payer anyway. The fee
  *      below rides on HER license posture, so the informed yes is hers to
  *      give, and whether counsel reads it first is her call, not a gate.
- *   4. STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET, PAY_LINK_SECRET and
+ *   4. STRIPE_SECRET_KEY (Glazed's platform key), STRIPE_ACCOUNT (her
+ *      connected account), STRIPE_WEBHOOK_SECRET, PAY_LINK_SECRET and
  *      PAY_NOTIFY_TO are set in the Vercel dashboard.
+ *
+ * A TEST key ignores this switch on purpose: it cannot move real money, and
+ * the whole flow can be walked on the deployment with Stripe's test cards
+ * before the flip (lib/pay.ts, checkoutMode). Swap in the live key and the
+ * switch is back in charge.
  *
  * RESHAPED SEPTEMBER 2, 2026. The first version had the customer type the
  * amount and policy number off their bill, because the site had no way to

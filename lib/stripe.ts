@@ -3,10 +3,26 @@ import "server-only";
 import { createHmac, timingSafeEqual } from "node:crypto";
 
 /**
- * Stripe over raw REST. No SDK, four calls, one fewer dependency to patch
- * (louies' pattern, kept through the parked checkout). The key is read per
- * call so a deployment without one degrades to "not switched on" rather than
- * crashing at import.
+ * Stripe over raw REST. No SDK, a handful of calls, one fewer dependency to
+ * patch (louies' pattern, kept through the parked checkout). The key is read
+ * per call so a deployment without one degrades to "not switched on" rather
+ * than crashing at import.
+ *
+ * STRIPE CONNECT, since September 2, 2026. The key is GLAZED'S platform key,
+ * and every call carries a `Stripe-Account` header naming HER connected
+ * account (STRIPE_ACCOUNT, an acct_... id), so the charge lands in her
+ * balance under her name and her statement descriptor, while the .99 rides
+ * along as an application fee that Stripe moves to Glazed's balance at the
+ * moment of payment. Nothing to invoice, and the fee never touches the
+ * producer's account. Without STRIPE_ACCOUNT the calls run on the key's own
+ * account and no application fee is set, which is how a single-account
+ * setup (or a first test) still works.
+ *
+ * TEST MODE IS ITS OWN STATE. A key starting sk_test_ can never move real
+ * money, so lib/pay.ts lets a test key open the checkout even while the
+ * production switch is off: the whole flow can be walked on the deployment,
+ * with Stripe's test cards, before anything is real. The bill page says
+ * "test mode" while that is the case.
  *
  * The webhook check below is the part worth reading twice. Stripe signs the
  * RAW request body with the endpoint secret; the signature covers
@@ -16,6 +32,24 @@ import { createHmac, timingSafeEqual } from "node:crypto";
 
 export function stripeKey(): string | null {
   return process.env.STRIPE_SECRET_KEY?.trim() || null;
+}
+
+/** Her connected account, when the platform arrangement is in place. */
+export function stripeAccount(): string | null {
+  return process.env.STRIPE_ACCOUNT?.trim() || null;
+}
+
+export type StripeMode = "off" | "test" | "live";
+
+export function stripeMode(): StripeMode {
+  const key = stripeKey();
+  if (!key) return "off";
+  return key.startsWith("sk_test_") || key.startsWith("rk_test_") ? "test" : "live";
+}
+
+/** Overridable so a local mock can stand in for Stripe in the end-to-end test. */
+function apiBase(): string {
+  return process.env.STRIPE_API_BASE?.trim() || "https://api.stripe.com";
 }
 
 export class StripeError extends Error {
@@ -28,14 +62,16 @@ export class StripeError extends Error {
 
 export async function stripe<T>(
   path: string,
-  opts: { method?: "GET" | "POST" | "DELETE"; body?: URLSearchParams } = {}
+  opts: { method?: "GET" | "POST" | "DELETE"; body?: URLSearchParams; account?: string | null } = {}
 ): Promise<T> {
   const key = stripeKey();
   if (!key) throw new StripeError(0, "STRIPE_SECRET_KEY is not set.");
-  const res = await fetch(`https://api.stripe.com${path}`, {
+  const account = opts.account === undefined ? stripeAccount() : opts.account;
+  const res = await fetch(`${apiBase()}${path}`, {
     method: opts.method ?? (opts.body ? "POST" : "GET"),
     headers: {
       Authorization: `Bearer ${key}`,
+      ...(account ? { "Stripe-Account": account } : {}),
       ...(opts.body ? { "Content-Type": "application/x-www-form-urlencoded" } : {}),
     },
     body: opts.body,
@@ -73,6 +109,31 @@ export function verifyStripeSignature(rawBody: string, header: string | null, se
     const b = Buffer.from(g);
     return a.length === b.length && timingSafeEqual(a, b);
   });
+}
+
+/**
+ * The application fee for a subscription has to be a PERCENTAGE with two
+ * decimals (Stripe allows no flat amount on recurring direct charges), so
+ * this finds the percentage of the installment-plus-fee total that rounds
+ * closest to the flat fee. Exact for ordinary installments; for very large
+ * ones (over about $9,900 a cycle) one hundredth of a percent is worth more
+ * than a cent, and the variance is on Glazed's side of the split, never on
+ * what the customer is charged.
+ */
+export function feePercentFor(totalCents: number, feeCents: number): string {
+  if (totalCents <= 0 || feeCents <= 0) return "0";
+  const ideal = (feeCents / totalCents) * 100;
+  let best = Math.round(ideal * 100) / 100;
+  let bestErr = Math.abs(Math.round((totalCents * best) / 100) - feeCents);
+  for (const p of [best - 0.01, best + 0.01]) {
+    if (p < 0) continue;
+    const err = Math.abs(Math.round((totalCents * p) / 100) - feeCents);
+    if (err < bestErr) {
+      best = p;
+      bestErr = err;
+    }
+  }
+  return best.toFixed(2);
 }
 
 /** What the code reads off a retrieved Checkout Session. */

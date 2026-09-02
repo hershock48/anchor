@@ -17,9 +17,11 @@ import { endAutopay, recordInvoice, recordSession } from "@/lib/pay";
  * autopay cycles are recorded the first time this route is configured and
  * Stripe replays them. A 500 here makes Stripe retry, so any throw is fine.
  *
- * Configure in Stripe: Developers > Webhooks > add endpoint
- * https://<host>/api/stripe/webhook with those three events, then set
- * STRIPE_WEBHOOK_SECRET in Vercel.
+ * Configure in Stripe, on GLAZED'S platform account: Developers > Webhooks >
+ * add endpoint https://<host>/api/stripe/webhook, choose "events on
+ * Connected accounts", pick those three events, then set
+ * STRIPE_WEBHOOK_SECRET in Vercel. (Without Connect, a plain endpoint on
+ * the key's own account works the same way.)
  */
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -35,7 +37,9 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Bad signature." }, { status: 400 });
   }
 
-  let event: { id: string; type: string; data: { object: Record<string, unknown> } };
+  // A Connect endpoint delivers events from HER account with `account` set;
+  // the session is fetched from that account, never from the platform's.
+  let event: { id: string; type: string; account?: string; data: { object: Record<string, unknown> } };
   try {
     event = JSON.parse(raw);
   } catch {
@@ -45,7 +49,7 @@ export async function POST(req: Request) {
 
   switch (event.type) {
     case "checkout.session.completed": {
-      const r = await recordSession(String(obj.id), "webhook");
+      const r = await recordSession(String(obj.id), "webhook", event.account);
       console.log("[stripe] session", obj.id, r.payment ? "recorded" : r.autopayStarted ? "autopay on" : "nothing to record");
       break;
     }
