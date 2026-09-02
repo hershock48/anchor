@@ -468,7 +468,11 @@ full installment lands on the due date. **Not a trial:** the first version
 used `trial_end`, and Stripe showed the customer "40 days free" and "Try
 premium…", which is the wrong story for an insurance installment; Kevin saw
 it on the first autopay walk. `billing_cycle_anchor` says the same thing in
-Stripe's plain wording. Each
+Stripe's plain wording. Stripe allows the anchor no later than one billing
+interval out (the "next natural billing date", which the first production
+attempt hit at 40 days on a monthly policy), so a due date beyond that
+falls back to the trial; that only happens when a customer pays an
+installment and then turns on autopay for the next one. Each
 cycle arrives as `invoice.paid` and is recorded like any payment. Stopping
 it is a call or email: the workroom's "Stop autopay" cancels the
 subscription, the one thing behind the gate that reaches into Stripe, and

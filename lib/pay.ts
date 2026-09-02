@@ -99,7 +99,8 @@ const feeName = "Online payment fee";
  * trial ending on the due date first; Stripe presents any trial as "40 days
  * free" and "Try premium…", which is the wrong story for an insurance
  * installment, and Kevin saw it on the first autopay walk (September 2,
- * 2026). The anchor says the same thing in Stripe's plain wording.
+ * 2026). The anchor says the same thing in Stripe's plain wording, within
+ * the limit Stripe puts on it (see the note at the anchor below).
  */
 export async function createCheckout(opts: {
   policy: Policy;
@@ -162,13 +163,24 @@ export async function createCheckout(opts: {
     for (const [k, v] of Object.entries(meta)) body.set(`subscription_data[metadata][${k}]`, v);
     // Anchor the cycle to the due date when it is in the future, with no
     // proration, so today's charge is $0 and the first installment is the
-    // full amount on the due date. A due date that is today or past means
-    // the first charge is now and the cycle runs from today.
+    // full amount on the due date. Stripe allows the anchor no later than
+    // one billing interval from now (its "next natural billing date"), which
+    // covers the normal case: a bill that is due within its own cycle. A due
+    // date further out than that (the customer just paid this installment
+    // and is now turning on autopay for the next) falls back to a trial
+    // ending on the due date, which Stripe words as "N days free"; rarer,
+    // and honest, if not the phrasing we would choose. A due date that is
+    // today or past means the first charge is now and the cycle runs from
+    // today.
     if (policy.nextDue) {
+      const nowTs = Date.now() / 1000;
       const dueTs = Math.floor(Date.parse(policy.nextDue + "T12:00:00-05:00") / 1000);
-      if (dueTs > Date.now() / 1000 + 3600) {
+      const naturalTs = Math.floor(Date.parse(addMonths(today(), cadence?.months || 1) + "T12:00:00-05:00") / 1000);
+      if (dueTs > nowTs + 3600 && dueTs <= naturalTs) {
         body.set("subscription_data[billing_cycle_anchor]", String(dueTs));
         body.set("subscription_data[proration_behavior]", "none");
+      } else if (dueTs > nowTs + 49 * 3600) {
+        body.set("subscription_data[trial_end]", String(dueTs));
       }
     }
   }
