@@ -1,0 +1,34 @@
+/* The agreement page's own dress, in the site's tokens. Lives here rather than
+   in globals.css so the customer stylesheet never carries a page a customer
+   cannot reach. Navy lettering on paper, gold only as a rule. */
+
+.agr { max-width: 44rem; margin: 0 auto; padding: 48px 20px 90px; color: var(--navy); }
+.agr h1 { font-size: clamp(30px, 5vw, 42px); margin: 6px 0 16px; }
+.agr .lede { font-size: 18px; line-height: 1.6; color: var(--navy); }
+.agr h2 { font-size: 22px; margin: 44px 0 14px; padding-top: 14px; border-top: 2px solid var(--gold); }
+.agr p, .agr li { line-height: 1.6; margin: 0 0 14px; }
+.agr a { color: var(--navy); text-underline-offset: 3px; }
+.agr .agr-note { color: var(--slate); font-size: 15px; }
+.agr .agr-foot { margin-top: 40px; }
+.agr ol.agr-scope { padding-left: 1.3rem; }
+.agr ol.agr-scope li { margin-bottom: 14px; padding-left: 4px; }
+.agr ol.agr-scope li::marker { font-weight: 700; color: var(--gold-ink); }
+.agr table.agr-terms { width: 100%; border-collapse: collapse; margin: 18px 0; }
+.agr table.agr-terms td { padding: 14px 0; border-bottom: 1px solid var(--line); vertical-align: top; line-height: 1.55; }
+.agr table.agr-terms td:first-child { font-weight: 700; width: 11rem; padding-right: 20px; }
+@media (max-width: 560px) {
+  .agr table.agr-terms td { display: block; width: auto; }
+  .agr table.agr-terms td:first-child { border-bottom: 0; padding-bottom: 4px; }
+}
+
+.agr-form { margin-top: 24px; padding: 24px; background: var(--paper-2); border: 1px solid var(--line); border-radius: var(--radius); display: grid; gap: 18px; }
+.agr-form label { display: grid; gap: 7px; font-weight: 700; font-size: 15px; }
+.agr-form .agr-opt { font-weight: 400; color: var(--slate); }
+.agr-form input[type="text"], .agr-form input[type="email"], .agr-form input:not([type]) { font: inherit; font-weight: 400; font-size: 16px; padding: 12px 14px; border: 1px solid var(--line); background: var(--paper); color: var(--navy); border-radius: var(--radius); }
+.agr-form input:focus { border-color: var(--navy); }
+.agr-form .agr-check { grid-template-columns: auto 1fr; align-items: start; font-weight: 400; gap: 12px; line-height: 1.55; }
+.agr-form .agr-check input { margin-top: 3px; width: 22px; height: 22px; accent-color: var(--navy); cursor: pointer; }
+.agr-form .btn { justify-self: start; }
+.agr-error { color: #8c2b21; font-weight: 700; margin: 0; }
+.agr-done { margin-top: 24px; padding: 24px; background: var(--paper-2); border: 1px solid var(--line); border-left: 3px solid var(--gold); border-radius: var(--radius); }
+.agr-done h3 { font-size: 22px; margin: 0 0 10px; }

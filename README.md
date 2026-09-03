@@ -323,6 +323,32 @@ rewritten, so the Next app serves it there like any other route, wrapped in the
 site's own header and footer, which is the point. She fills in her site from
 inside her site.
 
+## The agreement, at /agreement
+
+**Devine's custom-order clickwrap, ported.** The proposal's closing step
+links to `/agreement`, which is the deal in plain English: the published
+Glazed Web Client Agreement v1.0 linked and incorporated by reference (never
+restated, so it cannot drift from glazedweb.com/agreement), and the Exhibit A
+that v1.0 leaves blank, rendered from `lib/agreement.ts`: part 1 the scope,
+part 2 the pricing ($3,500, $1,750 deposit, $150 a month, the edit allowance
+and hourly rate), part 3 the online payment service, which is the part the
+master has no clause for and the part to show an attorney. She types her
+name, ticks the box, and **the email is the record**: both parties get a copy
+carrying the version, the exhibit, the numbers, her name and the server's
+time, over Resend from the studio's domain to `AGREEMENT_TO` (default
+Kevin's address). The row in `agreement_acceptances` is the queryable
+duplicate. When mail cannot go out, the page hands her a prefilled mailto
+carrying the same record rather than a false "you're all set."
+
+**Two surfaces repeat these numbers by hand** and are named in
+`lib/agreement.ts`: the proposal's prose, and the paper draft generated in
+the private contracts folder (`contracts-private/build-anchor-agreement.js`,
+never in this repo) for anyone who wants a signature on paper instead. The
+edit allowance and hourly rate on the page are the house numbers from the
+DeVine order; confirm them before the link goes to her. The page wears the
+agency's own header and footer on purpose (she is reading her deal on her
+own site), is noindex, and is linked from nowhere but the proposal.
+
 ## The workroom: her dashboard, at /workroom
 
 **The agency's own tool, not part of the customer site.** Four screens behind a
