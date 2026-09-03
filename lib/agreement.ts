@@ -25,6 +25,9 @@
  */
 
 export const agreement = {
+  /** The legal entity. The published v1.0 master still names Kevin dba
+   *  Glazed Web as the party; see the README. */
+  provider: "glazedweb LLC",
   version: "Glazed Web Client Agreement v1.0",
   termsUrl: "https://glazedweb.com/agreement",
   pdfUrl: "https://glazedweb.com/glazed-web-agreement-v1.pdf",
@@ -51,7 +54,7 @@ export const agreement = {
   editAllowance: "2 hours per month",
   hourlyRate: 125,
   /** Customer-paid, per online card payment, shown as its own line item,
-   *  collected by Glazed Web as the payment technology provider through
+   *  collected by glazedweb as the payment technology provider through
    *  Stripe at the moment of payment. Never charged to the client. */
   onlineFeeCents: 99,
 
@@ -75,15 +78,15 @@ export const agreement = {
   payments: [
     {
       lead: "Your Stripe account.",
-      text: "You open and own your own account with Stripe, the card processor, and connect it under Glazed Web's Stripe platform so the site can create charges on it. Every payment settles to the bank account you designate, on Stripe's schedule. Stripe's processing fees are set by Stripe, shown in your Stripe account, and are your cost. You are responsible for Stripe's terms, for the tax reporting on your own receipts, and for settling premium into a trust or premium account where Michigan law requires it.",
+      text: "You open and own your own account with Stripe, the card processor, and connect it under glazedweb's Stripe platform so the site can create charges on it. Every payment settles to the bank account you designate, on Stripe's schedule. Stripe's processing fees are set by Stripe, shown in your Stripe account, and are your cost. You are responsible for Stripe's terms, for the tax reporting on your own receipts, and for settling premium into a trust or premium account where Michigan law requires it.",
     },
     {
       lead: "The online payment fee.",
-      text: "Each successful online payment carries a flat $0.99 online payment fee, paid by the paying customer as its own line item, shown on the bill page before the customer continues and itemized on the checkout page and receipt. Glazed Web, as the payment technology provider, collects it through Stripe at the moment of payment, from that customer's payment and never from you. We do not invoice you for it and you never hold it. The amount changes only by written agreement of both of us, or under the annual adjustment clause (Section 2(f)) applied to the fee the same way it applies to the monthly fee.",
+      text: "Each successful online payment carries a flat $0.99 online payment fee, paid by the paying customer as its own line item, shown on the bill page before the customer continues and itemized on the checkout page and receipt. glazedweb, as the payment technology provider, collects it through Stripe at the moment of payment, from that customer's payment and never from you. We do not invoice you for it and you never hold it. The amount changes only by written agreement of both of us, or under the annual adjustment clause (Section 2(f)) applied to the fee the same way it applies to the monthly fee.",
     },
     {
       lead: "Authority to collect, and the fee's posture.",
-      text: "You alone decide which premiums you may lawfully collect: your own agency-billed invoices, and premium for carriers whose agency agreements authorize the agency to collect it. You set the per-carrier switch in the site accordingly and keep it current. Premium collected through the site is yours to remit to the carrier. Glazed Web is not an insurance producer, holds no premium, does not give legal advice, and makes no representation that any fee structure is permitted for your license. You have received our counsel review packet of September 1, 2026, which sets the Michigan DIFS guidance beside the processor-charged structure in current use in Michigan, and your acceptance records your own informed decision to offer the online channel with the fee, with or without your attorney's review.",
+      text: "You alone decide which premiums you may lawfully collect: your own agency-billed invoices, and premium for carriers whose agency agreements authorize the agency to collect it. You set the per-carrier switch in the site accordingly and keep it current. Premium collected through the site is yours to remit to the carrier. glazedweb is not an insurance producer, holds no premium, does not give legal advice, and makes no representation that any fee structure is permitted for your license. The fee is charged by the payment technology provider for the online channel, the structure used by the processor the Michigan Association of Insurance Agents endorses; whether to offer that channel is your decision, made with whatever review you choose, and your acceptance records it.",
     },
     {
       lead: "The book, the records, and card data.",
@@ -95,7 +98,7 @@ export const agreement = {
     },
     {
       lead: "Availability and responsibility.",
-      text: "The service runs on Stripe and on the hosting in Section 2(d), and Section 7 applies to it. Glazed Web is not a party to any insurance contract and is not responsible for a lapse or cancellation caused by a late, failed, or misdirected customer payment, or by an installment amount or due date entered in the book; the site tells customers that a payment is not proof of coverage.",
+      text: "The service runs on Stripe and on the hosting in Section 2(d), and Section 7 applies to it. glazedweb is not a party to any insurance contract and is not responsible for a lapse or cancellation caused by a late, failed, or misdirected customer payment, or by an installment amount or due date entered in the book; the site tells customers that a payment is not proof of coverage.",
     },
     {
       lead: "Your part.",

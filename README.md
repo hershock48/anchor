@@ -638,8 +638,12 @@ payment technology provider. Kevin's call, September 1, 2026: existing
 Michigan use (the MAIA-endorsed processor) stands in for a counsel opinion.
 The gate that remains is the CLIENT'S: the fee rides on her license
 posture, so flip condition 3 on the flag is her written go-ahead after
-reading the counsel review packet, and whether her attorney sees it first
-is her choice. Set `convenienceFeeCents` to 0 to absorb fees; the
+Kevin walks her through this research, and whether her attorney sees it
+first is her choice. **There is no separate "counsel review packet."** An
+earlier version of this paragraph and of the flag's comment called this
+section a packet she had received; nothing was ever sent, and the first
+agreement draft repeated the claim before Kevin caught it (September 2,
+2026). The research is this paragraph, and the conversation is his. Set `convenienceFeeCents` to 0 to absorb fees; the
 disclosure line disappears with it. Routing the fee revenue to Glazed is a
 Stripe Connect application-fee job later (devine holds the Square version
 of that rail); until then it settles with the payment and Glazed's share is

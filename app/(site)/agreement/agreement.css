@@ -21,6 +21,12 @@
   .agr table.agr-terms td:first-child { border-bottom: 0; padding-bottom: 4px; }
 }
 
+.agr-figs { display: grid; grid-template-columns: 1fr; gap: 22px; margin: 18px 0 8px; }
+.agr-figs figure { margin: 0; }
+.agr-figs img { display: block; width: 100%; height: auto; border: 1px solid var(--line); border-radius: var(--radius); background: var(--paper-2); }
+.agr-figs figure:nth-child(2) img { max-width: 390px; margin: 0 auto; }
+.agr-figs figcaption { font-size: 14px; color: var(--slate); line-height: 1.5; margin-top: 8px; }
+
 .agr-form { margin-top: 24px; padding: 24px; background: var(--paper-2); border: 1px solid var(--line); border-radius: var(--radius); display: grid; gap: 18px; }
 .agr-form label { display: grid; gap: 7px; font-weight: 700; font-size: 15px; }
 .agr-form .agr-opt { font-weight: 400; color: var(--slate); }

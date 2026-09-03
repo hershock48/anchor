@@ -243,10 +243,13 @@ export const giving = {
  *      carrier, whatever this flag says.
  *   2. She has a Stripe account settling into a separate premium/trust bank
  *      account, not operating money.
- *   3. She has given a written go-ahead after reading the counsel review
- *      packet (September 1, 2026), which puts the DIFS FAQ's "no producer
- *      processing fees" answer next to the Big I Michigan-endorsed
- *      ePayPolicy structure that passes fees to the payer anyway. The fee
+ *   3. She has given a written go-ahead after Kevin has walked her through
+ *      the fee research in the README's payments section, which puts the
+ *      DIFS FAQ's "no producer processing fees" answer next to the Big I
+ *      Michigan-endorsed ePayPolicy structure that passes fees to the payer
+ *      anyway. THERE IS NO SEPARATE "COUNSEL PACKET": an earlier note here
+ *      called that research a packet she had received, and she had not
+ *      (Kevin caught it in the agreement draft, September 2, 2026). The fee
  *      below rides on HER license posture, so the informed yes is hers to
  *      give, and whether counsel reads it first is her call, not a gate.
  *   4. STRIPE_SECRET_KEY (Glazed's platform key), STRIPE_ACCOUNT (her

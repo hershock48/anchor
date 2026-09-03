@@ -11,6 +11,7 @@ const nav = [
   { href: "/coverage", label: "Coverage" },
   { href: "/giving", label: "Our giving" },
   { href: "/tools/michigan-pip", label: "PIP tool" },
+  { href: "/pay", label: "Pay your bill" },
   { href: "/about", label: "About" },
   { href: "/contact", label: "Contact" },
 ];

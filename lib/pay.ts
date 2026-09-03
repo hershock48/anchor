@@ -157,7 +157,7 @@ export async function createCheckout(opts: {
     // The one sentence the fee posture rests on (charged by the technology
     // provider, not the producer). Kept short; the line item already says
     // the amount, and the bill page already said it was coming.
-    body.set("custom_text[submit][message]", "The online payment fee is charged by Glazed Web, the payment technology provider.");
+    body.set("custom_text[submit][message]", "The online payment fee is charged by glazedweb, the payment technology provider.");
   }
   const meta: Record<string, string> = {
     policyId: policy.id,

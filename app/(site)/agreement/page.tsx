@@ -31,7 +31,7 @@ export const metadata: Metadata = {
 export default function AgreementPage() {
   return (
     <div className="agr">
-      <p className="kicker">Glazed Web × {agreement.client}</p>
+      <p className="kicker">glazedweb × {agreement.client}</p>
       <h1>The agreement, in plain English.</h1>
       <p className="lede">
         Two documents make the whole deal, and both are on this page or one tap from it. The first
@@ -39,7 +39,7 @@ export default function AgreementPage() {
         <a href={agreement.termsUrl} target="_blank" rel="noopener noreferrer">
           Glazed Web Client Agreement v1.0
         </a>
-        , the same published terms every Glazed Web client gets: you own the site outright when the
+        , the same published terms every glazedweb client gets: you own the site outright when the
         build fee is paid, month to month after launch, thirty days&rsquo; notice, no penalty,
         Michigan law. There is also a{" "}
         <a href={agreement.pdfUrl} target="_blank" rel="noopener noreferrer">
@@ -63,6 +63,26 @@ export default function AgreementPage() {
       <p>
         <strong>Not included</strong>, and quoted separately if wanted: {agreement.notIncluded}
       </p>
+
+      <h2>What that looks like</h2>
+      <p className="agr-note">
+        Three screens from the build, with sample data. Everything here is live on the demo host and
+        yours to click through before you accept.
+      </p>
+      <div className="agr-figs">
+        <figure>
+          <img src="/agreement/workroom-book.png" width="1100" height="760" alt="The workroom's book: a customer, Dana Reyes, with two policies, each showing the installment, the next due date, where it is paid, and buttons to copy the pay link or email the bill." loading="lazy" />
+          <figcaption>The workroom: your book of customers and policies, with a pay link and an email-the-bill button on each.</figcaption>
+        </figure>
+        <figure>
+          <img src="/agreement/bill-phone.png" width="390" height="760" alt="A customer's bill on a phone: Hi Dana, your $142.10 payment for the Civic is due, the policy details, and how to pay it." loading="lazy" />
+          <figcaption>What your customer sees from the link: their bill, prefilled, under your name. No account, no password.</figcaption>
+        </figure>
+        <figure>
+          <img src="/agreement/workroom-facts.png" width="1100" height="760" alt="The workroom's site facts screen: boxes for phone, email, address, hours and license numbers, each marked when it is still blank on the site." loading="lazy" />
+          <figcaption>Site facts: your phone, hours, address and license numbers, edited by you and live on the site within seconds.</figcaption>
+        </figure>
+      </div>
 
       <h2>Exhibit A, part 2: what it costs</h2>
       <table className="agr-terms">
@@ -102,7 +122,7 @@ export default function AgreementPage() {
             <td>Online payment fee</td>
             <td>
               ${(agreement.onlineFeeCents / 100).toFixed(2)} per online card payment, paid by the paying
-              customer as its own line, collected by Glazed Web as the payment technology provider. Never
+              customer as its own line, collected by glazedweb as the payment technology provider. Never
               charged to you. The full terms are in part 3.
             </td>
           </tr>
@@ -136,7 +156,7 @@ export default function AgreementPage() {
       <AgreementAccept business={agreement.client} />
 
       <p className="agr-note agr-foot">
-        Glazed Web · Kevin Hershock · Marshall, Michigan · kevin@glazedweb.com · {agreement.version}
+        {agreement.provider} · Kevin Hershock · Marshall, Michigan · kevin@glazedweb.com · {agreement.version}
       </p>
     </div>
   );
