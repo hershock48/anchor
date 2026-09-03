@@ -38,6 +38,10 @@ export default function WorkroomLayout({ children }: { children: React.ReactNode
 
       <style>{`
         .wr-main { padding: 30px 0 90px; background: var(--paper); min-height: 70vh; }
+        /* The customer stylesheet pads every <section> for the marketing pages;
+           the facts screen groups its fields in sections and inherited a band of
+           empty space between each group (visible in the agreement's screenshot). */
+        .wr-main section { padding: 0; margin: 0; }
         .wr-wrap { max-width: 900px; margin: 0 auto; padding: 0 20px; }
 
         /* ── chrome ── */
