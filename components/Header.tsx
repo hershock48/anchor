@@ -11,7 +11,6 @@ const nav = [
   { href: "/coverage", label: "Coverage" },
   { href: "/giving", label: "Our giving" },
   { href: "/tools/michigan-pip", label: "PIP tool" },
-  { href: "/pay", label: "Pay your bill" },
   { href: "/about", label: "About" },
   { href: "/contact", label: "Contact" },
 ];
@@ -75,6 +74,13 @@ export default function Header({ phone, phoneHref }: { phone: string; phoneHref:
               {phone}
             </a>
           ) : null}
+          {/* The two things a customer comes to do, side by side: pay, and get
+              a quote. "Pay a bill" was a text-nav item for a day (September 2,
+              2026) and read as one more page; as the second button it reads as
+              an action, which is what the carriers' own sites do. */}
+          <Link className="btn ghost" href="/pay">
+            Pay a bill
+          </Link>
           <Link className="btn" href="/quote">
             Get a quote
           </Link>
@@ -95,6 +101,9 @@ export default function Header({ phone, phoneHref }: { phone: string; phoneHref:
               <Link href={n.href}>{n.label}</Link>
             </li>
           ))}
+          <li>
+            <Link href="/pay">Pay a bill</Link>
+          </li>
           <li>
             <Link href="/quote">Get a quote</Link>
           </li>
