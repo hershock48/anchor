@@ -462,7 +462,17 @@ section {
 .head-nav ul { display: flex; gap: 22px; list-style: none; }
 .head-nav a {
   color: var(--navy); text-decoration: none; font-size: 15px; font-weight: 600;
-  padding: 6px 0; border-bottom: 2px solid transparent;
+  padding: 6px 0; border-bottom: 2px solid transparent; white-space: nowrap;
+}
+/* Between the phone menu and a wide desktop, five links plus two buttons are
+   tight: "Our giving" and "PIP tool" wrapped onto two lines at 1024 the day
+   the pay button arrived. Tighter gaps and one size down in that band. */
+@media (min-width: 951px) and (max-width: 1180px) {
+  .head-in { gap: 14px; }
+  .head-nav ul { gap: 14px; }
+  .head-nav a { font-size: 14px; }
+  .head-cta { gap: 10px; }
+  .head-cta .btn { padding-left: 16px; padding-right: 16px; }
 }
 .head-nav a:hover { color: var(--gold-ink); border-bottom-color: var(--gold); }
 .head-nav a[aria-current="page"] { color: var(--gold-ink); border-bottom-color: var(--gold); }
