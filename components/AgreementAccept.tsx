@@ -104,7 +104,7 @@ export default function AgreementAccept({ business }: { business: string }) {
       <label className="agr-check">
         <input type="checkbox" checked={agreed} onChange={(e) => setAgreed(e.target.checked)} required />
         <span>
-          I have read the Glazed Web Client Agreement v1.0 and the Exhibit A above, including the
+          I have read the glazedweb Client Agreement v1.1 and the Exhibit A above, including the
           online payment terms, and I accept both on behalf of the business named here.
         </span>
       </label>

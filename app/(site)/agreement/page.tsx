@@ -8,9 +8,9 @@ import "./agreement.css";
  * Ported from devine's /agreement.
  *
  * SHAPE: the general terms are NOT restated here. They are the published
- * Glazed Web Client Agreement v1.0, linked and incorporated by reference,
+ * glazedweb Client Agreement v1.1, linked and incorporated by reference,
  * exactly the way the glazedweb menu-order clickwrap works. What this page
- * adds is the part v1.0 leaves blank: Exhibit A with Anchor's scope and
+ * adds is the part the master leaves blank: Exhibit A with Anchor's scope and
  * numbers, the online payment terms, and the acceptance itself.
  *
  * Numbers come from lib/agreement.ts, never typed here. The proposal at
@@ -37,7 +37,7 @@ export default function AgreementPage() {
         Two documents make the whole deal, and both are on this page or one tap from it. The first
         is the{" "}
         <a href={agreement.termsUrl} target="_blank" rel="noopener noreferrer">
-          Glazed Web Client Agreement v1.0
+          glazedweb Client Agreement v1.1
         </a>
         , the same published terms every glazedweb client gets: you own the site outright when the
         build fee is paid, month to month after launch, thirty days&rsquo; notice, no penalty,
@@ -75,8 +75,8 @@ export default function AgreementPage() {
           <figcaption>The workroom: your book of customers and policies, with a pay link and an email-the-bill button on each.</figcaption>
         </figure>
         <figure>
-          <img src="/agreement/bill-phone.png" width="390" height="760" alt="A customer's bill on a phone: Hi Dana, your $142.10 payment for the Civic is due, the policy details, and how to pay it." loading="lazy" />
-          <figcaption>What your customer sees from the link: their bill, prefilled, under your name. No account, no password.</figcaption>
+          <img src="/agreement/bill-phone.png" width="390" height="1240" alt="A customer's bill on a phone: Hi Dana, your $142.10 payment for the Civic is due, the policy details, the choice to pay it once or turn on autopay, and the add-ons worth asking about." loading="lazy" />
+          <figcaption>What your customer sees from the link: their bill, prefilled, paid right here under your name. No account, no password.</figcaption>
         </figure>
         <figure>
           <img src="/agreement/workroom-facts.png" width="1100" height="760" alt="The workroom's site facts screen: boxes for phone, email, address, hours and license numbers, each marked when it is still blank on the site." loading="lazy" />

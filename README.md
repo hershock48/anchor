@@ -327,9 +327,10 @@ inside her site.
 
 **Devine's custom-order clickwrap, ported.** The proposal's closing step
 links to `/agreement`, which is the deal in plain English: the published
-Glazed Web Client Agreement v1.0 linked and incorporated by reference (never
-restated, so it cannot drift from glazedweb.com/agreement), and the Exhibit A
-that v1.0 leaves blank, rendered from `lib/agreement.ts`: part 1 the scope,
+glazedweb Client Agreement v1.1 linked and incorporated by reference (never
+restated, so it cannot drift from glazedweb.com/agreement; v1.1 names
+glazedweb LLC as the Provider), and the Exhibit A that the master leaves
+blank, rendered from `lib/agreement.ts`: part 1 the scope,
 part 2 the pricing ($3,500, $1,750 deposit, $150 a month, the edit allowance
 and hourly rate), part 3 the online payment service, which is the part the
 master has no clause for and the part to show an attorney. She types her

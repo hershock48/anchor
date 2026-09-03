@@ -4,7 +4,7 @@
  * glaze.md: every business fact lives in one constant file so a correction
  * is one edit. These are the numbers from the proposal ($3,500 build, half
  * and half, $150 a month) and the Exhibit A terms, including the online
- * payment service that the v1.0 master has no clause for. The acceptance
+ * payment service that the master has no clause for. The acceptance
  * page renders from here, the acceptance email quotes from here, and the
  * paper draft in the private contracts folder is generated from the same
  * facts by hand-copy (named below).
@@ -17,7 +17,7 @@
  * same commit.
  *
  * The general terms are NOT restated here or on the acceptance page. They
- * are the Glazed Web Client Agreement v1.0, published at
+ * are the glazedweb Client Agreement v1.1, published at
  * glazedweb.com/agreement, incorporated by reference the same way the
  * menu-order clickwrap does. One text, one home, no drift.
  *
@@ -25,12 +25,11 @@
  */
 
 export const agreement = {
-  /** The legal entity. The published v1.0 master still names Kevin dba
-   *  Glazed Web as the party; see the README. */
+  /** The legal entity, the Provider named in v1.1 of the master. */
   provider: "glazedweb LLC",
-  version: "Glazed Web Client Agreement v1.0",
+  version: "glazedweb Client Agreement v1.1",
   termsUrl: "https://glazedweb.com/agreement",
-  pdfUrl: "https://glazedweb.com/glazed-web-agreement-v1.pdf",
+  pdfUrl: "https://glazedweb.com/glazed-web-agreement-v1-1.pdf",
   exhibit: "Exhibit A: Anchor Insurance, prepared 2026-09-02",
 
   client: "Anchor Insurance",
