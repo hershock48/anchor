@@ -61,7 +61,18 @@ const nextConfig: NextConfig = {
      * `permanent: true` is a 308, which preserves method; see the /api trap
      * in glaze.md for why not 301.
      */
-    return [{ source: "/giving/causes", destination: "/giving", permanent: true }];
+    return [
+      { source: "/giving/causes", destination: "/giving", permanent: true },
+      /**
+       * The agreement lived in this repo at /agreement from September 2 to
+       * September 10, 2026, then moved to the studio site with the other
+       * custom orders (glazedweb.com/agreement/anchor, registry-driven, with
+       * the card form and the build page beside it). Anyone holding the old
+       * link, including the proposal as it was texted around, lands on the
+       * right page.
+       */
+      { source: "/agreement", destination: "https://www.glazedweb.com/agreement/anchor", permanent: true },
+    ];
   },
 
   async headers() {

@@ -37,7 +37,6 @@ import "server-only";
 
 import type { Lead, LeadStatus } from "./leads";
 import type { Customer, Policy, Payment } from "./book";
-import type { AgreementAcceptance } from "@/lib/agreement";
 
 export type { Lead, LeadStatus };
 
@@ -61,9 +60,6 @@ export type Store = {
   customers: Collection<Customer>;
   policies: Collection<Policy>;
   payments: Collection<Payment>;
-  /** Clickwrap acceptances of the client agreement; the email is the record,
-   *  this is the queryable copy. */
-  agreements: Collection<AgreementAcceptance>;
   /** One named jsonb value. Null when nothing has been saved under the key. */
   getValue<T>(key: string): Promise<T | null>;
   setValue(key: string, value: unknown): Promise<void>;
@@ -138,7 +134,6 @@ const memoryStore: Store = {
   customers: memoryCollection<Customer>("workroom_customers"),
   policies: memoryCollection<Policy>("workroom_policies"),
   payments: memoryCollection<Payment>("workroom_payments"),
-  agreements: memoryCollection<AgreementAcceptance>("agreement_acceptances"),
   async getValue(key) {
     return (bag().content.get(key) as never) ?? null;
   },
@@ -181,7 +176,10 @@ type PgPool = {
 };
 
 /** Every jsonb table the store owns. Adding one here is the whole migration. */
-const JSON_TABLES = ["workroom_content", "workroom_customers", "workroom_policies", "workroom_payments", "agreement_acceptances"] as const;
+// agreement_acceptances existed here for eight days (2026-09-02 to 09-10) while
+// the agreement lived in this repo; it moved to glazedweb.com/agreement/anchor
+// with the other custom orders. The empty table in Neon is harmless.
+const JSON_TABLES = ["workroom_content", "workroom_customers", "workroom_policies", "workroom_payments"] as const;
 
 async function pgPool(): Promise<PgPool> {
   const g = globalThis as typeof globalThis & {
@@ -321,7 +319,6 @@ const postgresStore: Store = {
   customers: pgCollection<Customer>("workroom_customers"),
   policies: pgCollection<Policy>("workroom_policies"),
   payments: pgCollection<Payment>("workroom_payments"),
-  agreements: pgCollection<AgreementAcceptance>("agreement_acceptances"),
   async getValue(key) {
     const pool = await pgPool();
     const { rows } = await pool.query(`SELECT data FROM workroom_content WHERE key = $1`, [key]);

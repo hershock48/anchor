@@ -323,32 +323,27 @@ rewritten, so the Next app serves it there like any other route, wrapped in the
 site's own header and footer, which is the point. She fills in her site from
 inside her site.
 
-## The agreement, at /agreement
+## The agreement and the build page live on the studio site
 
-**Devine's custom-order clickwrap, ported.** The proposal's closing step
-links to `/agreement`, which is the deal in plain English: the published
-glazedweb Client Agreement v1.1 linked and incorporated by reference (never
-restated, so it cannot drift from glazedweb.com/agreement; v1.1 names
-glazedweb LLC as the Provider), and the Exhibit A that the master leaves
-blank, rendered from `lib/agreement.ts`: part 1 the scope,
-part 2 the pricing ($3,500, $1,750 deposit, $150 a month, the edit allowance
-and hourly rate), part 3 the online payment service, which is the part the
-master has no clause for and the part to show an attorney. She types her
-name, ticks the box, and **the email is the record**: both parties get a copy
-carrying the version, the exhibit, the numbers, her name and the server's
-time, over Resend from the studio's domain to `AGREEMENT_TO` (default
-Kevin's address). The row in `agreement_acceptances` is the queryable
-duplicate. When mail cannot go out, the page hands her a prefilled mailto
-carrying the same record rather than a false "you're all set."
+**Since September 10, 2026 the deal is not in this repo.** It follows the
+True North shape: an `anchor` row in glazedweb's `lib/customOrders.js`
+renders `glazedweb.com/agreement/anchor` (the published v1.1 terms
+incorporated by reference, Exhibit A with the scope, the numbers and the
+online-payment terms as part 3, three real screens of the build, the card
+form for the build fee, and the clickwrap acceptance) and
+`glazedweb.com/build/anchor`, the project page: where things stand, the
+twelve things only she can supply, what happens in what order, her stuff,
+and a **try-it-yourself list** (walk a quote, pay a bill with a test card,
+tick an add-on, change a fact). The proposal's one action is the build page
+("Launch"), with the agreement, the try-it list, the intake sheet and
+Kevin's email as plain links under it.
 
-**Two surfaces repeat these numbers by hand** and are named in
-`lib/agreement.ts`: the proposal's prose, and the paper draft generated in
-the private contracts folder (`contracts-private/build-anchor-agreement.js`,
-never in this repo) for anyone who wants a signature on paper instead. The
-edit allowance and hourly rate on the page are the house numbers from the
-DeVine order; confirm them before the link goes to her. The page wears the
-agency's own header and footer on purpose (she is reading her deal on her
-own site), is noindex, and is linked from nowhere but the proposal.
+The in-repo `/agreement` page, its form, its API route and its
+`agreement_acceptances` collection were removed the same day;
+`next.config.ts` sends the old URL to the new one, and the empty table in
+Neon is harmless. The paper twin stays in the private contracts folder.
+The two numbers that repeat by hand are named in the registry row: this
+proposal's prose, and that paper draft.
 
 ## The workroom: her dashboard, at /workroom
 
