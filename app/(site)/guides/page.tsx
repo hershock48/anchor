@@ -5,6 +5,7 @@ export const metadata = {
   title: "Guides",
   description:
     "Plain explanations of the Michigan coverage rules people actually ask about: mini-tort, attendant care, and why your address still affects your rate.",
+  alternates: { canonical: "/guides" },
 };
 
 export default function GuidesIndex() {

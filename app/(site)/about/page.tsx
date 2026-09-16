@@ -7,6 +7,7 @@ export async function generateMetadata() {
   return {
   title: "About",
   description: `${site.legalName}, an independent insurance agency in ${facts.contact.city}, Michigan.`,
+  alternates: { canonical: "/about" },
   };
 }
 

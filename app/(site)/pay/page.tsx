@@ -31,6 +31,7 @@ export const metadata = {
   title: "Pay your bill",
   description:
     "Find your bill with your policy number and ZIP, or use the link we sent you. No account, no password.",
+  alternates: { canonical: "/pay" },
 };
 
 export default async function Pay() {

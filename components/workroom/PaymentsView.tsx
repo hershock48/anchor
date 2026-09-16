@@ -28,8 +28,12 @@ type Payment = {
 type Autopay = {
   id: string;
   created: number;
-  currentPeriodEnd: number;
-  monthlyCents: number;
+  /** Unix seconds of the next charge, or 0 when Stripe did not say. */
+  nextCharge: number;
+  /** What one cycle charges, premium and fee together. */
+  cycleCents: number;
+  /** "monthly", "every 3 months", "yearly". Empty when unknown. */
+  cadence: string;
   payer: string;
   policy: string;
   payTo: string;
@@ -88,7 +92,7 @@ export default function PaymentsView() {
 
       {state.kind === "ok" && (
         <>
-          <h2 className="wr-h2">Monthly autopays</h2>
+          <h2 className="wr-h2">Autopays</h2>
           {state.autopays.length === 0 ? (
             <p className="wr-muted">Nobody is on autopay yet.</p>
           ) : (
@@ -105,9 +109,12 @@ export default function PaymentsView() {
                       </span>
                     </span>
                     <span className="wr-row-when">
-                      next {a.currentPeriodEnd ? when(a.currentPeriodEnd * 1000) : "—"}
+                      {a.nextCharge ? `next ${when(a.nextCharge * 1000)}` : "next on the due date"}
                     </span>
-                    <span className="wr-amount">{money(a.monthlyCents)}/mo</span>
+                    <span className="wr-amount">
+                      {money(a.cycleCents)}
+                      {a.cadence ? `, ${a.cadence}` : ""}
+                    </span>
                   </div>
                 </li>
               ))}

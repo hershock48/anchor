@@ -93,6 +93,24 @@ export async function PUT(req: Request) {
     const errors = policyErrors(input, payments.maxOnlineCents);
     if (Object.keys(errors).length) return NextResponse.json({ error: "Check the marked boxes.", errors }, { status: 400 });
     next = apply(existing, input);
+    // The Stripe subscription behind autopay charges the amount and cadence
+    // it was created with, and nothing in the workroom rewrites it. Letting
+    // the book drift away from it would show the customer one number on
+    // their bill page and charge another, so the two fields are locked
+    // while autopay is on. Same shape as the close rule below.
+    if (existing.autopay && (next.amountCents !== existing.amountCents || next.cadence !== existing.cadence)) {
+      const msg = "Autopay is charging the current amount on the current schedule. Stop autopay first, then change this.";
+      return NextResponse.json(
+        {
+          error: msg,
+          errors: {
+            ...(next.amountCents !== existing.amountCents ? { amount: msg } : {}),
+            ...(next.cadence !== existing.cadence ? { cadence: msg } : {}),
+          },
+        },
+        { status: 409 }
+      );
+    }
   }
   if (body.status === "active" || body.status === "closed") {
     if (body.status === "closed" && existing.autopay) {

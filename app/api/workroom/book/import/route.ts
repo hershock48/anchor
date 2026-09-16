@@ -7,6 +7,7 @@ import {
   AGENCY,
   cadenceOf,
   customerErrors,
+  money,
   normalizePolicyNumber,
   normalizeZip,
   policyErrors,
@@ -120,7 +121,10 @@ export async function POST(req: Request) {
       amount: get("amount"),
       cadence: cadenceFrom(get("cadence")),
       nextDue: dateFrom(get("next_due")),
-      payTo: /^agency|anchor|us$/i.test(get("pay_to").trim()) ? AGENCY : carrier,
+      // Grouped on purpose: the ungrouped `^agency|anchor|us$` matched any
+      // value ENDING in "us", so a carrier whose name did was silently
+      // treated as an agency invoice.
+      payTo: /^(agency|anchor|us)$/i.test(get("pay_to").trim()) ? AGENCY : carrier,
     };
     const pErr = policyErrors(pIn, payments.maxOnlineCents);
     if (Object.keys(pErr).length) {
@@ -153,6 +157,21 @@ export async function POST(req: Request) {
       nextDue: pIn.nextDue || null, payTo: pIn.payTo,
     };
     if (existing) {
+      // A policy on autopay is charging a card at the amount and on the
+      // schedule Stripe was given when it started; nothing here updates the
+      // subscription. So a row that would move either is reported and left
+      // alone, and the fix is the one the message names: stop autopay in the
+      // workroom, import again, and the customer turns it back on from their
+      // next bill. The rest of the row (label, due date, contact details)
+      // still lands.
+      if (existing.autopay && (existing.amountCents !== fields.amountCents || existing.cadence !== fields.cadence)) {
+        out.errors.push({
+          row: r + 1,
+          message: `Autopay is on for ${carrier} ${pIn.policyNumber} at ${money(existing.amountCents)} ${cadenceOf(existing.cadence)?.label.toLowerCase() ?? existing.cadence}, so the installment and schedule were left as they are. Stop autopay before changing them.`,
+        });
+        fields.amountCents = existing.amountCents;
+        fields.cadence = existing.cadence;
+      }
       const next: Policy = { ...existing, ...fields, customerId: customer.id, updatedAt: now };
       await store.policies.put(next);
       byPolicy.set(key, next);

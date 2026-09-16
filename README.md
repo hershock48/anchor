@@ -158,6 +158,18 @@ host silently serves the client's homepage. Host scoping rather than
 `basePath: "/demo"`, because basePath is global to a build and would bury the real
 site under `/demo` the day the domain goes live.
 
+**Every indexable page sets its own canonical, and the site layout sets
+none.** From September 2 to September 16, 2026 the `(site)` layout carried
+`alternates: { canonical: "/" }` and `openGraph.url: "/"`. Layout metadata is
+inherited by every page beneath it, so every route on the site (about, each
+coverage page, each guide) told search engines and link scrapers that it was
+the homepage: one duplicated page, and every shared link collapsing to `/`.
+Each page now carries `alternates: { canonical: "/its/path" }` in its own
+metadata; the noindex pages (intake, the bill, the thank-you pages) set none.
+**A new indexable page needs its own line**, or it ships with no canonical at
+all, which is the lesser fault but still one. Verify with
+`curl -s <url> | grep canonical` on any inner page.
+
 **The quote form must keep working with JavaScript off, and that is not
 automatic.** The first version shipped `hidden` on step two and `disabled` on the
 submit, both rendered server-side, so a visitor without JS saw one step and could
@@ -354,8 +366,11 @@ new → called → quoted → won/lost, with her own notes per lead), the
 "email them the bill" button and the payment history for each; see the
 payments section below), **payments** (a read-only window onto Stripe:
 recent payments and running autopays, each labelled with the payer, policy
-number and carrier that the checkout writes into the session metadata), and
-**site facts** (her phone, email, address, hours, license numbers and two
+number and carrier that the checkout writes into the session metadata; it
+reads through `lib/stripe.ts` so the `Stripe-Account` header names HER
+connected account, because its original private fetch helper predated
+Connect and would have listed the platform's own sessions instead of hers),
+and **site facts** (her phone, email, address, hours, license numbers and two
 links, edited in place and live on the site within seconds).
 
 **The facts screen is a form over a whitelist, and the whitelist is the
@@ -499,6 +514,16 @@ cycle arrives as `invoice.paid` and is recorded like any payment. Stopping
 it is a call or email: the workroom's "Stop autopay" cancels the
 subscription, the one thing behind the gate that reaches into Stripe, and
 it can only ever stop money moving. Refunds stay in the Stripe dashboard.
+
+**An installment on autopay is locked in the book.** The subscription
+charges the amount and cadence Stripe was given when it started, and nothing
+in the workroom rewrites a subscription. So while `autopay` is set on a
+policy, the policy editor refuses a change to the amount or the cadence
+(409, "Stop autopay first"), and the CSV import leaves those two fields as
+they are and reports the row, while still landing the rest of it. A renewal
+that changes the premium is therefore: stop autopay, edit or import, and the
+customer turns it back on from their next bill. Without this rule the bill
+page would show one number and Stripe would charge another.
 
 **Recording is idempotent by Stripe's own id**, and it happens in two
 places on purpose: the return page (`/pay/received?session_id=`) fetches

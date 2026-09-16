@@ -23,23 +23,27 @@ import { getFacts } from "@/lib/content";
 export async function generateMetadata(): Promise<Metadata> {
   const facts = await getFacts();
   return {
-  /* Canonical. Without one, the same page reachable at /demo/x on the pitch
-     host and at /x on hers competes with itself. */
-  alternates: { canonical: "/" },
   /**
+   * NO CANONICAL HERE. This layout carried `alternates: { canonical: "/" }`
+   * until September 16, 2026, and because a layout's metadata is inherited
+   * by every page under it, every route on the site (about, each coverage
+   * page, each guide) declared the HOMEPAGE as its canonical URL, which
+   * tells a search engine that the whole site is one duplicated page. The
+   * same field as `openGraph.url` did the same to link shares. Each
+   * indexable page now sets its own `alternates.canonical`; the noindex
+   * pages (intake, the bill, the thank-you pages) set none. A new page
+   * needs its own line or it inherits nothing.
+   *
    * NEXT DOES NOT DEEP-MERGE `openGraph`. A page that defines its own block
    * replaces this one wholesale, image included, and that route silently loses
-   * its card. Every page in this app sets only `title` and `description` at the
-   * top level, which merge fine. If you ever add an `openGraph` block to a
-   * page, set the image on it too.
+   * its card. Pages set `title`, `description` and `alternates` at the top
+   * level, which merge fine, and og:title and og:description fall back to
+   * those. If you ever add an `openGraph` block to a page, set the image on
+   * it too (the homepage does, because it wants the tagline as its card title).
    */
   openGraph: {
     type: "website",
     siteName: site.name,
-    title: `${site.name} | ${site.tagline}`,
-    description:
-      "Independent auto, home and business insurance in Michigan. A percentage of what we earn goes back to local causes.",
-    url: "/",
     images: [
       {
         url: "/og.jpg",

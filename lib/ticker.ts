@@ -1,49 +1,27 @@
 /**
- * The two ticker rails.
+ * The facts rail, the second of the two tickers under the hero.
  *
- * TWO DECISIONS WORTH KNOWING ABOUT, because both were judgment calls.
- *
- * 1. NO LIVE PRICES, YET. A moving price needs a market data feed. Every
- *    reliable one is keyed and most are billed, which breaks the rule that
- *    nothing in a client site costs them a subscription they did not choose.
- *    The free keyless sources are unreliable enough that the rail would be
- *    blank as often as not, and a blank rail is worse than no rail.
- *
- * 2. THE REGULATORY ONE, WHICH MATTERS MORE. An insurance producer showing
- *    live stock quotes can read as offering securities. She is licensed to
- *    sell insurance, not investments, and a ticker of moving share prices is
- *    exactly the sort of thing that invites the question. Carrier symbols
- *    without prices say "these are the companies we shop for you," which is
- *    true, useful, and not a claim about anything she is not licensed for.
- *
- * If she wants live prices anyway, that is her call to make with her attorney,
- * and `symbols` is the seam: give it a fetched price and the rail renders it.
- * Server-side fetch, cached, with an "as of" stamp.
- *
- * SYMBOLS ARE REAL. These are the actual NYSE tickers for the carriers an
- * independent Michigan agency typically places with. They are facts, not
- * placeholders. But an appointment is a different thing from a listed company,
- * so nothing here claims she is appointed with any of them: `site.carriers` is
- * still the empty array that governs what the site says about appointments.
+ * A RETRACTION, RECORDED. This file used to open with two decisions: no live
+ * prices (every reliable feed is keyed and billed, and the free ones are
+ * unreliable), and a regulatory one, that an insurance producer showing
+ * moving share prices can read as offering securities, so the rail would
+ * carry carrier symbols without prices. Both were overtaken. The market rail
+ * that actually ships is `components/StockTicker.tsx` fed by `lib/quotes.ts`:
+ * live prices for carriers, Apple, Nvidia, the S&P and three coins, from
+ * keyless Yahoo and CoinGecko endpoints, corrected on the client after first
+ * paint. The subscription objection was answered by the keyless sources. The
+ * regulatory one was not answered here, it was set aside: the owners follow
+ * markets and asked for it, and whether a live price ticker on a producer's
+ * site needs a word from her attorney or E&O carrier is hers to raise. The
+ * dead `symbols` list that was this file's "seam" for live prices is gone;
+ * `lib/quotes.ts` is where a symbol is added or removed now, and it says
+ * what that costs in track width.
  */
 
-export type Sym = { symbol: string; name: string; price?: string; change?: string };
-
-export const symbols: Sym[] = [
-  { symbol: "PGR", name: "Progressive" },
-  { symbol: "ALL", name: "Allstate" },
-  { symbol: "TRV", name: "Travelers" },
-  { symbol: "CB", name: "Chubb" },
-  { symbol: "HIG", name: "The Hartford" },
-  { symbol: "CINF", name: "Cincinnati Financial" },
-  { symbol: "KMPR", name: "Kemper" },
-  { symbol: "ERIE", name: "Erie Indemnity" },
-];
-
 /**
- * The second rail. Facts rather than headlines, because a headline goes stale
- * and a fact about Michigan coverage does not. Everything here is checkable and
- * every figure appears somewhere else on the site with its source named.
+ * Facts rather than headlines, because a headline goes stale and a fact about
+ * Michigan coverage does not. Everything here is checkable and every figure
+ * appears somewhere else on the site with its source named.
  */
 export const marketNotes: string[] = [
   // TICKER LENGTH, NOT SENTENCE LENGTH.

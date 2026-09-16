@@ -6,6 +6,7 @@ export const metadata = {
   title: "What each Michigan PIP level actually saves you",
   description:
     "Michigan personal injury protection, all six levels, with the average saving for each one and the eligibility rules most sites get wrong. Dropping to $500,000 saves about 3.6%.",
+  alternates: { canonical: "/tools/michigan-pip" },
 };
 
 const verdictLabel = {

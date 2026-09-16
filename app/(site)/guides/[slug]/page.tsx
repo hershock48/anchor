@@ -10,7 +10,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug } = await params;
   const g = guides.find((x) => x.slug === slug);
   if (!g) return {};
-  return { title: g.title, description: g.description };
+  return { title: g.title, description: g.description, alternates: { canonical: `/guides/${g.slug}` } };
 }
 
 export default async function GuidePage({ params }: { params: Promise<{ slug: string }> }) {

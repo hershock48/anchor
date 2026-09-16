@@ -37,6 +37,25 @@ export async function generateMetadata() {
   title: { absolute: `${site.name} | Independent agency in ${facts.contact.city}, Michigan` },
   description:
     "Auto, home and business insurance from an independent Michigan agency. We shop several carriers, and a percentage of what we earn goes back to local causes.",
+  alternates: { canonical: "/" },
+  // The card leads with the tagline rather than the tab title. A page's
+  // openGraph replaces the layout's wholesale, so the image comes along.
+  openGraph: {
+    type: "website",
+    siteName: site.name,
+    title: `${site.name} | ${site.tagline}`,
+    description:
+      "Independent auto, home and business insurance in Michigan. A percentage of what we earn goes back to local causes.",
+    url: "/",
+    images: [
+      {
+        url: "/og.jpg",
+        width: 1200,
+        height: 630,
+        alt: `${site.name}. ${site.tagline}. An independent agency in ${facts.contact.city}, Michigan.`,
+      },
+    ],
+  },
   };
 }
 

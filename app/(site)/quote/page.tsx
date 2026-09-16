@@ -6,6 +6,7 @@ export const metadata = {
   title: "Get a quote",
   description:
     "Four fields and we will call you back. An independent Michigan agency shopping several carriers for you.",
+  alternates: { canonical: "/quote" },
 };
 
 /**

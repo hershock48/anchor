@@ -8,6 +8,7 @@ export async function generateMetadata() {
   return {
   title: "Contact",
   description: `Reach ${site.name} in ${facts.contact.city}, Michigan. Phone, email and hours.`,
+  alternates: { canonical: "/contact" },
   };
 }
 

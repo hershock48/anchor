@@ -5,6 +5,7 @@ export const metadata = {
   title: "Coverage",
   description:
     "Auto, home, renters, umbrella, life and business insurance from an independent Michigan agency.",
+  alternates: { canonical: "/coverage" },
 };
 
 export default function CoverageIndex() {

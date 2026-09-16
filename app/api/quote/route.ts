@@ -25,11 +25,14 @@ export const dynamic = "force-dynamic";
  * fill in `deliver()` below. SMTP through a mailbox the client already owns,
  * not a hosted API with its own subscription. See .env.example.
  *
- * PII: this payload carries a name, a phone number, an address and possibly a
- * date of birth. It is logged rather than stored, nothing is written to a
- * database, and no third party sees it. When delivery is wired up it goes to
- * one mailbox and stops there. That is also what /privacy says, and the two
- * have to keep agreeing.
+ * PII: this payload carries a name, a phone number and possibly an address
+ * (never a date of birth or a licence number: the form does not ask). It is
+ * logged in full AND stored as a lead in the workroom's queue (below), and no
+ * third party sees it. When delivery is wired up it also goes to one mailbox
+ * and stops there. That is also what /privacy says, and the two have to keep
+ * agreeing; this paragraph read "logged rather than stored" for a while after
+ * the queue made that untrue, which is exactly the drift the README warns
+ * about.
  */
 
 const FIELDS = [

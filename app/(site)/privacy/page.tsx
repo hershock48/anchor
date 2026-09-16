@@ -4,6 +4,7 @@ import { getFacts } from "@/lib/content";
 export const metadata = {
   title: "Privacy",
   description: "What this site collects, where it goes, and how long it is kept.",
+  alternates: { canonical: "/privacy" },
 };
 
 export default async function Privacy() {

@@ -290,10 +290,10 @@ export const payments = {
    * it is the structure the association-endorsed processor uses. Set to 0
    * to absorb fees instead; the disclosure line disappears with it.
    *
-   * Routing this revenue to Glazed is a Stripe Connect application-fee job
-   * later (the Square version of that rail already exists in devine); until
-   * then the fee settles with the payment and Glazed's share is handled on
-   * the invoice.
+   * Since September 2, 2026 it reaches Glazed as a Stripe Connect
+   * application fee at the moment of payment (lib/stripe.ts, STRIPE_ACCOUNT).
+   * Without a connected account it simply settles with the payment on
+   * whoever owns the key, which is how a first test still works.
    */
   convenienceFeeCents: 99,
 } as const;

@@ -7,6 +7,7 @@ export async function generateMetadata() {
   return {
   title: "Our giving",
   description: `We give a percentage of what we earn back to local causes in and around ${facts.contact.city}, and we post each one as it happens.`,
+  alternates: { canonical: "/giving" },
   };
 }
 
