@@ -816,7 +816,9 @@ site at `/demo`. Every path on that host sends `X-Robots-Tag: noindex, nofollow`
 and so does any `.vercel.app` host, which is indexable by default and the same
 duplicate-content risk.
 
-The proposal is priced **$3,500 build, $150 a month**, and it points at the demo
+The proposal is priced **$2,000 build, $100 a month** (repriced from $3,500 and
+$150 on September 16, 2026; the registry row on glazedweb.com and the paper
+twin in contracts-private carry the same numbers), and it points at the demo
 in six places: the hero button, a band at the top of "What we built", deep links
 into `/demo/giving`, `/demo/quote` and `/demo/tools/michigan-pip`, and the
 closing ask.
