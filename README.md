@@ -349,7 +349,7 @@ renders `glazedweb.com/agreement/anchor` (the published v1.1 terms
 incorporated by reference, Exhibit A with the scope and the numbers, three
 real screens of the build, the card form for the build fee, and the
 clickwrap acceptance) and `glazedweb.com/build/anchor`, the project page:
-where things stand, the twelve things only she can supply, what happens in
+where things stand, the ten things only she can supply, what happens in
 what order, her stuff, and a **try-it-yourself list** (walk a quote, open
 the workroom, change a fact). Exhibit A carried online-payment terms as
 part 3 until 17 September 2026; they came out with the checkout, and the
