@@ -254,12 +254,18 @@ in `next.config.ts`.** Every other link is fine, because `/coverage` and the
 rest are not rewritten on that host and Next serves them normally. `/` is the
 single path that means something different depending on where you are.
 
-**Ticker rails have a hard width budget.** Mobile GPUs commonly stop
-compositing a layer past 4096px and older ones at 2048. The rails were 4,510px
-and 11,488px, which is why they sat still on a phone while animating fine in a
-desktop browser. They are 3,421px and 3,693px now, measured at 390px wide, and
-`lib/ticker.ts` says so. **Adding items to either rail spends that budget.**
+**The ticker rail has a hard width budget.** Mobile GPUs commonly stop
+compositing a layer past 4096px and older ones at 2048. The two rails were
+4,510px and 11,488px, which is why they sat still on a phone while animating
+fine in a desktop browser. They came down to 3,421px and 3,693px at 390px wide,
+and `lib/ticker.ts` says so. **Adding items to the rail spends that budget.**
 Re-measure if you add any.
+
+There is one rail now. The second carried live share prices, and it came off on
+16 September 2026 at the client's word: prices on an agency's homepage read as
+somebody else's business, and it was the only remote data source on the site.
+The Michigan facts stay, because the education is what she likes and what the
+site is for.
 
 **Wide tables scroll inside themselves.** `.tablewrap` carries `tabIndex={0}` and a
 `role`, because a scroll container is otherwise unreachable by keyboard.

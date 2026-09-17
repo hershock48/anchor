@@ -979,9 +979,10 @@ h1 em svg path, h2 em svg path { stroke-dasharray: 320; stroke-dashoffset: 320; 
    level up never reached them and PGR ran into Progressive. */
 .tick-item > span { display: inline-flex; align-items: center; gap: 10px; }
 .tick-gold .tick-item { color: var(--navy); font-weight: 600; }
+/* The navy tone has no caller since the market rail came off on 2026-09-16.
+   It stays because `tone` is a parameter of a live component rather than a
+   leftover, and the second rail it styles is one prop away. */
 .tick-navy .tick-item { color: #a9bdcd; font-weight: 500; }
-.tick-sym { font-weight: 700; color: var(--navy); }
-.tick-navy .tick-sym { color: #fff; }
 .tick-dot { width: 5px; height: 5px; border-radius: 50%; background: rgba(20,41,60,.45); display: inline-block; }
 .tick-navy .tick-dot { background: var(--gold); }
 
@@ -1084,46 +1085,32 @@ h1 em svg path, h2 em svg path { stroke-dasharray: 320; stroke-dashoffset: 320; 
    image, and it simply is there. The animated header mark retired with the
    vector recreations on 2026-08-31. */
 
-/* ── the market rail ── */
-.q { display: inline-flex; align-items: center; gap: 8px; }
-/* 1200px, not 640, and the width is the reason rather than the layout.
-   A quote is the widest thing on either rail: symbol, price, arrow, signed
-   percentage. At full size one measured 194px and the doubled track came to
-   4,285px, which is past the roughly 4096px point where mobile and tablet GPUs
-   stop compositing an animated layer and the rail freezes on the screen. See
-   lib/ticker.ts. 1200 rather than 900 because a landscape iPad is 1024 or 1180
-   CSS pixels wide, so 900 would have left the exact devices this protects on
-   the wrong side of it. Shrinking the quote here keeps every touch-sized
-   viewport under the cap, and has the second effect of fitting three quotes on a phone
-   instead of two and a bit: at 11px one was 161px, which is 41% of a 390px
-   screen, and the rail read as a wall of digits rather than as prices.
+/* ── the rail's width budget ──
+   1200px, not 640, and the WIDTH is the reason rather than the layout. Past
+   roughly 4096px, mobile and tablet GPUs stop compositing an animated layer
+   and the rail freezes on the screen. See lib/ticker.ts. 1200 rather than 900
+   because a landscape iPad is 1024 or 1180 CSS pixels wide, so 900 would have
+   left the exact devices this protects on the wrong side of it.
 
    These rules used to live in the 640px block with the rail heights, which
-   meant a 768px tablet took the full-size type and its notes rail came to
-   4,743px. Under the cap on a phone, over it on an iPad, and no amount of
-   testing on a phone would ever have shown it. Rail heights stay at 640;
-   anything that changes the track's WIDTH belongs here.
+   meant a 768px tablet took full-size type and its track came to 4,743px:
+   under the cap on a phone, over it on an iPad, and no amount of testing on a
+   phone would ever have shown it. Rail heights stay at 640; anything that
+   changes the track's WIDTH belongs here.
 
-   Above this the tracks are 4,285 and 4,743px and that is deliberate. The
-   original measurement that produced the cap had desktop browsers compositing
-   an 11,488px layer without complaint; it was only phones that froze. */
+   Above 1200 the track runs past the cap on purpose. The original measurement
+   had desktop browsers compositing an 11,488px layer without complaint; it was
+   only phones that froze.
+
+   A second rail of live share prices shared this budget and was the widest
+   thing on either track (one quote measured 194px, doubling to 4,285px). It
+   came off on 2026-09-16 at the client's word, and its .q rules went with it
+   in the same commit as the component. */
 @media (max-width: 1200px) {
   .tick-item { font-size: var(--t-xs); padding: 0 11px; letter-spacing: .08em; }
   .tick-item > span { gap: 7px; }
-  .q { gap: 5px; font-size: var(--t-xs); letter-spacing: .04em; }
-  .q-sym { letter-spacing: .06em; }
   .tick-navy .tick-item { padding: 0 9px; }
 }
-.q-sym { font-weight: 700; color: #fff; letter-spacing: .1em; }
-.q-px { color: #cbd7e1; letter-spacing: .04em; font-variant-numeric: tabular-nums; }
-.q-chg {
-  display: inline-flex; align-items: center; gap: 4px; font-weight: 600;
-  letter-spacing: .04em; font-variant-numeric: tabular-nums;
-}
-/* Direction is carried by the arrow and the sign as well as by color, so this
-   still reads with the color removed. Both measured on --navy-2 #0e1f2e. */
-.q-chg.up { color: #64e6a0; }    /* 10.8 */
-.q-chg.down { color: #ff9384; }  /* 8.4  */
 
 /* ── 404 ── */
 .nf-links { list-style: none; display: grid; gap: 2px; margin-top: 26px; }

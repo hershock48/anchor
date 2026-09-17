@@ -1,21 +1,27 @@
 /**
- * The facts rail, the second of the two tickers under the hero.
+ * The facts rail, and since 17 September 2026 the only rail under the hero.
  *
- * A RETRACTION, RECORDED. This file used to open with two decisions: no live
- * prices (every reliable feed is keyed and billed, and the free ones are
- * unreliable), and a regulatory one, that an insurance producer showing
- * moving share prices can read as offering securities, so the rail would
- * carry carrier symbols without prices. Both were overtaken. The market rail
- * that actually ships is `components/StockTicker.tsx` fed by `lib/quotes.ts`:
- * live prices for carriers, Apple, Nvidia, the S&P and three coins, from
+ * A RETRACTION AND ITS ENDING, BOTH RECORDED, because this argument went
+ * around twice and should not go around a third time.
+ *
+ * This file originally opened with two reasons for having no live prices: a
+ * practical one (every reliable feed is keyed and billed, and the free ones
+ * are unreliable) and a regulatory one (an insurance producer showing moving
+ * share prices can read as offering securities). So the rail carried carrier
+ * symbols with no prices. Both were then overtaken: a market rail shipped
+ * with live prices for carriers, Apple, Nvidia, the S&P and three coins, off
  * keyless Yahoo and CoinGecko endpoints, corrected on the client after first
- * paint. The subscription objection was answered by the keyless sources. The
- * regulatory one was not answered here, it was set aside: the owners follow
- * markets and asked for it, and whether a live price ticker on a producer's
- * site needs a word from her attorney or E&O carrier is hers to raise. The
- * dead `symbols` list that was this file's "seam" for live prices is gone;
- * `lib/quotes.ts` is where a symbol is added or removed now, and it says
- * what that costs in track width.
+ * paint. The practical objection was answered by the keyless sources. The
+ * regulatory one was never answered, only set aside, because the owners
+ * follow markets and asked for it.
+ *
+ * She asked for it to come off at the 16 September 2026 meeting. The market
+ * rail, its data module and its dynamic route are gone as of this commit
+ * (recover them with `git show 49a0798^:components/StockTicker.tsx` and the
+ * two files beside it). The regulatory question goes with them, unanswered
+ * and now moot. If a price rail is ever asked for again, it is hers to raise
+ * with her attorney or E&O carrier first, and that conversation is the cost,
+ * not the code.
  */
 
 /**
