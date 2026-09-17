@@ -233,18 +233,36 @@ moment it becomes a heading font the lockup stops being the brand's voice.
 footer copyright has no year: a "dynamic" year that silently stops updating is
 worse than no year.
 
-**The palette is sampled from the logo, and the gold needs four tokens
-because it is quiet.** `--navy` (#122C4E) and both golds come off the supplied
-artwork: `--gold` (#C69F58) is the logo's lower ribbon and a FILL ONLY (as
-text it is 2.23 on paper; white on it is 2.47), so **gold surfaces always
-carry navy lettering** (5.68) and buttons are navy fills. `--gold-light`
-(#D3BB90) is the logo's upper ribbon and gold as text on navy (7.54).
-`--gold-ink` (#6F5415) is gold as text on light grounds, 6.43 on paper and
-5.01 on sand. `--gold-deep` (#A8813A) is display-size only: 3.24 on paper
-clears the 3:1 large-text bar and nothing else. The auditor has already caught
-one softened gold (a 4.09 on the closeband) and one unstyled link on navy.
-**Fix contrast at the token, never on the flagged element**, and validate
-against BOTH light grounds; the sand band is where earlier faults hid.
+**The palette came off the logo, then went bolder on her word.** She asked
+for "bolder colors, bright, unique" at the 16 September 2026 meeting, Kevin
+picked from three rendered options the day after, and the one that shipped
+keeps her two colors and widens the gap between them: the navy grounds drop
+and the golds climb. **No third hue was invented.** A bright accent beside a
+navy and gold mark reads as a widget somebody bolted on, which is the exact
+criticism we made of the quote tab on the roofing site she was shown.
+
+**Gold still needs four tokens, and gold is still a FILL.** `--gold`
+(#E3B24E) is the logo's lower ribbon, brightened: as text it is 1.83 on paper
+and white on it is 1.95, both hard fails, so **gold surfaces always carry navy
+lettering** (8.23, up from 5.68) and buttons are navy fills. `--gold-light`
+(#F2DCA8) is the upper ribbon and gold as text on navy (11.93). `--gold-ink`
+(#6B4E0E) is gold as text on light grounds, 7.23 on paper and 5.93 on sand.
+`--gold-deep` (#A87C28) is display-size only: 3.52 on paper clears the 3:1
+large-text bar and nothing else. `--navy` is #0B2140 (15.06 on paper) and
+`--navy-2` #061527. Every pair went up, which is what "bolder" turned out to
+mean in numbers. The auditor has already caught one softened gold (a 4.09 on
+the closeband) and one unstyled link on navy. **Fix contrast at the token,
+never on the flagged element**, and validate against BOTH light grounds; the
+sand band is where earlier faults hid.
+
+**The one cost, and it is visible in the hero.** The site's gold is now
+brighter than the gold ribbon in her own logo PNG, and the palette was sampled
+from that artwork so the two would match. Her mark is a phone-screenshot JPEG
+we do not own the source of, so it was left alone rather than recolored. If
+the mismatch reads wrong beside the mark, **recolor the artwork from her
+original file when it lands** (the same re-key the mark trap above describes).
+Do not walk the palette back a shade at a time; that loses the thing she asked
+for and keeps the mismatch anyway.
 
 **The logo has to know where home is.** On a pitch host `/` is the proposal, not
 the site, so a brand link pointing at `/` throws the client out of their own

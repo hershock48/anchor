@@ -8,10 +8,24 @@
  * meaning anything. The red palette this build launched with is retired; it
  * predates the real logo.
  *
+ * BOLDER AND BRIGHTER, September 17, 2026, at the client's word ("bolder
+ * colors, bright, unique") and Kevin's pick of three rendered options. The two
+ * colors did not change, the distance between them did: the navy ground drops
+ * (#122c4e to #0B2140, #0e2038 to #061527) and the golds climb (#c69f58 to
+ * #E3B24E). Nothing new was invented, because a third hue next to a navy and
+ * gold logo reads as a widget somebody bolted on. Every pair below went UP:
+ * body text on paper 12.69 to 15.06, navy on the gold ground 5.66 to 8.23.
+ *
+ * The cost, named so nobody rediscovers it: the site's gold is now brighter
+ * than the gold ribbon in the client's own logo PNG. The palette was sampled
+ * from that artwork precisely so they would match. If the mismatch reads
+ * wrong beside the mark, the answer is to recolor the artwork, not to walk
+ * the palette back a shade at a time.
+ *
  * GOLD IS A FILL, NEVER TEXT ON A LIGHT GROUND, AND IT NEVER CARRIES WHITE.
- * --gold measures 2.38 as text on paper and white on it is 2.63, both hard
+ * --gold measures 1.83 as text on paper and white on it is 1.95, both hard
  * fails, which is why there are four gold tokens where red needed three. Text
- * ON gold is navy (5.66). Gold AS text is --gold-ink on light grounds and
+ * ON gold is navy (8.23). Gold AS text is --gold-ink on light grounds and
  * --gold-light on navy. Buttons are navy fills now for the same reason: there
  * is no gold dark enough to carry white text and still look like the logo.
  *
@@ -22,40 +36,42 @@
  */
 
 :root {
-  /* Anchor Navy, SAMPLED FROM THE CLIENT'S LOGO (its anchor measures
-     #112D4D-#132C51 through the JPEG; this is the center). 12.69 on paper.
-     Body ink and every dark ground. */
-  --navy: #122c4e;
-  --navy-2: #0e2038; /* Footers and the deepest bands. */
-  --navy-3: #26496f; /* Borders and dividers on light grounds. */
+  /* Anchor Navy. Sampled from the client's logo in August (its anchor
+     measures #112D4D-#132C51 through the JPEG), then dropped a step on
+     2026-09-17 for the bolder look she asked for. 15.06 on paper, up from
+     12.69. Body ink and every dark ground. */
+  --navy: #0B2140;
+  --navy-2: #061527; /* Footers and the deepest bands. 18.35 with white. */
+  --navy-3: #2A5482; /* Borders and dividers on light grounds. 7.31 on paper. */
 
-  /* The logo's richer gold, its LOWER ribbon. FILL ONLY. Navy text on it is
-     5.68. As text it fails everywhere light (2.23 paper) and white on it
-     fails too (2.47). */
-  --gold: #c69f58;
+  /* The logo's richer gold, its LOWER ribbon, brightened 2026-09-17. FILL
+     ONLY. Navy text on it is 8.23, up from 5.68, which is the whole reason
+     the gold could climb at all. As text it fails everywhere light (1.83 on
+     paper) and white on it fails too (1.95). */
+  --gold: #E3B24E;
   /* Darker gold for large display type on light grounds and decorative
-     hovers. 3.24 on paper, which clears the 3:1 large-text bar and nothing
+     hovers. 3.52 on paper, which clears the 3:1 large-text bar and nothing
      else: never use it for body-size text. */
-  --gold-deep: #a8813a;
-  /* Gold as TEXT on light grounds. 6.43 on paper, 5.01 on sand. */
-  --gold-ink: #6f5415;
+  --gold-deep: #A87C28;
+  /* Gold as TEXT on light grounds. 7.23 on paper, 5.93 on sand. */
+  --gold-ink: #6B4E0E;
   /* The logo's paler gold, its UPPER ribbon, and gold as TEXT on navy
-     grounds: 7.54 on navy, 8.99 on navy-2. */
-  --gold-light: #d3bb90;
+     grounds: 11.93 on navy, 13.61 on navy-2. */
+  --gold-light: #F2DCA8;
 
-  --paper: #f7f3ec; /* The page. */
-  --paper-2: #fffdf9; /* Cards and raised panels. */
-  --sand: #e4d7c3; /* Quiet bands. Navy on it is 10.5. */
-  --line: #ded3c1;
+  --paper: #FBF7F0; /* The page. */
+  --paper-2: #FFFDF9; /* Cards and raised panels. */
+  --sand: #EFE0C6; /* Quiet bands. Navy on it is 12.37. */
+  --line: #E3D4BB;
 
   /* Secondary small text. Validated against BOTH light grounds, which is the
-     whole point: the previous value was 4.96 on paper and 3.87 on sand, and
-     the sand band is where axe found it. 6.39 on paper, 4.99 on sand.
+     whole point: an earlier value was 4.96 on paper and 3.87 on sand, and
+     the sand band is where axe found it. 6.62 on paper, 5.44 on sand.
      Do not lighten it. This project has now shipped four contrast faults and
      every one of them was a color that passed before somebody softened it. */
   --slate: #4d5a66;
 
-  --focus: #122c4e;
+  --focus: #0B2140;
 
   --wrap: 1120px;
   --radius: 14px;
@@ -155,9 +171,9 @@ a {
   color: var(--gold-ink);
   text-underline-offset: 3px;
 }
-/* Hover darkens to navy rather than to a mid gold: --gold-deep is 3.24 as
-   text on paper, a fail, and there is no gold between ink and deep that
-   passes. */
+/* Hover darkens to navy rather than to a mid gold: --gold-deep is 3.52 as
+   text on paper, a fail at body size, and there is no gold between ink and
+   deep that passes. */
 a:hover {
   color: var(--navy);
 }
@@ -207,9 +223,9 @@ svg {
 }
 
 /* ---- buttons ----
-   Navy fills, not gold: white on --gold is 2.63 and navy on it only clears
-   normal text at 5.66 with no room for a darker hover. White on navy is 14.9
-   and the hover has --navy-2. Gold stays decorative. */
+   Navy fills, not gold: white on --gold is 1.95 and navy on it reaches 8.23,
+   which is plenty for text but leaves gold with no way to carry white. White
+   on navy is 16.08 and the hover has --navy-2. Gold stays decorative. */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -312,9 +328,9 @@ section {
 /* Placeholder marker. Deliberately loud: a placeholder that looks like content
    is how invented prices reach real customers. */
 .ph {
-  background: #f8ecd2;
-  border-bottom: 2px dashed #8a5f14;
-  color: #5f4010;
+  background: #F6E7C6;
+  border-bottom: 2px dashed #6B4E0E;
+  color: #5A3C05;
   padding: 0 4px;
   border-radius: 2px;
   font-weight: 600;
@@ -455,12 +471,13 @@ section {
   .gw-plate-bar { justify-content: center; padding: 0 16px 16px; }
 }
 
-/* Computed by `node glaze/scripts/plate.mjs "#0e1f2e"`, not chosen by eye.
-   The chocolate mark on this footer measures 1.05, which is invisible rather
+/* Computed by `node glaze/scripts/plate.mjs "#061527"`, not chosen by eye.
+   The chocolate mark on this footer measures 1.04, which is invisible rather
    than ugly, and is exactly the failure the script exists to catch. Cream
-   plate steps 15.60 off the footer. */
+   plate steps 17.10 off the footer, up from 15.60 when the footer was
+   lighter. */
 .gw-plate {
-  --gw-above: #0e1f2e;
+  --gw-above: #061527;
   --gw-plate: #fdf6ec;
   --gw-plate-ink: #2b1e16;
 }
@@ -474,7 +491,7 @@ section {
 /* ═══ header ═══ */
 .site-head {
   position: sticky; top: 0; z-index: 60;
-  background: rgba(247, 243, 236, 0.92);
+  background: rgba(251, 247, 240, 0.92);
   backdrop-filter: blur(10px);
   border-bottom: 1px solid var(--line);
 }
@@ -596,7 +613,7 @@ section {
   letter-spacing: .12em; text-transform: uppercase;
   padding: 20px 12px;
   border-radius: 10px 0 0 10px;
-  box-shadow: -3px 0 16px -6px rgba(18, 44, 78, .45);
+  box-shadow: -3px 0 16px -6px rgba(11, 33, 64, .45);
   transition: padding .16s ease;
 }
 .qtab span { writing-mode: vertical-rl; transform: rotate(180deg); }
@@ -606,7 +623,7 @@ section {
     top: auto; transform: none;
     right: 14px; bottom: calc(14px + env(safe-area-inset-bottom, 0px));
     border-radius: 999px; padding: 13px 20px;
-    box-shadow: 0 8px 22px -8px rgba(18, 44, 78, .55);
+    box-shadow: 0 8px 22px -8px rgba(11, 33, 64, .55);
   }
   .qtab span { writing-mode: horizontal-tb; transform: none; }
   .qtab:hover { padding: 13px 20px; }
@@ -627,7 +644,7 @@ section {
   text-decoration: none; color: var(--navy);
   transition: transform .15s ease, box-shadow .15s ease;
 }
-.cov-feature:hover { transform: translateY(-2px); box-shadow: 0 16px 34px -20px rgba(18,44,78,.55); color: var(--navy); }
+.cov-feature:hover { transform: translateY(-2px); box-shadow: 0 16px 34px -20px rgba(11,33,64,.55); color: var(--navy); }
 .cov-feature h3 { font-size: var(--t-h3); margin-top: 6px; }
 .cov-feature-lede { margin-top: 10px; font-size: var(--t-md); line-height: 1.6; color: var(--slate); }
 .cov-feature .cov-more { margin-top: 16px; }
@@ -669,7 +686,7 @@ section {
 .steps { list-style: none; display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 36px; counter-reset: s; }
 @media (max-width: 800px) { .steps { grid-template-columns: 1fr; } }
 .steps li { padding-top: 4px; }
-/* Gold discs with NAVY numerals: navy on --gold is 5.66, white on it is 2.63. */
+/* Gold discs with NAVY numerals: navy on --gold is 8.23, white on it is 1.95. */
 .step-n {
   display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%;
   background: var(--gold); color: var(--navy); font-family: var(--font-mono), ui-monospace, monospace;
@@ -736,7 +753,7 @@ section {
 .factlist { display: grid; grid-template-columns: auto 1fr; gap: 8px 14px; font-size: var(--t-cap); margin-top: 12px; }
 .factlist dt { color: var(--slate); }
 .factlist dd { font-weight: 600; }
-.ph-block { background: #fdf6e6; border-left: 3px solid #a97a24; padding: 14px 16px; border-radius: 0 8px 8px 0; }
+.ph-block { background: #FEF8EA; border-left: 3px solid #A87C28; padding: 14px 16px; border-radius: 0 8px 8px 0; }
 
 /* ═══ pip table ═══ */
 .pip { width: 100%; border-collapse: collapse; margin-top: 24px; font-size: var(--t-base); }
@@ -748,7 +765,7 @@ section {
 .pip-base { color: var(--slate); font-size: var(--t-base); font-weight: 400; }
 .pip-flag { display: inline-block; font-size: var(--t-xs); font-weight: 700; letter-spacing: .06em; text-transform: uppercase; padding: 3px 9px; border-radius: 20px; background: var(--sand); color: var(--navy); }
 .pip-caution .pip-flag { background: #f7e2df; color: #8c2b21; }
-.pip-restricted .pip-flag { background: #efe2cd; color: #6f4c14; }
+.pip-restricted .pip-flag { background: #F3E3C4; color: #6B4E0E; }
 .pip-elig { display: block; font-size: var(--t-cap); color: var(--slate); margin-top: 8px; line-height: 1.5; }
 .pip-source { margin-top: 16px; font-size: var(--t-sm); color: var(--slate); }
 .pip-detail { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-top: 26px; }
@@ -945,7 +962,7 @@ h1 em svg path, h2 em svg path { stroke-dasharray: 320; stroke-dashoffset: 320; 
    the navy rail measured 9px of air above the text and 12px below, and the
    brick rail was 2px the other way. Padding + border is now equal top and
    bottom on each. If a border width changes, change its padding with it. */
-/* The gold rail carries NAVY text: navy on --gold is 5.66, white on it 2.63.
+/* The gold rail carries NAVY text: navy on --gold is 8.23, white on it 1.95.
    Renamed from .tick-brick when the palette moved to the client's logo. */
 .tick-gold {
   background: var(--gold); border-top: 3px solid var(--navy);
@@ -983,7 +1000,7 @@ h1 em svg path, h2 em svg path { stroke-dasharray: 320; stroke-dashoffset: 320; 
    It stays because `tone` is a parameter of a live component rather than a
    leftover, and the second rail it styles is one prop away. */
 .tick-navy .tick-item { color: #a9bdcd; font-weight: 500; }
-.tick-dot { width: 5px; height: 5px; border-radius: 50%; background: rgba(20,41,60,.45); display: inline-block; }
+.tick-dot { width: 5px; height: 5px; border-radius: 50%; background: rgba(11,33,64,.45); display: inline-block; }
 .tick-navy .tick-dot { background: var(--gold); }
 
 /* ── the big hero ── */
@@ -993,7 +1010,7 @@ h1 em svg path, h2 em svg path { stroke-dasharray: 320; stroke-dashoffset: 320; 
 }
 .hero::before {
   content: ""; position: absolute; inset: 0;
-  background: radial-gradient(circle at 88% 30%, rgba(193,154,73,.22), transparent 55%);
+  background: radial-gradient(circle at 88% 30%, rgba(227,178,78,.24), transparent 55%);
   pointer-events: none;
 }
 .hero .wrap { position: relative; z-index: 1; }
@@ -1007,7 +1024,7 @@ h1 em svg path, h2 em svg path { stroke-dasharray: 320; stroke-dashoffset: 320; 
 .bigstat {
   font-family: var(--font-display), sans-serif; font-weight: 900;
   font-size: clamp(84px, 17vw, 200px); line-height: .82; letter-spacing: -0.06em;
-  /* --gold-deep, 3.24 on paper: this is 84px+ display type, so the 3:1
+  /* --gold-deep, 3.52 on paper: this is 84px+ display type, so the 3:1
      large-text bar is the one that applies. Do not reuse this color at any
      body size, and do not lighten it to --gold, which fails even at this
      size. */
@@ -1025,7 +1042,7 @@ h1 em svg path, h2 em svg path { stroke-dasharray: 320; stroke-dashoffset: 320; 
   transition: transform .28s cubic-bezier(.2,.7,.2,1);
 }
 .cov-card:hover::after { transform: scaleX(1); }
-.cov-card:hover { transform: translateY(-4px); box-shadow: 0 18px 34px -22px rgba(20,41,60,.5); }
+.cov-card:hover { transform: translateY(-4px); box-shadow: 0 18px 34px -22px rgba(11,33,64,.5); }
 
 /* ── steps, with real discs ── */
 .step-n { width: 52px; height: 52px; font-size: var(--t-lg); border: 3px solid var(--navy); }
@@ -1062,14 +1079,15 @@ h1 em svg path, h2 em svg path { stroke-dasharray: 320; stroke-dashoffset: 320; 
 @media (max-width: 900px) { .goalband-in { grid-template-columns: 1fr; gap: 30px; } }
 
 /* ── the closing band, loud on purpose ──
-   The one gold GROUND on the site, which is why it lands. Everything on it is
-   navy: navy on --gold is 5.66, white on it is 2.63, so no white text and no
-   white-outline buttons in here, ever. */
+   The one gold GROUND on the site, which is why it lands, and the band that
+   gained most from the brighter gold. Everything on it is navy: navy on
+   --gold is 8.23, white on it is 1.95, so no white text and no white-outline
+   buttons in here, ever. */
 .closeband { background: var(--gold); color: var(--navy); padding: 66px 0 74px; }
 .closeband h2 { color: var(--navy); }
-/* Navy, not a softened olive: the first draft used #4a3c1c and measured 4.09
-   on the gold, which the auditor caught. Navy on gold is 5.66. On a gold
-   ground there is no room to soften; hierarchy comes from size here. */
+/* Navy, not a softened olive: an early draft used #4a3c1c and measured 4.09
+   on the old gold, which the auditor caught. Navy on gold is 8.23 now. The
+   headroom is not an invitation: hierarchy on this band comes from size. */
 .closeband .lede { color: var(--navy); }
 .closeband .close-ph { color: var(--navy); }
 
