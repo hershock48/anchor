@@ -59,7 +59,7 @@ npm install axe-core playwright-core --no-save
 npx next start -p 4502
 PLAYWRIGHT_BROWSERS_PATH=/opt/pw-browsers \
   node ../glazedweb/glaze/scripts/audit.mjs --base http://127.0.0.1:4502 \
-  --routes /,/coverage,/coverage/auto,/coverage/home,/coverage/renters,/coverage/umbrella,/coverage/life,/coverage/business,/giving,/tools/michigan-pip,/guides,/guides/mini-tort,/guides/excess-attendant-care,/guides/storm-claims-after-march-6,/guides/why-your-rate-depends-on-where-you-live,/about,/contact,/quote,/quote/received,/privacy,/intake,/intake/sent,/pay,/pay/no-match,/pay/received,/workroom
+  --routes /,/coverage,/coverage/auto,/coverage/home,/coverage/renters,/coverage/umbrella,/coverage/life,/coverage/business,/giving,/tools/michigan-pip,/guides,/guides/mini-tort,/guides/excess-attendant-care,/guides/storm-claims-after-march-6,/guides/why-your-rate-depends-on-where-you-live,/about,/contact,/quote,/quote/received,/privacy,/intake,/intake/sent,/workroom
 ```
 
 The workroom's signed-in screens sit behind the passcode, so audit them with
@@ -69,7 +69,7 @@ must have been started with that same `WORKROOM_PASSCODE`:
 
 ```bash
 node ../glazedweb/glaze/scripts/audit.mjs --base http://127.0.0.1:4502 \
-  --cookie anchor_workroom=<sha256 hex> --routes /workroom,/workroom/book,/workroom/book/import,/workroom/payments,/workroom/facts
+  --cookie anchor_workroom=<sha256 hex> --routes /workroom,/workroom/facts
 ```
 
 ---
@@ -286,9 +286,9 @@ is never on the critical path. See `.env.example`.
 **PII.** The form deliberately does not ask for dates of birth, license numbers or
 VINs. Those come up on the call. What it does collect is logged AND stored as a
 lead in the workroom, and `app/(site)/privacy/page.tsx` says so in those words.
-The same page has a "Paying your bill" section describing the book and the
-payment records, and no card number ever reaches this server; keep all three
-in agreement.
+The same page has a "Payments" section saying flatly that the site takes
+none, holds no card or policy numbers and keeps no customer list; keep all
+three in agreement.
 **If the handler changes, that page changes with it** — it already had to once:
 the page read "logged, not stored" until the leads queue made that untrue, which
 is exactly the failure this note exists to catch.
@@ -340,13 +340,14 @@ inside her site.
 **Since September 10, 2026 the deal is not in this repo.** It follows the
 True North shape: an `anchor` row in glazedweb's `lib/customOrders.js`
 renders `glazedweb.com/agreement/anchor` (the published v1.1 terms
-incorporated by reference, Exhibit A with the scope, the numbers and the
-online-payment terms as part 3, three real screens of the build, the card
-form for the build fee, and the clickwrap acceptance) and
-`glazedweb.com/build/anchor`, the project page: where things stand, the
-twelve things only she can supply, what happens in what order, her stuff,
-and a **try-it-yourself list** (walk a quote, pay a bill with a test card,
-tick an add-on, change a fact). The proposal's one action is the build page
+incorporated by reference, Exhibit A with the scope and the numbers, three
+real screens of the build, the card form for the build fee, and the
+clickwrap acceptance) and `glazedweb.com/build/anchor`, the project page:
+where things stand, the twelve things only she can supply, what happens in
+what order, her stuff, and a **try-it-yourself list** (walk a quote, open
+the workroom, change a fact). Exhibit A carried online-payment terms as
+part 3 until 17 September 2026; they came out with the checkout, and the
+registry row is the only place either number is typed by hand. The proposal's one action is the build page
 ("Launch"), with the agreement, the try-it list, the intake sheet and
 Kevin's email as plain links under it.
 
@@ -359,19 +360,17 @@ proposal's prose, and that paper draft.
 
 ## The workroom: her dashboard, at /workroom
 
-**The agency's own tool, not part of the customer site.** Four screens behind a
+**The agency's own tool, not part of the customer site.** Two screens behind a
 passcode: the **leads queue** (every quote request, worked through statuses
-new → called → quoted → won/lost, with her own notes per lead), the
-**book** (every customer and policy she bills, with the pay link, the
-"email them the bill" button and the payment history for each; see the
-payments section below), **payments** (a read-only window onto Stripe:
-recent payments and running autopays, each labelled with the payer, policy
-number and carrier that the checkout writes into the session metadata; it
-reads through `lib/stripe.ts` so the `Stripe-Account` header names HER
-connected account, because its original private fetch helper predated
-Connect and would have listed the platform's own sessions instead of hers),
-and **site facts** (her phone, email, address, hours, license numbers and two
-links, edited in place and live on the site within seconds).
+new → called → quoted → won/lost, with her own notes per lead) and **site
+facts** (her phone, email, address, hours, license numbers and two links,
+edited in place and live on the site within seconds).
+
+It was four screens until 17 September 2026. The **book** (every customer
+and policy she bills, with the pay link, the "email them the bill" button
+and the payment history for each) and **payments** (a read-only window onto
+Stripe) left with the checkout, because a book whose pay links are dead is
+worse than no book at all. Both are on the archive branch.
 
 **The facts screen is a form over a whitelist, and the whitelist is the
 safety.** `lib/workroom/facts-def.ts` says which fields exist, what kind each
@@ -424,11 +423,11 @@ route is rate limited, and **the cookie carries a hash rather than the
 passcode itself**, so a stolen cookie does not hand over a secret that
 outlives the session.
 
-**Nothing behind the gate can move money.** The payments screen reads; refunds
-happen in the Stripe dashboard behind Stripe's own login. The facts screen
-changes only what the site already publishes, and the built-in value is one
-clear-and-save away. If a screen ever grows a refund button it needs a real
-login before it ships.
+**Nothing behind the gate can move money**, and since the checkout left there
+is no money for it to move. The facts screen changes only what the site
+already publishes, and the built-in value is one clear-and-save away. If a
+screen ever grows a button that charges or refunds, it needs a real login
+before it ships, not this passcode.
 
 **Storage is `DATABASE_URL`, or memory.** Postgres when set (Vercel > Storage
 > Neon, free tier, part of the hosting she already has, so the "nothing
@@ -458,226 +457,130 @@ which the auditor caught as three landmark violations on every workroom screen
 at both widths. **If you add a top-level route that is not part of the
 customer site, it belongs beside `(site)`, not inside it.**
 
-## Payments: the customer never types an amount and never has a password
+## Payments, archived
 
-**Reshaped September 2, 2026.** The first version of /pay had the customer
-copy the amount and policy number off their bill into a form, because the
-site had no way to know either. Now it does, and the whole flow is built
-around that. Three pieces:
+**This site does not take money.** The client decided on 17 September 2026
+that she does not want a checkout for now, "but will maybe eventually add it
+again." So the whole payment service came out of the tree rather than staying
+parked behind a flag, where it would have gone stale against Stripe's API and
+against her own book while nobody looked at it.
 
-**The book, in the workroom.** Her customers and their policies: installment
-amount, how often it is billed, the next due date, and who collects it (an
-agency invoice, or the carrier). Entered one at a time, or imported from her
-agency management system's CSV export at `/workroom/book/import`, which is
-additive and idempotent (customers matched by email or name and ZIP,
-policies by carrier and policy number, nothing ever deleted, autopay and
-payment history untouched), so "export again next month, import again" is
-how the book stays current. **The book is the only source of an amount.**
+**It is whole on the branch `archive/payments-2026-09`**, pushed at commit
+`7133091` before a single file was deleted. Restoring it is a merge and her
+Stripe account, not a rebuild. Thirty-one files went: every `/pay` route and
+its APIs, `lib/pay.ts`, `lib/paylink.ts`, `lib/stripe.ts`, `lib/addons.ts`,
+the workroom book and payments screens, and the nightly reminder cron. Eleven
+more were unwired in place: the workroom's tabs and gate copy, the header,
+the footer, the sitemap, the store, `vercel.json`, `/privacy` and the
+proposal.
 
-**The pay link.** From any policy the workroom mints a signed, expiring link
-(`lib/paylink.ts`, HMAC over the policy id and an expiry, signed by
-`PAY_LINK_SECRET`). It opens `/pay/p/<token>`: "Hi Dana, your $142.10 for
-the Civic is due March 3," the policy details, and one choice: pay this
-once, or this and every one after it automatically. The card form is
-Stripe's hosted checkout under her name, the .99 is its own plain line item
-("Online payment fee"), and the sentence under the button says who charges
-it. A customer with no link finds the same page at /pay with the two things
-they know, policy number and ZIP (rate limited, eight misses per address per
-ten minutes; a miss lands on a static no-match page that does not say which
-field was wrong). No accounts, no passwords, by design: a customer will not
-keep a password for an insurance agent and should not have to.
+### What is on that branch
 
-**Where the money goes is decided per carrier, not per bill.** A policy
-marked "the carrier bills it" pays on the site only when that carrier's
-`payableHere` flag in `lib/site.ts` is true, set from the agency agreement
-and never from a book entry. Otherwise the very same bill page says "this
-one is paid at Progressive" in Anchor's voice, with the carrier's portal
-link and billing line, so the customer never has to work out which of two
-names to pay and never sees a second brand on our page. Embedding a
-carrier's login inside our page was considered and ruled out: carriers
-block framing, and a Progressive password box on an Anchor page is what a
-phishing page looks like.
+**The book was the only source of an amount.** Her customers and their
+policies, with the installment amount and due date, entered in the workroom or
+imported from her agency management system's CSV export. The import was an
+upsert keyed on customer email and on policy by carrier plus policy number,
+never deleting, leaving autopay and payment history alone, so "export again
+next month, import again" was how the book stayed current. **The customer
+never typed an amount and never had a password**, which was the whole point of
+the September 2 reshape: the first version had them copy the figure off their
+own bill, because the site had no way to know it.
 
-**Autopay** is a Stripe subscription on the policy's own cadence (monthly,
-quarterly, every six months, yearly). Its billing cycle is anchored to the
-next due date with no proration, so nothing is charged today and the first
-full installment lands on the due date. **Not a trial:** the first version
-used `trial_end`, and Stripe showed the customer "40 days free" and "Try
-premium…", which is the wrong story for an insurance installment; Kevin saw
-it on the first autopay walk. `billing_cycle_anchor` says the same thing in
-Stripe's plain wording. Stripe allows the anchor no later than one billing
-interval out (the "next natural billing date", which the first production
-attempt hit at 40 days on a monthly policy), so a due date beyond that
-falls back to the trial; that only happens when a customer pays an
-installment and then turns on autopay for the next one. Each
-cycle arrives as `invoice.paid` and is recorded like any payment. Stopping
-it is a call or email: the workroom's "Stop autopay" cancels the
-subscription, the one thing behind the gate that reaches into Stripe, and
-it can only ever stop money moving. Refunds stay in the Stripe dashboard.
+**The pay link** was an HMAC over the policy id and an expiry, signed with
+`PAY_LINK_SECRET`, minted from any policy in the workroom. It opened one bill
+already filled in. A customer without a link found the same page with the two
+things printed on every bill, a policy number and a ZIP.
 
-**An installment on autopay is locked in the book.** The subscription
-charges the amount and cadence Stripe was given when it started, and nothing
-in the workroom rewrites a subscription. So while `autopay` is set on a
-policy, the policy editor refuses a change to the amount or the cadence
-(409, "Stop autopay first"), and the CSV import leaves those two fields as
-they are and reports the row, while still landing the rest of it. A renewal
-that changes the premium is therefore: stop autopay, edit or import, and the
-customer turns it back on from their next bill. Without this rule the bill
-page would show one number and Stripe would charge another.
+**Carrier routing was per carrier, from the agency agreement.** A `payableHere`
+flag on the carrier row in `lib/site.ts` decided whether a bill was paid here
+or routed out to that carrier's own portal, and it was set from what each
+agreement authorized, never from a book entry. Premium an agency collects is
+fiduciary money under Michigan insurance law, and where collection is not
+authorized, paying the agency is not paying the insurer: the lapse lands on
+the customer.
 
-**Recording is idempotent by Stripe's own id**, and it happens in two
-places on purpose: the return page (`/pay/received?session_id=`) fetches
-the session from Stripe and records it, and the signed webhook
-(`/api/stripe/webhook`) does the same for `checkout.session.completed`,
-`invoice.paid` and `customer.subscription.deleted`. The second writer is a
-no-op. So a closed tab is survivable (the webhook records) and an
-unconfigured webhook is survivable (the return page records one-time
-payments; autopay cycles record once the secret is set and Stripe
-replays). Every record rolls the policy's due date forward by its cadence
-and emails the agency. Premium and fee are stored apart, always. **The
-webhook verifies Stripe's signature on the raw body first**; an unset
-`STRIPE_WEBHOOK_SECRET` answers 503 so Stripe keeps retrying, which is the
-visible failure we want.
+**Autopay** was a Stripe subscription on the policy's own cadence, anchored on
+the due date with `billing_cycle_anchor` rather than `trial_end`, because the
+trial version showed the customer "40 days free" and "Try it free" on a bill.
+An installment on autopay was locked in the book, since nothing in the
+workroom rewrote a live subscription and a stale book would have shown one
+number while Stripe charged another. **Recording was idempotent by Stripe's
+own id** and happened twice on purpose: on the return page and again on the
+signed webhook.
 
-**The add-on strip is the upsell, and nothing on it is sold.** Devine's
-cart keeps three small things by the register; the insurance version
-(`lib/addons.ts`, `components/AddOnStrip.tsx`) is the endorsements that
-cost little and matter a lot for the policy's line (water backup, rental
-car, roadside, cyber) plus the cross-sell pairs the client curated on each
-line in `lib/site.ts`, at most four, with the client's pairs keeping their
-slots. Each has a plus that opens two plain sentences (a native
-`<details>`, so it works with scripts off) and a box that means "ask us".
-A tick becomes a LEAD in the workroom queue with the agency emailed, made
-BEFORE the customer reaches Stripe so a closed tab loses nothing, and the
-names ride the session so the thank-you page repeats them. A bill paid at
-the carrier gets the same strip with its own "Ask us about these" button.
-Prompts, never advice, and never a price: an endorsement is written by the
-agent and priced by the carrier, and the site is built not to know what
-anyone's policy says.
+**The .99 reached Glazed through Stripe Connect.** Her account was a Standard
+connected account under Glazed's platform: her dashboard, her payouts into the
+trust account, her tax reporting, the charge under her name, and the flat fee
+arriving as an application fee at the moment of payment. Money straight into
+Glazed's account would have made Glazed the holder of insurance premium and a
+money transmitter. Two charges would have meant two authorizations, two
+receipts, and Stripe's 30 cent minimum eating a third of the fee.
 
-**The bill says what each choice charges.** "Just this one: $142.10 now."
-A bill due later reads "Autopay: $142.10 on Oct 12, then every installment
-on its due date. Nothing today," and a bill due today or overdue reads
-"Autopay: $142.10 now, then every installment on its due date," because
-that is exactly what Stripe will then show. Kevin's first walk hit the gap:
-the page said $12.34 due, the Stripe page said $0.00 today, and both were
-right for a bill due in twenty days.
+**Verified against a Stripe stand-in, 2 September 2026**: 24 checks over the
+test key opening the checkout, the session created on her account with both
+lines and the flat fee, the return page recording once and rolling the due
+date, the subscription percentage that rounds to exactly 99 cents, the Connect
+webhook fetching from the event's account, and stop-autopay cancelling on her
+account. **Stripe itself was never exercised.** The request shapes are
+Stripe's documented ones, and a first run against a real test key and test
+connected account is still the step nobody has taken.
 
-**The reminders are the automation.** A Vercel cron (`vercel.json`, 14:00
-UTC daily, signed with `CRON_SECRET`) emails "your payment is due" seven
-days out and on the day, once each per due date, to active policies not on
-autopay whose customer has an email. The same note is behind "Email them
-the bill" on the customer screen. It goes out over Resend from the studio's
-verified domain with reply-to set to her address, because she has no
-mailbox yet (glaze.md allows exactly this); move it to her SMTP when she
-does. **Text messages are not built:** they need a paid provider such as
-Twilio, which she hears the cost of before it goes in.
+### What has to be true before any of it comes back
 
-**What is left alone until the switch flips.** `payments.checkoutEnabled`
-is off and `STRIPE_SECRET_KEY` is unset, so no card can be taken: the bill
-page shows the bill and says "pay it with a person", carrier-billed
-policies still route to the carrier, pay links and the lookup still work
-once `PAY_LINK_SECRET` is set. The flip conditions are on the flag in
-`lib/site.ts`. To walk the checkout before the flip, set a test key and a
-test connected account (see the Connect paragraphs below).
+These are the conditions that kept the switch off, and none of them have
+changed:
 
-**Verified locally, September 2, 2026**, against a production build with
-test secrets: 55 checks covering the gate, customer and policy validation,
-routing (carrier vs agency), pay-link minting and expiry, the bill page in
-every state, the lookup (hit, wrong ZIP, honeypot, rate limit), checkout
-refused while off, the reminder's honest failure without a mail key, the
-cron's auth and selection, the webhook (bad signature, stale timestamp, $0
-trial invoice, a real invoice recorded once with premium and fee apart, the
-due date rolled a quarter, autopay remembered and then cleared), the
-policy rules (paid policies close rather than delete), and the CSV import
-twice (creates, then updates without duplicates, reporting the bad row).
-Nine new routes at 0 violations and no overflow at 320, 390, 768 and 1440.
+1. She has confirmed which policies are agency-billed and which carrier
+   agreements authorize collection. Everything else routes to the carrier.
+2. She has a Stripe account settling into a separate premium or trust bank
+   account, not operating money.
+3. She has given a written go-ahead on the fee, after Kevin has walked her
+   through the research below.
+4. `STRIPE_SECRET_KEY`, `STRIPE_ACCOUNT`, `STRIPE_WEBHOOK_SECRET`,
+   `PAY_LINK_SECRET`, `PAY_NOTIFY_TO` and `CRON_SECRET` are set in the Vercel
+   dashboard. None of them are in this repo's `.env.example` any more; the
+   archive branch carries that file with all six and their notes.
 
-**The .99 reaches Glazed through Stripe Connect, wired September 2, 2026.**
-Glazed's Stripe account is the platform and hers is a connected account
-under it (Standard type: her own dashboard, her own payouts into the trust
-account, her own tax reporting). Every call carries a `Stripe-Account`
-header naming her account (`STRIPE_ACCOUNT`), so the charge is hers, under
-her name and statement descriptor, and the fee is an application fee Stripe
-moves to Glazed's balance at the moment of payment. Nothing to invoice, and
-the fee never sits in the producer's account, which is also the cleaner
-compliance posture. One-time payments carry the flat 99 cents
-(`payment_intent_data[application_fee_amount]`); subscriptions can only
-carry a percentage with two decimals, so `feePercentFor` picks the
-percentage of the cycle total that rounds to 99 cents, exact for ordinary
-installments and within a few cents on very large ones, with the variance
-on Glazed's side and never on the customer's charge. Why not the money
-straight into Glazed's account: that would make Glazed the holder of
-insurance premium, fiduciary money in Michigan, and a money transmitter.
-Why not two charges: two authorizations, two receipts, and Stripe's 30
-cent minimum eating a third of the fee. Connect adds no fee of its own on
-Standard accounts.
+**The fee research stands, and it was research, not assumption** (1 September
+2026). Michigan DIFS's own compensation-and-rebating FAQ (Sections 1236; 2111,
+updated 05/09/16, on michigan.gov/difs) asks the exact question and answers
+it: "May a producer charge a processing fee to collect payment of premium via
+credit card? No. Although a producer may collect premium via credit card if
+allowed by the insurer, an additional processing fee may not be charged.
+Insurance rates are filed with DIFS and allowable fees are included in the
+premium charged." The vendors that DO pass fees to insureds (ePayPolicy and
+that class, roughly $20 a month plus pass-through convenience fees) do it as
+the PROCESSOR charging for an optional channel, claim 50-state compliance, and
+the states genuinely differ: New York prohibits agents passing the fee,
+Georgia recently allowed it, Arizona allows it on commercial only. The finding
+that reframes it: **Big I Michigan (the Michigan Association of Insurance
+Agents, around 1,300 agencies) endorses ePayPolicy as its preferred payment
+processor**, fee pass-through and all, while the DIFS FAQ stands un-tested
+against that structure. So the structure is association-endorsed in this state
+and still unblessed by the regulator in writing.
 
-**Test mode is a first-class state.** A key beginning `sk_test_` opens the
-checkout without the switch in `lib/site.ts`, because a test key cannot
-move real money, and the bill page says "Test mode" with a test card number
-while that is so. That is how the whole flow gets walked on the deployment,
-with a test connected account, before anything is real: swap in the live
-key and the switch is back in charge. The Connect webhook is registered on
-Glazed's platform account with "events on Connected accounts", and each
-event's `account` field is the account the session is fetched from.
+That is why the 99 cents was built as a flat fee, disclosed on the form with
+the no-fee alternatives named beside it, its own Stripe line item so it was
+never inside premium, charged in the name of the payment technology provider
+rather than the producer. Kevin's call, 1 September 2026: existing Michigan
+use, the MAIA-endorsed processor, stands in for a counsel opinion. The gate
+that remained was the CLIENT'S, because the fee rides on her license posture.
+**There is no separate "counsel review packet."** An earlier version of this
+paragraph called this research a packet she had received; nothing was ever
+sent, and the first agreement draft repeated the claim before Kevin caught it
+(2 September 2026). The research is this paragraph, and the conversation is
+his.
 
-**Verified against a Stripe stand-in, September 2, 2026** (`STRIPE_API_BASE`
-pointed at a local mock that records every request): 24 checks covering
-the test key opening the checkout, the session created on her account with
-both lines and the flat fee, the provider named under the button rather
-than in the line, the return page recording once and rolling the due date,
-the subscription with a percentage that rounds to exactly 99 cents and a
-start on the due date, the Connect webhook fetching from the event's
-account, and stop-autopay cancelling on her account. What is NOT yet
-exercised is Stripe itself: the request shapes are Stripe's documented
-ones, and the first run against a real test key and test connected account
-is the remaining step before the flag flips.
+**If the checkout ever comes back, the no-lawyer way to charge for the
+plumbing is a payments tier on the monthly**, and `/privacy` changes in the
+same commit as the first route, before the first payment rather than after.
 
-**A per-payment tech fee is deliberately NOT wired in, and this was
-researched, not assumed** (September 1, 2026). Michigan DIFS's own
-compensation-and-rebating FAQ (Sections 1236; 2111, updated 05/09/16, on
-michigan.gov/difs) asks the exact question and answers it: "May a producer
-charge a processing fee to collect payment of premium via credit card? No.
-Although a producer may collect premium via credit card if allowed by the
-insurer, an additional processing fee may not be charged. Insurance rates
-are filed with DIFS and allowable fees are included in the premium charged."
-The vendors that DO pass fees to insureds (ePayPolicy and that class,
-roughly $20 a month plus pass-through convenience fees) do it as the
-PROCESSOR charging for an optional channel, claim 50-state compliance, and
-the states genuinely differ (New York prohibits agents passing the fee,
-Georgia recently allowed it, Arizona allows it on commercial only). The
-finding that reframes it: **Big I Michigan (the Michigan Association of
-Insurance Agents, ~1,300 agencies) endorses ePayPolicy as its preferred
-payment processor**, fee pass-through and all, while the DIFS FAQ stands
-un-tested against that structure. So the structure is association-endorsed
-in this state and still unblessed by the regulator in writing. **The .99 is
-now built into the parked checkout** (`payments.convenienceFeeCents`): a
-flat fee, disclosed on the form with the no-fee alternatives named, its own
-Stripe line item so it is never inside premium, charged in the name of the
-payment technology provider. Kevin's call, September 1, 2026: existing
-Michigan use (the MAIA-endorsed processor) stands in for a counsel opinion.
-The gate that remains is the CLIENT'S: the fee rides on her license
-posture, so flip condition 3 on the flag is her written go-ahead after
-Kevin walks her through this research, and whether her attorney sees it
-first is her choice. **There is no separate "counsel review packet."** An
-earlier version of this paragraph and of the flag's comment called this
-section a packet she had received; nothing was ever sent, and the first
-agreement draft repeated the claim before Kevin caught it (September 2,
-2026). The research is this paragraph, and the conversation is his. Set `convenienceFeeCents` to 0 to absorb fees; the
-disclosure line disappears with it. Routing the fee revenue to Glazed is a
-Stripe Connect application-fee job later (devine holds the Square version
-of that rail); until then it settles with the payment and Glazed's share is
-handled on the invoice. Surplus-lines business has an explicit
-Michigan fee path with written disclosure, which matters only if she ever
-places E&S. The no-lawyer way to charge for this plumbing is a payments
-tier on the monthly when the checkout turns on.
+## The cross-sell
 
 **The cross-sell, per the client:** each coverage line in `lib/site.ts`
 carries `pairs`, up to two other lines worth pricing on the same call with
 the reason said plainly, rendered on the coverage pages as ask-us cards
-linking into `/quote?line=`. The payment thank-you page carries one generic
-umbrella prompt. Prompts, never advice: the site has no idea what a
+linking into `/quote?line=`. Prompts, never advice: the site has no idea what a
 visitor's policy says and is built not to know, so nothing here may ever be
 worded as a recommendation about someone's specific coverage.
 

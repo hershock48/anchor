@@ -15,7 +15,7 @@
  * net: an edit never destroys a value here, and clearing the edit restores
  * it. Read `getFacts()` on a customer page, never this object directly, for
  * any field on that whitelist. Everything else (names, tagline, carriers,
- * the giving program, payments) is still only here, on purpose.
+ * the giving program) is still only here, on purpose.
  *
  * PLACEHOLDER means the client has not supplied it yet. Every one of these is
  * an unchecked box in the README and must be said out loud at handover.
@@ -118,26 +118,16 @@ export const site = {
    * carrier's marketing rules. Several carriers restrict how an agency may use
    * their mark, and a few require marketing review before anything publishes.
    *
-   * `payUrl` and `billingPhone` feed /pay: each carrier a customer can be
-   * billed by gets a row pointing at that carrier's own payment portal and
-   * billing line. Fill them from the carrier's site when the appointment is
-   * confirmed; a carrier without them still renders, minus the links.
-   *
-   * `payableHere` is the pay-at-anchor switch, per carrier: true ONLY when
-   * that carrier's agency agreement authorizes the agency to collect its
-   * premium. The /pay page then routes that carrier INTO the on-site
-   * checkout instead of out to the carrier's portal, and the checkout's
-   * carrier selector lists it so every payment names who it is for. Set it
-   * from the agreement, never from optimism: where collection is
-   * unauthorized, payment to the agency does not count as payment to the
-   * insurer and a lapse lands on the customer.
+   * A carrier row used to carry three payment fields too: that carrier's
+   * own portal link, its billing line, and the per-carrier switch deciding
+   * whether a bill was paid here or routed out to the carrier. They left
+   * with the payment service on 17 September 2026 and sit on the archive
+   * branch with it (README, "Payments, archived"). Adding a carrier now is
+   * a name and a logo.
    */
   carriers: [] as {
     name: string;
     logo?: string;
-    payUrl?: string;
-    billingPhone?: string;
-    payableHere?: boolean;
   }[],
 
   social: {
@@ -225,78 +215,25 @@ export const giving = {
 } as const;
 
 /**
- * On-site payments: /pay, the pay links, the checkout and the book behind it.
+ * ON-SITE PAYMENTS ARE ARCHIVED, NOT DELETED.
  *
- * THE SWITCH IS OFF ON PURPOSE, the same way Copper's ordering is parked: the
- * pages, the checkout and the workroom book are built, and no card can be
- * taken until the client can lawfully take the money. Premium an agency
- * collects is fiduciary money under Michigan insurance law, and which
- * carriers' premium she may collect is per carrier (`payableHere` above,
- * set from each agency agreement). The carrier rows on /pay are the live
- * layer for everything else.
+ * A `payments` constant lived here, holding the checkout switch, the pay-link
+ * lifetime, the reminder schedule and the flat 99 cent online-channel fee,
+ * with the conditions for flipping the switch written above it. The client
+ * decided on 17 September 2026 that the site does not take money for now,
+ * "but will maybe eventually add it again", so the whole service came out
+ * rather than sitting parked behind a flag where it would quietly rot: the
+ * bill page, the signed pay links, the policy lookup, autopay, the nightly
+ * reminder cron, the Stripe Connect wiring that split the fee, and the
+ * workroom book every amount came from.
  *
- * Flip `checkoutEnabled` to true only when all of these are true, and record
- * the date here when you do:
- *
- *   1. She has confirmed which policies are agency-billed and which carrier
- *      agreements authorize collection. Everything else routes to the
- *      carrier, whatever this flag says.
- *   2. She has a Stripe account settling into a separate premium/trust bank
- *      account, not operating money.
- *   3. She has given a written go-ahead after Kevin has walked her through
- *      the fee research in the README's payments section, which puts the
- *      DIFS FAQ's "no producer processing fees" answer next to the Big I
- *      Michigan-endorsed ePayPolicy structure that passes fees to the payer
- *      anyway. THERE IS NO SEPARATE "COUNSEL PACKET": an earlier note here
- *      called that research a packet she had received, and she had not
- *      (Kevin caught it in the agreement draft, September 2, 2026). The fee
- *      below rides on HER license posture, so the informed yes is hers to
- *      give, and whether counsel reads it first is her call, not a gate.
- *   4. STRIPE_SECRET_KEY (Glazed's platform key), STRIPE_ACCOUNT (her
- *      connected account), STRIPE_WEBHOOK_SECRET, PAY_LINK_SECRET and
- *      PAY_NOTIFY_TO are set in the Vercel dashboard.
- *
- * A TEST key ignores this switch on purpose: it cannot move real money, and
- * the whole flow can be walked on the deployment with Stripe's test cards
- * before the flip (lib/pay.ts, checkoutMode). Swap in the live key and the
- * switch is back in charge.
- *
- * RESHAPED SEPTEMBER 2, 2026. The first version had the customer type the
- * amount and policy number off their bill, because the site had no way to
- * know either. Now it does: the workroom's BOOK holds each customer's
- * policies, installment amounts and due dates (entered by her, or imported
- * from her agency system), and the customer gets a signed pay link that
- * opens their bill already filled in, or finds it with a policy number and
- * ZIP. The amount ALWAYS comes from the book, never from the customer.
- * There are still no customer accounts and no passwords, by design.
+ * It is whole on the branch archive/payments-2026-09 (tip 7133091), pushed
+ * before a single file was deleted, so bringing it back is a merge and her
+ * Stripe account, not a rebuild. The README section "Payments, archived"
+ * lists every moving part, the fee research behind the 99 cents, and what has
+ * to be true before any of it returns. Nothing in this file should pretend
+ * the switch still exists.
  */
-export const payments = {
-  checkoutEnabled: false,
-  /** Above this, the book refuses the installment and the page says call us. */
-  maxOnlineCents: 2_500_000,
-  /** How long a pay link in an email keeps working. A bill sits in an inbox
-   *  for weeks, and the link only ever shows one bill. */
-  payLinkDays: 120,
-  /** When the nightly job emails a reminder: days before the due date,
-   *  0 being the day itself. Each fires once per due date. */
-  reminderDaysBefore: [7, 0] as readonly number[],
-  /**
-   * The flat online-channel fee, itemized as its own Stripe line item so it
-   * is never inside premium, charged by the payment technology provider
-   * (Glazed) rather than the producer, disclosed on the form before the
-   * customer continues, with the no-fee alternatives named right next to
-   * it. Flat-not-percentage on purpose: that is the card networks' own
-   * definition of a compliant convenience fee for an optional channel, and
-   * it is the structure the association-endorsed processor uses. Set to 0
-   * to absorb fees instead; the disclosure line disappears with it.
-   *
-   * Since September 2, 2026 it reaches Glazed as a Stripe Connect
-   * application fee at the moment of payment (lib/stripe.ts, STRIPE_ACCOUNT).
-   * Without a connected account it simply settles with the payment on
-   * whoever owns the key, which is how a first test still works.
-   */
-  convenienceFeeCents: 99,
-} as const;
 
 /**
  * Lines she writes. Each one gets its own page: still the strongest local

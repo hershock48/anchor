@@ -72,6 +72,21 @@ const nextConfig: NextConfig = {
        * right page.
        */
       { source: "/agreement", destination: "https://www.glazedweb.com/agreement/anchor", permanent: true },
+      /**
+       * /pay and everything under it existed from September 2 to September 17,
+       * 2026. The client decided against a checkout for now, so the service
+       * was archived to the branch archive/payments-2026-09 (README,
+       * "Payments, archived"). No pay link was ever signed or sent, because
+       * the secret was never set, so nothing in an inbox is broken by this.
+       * What it catches is the preview URL in someone's history: a person to
+       * talk to reads better than a 404 on a page about money.
+       *
+       * `permanent: false` on purpose, unlike the two above. She may well turn
+       * payments back on, and a 308 cached in a browser would outlive the
+       * decision that caused it.
+       */
+      { source: "/pay", destination: "/contact", permanent: false },
+      { source: "/pay/:path*", destination: "/contact", permanent: false },
     ];
   },
 

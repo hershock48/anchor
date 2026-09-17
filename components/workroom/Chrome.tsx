@@ -12,14 +12,16 @@ import { useHomeHref } from "@/components/HomeLink";
  * scrolls away because the queue is long and the tabs should not be a
  * scroll-to-top errand. Lifted from devine's Chrome, whose header records both
  * lessons: one nav rather than three hand-written ones, and a boundary slash
- * in the active test so /workroom/leads/<id> lights the Leads tab without
- * /workroom/pay lighting /workroom/payments.
+ * in the active test so /workroom/leads/<id> lights the Leads tab without a
+ * sibling route lighting it too.
+ *
+ * Two tabs since 17 September 2026. The Book and Payments tabs went with the
+ * payment service (README, "Payments, archived"); what is left is the work
+ * that does not depend on taking money.
  */
 
 const TABS = [
   { href: "/workroom", label: "Leads" },
-  { href: "/workroom/book", label: "Book" },
-  { href: "/workroom/payments", label: "Payments" },
   { href: "/workroom/facts", label: "Site facts" },
 ];
 

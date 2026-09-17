@@ -19,7 +19,7 @@ import WorkroomChrome from "@/components/workroom/Chrome";
  */
 export const metadata: Metadata = {
   title: { default: "Workroom · Anchor Insurance", template: "%s · Workroom" },
-  description: "The agency's leads queue, payments and the facts on the site.",
+  description: "The agency's leads queue and the facts on the site.",
   robots: { index: false, follow: false },
 };
 

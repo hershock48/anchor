@@ -74,13 +74,9 @@ export default function Header({ phone, phoneHref }: { phone: string; phoneHref:
               {phone}
             </a>
           ) : null}
-          {/* The two things a customer comes to do, side by side: pay, and get
-              a quote. "Pay a bill" was a text-nav item for a day (September 2,
-              2026) and read as one more page; as the second button it reads as
-              an action, which is what the carriers' own sites do. */}
-          <Link className="btn ghost" href="/pay">
-            Pay a bill
-          </Link>
+          {/* One button. "Pay a bill" sat beside it for a fortnight and came
+              off with the payment service on 17 September 2026; the site does
+              not take money, so it must not offer to. */}
           <Link className="btn" href="/quote">
             Get a quote
           </Link>
@@ -101,9 +97,6 @@ export default function Header({ phone, phoneHref }: { phone: string; phoneHref:
               <Link href={n.href}>{n.label}</Link>
             </li>
           ))}
-          <li>
-            <Link href="/pay">Pay a bill</Link>
-          </li>
           <li>
             <Link href="/quote">Get a quote</Link>
           </li>

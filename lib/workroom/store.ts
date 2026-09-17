@@ -1,15 +1,18 @@
 import "server-only";
 
 /**
- * Workroom storage: leads, the book (customers, policies, payments), and the
- * site's editable facts.
+ * Workroom storage: the leads queue and the site's editable facts.
  *
  * Ported from devine's `lib/workroom/store.ts` (itself from pjs). The
  * two-backend shape, the jsonb-blob decision, the self-creating tables and the
- * do-not-cache-a-failed-init rule are all inherited. What grew here is a
- * GENERIC COLLECTION: one jsonb row per record, keyed by id, with equality
- * lookups on top-level string fields. The book needed three of them and
- * writing three copies of get/put/list was the wrong kind of tidy.
+ * do-not-cache-a-failed-init rule are all inherited.
+ *
+ * IT USED TO CARRY A GENERIC COLLECTION as well, one jsonb row per record with
+ * equality lookups, for the book's customers, policies and payments. That went
+ * with the payment service on 17 September 2026 (README, "Payments,
+ * archived"). Restoring it is a cherry-pick from the archive branch, not a
+ * rewrite, which is why the shape is described here rather than guessed at
+ * later.
  *
  *   postgres   when a database URL is set. One click in Vercel: project >
  *              Storage > Create Database > Neon, free tier, part of the
@@ -28,28 +31,15 @@ import "server-only";
  *
  * WHAT IS STORED, named because /privacy has to keep agreeing with this file:
  * quote requests (name, phone, email, ZIP, maybe an address and current
- * carrier); the book (customer name, phone, email, ZIP; policy carrier,
- * number, installment amount and due date; a record of each payment made
- * through the site, by Stripe's id and amount). NO card numbers, ever: the
- * card is typed on Stripe's page and never reaches this server. No dates of
- * birth, no licence numbers, no policy documents.
+ * carrier), and the facts the agency edits about itself. Nothing else. No
+ * card numbers, no policy numbers, no customer list, no dates of birth, no
+ * licence numbers, no policy documents. If a row type is ever added here,
+ * /privacy changes in the same commit.
  */
 
 import type { Lead, LeadStatus } from "./leads";
-import type { Customer, Policy, Payment } from "./book";
 
 export type { Lead, LeadStatus };
-
-type Row = { id: string; createdAt: number };
-
-export type Collection<T extends Row> = {
-  get(id: string): Promise<T | null>;
-  /** Insert or replace. */
-  put(row: T): Promise<void>;
-  remove(id: string): Promise<void>;
-  /** Newest first. `where` is equality on top-level string fields. */
-  list(where?: Partial<Record<keyof T & string, string>>, limit?: number): Promise<T[]>;
-};
 
 export type Store = {
   backend: "postgres" | "memory";
@@ -57,9 +47,6 @@ export type Store = {
   listLeads(limit?: number): Promise<Lead[]>;
   getLead(id: string): Promise<Lead | null>;
   updateLead(id: string, patch: { status?: LeadStatus; workNotes?: string }): Promise<Lead | null>;
-  customers: Collection<Customer>;
-  policies: Collection<Policy>;
-  payments: Collection<Payment>;
   /** One named jsonb value. Null when nothing has been saved under the key. */
   getValue<T>(key: string): Promise<T | null>;
   setValue(key: string, value: unknown): Promise<void>;
@@ -72,45 +59,15 @@ export function newId(prefix: string): string {
 
 /* ------------------------------ memory ------------------------------ */
 
-type Bag = {
-  leads: Map<string, Lead>;
-  content: Map<string, unknown>;
-  tables: Map<string, Map<string, Row>>;
-};
+type Bag = { leads: Map<string, Lead>; content: Map<string, unknown> };
 
 function bag(): Bag {
   const g = globalThis as typeof globalThis & { __anchorWorkroomBag?: Bag };
-  if (!g.__anchorWorkroomBag) g.__anchorWorkroomBag = { leads: new Map(), content: new Map(), tables: new Map() };
-  // The bag predates the later maps; a warm instance from before still gets
-  // them rather than a TypeError on the first save.
+  if (!g.__anchorWorkroomBag) g.__anchorWorkroomBag = { leads: new Map(), content: new Map() };
+  // The bag predates the content map; a warm instance from before still gets
+  // one rather than a TypeError on the first save.
   if (!g.__anchorWorkroomBag.content) g.__anchorWorkroomBag.content = new Map();
-  if (!g.__anchorWorkroomBag.tables) g.__anchorWorkroomBag.tables = new Map();
   return g.__anchorWorkroomBag;
-}
-
-function memoryCollection<T extends Row>(table: string): Collection<T> {
-  const rows = () => {
-    const t = bag().tables;
-    if (!t.has(table)) t.set(table, new Map());
-    return t.get(table)! as Map<string, T>;
-  };
-  return {
-    async get(id) {
-      return rows().get(id) ?? null;
-    },
-    async put(row) {
-      rows().set(row.id, row);
-    },
-    async remove(id) {
-      rows().delete(id);
-    },
-    async list(where, limit = 1000) {
-      return [...rows().values()]
-        .filter((r) => !where || Object.entries(where).every(([k, v]) => (r as Record<string, unknown>)[k] === v))
-        .sort((a, b) => b.createdAt - a.createdAt)
-        .slice(0, limit);
-    },
-  };
 }
 
 const memoryStore: Store = {
@@ -131,9 +88,6 @@ const memoryStore: Store = {
     bag().leads.set(id, next);
     return next;
   },
-  customers: memoryCollection<Customer>("workroom_customers"),
-  policies: memoryCollection<Policy>("workroom_policies"),
-  payments: memoryCollection<Payment>("workroom_payments"),
   async getValue(key) {
     return (bag().content.get(key) as never) ?? null;
   },
@@ -179,7 +133,7 @@ type PgPool = {
 // agreement_acceptances existed here for eight days (2026-09-02 to 09-10) while
 // the agreement lived in this repo; it moved to glazedweb.com/agreement/anchor
 // with the other custom orders. The empty table in Neon is harmless.
-const JSON_TABLES = ["workroom_content", "workroom_customers", "workroom_policies", "workroom_payments"] as const;
+const JSON_TABLES = ["workroom_content"] as const;
 
 async function pgPool(): Promise<PgPool> {
   const g = globalThis as typeof globalThis & {
@@ -243,45 +197,6 @@ async function pgPool(): Promise<PgPool> {
   return g.__anchorPgPool!;
 }
 
-function pgCollection<T extends Row>(table: (typeof JSON_TABLES)[number]): Collection<T> {
-  return {
-    async get(id) {
-      const pool = await pgPool();
-      const { rows } = await pool.query(`SELECT data FROM ${table} WHERE key = $1`, [id]);
-      return rows.length ? (rows[0].data as T) : null;
-    },
-    async put(row) {
-      const pool = await pgPool();
-      await pool.query(
-        `INSERT INTO ${table} (key, data) VALUES ($1, $2) ON CONFLICT (key) DO UPDATE SET data = $2`,
-        [row.id, JSON.stringify(row)]
-      );
-    },
-    async remove(id) {
-      const pool = await pgPool();
-      await pool.query(`DELETE FROM ${table} WHERE key = $1`, [id]);
-    },
-    async list(where, limit = 1000) {
-      const pool = await pgPool();
-      const params: unknown[] = [];
-      const clauses: string[] = [];
-      for (const [k, v] of Object.entries(where ?? {})) {
-        // Field names come from code, never from a request; values are bound.
-        if (!/^[a-zA-Z_][a-zA-Z0-9_]*$/.test(k)) throw new Error(`bad field ${k}`);
-        params.push(v);
-        clauses.push(`data->>'${k}' = $${params.length}`);
-      }
-      params.push(limit);
-      const { rows } = await pool.query(
-        `SELECT data FROM ${table}${clauses.length ? " WHERE " + clauses.join(" AND ") : ""}
-         ORDER BY (data->>'createdAt')::bigint DESC NULLS LAST LIMIT $${params.length}`,
-        params
-      );
-      return rows.map((r) => r.data as T);
-    },
-  };
-}
-
 const postgresStore: Store = {
   backend: "postgres",
   async createLead(lead) {
@@ -316,9 +231,6 @@ const postgresStore: Store = {
     ]);
     return next;
   },
-  customers: pgCollection<Customer>("workroom_customers"),
-  policies: pgCollection<Policy>("workroom_policies"),
-  payments: pgCollection<Payment>("workroom_payments"),
   async getValue(key) {
     const pool = await pgPool();
     const { rows } = await pool.query(`SELECT data FROM workroom_content WHERE key = $1`, [key]);
