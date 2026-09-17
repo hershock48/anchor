@@ -44,6 +44,15 @@ export default function QuoteForm() {
   const [state, setState] = useState<"idle" | "sending" | "done" | "error">("idle");
   const [message, setMessage] = useState("");
 
+  function continueToDetails() {
+    const firstStep = document.querySelector<HTMLFieldSetElement>('fieldset[data-step="1"]');
+    if (!firstStep) return;
+    for (const field of firstStep.querySelectorAll<HTMLInputElement | HTMLSelectElement>("input, select")) {
+      if (!field.reportValidity()) return;
+    }
+    setStep(2);
+  }
+
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const form = e.currentTarget;
@@ -159,7 +168,7 @@ export default function QuoteForm() {
         </div>
 
         <div className="qf-actions">
-          <button type="button" className="btn qf-jsonly" onClick={() => setStep(2)}>
+          <button type="button" className="btn qf-jsonly" onClick={continueToDetails}>
             Continue
           </button>
           <p className="qf-note">

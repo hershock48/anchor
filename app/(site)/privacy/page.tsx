@@ -37,11 +37,11 @@ export default async function Privacy() {
 
           <h2>Where it goes</h2>
           <p>
-            A submission goes to {site.legalName} in two places and stops there: a private
-            list only this agency can open, so your request is not lost between calls, and a
-            mailbox belonging to the agency. It is not sold, not shared with a lead broker,
-            and not handed to any third party other than a carrier we are actually quoting
-            you with, at your request.
+            A submission goes into {site.legalName}&rsquo;s private workroom, so your request
+            is not lost between calls. A backup copy is also recorded in the site&rsquo;s server
+            logs, which the site operator can access. Email delivery to the agency is not
+            connected yet. Your information is not sold or shared with a lead broker, and it
+            is not handed to a carrier unless we are quoting you with that carrier at your request.
           </p>
           <p>
             Nobody outside the agency can see that list. It holds what you typed on the form

@@ -285,8 +285,8 @@ export default function IntakeForm() {
         <legend>Nuts and bolts</legend>
         <Row
           name="quote_inbox"
-          label="Where should quote requests go?"
-          hint="An email inbox you own and check. Quote forms on the site will be delivered there."
+          label="Which inbox should get quote notifications?"
+          hint="An email inbox you own and check. Requests appear in the private workroom now; email delivery still needs to be connected."
         />
         <Row
           name="retention"

@@ -3,6 +3,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Reveal from "@/components/Reveal";
 import LocalBusinessSchema from "@/components/LocalBusinessSchema";
+import QuoteTab from "@/components/QuoteTab";
 import { site } from "@/lib/site";
 import { getFacts } from "@/lib/content";
 
@@ -71,6 +72,9 @@ export default async function SiteLayout({ children }: { children: React.ReactNo
           the one editable fact it shows as props instead of calling the seam. */}
       <Header phone={facts.contact.phone} phoneHref={facts.contact.phoneHref} />
       <main id="main">{children}</main>
+      {/* After <main>, so the tab is last in the tab order rather than sitting
+          between the header and the content a keyboard user came for. */}
+      <QuoteTab />
       <Footer />
     </>
   );
