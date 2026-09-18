@@ -255,6 +255,37 @@ the closeband) and one unstyled link on navy. **Fix contrast at the token,
 never on the flagged element**, and validate against BOTH light grounds; the
 sand band is where earlier faults hid.
 
+**Then one color per coverage line, because "more colors" had to mean
+something.** She said it twice. The cheap answer is decoration, which makes a
+site louder and harder to read. The answer here is wayfinding: auto is teal,
+home is rust, renters is plum, umbrella is indigo, life is forest, and each
+color appears on that line's card, its page head and nowhere else. Land on
+Renters twice and you know it before the heading loads.
+
+Each hue is dark enough to carry white at 4.5, which is why one token does both
+jobs: a fill that takes white lettering, and the same value legible as text on
+cream. Measured against `--paper-2`, the card ground: teal 6.02, rust 5.86,
+plum 8.14, indigo 7.49, forest 6.28. The pale washes behind a page head all
+leave navy body text above 13.
+
+**Business is the exception and it is deliberate.** Commercial is the line she
+most wants to sell, so it carries the brand gold instead of a hue of its own.
+Gold cannot do both jobs: `--gold` is 1.92 against a card, nearly invisible as
+a 4px bar, so business's SHAPE is `--gold-deep` (3.52) and its TEXT is
+`--gold-ink` (7.23). That split is the only reason business needs two
+variables where the others need one.
+
+**The seam is a fallback, not a lookup.** An element with `acc-<line>` sets
+`--accent` and `--accent-ink` for everything inside it, and every rule that
+used to hard-code gold now reads `var(--accent, var(--gold...))`. A card or
+page head with no `acc-` class is exactly what it was before, so there is one
+place to add a line and nowhere to forget one.
+
+**Giving is not a coverage line and does not take one.** It takes a ground:
+`--forest` (#12463A) replaces navy on the two giving bands, the giving card and
+the waves either side, because three navy bands in a row was the real reason
+the page read flat. White on it is 10.70.
+
 **The one cost, and it is visible in the hero.** The site's gold is now
 brighter than the gold ribbon in her own logo PNG, and the palette was sampled
 from that artwork so the two would match. Her mark is a phone-screenshot JPEG

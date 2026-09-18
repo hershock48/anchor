@@ -73,6 +73,54 @@
 
   --focus: #0B2140;
 
+  /* ── ONE COLOR PER COVERAGE LINE ──
+     Added 2026-09-17, second pass, on the client's "more colors, bolder, more
+     colors." Navy is still the ground and gold is still the brand; these are
+     not a rainbow laid over the site, they are a WAYFINDING system. A line's
+     color appears on its card, on its page head and nowhere else, so a
+     visitor who lands on Renters twice knows they have been there before the
+     heading loads. Decoration would have been the cheap way to answer her
+     note and would have made the site harder to read, not bolder.
+
+     Each hue is dark enough to carry white at 4.5, which means the same value
+     is legible as text on paper without a second token. Measured against
+     --paper-2, the card ground, because that is the one that matters:
+
+       auto      teal   6.02   road and water
+       home      rust   5.86   a roof
+       renters   plum   8.14   a block of them
+       umbrella  indigo 7.49   the sky above everything else
+       life      forest 6.28   growth
+
+     BUSINESS IS THE EXCEPTION AND IT IS DELIBERATE. Commercial is the line
+     she most wants to sell, so it carries the brand gold rather than a hue of
+     its own. Gold cannot do both jobs: --gold is 1.92 against a card, nearly
+     invisible as a 4px bar, so the SHAPE is --gold-deep (3.52, a shape needs
+     3.0) and the TEXT is --gold-ink (7.23). That split is why business needs
+     two variables where the others need one. */
+  --acc-auto: #0A6E66;
+  --acc-home: #A8442B;
+  --acc-renters: #77376A;
+  --acc-umbrella: #2F4FA2;
+  --acc-life: #2F6B3C;
+
+  /* The pale wash behind a coverage page's head. Navy body text clears 13 on
+     every one of them, so the wash never costs legibility; it just tells you
+     which room you are in. */
+  --wash-auto: #DFF0ED;
+  --wash-home: #FBE6DE;
+  --wash-renters: #F5E4F1;
+  --wash-umbrella: #E2E8F8;
+  --wash-life: #E1F1E2;
+  --wash-business: #FBEFD6;
+
+  /* Giving is not a coverage line and does not take a line color. It takes a
+     ground: deep evergreen, replacing navy on the two giving bands. It is the
+     one section of this site that is about something other than insurance,
+     and three navy bands in a row was the real reason the page read flat.
+     White on it is 10.70, the step text 7.10, gold-light 7.94. */
+  --forest: #12463A;
+
   --wrap: 1120px;
   --radius: 14px;
 
@@ -281,7 +329,7 @@ svg {
   font-size: var(--t-sm);
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--gold-ink);
+  color: var(--accent-ink, var(--gold-ink));
   font-weight: 600;
 }
 .kicker.quiet {
@@ -308,9 +356,13 @@ section {
   }
 }
 .band-navy {
-  background: var(--navy);
+  background: var(--band, var(--navy));
   color: #fff;
 }
+/* Giving is not a coverage line, so it does not take a line color. It takes a
+   ground. Everything .band-navy already styles keeps working, because only the
+   background moved behind a variable. */
+.band-forest { --band: var(--forest); }
 .band-navy h2,
 .band-navy h3 {
   color: #fff;
@@ -324,6 +376,28 @@ section {
 .band-sand {
   background: var(--sand);
 }
+
+/* ── the accent seam ──
+   An element carrying .acc-<line> sets --accent and --accent-ink for
+   everything inside it. Every rule that used to hard-code gold now reads
+   var(--accent, var(--gold...)), so a card or a page head with no acc- class
+   is exactly what it was before. That fallback is the whole design: there is
+   one place to add a line and nowhere to forget. */
+.acc-auto { --accent: var(--acc-auto); --accent-ink: var(--acc-auto); --wash: var(--wash-auto); }
+.acc-home { --accent: var(--acc-home); --accent-ink: var(--acc-home); --wash: var(--wash-home); }
+.acc-renters { --accent: var(--acc-renters); --accent-ink: var(--acc-renters); --wash: var(--wash-renters); }
+.acc-umbrella { --accent: var(--acc-umbrella); --accent-ink: var(--acc-umbrella); --wash: var(--wash-umbrella); }
+.acc-life { --accent: var(--acc-life); --accent-ink: var(--acc-life); --wash: var(--wash-life); }
+/* Business splits the two, for the reason written on the tokens. */
+.acc-business { --accent: var(--gold-deep); --accent-ink: var(--gold-ink); --wash: var(--wash-business); }
+
+/* A cross-sell card points at ANOTHER line, so it wears that line's color and
+   its link reads in it. The base `a` rule is deliberately left alone: making
+   every link inside an acc- element take the accent would repaint the
+   other-coverage list in five colors at once, which is a list that has gone
+   wrong rather than a system. */
+.card[class*="acc-"] { border-left: 3px solid var(--accent); }
+.card[class*="acc-"] a { color: var(--accent-ink); }
 
 /* Placeholder marker. Deliberately loud: a placeholder that looks like content
    is how invented prices reach real customers. */
@@ -583,6 +657,14 @@ section {
 .pagehead { padding: 56px 0 40px; }
 @media (max-width: 640px) { .pagehead { padding: 38px 0 28px; } }
 .pagehead .kicker { margin-bottom: 12px; display: block; }
+/* A page head carrying an acc- class fills with that line's wash and rules off
+   with the line's own color. Navy body text clears 13 on every wash, so this
+   costs no legibility anywhere. A head with no acc- class stays on paper. */
+.pagehead[class*="acc-"] {
+  background: var(--wash);
+  border-bottom: 3px solid var(--accent, var(--gold-deep));
+  padding-bottom: 36px;
+}
 
 /* ═══ hero ═══ */
 .hero { padding: 64px 0 72px; }
@@ -661,7 +743,9 @@ section {
 /* The giving card. It replaced the goal bar on 2026-08-28 when the client
    dropped the set percentage and the ledger; the colors are the ones the goal
    card already measured on navy, so nothing here needs re-validating. */
-.givecard { background: var(--navy); color: #fff; border-radius: 18px; padding: 28px 26px; }
+/* The giving card carries the giving ground, not the navy one, so the card
+   and the band it sits above are the same idea in the same color. */
+.givecard { background: var(--forest); color: #fff; border-radius: 18px; padding: 28px 26px; }
 .givecard .kicker { color: var(--gold-light); display: block; }
 .givecard-line { font-size: var(--t-h3); color: #fff; margin-top: 10px; }
 .givecard-sub { margin-top: 14px; font-size: var(--t-base); line-height: 1.6; color: #c8d4de; }
@@ -677,10 +761,10 @@ section {
   border-radius: var(--radius); padding: 24px 22px; text-decoration: none; color: var(--navy);
   transition: border-color .15s ease, transform .15s ease;
 }
-.cov-card:hover { border-color: var(--gold); transform: translateY(-2px); color: var(--navy); }
+.cov-card:hover { border-color: var(--accent, var(--gold)); transform: translateY(-2px); color: var(--navy); }
 .cov-card h2, .cov-card h3 { font-size: var(--t-lg); }
 .cov-card p { margin-top: 8px; font-size: var(--t-base); color: var(--slate); line-height: 1.55; }
-.cov-more { display: inline-block; margin-top: 14px; font-size: var(--t-sm); font-weight: 700; color: var(--gold-ink); font-family: var(--font-mono), ui-monospace, monospace; letter-spacing: .06em; text-transform: uppercase; }
+.cov-more { display: inline-block; margin-top: 14px; font-size: var(--t-sm); font-weight: 700; color: var(--accent-ink, var(--gold-ink)); font-family: var(--font-mono), ui-monospace, monospace; letter-spacing: .06em; text-transform: uppercase; }
 
 /* ═══ steps ═══ */
 .steps { list-style: none; display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 36px; counter-reset: s; }
@@ -748,6 +832,15 @@ section {
 .side p { font-size: var(--t-base); margin-top: 10px; }
 .sidelist, .sidesteps { margin-top: 12px; display: grid; gap: 8px; font-size: var(--t-base); }
 .sidelist { list-style: none; }
+/* The other-coverage list carries each line's dot, so the sidebar teaches the
+   color system on the way past rather than only the cards doing it. The dot is
+   decorative: the link's own text says which line it is, so nothing here
+   depends on telling the colors apart. */
+.sidelist li[class*="acc-"] { display: flex; align-items: baseline; gap: 10px; }
+.sidelist li[class*="acc-"]::before {
+  content: ""; flex: none; width: 9px; height: 9px; border-radius: 50%;
+  background: var(--accent, var(--gold-deep));
+}
 .sidesteps { padding-left: 20px; }
 .side-fine { font-size: var(--t-sm); color: var(--slate); margin-top: 16px; }
 .factlist { display: grid; grid-template-columns: auto 1fr; gap: 8px 14px; font-size: var(--t-cap); margin-top: 12px; }
@@ -1036,9 +1129,14 @@ h1 em svg path, h2 em svg path { stroke-dasharray: 320; stroke-dashoffset: 320; 
 
 /* ── coverage cards with some weight ── */
 .cov-card { border-width: 2px; position: relative; overflow: hidden; }
+/* THE BAR IS ON AT REST NOW, not only on hover. It used to scale in from
+   nothing, which meant the grid was six identical cream rectangles until you
+   moved a mouse over one, and on a phone it was never seen at all. Sitting at
+   40% and filling on hover keeps the reveal and gives the colors something to
+   do when nobody is pointing at anything. */
 .cov-card::after {
   content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 4px;
-  background: var(--gold); transform: scaleX(0); transform-origin: left;
+  background: var(--accent, var(--gold-deep)); transform: scaleX(.4); transform-origin: left;
   transition: transform .28s cubic-bezier(.2,.7,.2,1);
 }
 .cov-card:hover::after { transform: scaleX(1); }
@@ -1156,7 +1254,8 @@ h1 em svg path, h2 em svg path { stroke-dasharray: 320; stroke-dashoffset: 320; 
   .site-head, .site-foot, .tick, .wave, .hero-mark, .gw-plate,
   .hero-cta, .close-actions, .btn, .skip, .qtab { display: none !important; }
   body { background: #fff; color: #000; font-size: 11pt; }
-  .hero, .band-navy, .band-sand, .closeband, .goalband { background: #fff !important; color: #000 !important; }
+  .hero, .band-navy, .band-forest, .band-sand, .closeband, .goalband { background: #fff !important; color: #000 !important; }
+  .pagehead[class*="acc-"] { background: #fff !important; border-bottom-color: #000 !important; }
   .hero h1, .band-navy h2, .band-navy h3, .closeband h2 { color: #000 !important; }
   .lede, .hero-lede, .band-navy .lede { color: #222 !important; }
   section { padding: 12pt 0 !important; break-inside: avoid; }

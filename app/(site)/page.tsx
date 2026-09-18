@@ -200,7 +200,7 @@ export default async function Home() {
           <ul className="cov-grid">
             {personal.map((l) => (
               <li key={l.slug} className="reveal">
-                <Link href={`/coverage/${l.slug}`} className="cov-card">
+                <Link href={`/coverage/${l.slug}`} className={`cov-card acc-${l.slug}`}>
                   <h3>{l.name}</h3>
                   <p>{l.short}</p>
                   <span className="cov-more" aria-hidden="true">
@@ -213,14 +213,14 @@ export default async function Home() {
         </div>
       </section>
 
-      <Wave fill="var(--navy)" bg="var(--paper)" flip />
+      <Wave fill="var(--forest)" bg="var(--paper)" flip />
 
       {/* ── what giving back looks like ───────────────────────────────────
           One giving section, not two. A card and a headline used to make the
           case up at the top of the page and these three steps made it again
           four screens later; the argument is stronger once, after the
           coverage, which is the order the client asked for. */}
-      <section className="band-navy" style={{ paddingTop: 40 }}>
+      <section className="band-navy band-forest" style={{ paddingTop: 40 }}>
         <div className="wrap">
           <p className="kicker reveal">What giving back looks like</p>
           <h2 className="reveal">
@@ -279,7 +279,7 @@ export default async function Home() {
         </div>
       </section>
 
-      <Wave fill="var(--paper)" bg="var(--navy)" />
+      <Wave fill="var(--paper)" bg="var(--forest)" />
 
       {/* ── what we explain ──────────────────────────────────────────────
           PRODUCT KNOWLEDGE, KEPT SEPARATE FROM THE PRODUCT LIST, which is the
@@ -304,7 +304,7 @@ export default async function Home() {
 
           <ul className="cov-grid two">
             <li className="reveal">
-              <Link href="/tools/michigan-pip" className="cov-card">
+              <Link href="/tools/michigan-pip" className="cov-card acc-auto">
                 <h3>What each Michigan PIP level saves you</h3>
                 <p>
                   Dropping from unlimited medical to $500,000 saves about {cheapDrop.savings}%.
@@ -317,7 +317,7 @@ export default async function Home() {
               </Link>
             </li>
             <li className="reveal">
-              <Link href="/guides" className="cov-card">
+              <Link href="/guides" className="cov-card acc-umbrella">
                 <h3>The guides</h3>
                 <p>
                   Mini-tort, excess attendant care, storm claims after March 6, and why your

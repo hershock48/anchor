@@ -31,7 +31,7 @@ export default async function CoveragePage({ params }: { params: Promise<{ slug:
 
   return (
     <>
-      <section className="pagehead">
+      <section className={`pagehead acc-${line.slug}`}>
         <div className="wrap">
           <p className="kicker">Coverage</p>
           <h1>{line.name}</h1>
@@ -72,7 +72,7 @@ export default async function CoveragePage({ params }: { params: Promise<{ slug:
                     const other = lines.find((l) => l.slug === p.line);
                     if (!other) return null;
                     return (
-                      <div className="card" key={p.line}>
+                      <div className={`card acc-${other.slug}`} key={p.line}>
                         <h3>{other.name}</h3>
                         <p>{p.reason}</p>
                         <p style={{ marginTop: 10 }}>
@@ -102,7 +102,7 @@ export default async function CoveragePage({ params }: { params: Promise<{ slug:
             <h2 style={{ marginTop: 26 }}>Other coverage</h2>
             <ul className="sidelist">
               {others.map((o) => (
-                <li key={o.slug}><Link href={`/coverage/${o.slug}`}>{o.name}</Link></li>
+                <li key={o.slug} className={`acc-${o.slug}`}><Link href={`/coverage/${o.slug}`}>{o.name}</Link></li>
               ))}
             </ul>
           </aside>

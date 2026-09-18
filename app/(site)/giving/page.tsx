@@ -59,7 +59,7 @@ export default async function Giving() {
         </div>
       </section>
 
-      <section className="band-navy">
+      <section className="band-navy band-forest">
         <div className="wrap">
           <p className="kicker">How it works</p>
           <h2>Three steps, none of them complicated</h2>

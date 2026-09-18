@@ -25,7 +25,7 @@ export default function CoverageIndex() {
           <ul className="cov-grid">
             {lines.map((l) => (
               <li key={l.slug} className="reveal">
-                <Link href={`/coverage/${l.slug}`} className="cov-card">
+                <Link href={`/coverage/${l.slug}`} className={`cov-card acc-${l.slug}`}>
                   <h2>{l.name}</h2>
                   <p>{l.short}</p>
                   <span className="cov-more" aria-hidden="true">Read more</span>
