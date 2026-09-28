@@ -255,36 +255,64 @@ the closeband) and one unstyled link on navy. **Fix contrast at the token,
 never on the flagged element**, and validate against BOTH light grounds; the
 sand band is where earlier faults hid.
 
-**Then one color per coverage line, because "more colors" had to mean
-something.** She said it twice. The cheap answer is decoration, which makes a
-site louder and harder to read. The answer here is wayfinding: auto is teal,
-home is rust, renters is plum, umbrella is indigo, life is forest, and each
-color appears on that line's card, its page head and nowhere else. Land on
-Renters twice and you know it before the heading loads.
+**Then one color per coverage line, and the colors are bright.** She asked
+for "bolder colors, bright, unique, hip" and then, after two passes, Kevin said
+it still was not bold. **The first attempt was wrong in a way worth keeping:**
+it chose dark jewel tones because dark colors can carry white text, then spent
+them as 4px bars and pale washes. Dark colors in thin lines are the opposite of
+bold. The rule was backwards.
 
-Each hue is dark enough to carry white at 4.5, which is why one token does both
-jobs: a fill that takes white lettering, and the same value legible as text on
-cream. Measured against `--paper-2`, the card ground: teal 6.02, rust 5.86,
-plum 8.14, indigo 7.49, forest 6.28. The pale washes behind a page head all
-leave navy body text above 13.
+**The rule that works is the one the gold already proves.** A bright fill
+cannot carry white and does not have to, because it carries navy. So each line
+is a bright surface with navy lettering, used whole: the entire card on the
+coverage grid, the entire page head on that line's page. Navy on every fill
+clears 6 and most clear 8. Slate does not clear 4.5 on any of them except
+lime, which is why every rule for a filled surface sets its body text to navy
+and never to slate. That is the only discipline this palette asks for.
 
-**Business is the exception and it is deliberate.** Commercial is the line she
-most wants to sell, so it carries the brand gold instead of a hue of its own.
-Gold cannot do both jobs: `--gold` is 1.92 against a card, nearly invisible as
-a 4px bar, so business's SHAPE is `--gold-deep` (3.52) and its TEXT is
-`--gold-ink` (7.23). That split is the only reason business needs two
-variables where the others need one.
+| Line | Fill | Navy on it |
+|---|---|---|
+| Auto | sky `#6EC1F2` | 8.10 |
+| Home | coral `#FF7A59` | 6.26 |
+| Renters | pink `#FF7EB3` | 6.81 |
+| Umbrella | aqua `#3DD6C1` | 8.87 |
+| Life | lavender `#B9A6F7` | 7.55 |
+| Business | the brand gold | 8.23 |
 
-**The seam is a fallback, not a lookup.** An element with `acc-<line>` sets
-`--accent` and `--accent-ink` for everything inside it, and every rule that
-used to hard-code gold now reads `var(--accent, var(--gold...))`. A card or
-page head with no `acc-` class is exactly what it was before, so there is one
-place to add a line and nowhere to forget one.
+It is still wayfinding, not decoration: a line's color is on its card, on its
+page head, on its dot in the other-coverage list, and nowhere else. Each line
+also has a dark ink (`--ink-<line>`) for the two places its color has to be
+text on cream, the cross-sell link and the kicker, and every ink clears 4.5 on
+sand as well as paper, because sand is where an ink last failed here.
 
-**Giving is not a coverage line and does not take one.** It takes a ground:
-`--forest` (#12463A) replaces navy on the two giving bands, the giving card and
-the waves either side, because three navy bands in a row was the real reason
-the page read flat. White on it is 10.70.
+**A bright fill is a poor shape against cream.** All of them measure under
+2.5 against paper, so a filled card carries a 2px navy border and the sidebar
+dot carries a navy ring. The shape is the navy; the color is the fill inside
+it.
+
+**Business is the brand gold, whole.** Commercial is the line she most wants
+to sell, so it wears the brand color rather than a hue of its own, and since a
+filled card no longer needs a bar that shows against cream, business needs
+nothing of its own any more.
+
+**Giving is not a coverage line and does not take one.** It takes a ground,
+and the ground is lime (`#C9E265`, navy on it 11.14), the brightest surface on
+the site, on the two giving bands, the giving card and the waves either side.
+It is the one section of this site that is about something other than
+insurance and it should look like it. Everything on lime is navy, and every
+selector that does that is `.band-navy.band-lime` rather than `.band-lime`
+alone: the `.band-navy` rules come later in the stylesheet and won on source
+order the first time, which the auditor caught as 26 contrast failures, every
+one of them this band.
+
+**One coral button, in the hero, and only there.** The single brightest thing
+on the darkest ground on the site, for the site's one ask. Navy on coral is
+6.26 and the block against the navy hero is the same 6.26 as a shape. It is
+not reused, because a second one would make it a style and this is a pointer.
+
+**This is a departure from the studio's own dark-dominant house style, on
+purpose and on instruction.** The house style is for glazedweb.com. A client
+site follows its client, and this one asked for bright.
 
 **The one cost, and it is visible in the hero.** The site's gold is now
 brighter than the gold ribbon in her own logo PNG, and the palette was sampled

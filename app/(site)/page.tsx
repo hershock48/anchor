@@ -120,9 +120,10 @@ export default async function Home() {
               Then <strong>{giving.share}</strong> goes back to causes close to home.
             </p>
             <div className="hero-cta">
-              {/* onnavy: the default .btn is a navy fill now, which would be
-                  invisible on this navy hero. */}
-              <Link className="btn onnavy" href="/quote">
+              {/* coral: the one bright button on the site, on the darkest
+                  ground, for the one ask. globals.css says why there is only
+                  one. */}
+              <Link className="btn coral" href="/quote">
                 Get a quote
               </Link>
               <Link className="btn onnavy ghost-on-navy" href="/giving">
@@ -213,14 +214,14 @@ export default async function Home() {
         </div>
       </section>
 
-      <Wave fill="var(--forest)" bg="var(--paper)" flip />
+      <Wave fill="var(--lime)" bg="var(--paper)" flip />
 
       {/* ── what giving back looks like ───────────────────────────────────
           One giving section, not two. A card and a headline used to make the
           case up at the top of the page and these three steps made it again
           four screens later; the argument is stronger once, after the
           coverage, which is the order the client asked for. */}
-      <section className="band-navy band-forest" style={{ paddingTop: 40 }}>
+      <section className="band-navy band-lime" style={{ paddingTop: 40 }}>
         <div className="wrap">
           <p className="kicker reveal">What giving back looks like</p>
           <h2 className="reveal">
@@ -279,7 +280,7 @@ export default async function Home() {
         </div>
       </section>
 
-      <Wave fill="var(--paper)" bg="var(--forest)" />
+      <Wave fill="var(--paper)" bg="var(--lime)" />
 
       {/* ── what we explain ──────────────────────────────────────────────
           PRODUCT KNOWLEDGE, KEPT SEPARATE FROM THE PRODUCT LIST, which is the

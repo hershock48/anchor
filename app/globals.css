@@ -73,53 +73,56 @@
 
   --focus: #0B2140;
 
-  /* ── ONE COLOR PER COVERAGE LINE ──
-     Added 2026-09-17, second pass, on the client's "more colors, bolder, more
-     colors." Navy is still the ground and gold is still the brand; these are
-     not a rainbow laid over the site, they are a WAYFINDING system. A line's
-     color appears on its card, on its page head and nowhere else, so a
-     visitor who lands on Renters twice knows they have been there before the
-     heading loads. Decoration would have been the cheap way to answer her
-     note and would have made the site harder to read, not bolder.
+  /* ── ONE COLOR PER COVERAGE LINE, AND THEY ARE BRIGHT ──
+     Two passes on 2026-09-17 and a third on 2026-09-28, all on the client's
+     "bolder colors, bright, unique, hip" and Kevin's "still need bolder."
 
-     Each hue is dark enough to carry white at 4.5, which means the same value
-     is legible as text on paper without a second token. Measured against
-     --paper-2, the card ground, because that is the one that matters:
+     THE FIRST ATTEMPT WAS WRONG IN A WAY WORTH RECORDING. It chose dark jewel
+     tones (a teal, a rust, a plum) because dark colors can carry white text,
+     then spent them as 4px bars and pale washes. Dark colors in thin lines
+     are the opposite of bold, and Kevin said so. The rule was backwards.
 
-       auto      teal   6.02   road and water
-       home      rust   5.86   a roof
-       renters   plum   8.14   a block of them
-       umbrella  indigo 7.49   the sky above everything else
-       life      forest 6.28   growth
+     THE RULE THAT WORKS IS THE ONE THE GOLD ALREADY PROVES: a bright fill
+     cannot carry white and does not have to, because it carries NAVY. So
+     each line is a BRIGHT SURFACE with navy lettering, used whole: the entire
+     card, the entire page head. Navy on every fill below clears 6, most clear
+     8. Slate does NOT clear 4.5 on any of them except lime, which is why
+     every rule for a filled surface sets its body text to navy and never to
+     slate. That is the only discipline this palette asks for.
 
-     BUSINESS IS THE EXCEPTION AND IT IS DELIBERATE. Commercial is the line
-     she most wants to sell, so it carries the brand gold rather than a hue of
-     its own. Gold cannot do both jobs: --gold is 1.92 against a card, nearly
-     invisible as a 4px bar, so the SHAPE is --gold-deep (3.52, a shape needs
-     3.0) and the TEXT is --gold-ink (7.23). That split is why business needs
-     two variables where the others need one. */
-  --acc-auto: #0A6E66;
-  --acc-home: #A8442B;
-  --acc-renters: #77376A;
-  --acc-umbrella: #2F4FA2;
-  --acc-life: #2F6B3C;
+       auto      sky      navy on it  8.10
+       home      coral                6.26
+       renters   pink                 6.81
+       umbrella  aqua                 8.87
+       life      lavender             7.55
+       business  gold                 8.23   the brand color, on the line she most wants to sell
+       giving    lime                11.14   a ground, not a line
 
-  /* The pale wash behind a coverage page's head. Navy body text clears 13 on
-     every one of them, so the wash never costs legibility; it just tells you
-     which room you are in. */
-  --wash-auto: #DFF0ED;
-  --wash-home: #FBE6DE;
-  --wash-renters: #F5E4F1;
-  --wash-umbrella: #E2E8F8;
-  --wash-life: #E1F1E2;
-  --wash-business: #FBEFD6;
+     The palette is the water the anchor sits in: sky, coral, the sun (gold),
+     aqua, and the two that are hers alone. It is still a wayfinding system,
+     not decoration: a line's color is on its card, on its page head, on its
+     dot, and nowhere else.
 
-  /* Giving is not a coverage line and does not take a line color. It takes a
-     ground: deep evergreen, replacing navy on the two giving bands. It is the
-     one section of this site that is about something other than insurance,
-     and three navy bands in a row was the real reason the page read flat.
-     White on it is 10.70, the step text 7.10, gold-light 7.94. */
-  --forest: #12463A;
+     A bright fill is a poor SHAPE against cream (all of them measure under
+     2.5 against paper), so a filled card carries a 2px navy border and the
+     sidebar dot carries a navy ring. The shape is the navy; the color is the
+     fill inside it. */
+  --acc-auto: #6EC1F2;
+  --acc-home: #FF7A59;
+  --acc-renters: #FF7EB3;
+  --acc-umbrella: #3DD6C1;
+  --acc-life: #B9A6F7;
+  --lime: #C9E265;
+
+  /* Each line's color as TEXT ON CREAM, for the few places it has to be
+     (a cross-sell link, a kicker on a paper ground). Dark enough for sand
+     too, because that is where an ink last failed on this site. */
+  --ink-auto: #185F90;
+  --ink-home: #B23A1B;
+  --ink-renters: #B0245E;
+  --ink-umbrella: #0A6E66;
+  --ink-life: #5B45B8;
+  --ink-lime: #4F6510;
 
   --wrap: 1120px;
   --radius: 14px;
@@ -316,6 +319,13 @@ svg {
   border-color: var(--sand);
   color: var(--navy);
 }
+/* THE ONE CORAL BUTTON. The hero's quote button, and only that one: the
+   single brightest thing on the darkest ground on the site, which is where a
+   site's one ask belongs. Navy on coral is 6.26; the coral block against the
+   navy hero is the same 6.26 as a shape. Not reused anywhere else, because a
+   second one would make it a style and this is a pointer. */
+.btn.coral { background: var(--acc-home); color: var(--navy); border-color: var(--acc-home); }
+.btn.coral:hover { background: #FF9377; border-color: #FF9377; color: var(--navy); }
 .btn[disabled] {
   opacity: 1;
   background: var(--slate);
@@ -360,9 +370,25 @@ section {
   color: #fff;
 }
 /* Giving is not a coverage line, so it does not take a line color. It takes a
-   ground. Everything .band-navy already styles keeps working, because only the
-   background moved behind a variable. */
-.band-forest { --band: var(--forest); }
+   ground, and the ground is LIME, the brightest surface on the site, because
+   giving is the one thing here that is not insurance and should look like it.
+   Everything on a lime band is navy: the heading, the lede, the kicker, the
+   step text, the link, the button, and the discs. The white-on-navy rules
+   that .band-navy carries are all overridden below, on purpose, one by one.
+   Every selector is .band-navy.band-lime rather than .band-lime alone: the
+   .band-navy rules come later in this file and would win on source order, and
+   the auditor caught exactly that on the first build (26 contrast failures,
+   every one of them this band). Two classes beat one, wherever they sit. */
+.band-navy.band-lime { --band: var(--lime); color: var(--navy); }
+.band-navy.band-lime h2, .band-navy.band-lime h3, .band-navy.band-lime .lede, .band-navy.band-lime .kicker,
+.band-navy.band-lime .steps p, .band-navy.band-lime .give-cta p, .band-navy.band-lime .bigstat-note { color: var(--navy); }
+.band-navy.band-lime .steps p a { color: var(--navy); }
+.band-navy.band-lime .steps p a:hover { color: var(--ink-lime); }
+.band-navy.band-lime .step-n { background: var(--navy); color: #fff; border-color: var(--navy); }
+.band-navy.band-lime .btn.onnavy { background: var(--navy); color: #fff; border-color: var(--navy); }
+.band-navy.band-lime .btn.onnavy:hover { background: var(--navy-2); border-color: var(--navy-2); color: #fff; }
+/* The swash under the heading is gold, which vanishes on lime. */
+.band-navy.band-lime h2 em svg path { stroke: var(--navy); }
 .band-navy h2,
 .band-navy h3 {
   color: #fff;
@@ -383,20 +409,21 @@ section {
    var(--accent, var(--gold...)), so a card or a page head with no acc- class
    is exactly what it was before. That fallback is the whole design: there is
    one place to add a line and nowhere to forget. */
-.acc-auto { --accent: var(--acc-auto); --accent-ink: var(--acc-auto); --wash: var(--wash-auto); }
-.acc-home { --accent: var(--acc-home); --accent-ink: var(--acc-home); --wash: var(--wash-home); }
-.acc-renters { --accent: var(--acc-renters); --accent-ink: var(--acc-renters); --wash: var(--wash-renters); }
-.acc-umbrella { --accent: var(--acc-umbrella); --accent-ink: var(--acc-umbrella); --wash: var(--wash-umbrella); }
-.acc-life { --accent: var(--acc-life); --accent-ink: var(--acc-life); --wash: var(--wash-life); }
-/* Business splits the two, for the reason written on the tokens. */
-.acc-business { --accent: var(--gold-deep); --accent-ink: var(--gold-ink); --wash: var(--wash-business); }
+.acc-auto { --accent: var(--acc-auto); --accent-ink: var(--ink-auto); }
+.acc-home { --accent: var(--acc-home); --accent-ink: var(--ink-home); }
+.acc-renters { --accent: var(--acc-renters); --accent-ink: var(--ink-renters); }
+.acc-umbrella { --accent: var(--acc-umbrella); --accent-ink: var(--ink-umbrella); }
+.acc-life { --accent: var(--acc-life); --accent-ink: var(--ink-life); }
+/* Business is the brand gold, whole. Its ink is the gold ink the site already
+   has, so it needs nothing of its own any more. */
+.acc-business { --accent: var(--gold); --accent-ink: var(--gold-ink); }
 
 /* A cross-sell card points at ANOTHER line, so it wears that line's color and
    its link reads in it. The base `a` rule is deliberately left alone: making
    every link inside an acc- element take the accent would repaint the
    other-coverage list in five colors at once, which is a list that has gone
    wrong rather than a system. */
-.card[class*="acc-"] { border-left: 3px solid var(--accent); }
+.card[class*="acc-"] { border-left: 6px solid var(--accent); }
 .card[class*="acc-"] a { color: var(--accent-ink); }
 
 /* Placeholder marker. Deliberately loud: a placeholder that looks like content
@@ -657,14 +684,19 @@ section {
 .pagehead { padding: 56px 0 40px; }
 @media (max-width: 640px) { .pagehead { padding: 38px 0 28px; } }
 .pagehead .kicker { margin-bottom: 12px; display: block; }
-/* A page head carrying an acc- class fills with that line's wash and rules off
-   with the line's own color. Navy body text clears 13 on every wash, so this
-   costs no legibility anywhere. A head with no acc- class stays on paper. */
+/* A page head carrying an acc- class IS that line's color, edge to edge, with
+   navy on it: the kicker, the heading, the lede and the button. It used to be
+   a pale wash with a colored rule, which was the timid version of this. A
+   head with no acc- class stays on paper. */
 .pagehead[class*="acc-"] {
-  background: var(--wash);
-  border-bottom: 3px solid var(--accent, var(--gold-deep));
-  padding-bottom: 36px;
+  background: var(--accent);
+  color: var(--navy);
+  border-bottom: 3px solid var(--navy);
+  padding-bottom: 40px;
 }
+.pagehead[class*="acc-"] .kicker,
+.pagehead[class*="acc-"] .lede,
+.pagehead[class*="acc-"] h1 { color: var(--navy); }
 
 /* ═══ hero ═══ */
 .hero { padding: 64px 0 72px; }
@@ -745,12 +777,13 @@ section {
    card already measured on navy, so nothing here needs re-validating. */
 /* The giving card carries the giving ground, not the navy one, so the card
    and the band it sits above are the same idea in the same color. */
-.givecard { background: var(--forest); color: #fff; border-radius: 18px; padding: 28px 26px; }
-.givecard .kicker { color: var(--gold-light); display: block; }
-.givecard-line { font-size: var(--t-h3); color: #fff; margin-top: 10px; }
-.givecard-sub { margin-top: 14px; font-size: var(--t-base); line-height: 1.6; color: #c8d4de; }
-.givecard-link { display: inline-block; margin-top: 20px; color: #fff; font-weight: 600; font-size: var(--t-base); }
-.givecard-link:hover { color: var(--gold-light); }
+/* Lime, like the band it sits above, and navy on it like everything on lime. */
+.givecard { background: var(--lime); color: var(--navy); border: 2px solid var(--navy); border-radius: 18px; padding: 28px 26px; }
+.givecard .kicker { color: var(--navy); display: block; }
+.givecard-line { font-size: var(--t-h3); color: var(--navy); margin-top: 10px; }
+.givecard-sub { margin-top: 14px; font-size: var(--t-base); line-height: 1.6; color: var(--navy); }
+.givecard-link { display: inline-block; margin-top: 20px; color: var(--navy); font-weight: 600; font-size: var(--t-base); }
+.givecard-link:hover { color: var(--ink-lime); }
 
 /* ═══ coverage grid ═══ */
 .cov-grid { list-style: none; display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 34px; }
@@ -762,6 +795,16 @@ section {
   transition: border-color .15s ease, transform .15s ease;
 }
 .cov-card:hover { border-color: var(--accent, var(--gold)); transform: translateY(-2px); color: var(--navy); }
+/* THE WHOLE CARD IS THE COLOR. Not a bar, not a wash: the fill, edge to edge,
+   with navy lettering on it and a navy border so the shape holds against
+   cream. Body text is navy here, never slate, because slate fails on every
+   bright fill except lime. The hover lifts the card and darkens nothing;
+   there is nowhere darker to go that would still be this color. */
+.cov-card[class*="acc-"] {
+  background: var(--accent); border-color: var(--navy); color: var(--navy);
+}
+.cov-card[class*="acc-"] p, .cov-card[class*="acc-"] .cov-more { color: var(--navy); }
+.cov-card[class*="acc-"]:hover { border-color: var(--navy); }
 .cov-card h2, .cov-card h3 { font-size: var(--t-lg); }
 .cov-card p { margin-top: 8px; font-size: var(--t-base); color: var(--slate); line-height: 1.55; }
 .cov-more { display: inline-block; margin-top: 14px; font-size: var(--t-sm); font-weight: 700; color: var(--accent-ink, var(--gold-ink)); font-family: var(--font-mono), ui-monospace, monospace; letter-spacing: .06em; text-transform: uppercase; }
@@ -838,8 +881,8 @@ section {
    depends on telling the colors apart. */
 .sidelist li[class*="acc-"] { display: flex; align-items: baseline; gap: 10px; }
 .sidelist li[class*="acc-"]::before {
-  content: ""; flex: none; width: 9px; height: 9px; border-radius: 50%;
-  background: var(--accent, var(--gold-deep));
+  content: ""; flex: none; width: 11px; height: 11px; border-radius: 50%;
+  background: var(--accent, var(--gold)); border: 2px solid var(--navy);
 }
 .sidesteps { padding-left: 20px; }
 .side-fine { font-size: var(--t-sm); color: var(--slate); margin-top: 16px; }
@@ -1129,16 +1172,16 @@ h1 em svg path, h2 em svg path { stroke-dasharray: 320; stroke-dashoffset: 320; 
 
 /* ── coverage cards with some weight ── */
 .cov-card { border-width: 2px; position: relative; overflow: hidden; }
-/* THE BAR IS ON AT REST NOW, not only on hover. It used to scale in from
-   nothing, which meant the grid was six identical cream rectangles until you
-   moved a mouse over one, and on a phone it was never seen at all. Sitting at
-   40% and filling on hover keeps the reveal and gives the colors something to
-   do when nobody is pointing at anything. */
+/* The bar under a card. On a plain cream card it is gold-deep, on at rest
+   at 40% and filling on hover. On a FILLED card it is navy, the same
+   behaviour, so the hover still says something without needing a second
+   shade of the fill. */
 .cov-card::after {
   content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 4px;
-  background: var(--accent, var(--gold-deep)); transform: scaleX(.4); transform-origin: left;
+  background: var(--gold-deep); transform: scaleX(.4); transform-origin: left;
   transition: transform .28s cubic-bezier(.2,.7,.2,1);
 }
+.cov-card[class*="acc-"]::after { background: var(--navy); }
 .cov-card:hover::after { transform: scaleX(1); }
 .cov-card:hover { transform: translateY(-4px); box-shadow: 0 18px 34px -22px rgba(11,33,64,.5); }
 
@@ -1254,8 +1297,8 @@ h1 em svg path, h2 em svg path { stroke-dasharray: 320; stroke-dashoffset: 320; 
   .site-head, .site-foot, .tick, .wave, .hero-mark, .gw-plate,
   .hero-cta, .close-actions, .btn, .skip, .qtab { display: none !important; }
   body { background: #fff; color: #000; font-size: 11pt; }
-  .hero, .band-navy, .band-forest, .band-sand, .closeband, .goalband { background: #fff !important; color: #000 !important; }
-  .pagehead[class*="acc-"] { background: #fff !important; border-bottom-color: #000 !important; }
+  .hero, .band-navy, .band-navy.band-lime, .band-sand, .closeband, .goalband { background: #fff !important; color: #000 !important; }
+  .pagehead[class*="acc-"], .cov-card[class*="acc-"], .givecard { background: #fff !important; border-color: #000 !important; }
   .hero h1, .band-navy h2, .band-navy h3, .closeband h2 { color: #000 !important; }
   .lede, .hero-lede, .band-navy .lede { color: #222 !important; }
   section { padding: 12pt 0 !important; break-inside: avoid; }
