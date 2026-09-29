@@ -50,7 +50,7 @@ export default function Header({ phone, phoneHref }: { phone: string; phoneHref:
     <header className="site-head">
       <div className="wrap head-in">
         <Link href={home} className="head-brand" aria-label={`${site.name} home`}>
-          <Lockup markWidth={32} />
+          <Lockup markWidth={36} />
         </Link>
 
         <nav className="head-nav" aria-label="Main">

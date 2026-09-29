@@ -51,7 +51,7 @@ export default function WorkroomLayout({ children }: { children: React.ReactNode
            alone is ~17px, which the facts-screen audit caught as the one
            small tap target in the chrome. */
         .wr-brand { display: flex; align-items: baseline; gap: 8px; flex: 0 0 auto; text-decoration: none; color: inherit; padding: 6px 0; }
-        .wr-shop { font-family: var(--font-brand), serif; font-size: 15px; line-height: 1; color: var(--navy); letter-spacing: .04em; }
+        .wr-shop { font-family: var(--font-display), sans-serif; font-weight: 900; font-size: 19px; line-height: 1; color: var(--navy); letter-spacing: -.05em; word-spacing: .24em; text-transform: lowercase; }
         .wr-word { font-size: 10px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--slate); }
         .wr-tabs { display: flex; gap: 18px; flex: 1 1 auto; flex-wrap: wrap; }
         .wr-tabs a { font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; text-decoration: none; color: var(--navy); padding: 9px 1px; border-bottom: 2px solid transparent; white-space: nowrap; }

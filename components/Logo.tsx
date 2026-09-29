@@ -54,17 +54,81 @@ export function Mark({ width = 40, reverse = false, className, title }: MarkProp
 }
 
 /**
- * The full lockup, set the way the client's logo sets it: the name in serif
- * capitals, a gold rule, and the rest of the legal name under it. Cinzel via
- * `--font-brand` because the logo's wordmark is Trajan-style capitals and
- * Cinzel is the free face closest to it; it is loaded in app/layout.tsx and
- * used nowhere else, so the serif stays a brand voice rather than becoming a
- * heading font.
+ * THE WORDMARK: lowercase "anchor" in the headline face, with the trade
+ * beside it in the mono.
+ *
+ * It replaced a lockup set the way the client's logo file sets it: the name
+ * in Cinzel capitals (the free face closest to Trajan), widely tracked, over
+ * a thin gold rule, with "AND RISK MANAGEMENT" in small spaced capitals
+ * underneath. Kevin, 29 September 2026: it "looks sort of like a legal office
+ * and not a fun gen z branded insurance office." He was right, and it was
+ * four things at once. Inscriptional Roman capitals are the house face of law
+ * firms and banks. Wide letterspacing is how a firm says it is old. A
+ * hairline between two lines of type is a letterhead device. And the second
+ * line read like "& Associates".
+ *
+ * Four options were rendered beside her real mark and Kevin picked this one,
+ * without the coral full stop the render carried. It uses Archivo, the face
+ * every headline on the site already uses, so the logo matches the page
+ * under it and Cinzel is no longer loaded at all.
+ *
+ * HER ANCHOR IS UNTOUCHED. The drawing was never the problem.
+ *
+ * THIS DEPARTS FROM HER LOGO FILE, her cards and her signage, which still set
+ * the name in capitals. That is a decision about her identity and it is hers
+ * to approve; as of this commit it is Kevin's pick on a spec build.
+ *
+ * THE LEGAL NAME IS NOT IN THE WORDMARK ANY MORE. "Anchor Insurance and Risk
+ * Management" is the licensed name and it is written out in the footer
+ * (Footer.tsx, from site.legalName), which is where a license line belongs.
  */
+export function Wordmark({
+  ink = "var(--navy)",
+  sub = "var(--slate)",
+  compact = false,
+}: {
+  ink?: string;
+  /** The trade label. 6.62 on paper as slate; pass a light value on navy. */
+  sub?: string;
+  compact?: boolean;
+}) {
+  return (
+    <span style={{ display: "inline-flex", alignItems: "center", gap: compact ? 8 : 10, lineHeight: 1 }}>
+      <span
+        style={{
+          fontFamily: "var(--font-display), -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif",
+          fontWeight: 900,
+          fontSize: compact ? 23 : 29,
+          letterSpacing: "-0.05em",
+          color: ink,
+          whiteSpace: "nowrap",
+        }}
+      >
+        anchor
+      </span>
+      <span
+        style={{
+          fontFamily: "var(--font-mono), ui-monospace, monospace",
+          fontWeight: 600,
+          fontSize: compact ? 9.5 : 10.5,
+          letterSpacing: "0.18em",
+          textTransform: "uppercase",
+          color: sub,
+          whiteSpace: "nowrap",
+          /* The mono sits on the heavy word's x-height, not its baseline:
+             centered, it floats; on the baseline, it sags under the bowl. */
+          paddingTop: compact ? 7 : 9,
+        }}
+      >
+        insurance
+      </span>
+    </span>
+  );
+}
+
 export function Lockup({
   markWidth = 34,
   ink = "var(--navy)",
-  accent = "var(--gold)",
   sub = "var(--slate)",
   compact = false,
   /** Lets a caller pass a custom mark without this component changing. */
@@ -72,7 +136,6 @@ export function Lockup({
 }: {
   markWidth?: number;
   ink?: string;
-  accent?: string;
   sub?: string;
   compact?: boolean;
   markSlot?: React.ReactNode;
@@ -82,55 +145,13 @@ export function Lockup({
       style={{
         display: "inline-flex",
         alignItems: "center",
-        gap: 11,
+        gap: 10,
         lineHeight: 1,
         textDecoration: "none",
       }}
     >
       {markSlot ?? <Mark width={markWidth} />}
-      <span style={{ display: "block" }}>
-        <span
-          style={{
-            display: "block",
-            fontFamily: "var(--font-brand), Georgia, serif",
-            fontWeight: 700,
-            fontSize: compact ? 14.5 : 16.5,
-            letterSpacing: "0.12em",
-            textTransform: "uppercase",
-            color: ink,
-            whiteSpace: "nowrap",
-          }}
-        >
-          Anchor Insurance
-        </span>
-        {compact ? null : (
-          <>
-            <span
-              style={{
-                display: "block",
-                height: 2,
-                background: accent,
-                margin: "5px 0 4px",
-              }}
-              aria-hidden="true"
-            />
-            <span
-              style={{
-                display: "block",
-                fontFamily: "var(--font-brand), Georgia, serif",
-                fontWeight: 600,
-                fontSize: 8.5,
-                letterSpacing: "0.3em",
-                textTransform: "uppercase",
-                color: sub,
-                whiteSpace: "nowrap",
-              }}
-            >
-              And Risk Management
-            </span>
-          </>
-        )}
-      </span>
+      <Wordmark ink={ink} sub={sub} compact={compact} />
     </span>
   );
 }

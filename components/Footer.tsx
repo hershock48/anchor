@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Mark } from "./Logo";
+import { Mark, Wordmark } from "./Logo";
 import GlazedPlate from "./GlazedPlate";
 import { site, giving, lines, ph, isPlaceholder } from "@/lib/site";
 import { getFacts } from "@/lib/content";
@@ -14,7 +14,11 @@ export default async function Footer() {
       <div className="wrap foot-in">
         <div className="foot-brand">
           <Mark width={44} reverse />
-          <p className="foot-name">{site.name}</p>
+          {/* The same wordmark as the header, reversed. The accessible name is
+              the text itself, "anchor insurance". */}
+          <p className="foot-name">
+            <Wordmark ink="#fff" sub="#a8b9c6" />
+          </p>
           <p className="foot-tag">{site.tagline}</p>
           <p className="foot-legal">
             The full name on the license is {site.legalName}. An independent agency, which means we shop several carriers for you instead of selling one company&rsquo;s product.

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Archivo, Cinzel, Inter, JetBrains_Mono } from "next/font/google";
+import { Archivo, Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { site } from "@/lib/site";
 import { getFacts } from "@/lib/content";
@@ -47,18 +47,12 @@ const display = Archivo({
 });
 const body = Inter({ subsets: ["latin"], variable: "--font-body", display: "swap" });
 /**
- * Cinzel is the wordmark face ONLY. The client's logo sets the name in
- * Trajan-style capitals and Cinzel is the free face closest to it. It is
- * deliberately not wired into headings: the moment it becomes a heading font
- * the lockup stops being the brand's voice. Self-hosted at build time like
- * the others.
+ * THERE WAS A FOURTH FACE, Cinzel, loaded for the wordmark alone because the
+ * client's logo file sets her name in Trajan-style capitals. It came out on
+ * 29 September 2026 with the wordmark it served (components/Logo.tsx says
+ * why). The wordmark is Archivo now, so the site loads three faces and the
+ * logo finally matches the headlines under it.
  */
-const brand = Cinzel({
-  subsets: ["latin"],
-  variable: "--font-brand",
-  display: "swap",
-  weight: ["600", "700"],
-});
 const mono = JetBrains_Mono({
   subsets: ["latin"],
   variable: "--font-mono",
@@ -80,7 +74,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${display.variable} ${body.variable} ${mono.variable} ${brand.variable}`}>
+    <html lang="en" className={`${display.variable} ${body.variable} ${mono.variable}`}>
       <body>{children}</body>
     </html>
   );

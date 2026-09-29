@@ -661,10 +661,10 @@ section {
 }
 @media (max-width: 900px) { .foot-in { grid-template-columns: 1fr 1fr; } }
 @media (max-width: 560px) { .foot-in { grid-template-columns: 1fr; gap: 28px; } }
-/* The footer wordmark speaks the same serif as the header lockup. These two
-   places and nowhere else: the brand face stops being one the moment it
-   becomes a heading font. */
-.foot-name { font-family: var(--font-brand), Georgia, serif; font-size: var(--t-md); font-weight: 700; color: #fff; margin-top: 12px; letter-spacing: 0.12em; text-transform: uppercase; }
+/* The footer wordmark is the header's, reversed (components/Logo.tsx,
+   Wordmark). This rule only places it; the type is set in the component so
+   the two can never drift. The trade label is #a8b9c6, 9.11 on this ground. */
+.foot-name { margin-top: 14px; color: #fff; }
 .foot-tag { font-family: var(--font-mono), ui-monospace, monospace; font-size: var(--t-xs); letter-spacing: .16em; text-transform: uppercase; color: var(--gold-light); margin-top: 5px; }
 .foot-legal { font-size: var(--t-cap); line-height: 1.6; margin-top: 14px; max-width: 34ch; }
 .foot-col h2 { font-family: var(--font-mono), ui-monospace, monospace; font-size: var(--t-xs); letter-spacing: .16em; text-transform: uppercase; color: #8fa3b4; font-weight: 600; margin-bottom: 12px; }

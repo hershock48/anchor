@@ -6,9 +6,10 @@ in Manchester, Michigan. Customer-facing surfaces say **Anchor Insurance**.
 **Three client decisions landed on August 28, 2026, and the build changed
 shape.** The third: **she brought her real logo**, a navy anchor with a gold
 wave, and the whole visual system now derives from it. The mark is the
-artwork itself (see the mark trap below), the palette is sampled from it, the
-wordmark is serif capitals via Cinzel, and the motion is a swing: the logo
-hangs from a line in the hero. The first two:
+artwork itself (see the mark trap below), the palette started from it, and the
+motion is a swing: the logo hangs from a line in the hero. The wordmark was
+serif capitals to match her logo file until 29 September 2026, when it became
+lowercase in the headline face (see the wordmark trap below). The first two:
 
 First, the name. The site was built as "Insurance for a Cause," which was the
 DBA, with Anchor as the legal entity behind it. The client folded everything
@@ -224,10 +225,30 @@ sharp at every size the site renders (the largest is ~230px against a 380px
 asset), but print work or anything larger needs her original file. When it
 lands, re-key `anchor-mark.png` from it and nothing else changes.
 
-**Cinzel is the wordmark face only.** The logo sets the name in Trajan-style
-capitals; Cinzel (self-hosted, `--font-brand`) is the closest free face and it
-appears in exactly two places, the header lockup and the footer wordmark. The
-moment it becomes a heading font the lockup stops being the brand's voice.
+**The wordmark is lowercase "anchor" in the headline face, and it no longer
+matches her logo file.** Until 29 September 2026 it was set the way her logo
+sets it: Cinzel capitals, widely tracked, over a thin gold rule, with "AND RISK
+MANAGEMENT" beneath. Kevin's read was that it looked like a legal office, and
+it was four things at once: inscriptional capitals are the house face of law
+firms, wide tracking is how a firm says it is old, a hairline between two
+lines is a letterhead device, and the second line read like "& Associates".
+Four options were rendered beside her real mark and he picked this one.
+
+It is Archivo at 900, the face the headlines use, with "insurance" beside it
+in the mono. It lives in one component (`Wordmark` in `components/Logo.tsx`)
+used by the header, the footer and nothing else; the workroom's chrome sets
+the same face in its own stylesheet. Cinzel is no longer loaded, so the site
+carries three faces instead of four.
+
+**Two things this leaves open, both hers.** Her cards, her signage and her
+logo file still set the name in capitals, so the website and the rest of her
+identity now disagree; that is a decision about her brand and as of this
+commit it is Kevin's pick on a spec build, not her approval. And the licensed
+name, "Anchor Insurance and Risk Management", is no longer in the wordmark. It
+is written out in the footer from `site.legalName`, which is where a license
+line belongs, but she should confirm she is content with that.
+
+Her anchor drawing is untouched. It was never the problem.
 
 **No `new Date()` in a rendered page.** It freezes at build time. That is why the
 footer copyright has no year: a "dynamic" year that silently stops updating is
