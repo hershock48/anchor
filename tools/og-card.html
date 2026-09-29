@@ -4,116 +4,95 @@
 <meta charset="utf-8">
 <title>og card source</title>
 <!--
-  Source page for public/pitch/anchor/og.jpg. Rendered rather than assembled
-  in an image editor, so the card uses the studio's own palette and the real
-  mark and cannot drift from them. Screenshot at 1200x630, 1x.
+  Source page for public/pitch/anchor/og.jpg, the PROPOSAL's link card: what
+  shows when anchor.glazedweb.com is pasted into a text.
+
+  REDRAWN 29 SEPTEMBER 2026, at Kevin's word, IN HER IDENTITY. It used to wear
+  the studio's: cream, raspberry, the glazed mark, which is the convention in
+  glaze/proposal.md (the proposal's card is the studio's, the site's card is
+  the client's). This one departs from that on purpose. The link she is sent
+  is this one, and the first thing she sees should be what she is being
+  offered, not who is offering it. The studio is still named, in the last line
+  of the card, because a proposal that hides its author is a worse kind of
+  wrong.
+
+  Same ground, lights and pane as the site's card (tools/demo-og-card.html)
+  and the homepage hero, so the three cannot be told apart at a glance. Her
+  mark is the reversed cut, because the ground is dark.
+
+  THE FONTS come from Google at render time, which is fine for a page rendered
+  once into a JPEG. The render refuses to take the picture if one is missing.
 
   Everything that must be read sits inside the centre 630x630 band, x 285 to
-  x 915, drawn below as .safe. Newer iOS crops link previews toward square and
-  the outer 285px on each side can simply vanish.
+  x 915. Newer iOS crops link previews toward square and the outer 285px on
+  each side can simply vanish. Screenshot at 1200x630, 1x.
+
+  AFTER RE-RENDERING, BUMP THE ?v= on og:image in
+  public/pitch/anchor/index.html. A card is cached by its URL for weeks.
 -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;900&family=JetBrains+Mono:wght@600&display=block" rel="stylesheet">
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   html, body { width: 1200px; height: 630px; }
   body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    background: #FDF6EC; color: #2B1E16;
+    font-family: "Archivo", sans-serif;
+    background: #0B2140; color: #fff;
     display: flex; align-items: center; justify-content: center;
     position: relative; overflow: hidden;
   }
-  /* Wide-crop decoration only. Nothing here is load-bearing. */
-  .wash {
-    position: absolute; inset: 0;
+  .orb { position: absolute; border-radius: 50%; opacity: .62;
+    background: radial-gradient(closest-side, var(--c) 0%, var(--c) 28%, transparent 100%); }
+  .o1 { --c: #FF7A59; width: 620px; height: 620px; left: -200px; top: -260px; }
+  .o2 { --c: #3DD6C1; width: 520px; height: 520px; left: 40px;  bottom: -330px; }
+  .o3 { --c: #B9A6F7; width: 460px; height: 460px; left: 470px; top: -330px; }
+  .o4 { --c: #6EC1F2; width: 560px; height: 560px; right: -120px; top: -290px; }
+  .o5 { --c: #E3B24E; width: 620px; height: 620px; right: -230px; bottom: -340px; }
+
+  .safe { position: relative; z-index: 2; width: 630px; height: 630px;
+    display: flex; align-items: center; justify-content: center; }
+  .pane {
+    width: 590px; padding: 38px 30px 30px; border-radius: 34px; text-align: center;
+    display: flex; flex-direction: column; align-items: center;
     background:
-      radial-gradient(circle at 8% 22%, rgba(191,224,122,0.30), transparent 42%),
-      radial-gradient(circle at 94% 84%, rgba(232,77,138,0.20), transparent 46%);
+      linear-gradient(135deg, rgba(255,255,255,.08) 0%, rgba(255,255,255,.02) 46%, rgba(255,255,255,.05) 100%),
+      rgba(11, 33, 64, .62);
+    -webkit-backdrop-filter: blur(24px) saturate(140%);
+    backdrop-filter: blur(24px) saturate(140%);
+    border: 1px solid rgba(255,255,255,.24);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.45), inset 0 -1px 0 rgba(255,255,255,.08), 0 34px 70px -34px rgba(0,0,0,.65);
   }
-  .safe {
-    position: relative; z-index: 2;
-    width: 630px; height: 630px;
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    text-align: center; padding: 0 8px 54px;
-  }
-  .mark { margin-bottom: 26px; }
-  .kicker {
-    font-size: 29px; font-weight: 700; letter-spacing: .22em; text-transform: uppercase;
-    color: #467C3D; margin-bottom: 22px;
-  }
-  h1 {
-    /* 74px ran the first line edge to edge in the 630 square crop, which is the
-       exact failure link-cards.md warns about. 66px leaves a margin on both
-       sides of the crop. */
-    font-size: 66px; font-weight: 800; letter-spacing: -2.4px; line-height: 1.04;
-  }
-  /* --raspberry-deep is 4.45 on cream, a fail for normal-weight text and the
-     reason --raspberry-ink exists. This is 66px display type, so the 3:1
-     large-text threshold applies and it clears. Do not reuse this colour for
-     the small lines below. */
-  h1 em { font-style: normal; color: #CE3672; }
-  .sig {
-    margin-top: 30px; font-size: 30px; font-weight: 600; color: #6B5747; line-height: 1.35;
-  }
-  .sig b { color: #2B1E16; font-weight: 800; }
-  .drip { position: absolute; left: 0; right: 0; bottom: -1px; width: 1200px; height: 54px; z-index: 3; display: block; }
+  .kicker { font-family: "JetBrains Mono", monospace; font-weight: 600; font-size: 19px;
+    letter-spacing: .24em; text-transform: uppercase; color: #F2DCA8; padding-left: .24em; }
+  /* 62px, not larger: the longest line has to clear both edges of the 630
+     square crop with room to spare, which is the failure the old card's
+     comment recorded at 74px. */
+  h1 { font-weight: 900; font-size: 62px; letter-spacing: -0.045em; line-height: 1.0; margin-top: 20px; }
+  /* Gold as TEXT is allowed here and nowhere on the site's light grounds: on
+     the smoked pane it measures above 8. */
+  h1 em { font-style: normal; color: #E3B24E; }
+  .for { display: flex; align-items: center; gap: 14px; margin-top: 30px; }
+  .for .name { font-weight: 900; font-size: 50px; letter-spacing: -0.055em; line-height: 1; }
+  .for .trade { font-family: "JetBrains Mono", monospace; font-weight: 600; font-size: 15px;
+    letter-spacing: .2em; text-transform: uppercase; color: #cbd7e1; padding-top: 16px; }
+  .from { font-family: "JetBrains Mono", monospace; font-weight: 600; font-size: 14px;
+    letter-spacing: .16em; text-transform: uppercase; color: #cbd7e1; margin-top: 24px; }
 </style>
 </head>
 <body>
-<div class="wash"></div>
-
-<svg width="0" height="0" style="position:absolute" aria-hidden="true">
-  <defs>
-    <radialGradient id="pinkGrad" cx="40%" cy="34%" r="75%">
-      <stop offset="0%" stop-color="#F887B2"/><stop offset="55%" stop-color="#E84D8A"/><stop offset="100%" stop-color="#CE3672"/>
-    </radialGradient>
-    <linearGradient id="lgGrad" x1="0" y1="92" x2="0" y2="215" gradientUnits="userSpaceOnUse">
-      <stop offset="0%" stop-color="#D9EDA0"/><stop offset="55%" stop-color="#BFE07A"/><stop offset="100%" stop-color="#A3CE55"/>
-    </linearGradient>
-    <linearGradient id="creepGrad" x1="0" y1="90" x2="0" y2="124" gradientUnits="userSpaceOnUse">
-      <stop offset="0%" stop-color="#E3F2B0"/><stop offset="100%" stop-color="#C3E181"/>
-    </linearGradient>
-    <linearGradient id="dgGrad" x1="0" y1="92" x2="0" y2="165" gradientUnits="userSpaceOnUse">
-      <stop offset="0%" stop-color="#5FA850"/><stop offset="100%" stop-color="#43813A"/>
-    </linearGradient>
-  </defs>
-  <symbol id="mark" viewBox="46 16 110 186" overflow="visible">
-    <g fill="url(#dgGrad)">
-      <ellipse cx="100" cy="110" rx="38" ry="15"/>
-      <path d="M 86 100 C 86 116, 87 130, 88 142 C 88 148, 91 149, 92 142 C 93 130, 92 114, 92 100 Z"/>
-      <path d="M 114 100 C 114 112, 115 124, 116 134 C 116 140, 119 141, 120 134 C 121 124, 120 110, 120 100 Z"/>
-    </g>
-    <g fill="url(#lgGrad)">
-      <path d="M 64 100 C 63 120, 65 138, 66 152 C 66 164, 68 172, 74 173 C 80 172, 83 165, 82 154 C 84 136, 85 116, 86 100 Z"/>
-      <path d="M 92 100 C 91 128, 93 152, 94 172 C 94 188, 97 199, 104 200 C 111 199, 114 190, 112 174 C 113 150, 114 124, 114 100 Z"/>
-      <path d="M 120 100 C 119 116, 120 130, 121 142 C 121 152, 123 159, 129 160 C 134 159, 137 153, 135 144 C 136 130, 137 114, 137 100 Z"/>
-    </g>
-    <circle cx="100" cy="70" r="52" fill="url(#pinkGrad)"/>
-    <path d="M 56 98 A 52 52 0 0 0 144 98 C 142 94, 138 92, 134 94 C 130 97, 129 102, 125 104 C 119 106, 116 98, 110 96 C 104 94, 103 102, 98 105 C 93 107, 90 100, 84 97 C 78 95, 76 100, 71 102 C 66 103, 62 100, 56 98 Z" fill="url(#creepGrad)"/>
-    <path d="M 68 106 A 42 42 0 0 0 84 116" fill="none" stroke="#F1F8DC" stroke-width="4" stroke-linecap="round" opacity="0.85"/>
-    <path d="M 97 144 Q 103 151 109 144" fill="none" stroke="#55974A" stroke-width="4" stroke-linecap="round"/>
-    <g stroke="#F1F8DC" fill="none" stroke-linecap="round">
-      <path d="M 97 128 C 96 148, 97 166, 100 182" stroke-width="4.5" opacity="0.85"/>
-      <path d="M 69 118 C 68 132, 70 146, 71 156" stroke-width="3.5" opacity="0.8"/>
-      <path d="M 124 114 C 123 124, 125 138, 126 148" stroke-width="3.5" opacity="0.8"/>
-    </g>
-    <circle cx="100" cy="192" r="2.5" fill="#F1F8DC" opacity="0.9"/>
-    <circle cx="100" cy="72" r="13" fill="#FDF6EC"/>
-    <circle cx="100" cy="72" r="13" fill="none" stroke="#C22F6B" stroke-width="3" opacity="0.3"/>
-    <path d="M 62 46 A 44 44 0 0 1 82 28" fill="none" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round" opacity="0.75"/>
-    <circle cx="92" cy="26" r="3.5" fill="#FFFFFF" opacity="0.75"/>
-  </symbol>
-</svg>
-
-<div class="safe">
-    <div class="mark">
-      <svg width="118" height="148" viewBox="46 16 110 186" overflow="visible" aria-hidden="true"><use href="#mark"/></svg>
+  <span class="orb o1"></span><span class="orb o2"></span><span class="orb o3"></span><span class="orb o4"></span><span class="orb o5"></span>
+  <div class="safe">
+    <div class="pane">
+      <p class="kicker">A website proposal</p>
+      <h1>Let’s build<br>something that<br><em>stands out.</em></h1>
+      <div class="for">
+        <img src="../public/brand/anchor-mark-reverse.png" width="62" height="73" alt="">
+        <span class="name">anchor</span>
+        <span class="trade">insurance</span>
+      </div>
+      <p class="from">A proposal from glazedweb</p>
     </div>
-    <p class="kicker">A website proposal</p>
-    <h1>Let’s build something that <em>stands out.</em></h1>
-    <p class="sig">for <b>Anchor Insurance</b></p>
   </div>
-
-<svg class="drip" viewBox="0 0 1440 60" preserveAspectRatio="none" aria-hidden="true">
-  <path fill="#CE3672" d="M0,0 H1440 V16 C1408 16 1400 44 1378 44 C1356 44 1362 16 1332 16 H1180 C1160 16 1156 52 1132 52 C1110 52 1116 16 1088 16 H880 C862 16 860 38 842 38 C824 38 828 16 802 16 H590 C574 16 572 48 550 48 C528 48 532 16 506 16 H300 C284 16 282 36 264 36 C246 36 250 16 224 16 H0 Z"/>
-</svg>
 </body>
 </html>

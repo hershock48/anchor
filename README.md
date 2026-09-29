@@ -847,7 +847,7 @@ HTML so nothing moves, open without JavaScript so every link is reachable.
 |---|---|
 | `public/pitch/anchor/index.html` | The proposal. Self-contained, no build step |
 | `public/pitch/anchor/logo.html` | The logo presentation and mockups. **Send this first** |
-| `public/pitch/anchor/og.jpg` | The proposal's link card, 1200x630 |
+| `public/pitch/anchor/og.jpg` | The proposal's link card, 1200x630. **In her identity since 29 September 2026, not the studio's**, at Kevin's word, which departs from `glaze/proposal.md`; the studio is named in its last line. Referenced as `og.jpg?v=2` |
 | `public/og.jpg` | The **site's** link card. Hers, not Glazed's. Redrawn 29 September 2026 to the new identity; referenced as `/og.jpg?v=2`, and the `v` moves every time it is re-rendered |
 | `tools/og-card.html` | The proposal card is rendered from this |
 | `tools/demo-og-card.html` | The demo card is rendered from this |
