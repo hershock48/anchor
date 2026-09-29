@@ -4,45 +4,89 @@
 <meta charset="utf-8">
 <title>demo og card source</title>
 <!--
-  Source page for public/og.jpg, the DEMO card. This is the client's own card,
-  not Glazed's: it wears her brand entirely and says what the business is.
-  The mark is her actual artwork (public/brand/anchor-mark.png, referenced
-  relatively so a file:// render finds it), on the paper ground the artwork
-  was made for.
+  Source page for public/og.jpg, the SITE's link card: what shows when
+  somebody pastes the link into a text or a post. This is the client's own
+  card, not Glazed's.
+
+  REDRAWN 29 SEPTEMBER 2026. The first card was the old identity in one
+  picture: the name in serif capitals over a gold rule, the muted palette,
+  and "Manchester, Michigan". All three had already changed on the site, so
+  the link was advertising a business that no longer looked like that. It is
+  now the hero in miniature: the navy ground, the drifting light, the smoked
+  pane, her anchor, and the lowercase wordmark.
+
+  HER MARK is her actual artwork, the reversed cut, because the ground is
+  dark (components/Logo.tsx says why the navy original must never sit on a
+  dark ground). Referenced relatively so a file:// render finds it.
+
+  THE FONTS come from Google at render time. That is fine HERE and would not
+  be on the site: this page is a tool that is rendered once into a JPEG, not
+  something a visitor's browser ever loads. The render script waits for them
+  and refuses to take the picture if either is missing, because a card set in
+  a fallback face is exactly the kind of mistake nobody notices for a month.
+
+  NO TOWN, on purpose. The hero's kicker says Michigan and the marketing copy
+  stopped naming Manchester on 16 September.
 
   Screenshot at 1200x630, 1x. Everything that must be read sits inside the
   centre 630x630 band, x 285 to x 915, because iOS crops toward square.
+
+  AFTER RE-RENDERING, BUMP THE ?v= ON THE IMAGE URL in app/(site)/layout.tsx
+  and app/(site)/page.tsx. Phones and social sites cache a card by its URL
+  and will keep showing the old picture for weeks otherwise.
 -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;900&family=JetBrains+Mono:wght@600&display=block" rel="stylesheet">
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   html, body { width: 1200px; height: 630px; }
   body {
-    font-family: Georgia, "Times New Roman", serif;
-    background: #F7F3EC; color: #122C4E;
+    font-family: "Archivo", sans-serif;
+    background: #0B2140; color: #fff;
     display: flex; align-items: center; justify-content: center;
     position: relative; overflow: hidden;
   }
-  .wash { position: absolute; inset: 0;
-    background: radial-gradient(circle at 12% 20%, rgba(198,159,88,.16), transparent 45%); }
+  /* The same five lights as the hero, placed for a 1200x630 frame. */
+  .orb { position: absolute; border-radius: 50%; opacity: .62;
+    background: radial-gradient(closest-side, var(--c) 0%, var(--c) 28%, transparent 100%); }
+  .o1 { --c: #FF7A59; width: 620px; height: 620px; left: -200px; top: -260px; }
+  .o2 { --c: #3DD6C1; width: 520px; height: 520px; left: 40px;  bottom: -330px; }
+  .o3 { --c: #B9A6F7; width: 460px; height: 460px; left: 470px; top: -330px; }
+  .o4 { --c: #6EC1F2; width: 560px; height: 560px; right: -120px; top: -290px; }
+  .o5 { --c: #E3B24E; width: 620px; height: 620px; right: -230px; bottom: -340px; }
+
   .safe { position: relative; z-index: 2; width: 630px; height: 630px;
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    text-align: center; padding: 0 6px; }
-  .name { font-size: 54px; font-weight: 700; letter-spacing: .1em; line-height: 1.1;
-    margin-top: 24px; text-transform: uppercase; }
-  .rule { width: 84px; height: 3px; background: #C69F58; margin: 20px 0 16px; }
-  .tag { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 20px;
-    letter-spacing: .2em; text-transform: uppercase; color: #6F5415; font-weight: 600; }
-  .where { margin-top: 24px; font-size: 25px; color: #4D5A66; }
+    display: flex; align-items: center; justify-content: center; }
+  .pane {
+    width: 590px; padding: 40px 30px 38px; border-radius: 34px; text-align: center;
+    display: flex; flex-direction: column; align-items: center;
+    background:
+      linear-gradient(135deg, rgba(255,255,255,.08) 0%, rgba(255,255,255,.02) 46%, rgba(255,255,255,.05) 100%),
+      rgba(11, 33, 64, .62);
+    -webkit-backdrop-filter: blur(24px) saturate(140%);
+    backdrop-filter: blur(24px) saturate(140%);
+    border: 1px solid rgba(255,255,255,.24);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.45), inset 0 -1px 0 rgba(255,255,255,.08), 0 34px 70px -34px rgba(0,0,0,.65);
+  }
+  .name { font-weight: 900; font-size: 118px; letter-spacing: -0.055em; line-height: .9; margin-top: 14px; }
+  .trade { font-family: "JetBrains Mono", monospace; font-weight: 600; font-size: 23px;
+    letter-spacing: .34em; text-transform: uppercase; color: #cbd7e1; margin-top: 12px; padding-left: .34em; }
+  .tag { font-weight: 600; font-size: 33px; letter-spacing: -0.015em; margin-top: 26px; }
+  .where { font-family: "JetBrains Mono", monospace; font-weight: 600; font-size: 17px;
+    letter-spacing: .2em; text-transform: uppercase; color: #F2DCA8; margin-top: 14px; }
 </style>
 </head>
 <body>
-  <div class="wash"></div>
+  <span class="orb o1"></span><span class="orb o2"></span><span class="orb o3"></span><span class="orb o4"></span><span class="orb o5"></span>
   <div class="safe">
-    <img src="../public/brand/anchor-mark.png" width="196" height="232" alt="">
-    <p class="name">Anchor Insurance</p>
-    <div class="rule"></div>
-    <p class="tag">Coverage that gives back</p>
-    <p class="where">Independent agency &middot; Manchester, Michigan</p>
+    <div class="pane">
+      <img src="../public/brand/anchor-mark-reverse.png" width="128" height="152" alt="">
+      <p class="name">anchor</p>
+      <p class="trade">insurance</p>
+      <p class="tag">Coverage that gives back.</p>
+      <p class="where">Independent agency &middot; Michigan</p>
+    </div>
   </div>
 </body>
 </html>

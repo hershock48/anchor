@@ -47,10 +47,15 @@ export async function generateMetadata(): Promise<Metadata> {
     siteName: site.name,
     images: [
       {
-        url: "/og.jpg",
+        /* ?v= IS A CACHE KEY, NOT DECORATION. Phones and social sites cache
+           a link card by its URL and keep the old picture for weeks. The
+           card was redrawn on 29 September 2026 (tools/demo-og-card.html),
+           so the URL moved with it. Bump this every time og.jpg is
+           re-rendered, in BOTH places it appears. */
+        url: "/og.jpg?v=2",
         width: 1200,
         height: 630,
-        alt: `${site.name}. ${site.tagline}. An independent agency in ${facts.contact.city}, Michigan.`,
+        alt: `${site.name}. ${site.tagline}. An independent agency in Michigan.`,
       },
     ],
   },

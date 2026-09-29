@@ -32,7 +32,7 @@ export async function generateMetadata() {
    */
   title: { absolute: `${site.name} | Independent agency in ${facts.contact.city}, Michigan` },
   description:
-    "Auto, home and business insurance from an independent Michigan agency. We shop several carriers, and a percentage of what we earn goes back to local causes.",
+    "Auto, home and business insurance from an independent Michigan agency. We shop several carriers, and a percentage of what we earn comes back to the community.",
   alternates: { canonical: "/" },
   // The card leads with the tagline rather than the tab title. A page's
   // openGraph replaces the layout's wholesale, so the image comes along.
@@ -41,14 +41,19 @@ export async function generateMetadata() {
     siteName: site.name,
     title: `${site.name} | ${site.tagline}`,
     description:
-      "Independent auto, home and business insurance in Michigan. A percentage of what we earn goes back to local causes.",
+      "Independent auto, home and business insurance in Michigan. A percentage of what we earn comes back to the community.",
     url: "/",
     images: [
       {
-        url: "/og.jpg",
+        /* ?v= IS A CACHE KEY, NOT DECORATION. Phones and social sites cache
+           a link card by its URL and keep the old picture for weeks. The
+           card was redrawn on 29 September 2026 (tools/demo-og-card.html),
+           so the URL moved with it. Bump this every time og.jpg is
+           re-rendered, in BOTH places it appears. */
+        url: "/og.jpg?v=2",
         width: 1200,
         height: 630,
-        alt: `${site.name}. ${site.tagline}. An independent agency in ${facts.contact.city}, Michigan.`,
+        alt: `${site.name}. ${site.tagline}. An independent agency in Michigan.`,
       },
     ],
   },
