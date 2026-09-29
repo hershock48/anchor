@@ -6,7 +6,7 @@ export async function generateMetadata() {
   const facts = await getFacts();
   return {
   title: "Our giving",
-  description: `We give a percentage of what we earn back to local causes in and around ${facts.contact.city}, and we post each one as it happens.`,
+  description: `We give a percentage of what we earn back to causes in the community, and we post each one as it happens.`,
   alternates: { canonical: "/giving" },
   };
 }
@@ -32,8 +32,8 @@ export default async function Giving() {
           <p className="kicker">Our giving</p>
           <h1>The giving is built in.</h1>
           <p className="lede" style={{ marginTop: 14 }}>
-            {giving.share.charAt(0).toUpperCase() + giving.share.slice(1)} goes back to
-            local causes in and around {facts.contact.city}. This page says how that works.
+            {giving.share.charAt(0).toUpperCase() + giving.share.slice(1)} comes back to
+            causes in the community. This page says how that works.
             The causes themselves go up on our social pages as we support them.
           </p>
         </div>

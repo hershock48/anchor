@@ -20,8 +20,14 @@ export default async function GivingCard() {
       <p className="kicker">Our giving</p>
       {/* "Share" here, "percentage" in the hero: the same phrase three times
           on the homepage would be a tic. */}
+      {/* THE GIVING DOES NOT NAME A TOWN. The client, through Kevin on 29
+          September 2026: they want to be vaguer about where they give. This
+          read "goes back to Manchester", which promised one town. The agency
+          is still IN Manchester everywhere that is a fact about the agency
+          (the contact page, the footer, the titles, the structured data);
+          what changed is only where the money is said to go. */}
       <h2 className="givecard-line">
-        A share of what we earn goes back to {facts.contact.city}.
+        A share of what we earn comes back to the community.
       </h2>
       {/* No "who they are, why we picked them" here: the pages this card sits
           on already say that once, and twice on a page is the limit. */}

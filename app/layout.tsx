@@ -68,7 +68,7 @@ export async function generateMetadata(): Promise<Metadata> {
     default: `${site.name} | Independent agency in ${facts.contact.city}, Michigan`,
     template: `%s | ${site.name}`,
   },
-  description: `An independent Michigan insurance agency that gives a percentage of what it earns back to local causes in and around ${facts.contact.city}.`,
+  description: `An independent Michigan insurance agency that gives a percentage of what it earns back to the community.`,
   };
 }
 

@@ -54,8 +54,8 @@ export default async function About() {
                 same voice as "The agency" beside it. */}
             <h2>The giving</h2>
             <p>
-              {giving.share.charAt(0).toUpperCase() + giving.share.slice(1)} goes back to
-              local causes in and around {facts.contact.city}. We pick them close to home,
+              {giving.share.charAt(0).toUpperCase() + giving.share.slice(1)} comes back to
+              causes in the community. We pick them close to home,
               and we post each one as it happens on our social pages: who they are, why we
               picked them, what came of it.
             </p>
