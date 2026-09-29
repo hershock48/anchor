@@ -711,11 +711,13 @@ section {
    One persistent ask on every customer page. Gold is a FILL carrying navy
    lettering, the same rule as every other gold surface here.
 
-   TWO SHAPES, because one does not work at both ends. On desktop it is the
-   vertical spine tab, read bottom to top, riding the right edge. Below 700px
-   a 40px spine would cover the last characters of every line of body text,
-   so it becomes a compact pill in the bottom corner instead, clear of the
-   text column and above the iOS home indicator. */
+   ONE SHAPE AT EVERY WIDTH: the vertical spine, read bottom to top, riding
+   the right edge. From 17 to 29 September 2026 a phone got a pill in the
+   bottom corner instead, because a 40px spine covers the last characters of
+   a full line of body text. Kevin asked for the phone to match the website,
+   and the pill had its own problem (it sat on the hero's second button), so
+   the spine is back everywhere and the phone's is SLIMMER rather than
+   different: 26px wide against the desktop's 45. */
 .qtab {
   position: fixed; z-index: 60;
   right: 0; top: 50%; transform: translateY(-50%);
@@ -732,28 +734,32 @@ section {
 }
 .qtab span { writing-mode: vertical-rl; transform: rotate(180deg); }
 .qtab:hover { color: var(--navy); padding-left: 16px; padding-right: 16px; }
+/* THE PHONE'S SPINE. Same tab, same place, narrower. The page's text column
+   ends 18px from the right edge on a phone, so any tab on that edge overlaps
+   it; at 26px wide this one takes 8px of the column, over the height of the
+   tab and nowhere else, and body text is set ragged right so most lines never
+   reach it. The first cut measured 32px and took 14, because the vertical
+   text kept the page line-height; line-height 1 is what makes it slim. It is
+   26 wide by about 115 tall, which clears the 24px minimum target size on its
+   short side, and min-width holds it there. It does not grow on hover: on a phone there is no hover,
+   and a tab that widens under a thumb covers more of the line it is next to. */
 @media (max-width: 700px) {
   .qtab {
-    top: auto; transform: none;
-    right: 14px; bottom: calc(14px + env(safe-area-inset-bottom, 0px));
-    border-radius: 999px; padding: 13px 20px;
-    box-shadow: 0 8px 22px -8px rgba(11, 33, 64, .55);
+    padding: 14px 6px;
+    min-width: 26px;
+    line-height: 1;
+    font-size: var(--t-xs);
+    letter-spacing: .14em;
+    border-radius: 9px 0 0 9px;
   }
-  .qtab span { writing-mode: horizontal-tb; transform: none; }
-  .qtab:hover { padding: 13px 20px; }
-  /* The pill steps aside while one of the page's own quote buttons is on
-     screen (QuoteTab.tsx sets the class and says why). visibility, not just
-     opacity: a faded link is still in the tab order and still takes a tap.
-     The visibility change is delayed on the way out so the fade can finish,
-     and immediate on the way back in. Phone only; the desktop spine never
-     covers anything and never moves. */
-  .qtab { transition: opacity .2s ease, transform .2s ease, visibility 0s; }
-  .qtab.is-away {
-    opacity: 0; transform: translateY(12px); visibility: hidden; pointer-events: none;
-    transition: opacity .2s ease, transform .2s ease, visibility 0s linear .2s;
-  }
+  .qtab:hover { padding: 14px 6px; }
 }
-@media (prefers-reduced-motion: reduce) { .qtab, .qtab.is-away { transition: none; transform: none; } }
+/* transition only. This rule carried "transform: none" for one commit (29
+   September 2026), which for anyone with reduced motion switched on removed
+   the translateY(-50%) that centres the tab, and dropped it half its own
+   height down the screen. A reduced-motion rule turns motion off; it must
+   never touch a transform that is doing layout. */
+@media (prefers-reduced-motion: reduce) { .qtab { transition: none; } }
 
 /* The tagline, under the headline, in the order the client asked for. */
 .hero-tag { margin-top: 12px; font-family: var(--font-display), sans-serif; font-weight: 600; font-size: var(--t-h3); letter-spacing: -0.01em; }
