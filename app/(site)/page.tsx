@@ -101,8 +101,19 @@ export default async function Home() {
           footer, the structured data), because that is what local search
           reads and removing it there would cost her the map listing. */}
       <section className="hero">
+        {/* LIQUID GLASS. Five drifting orbs of colored light, and a smoked
+            pane over the copy that frosts whatever passes under it. The orbs
+            are decoration and hidden from assistive tech; globals.css carries
+            the contrast arithmetic and the reason the anchor has no lens. */}
+        <div className="hero-orbs" aria-hidden="true">
+          <span className="orb orb-coral" />
+          <span className="orb orb-aqua" />
+          <span className="orb orb-lavender" />
+          <span className="orb orb-sky" />
+          <span className="orb orb-gold" />
+        </div>
         <div className="wrap hero-in">
-          <div>
+          <div className="hero-glass">
             <p className="kicker">Independent agency &middot; Michigan</p>
             <h1>
               Your policies, shopped.

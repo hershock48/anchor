@@ -314,6 +314,40 @@ not reused, because a second one would make it a style and this is a pointer.
 purpose and on instruction.** The house style is for glazedweb.com. A client
 site follows its client, and this one asked for bright.
 
+**The hero is liquid glass, and the glass is smoked on purpose.** Kevin asked
+for it on 29 September 2026. Glass only reads as glass when there is something
+behind it to bend, so the hero is two layers: five orbs of colored light that
+drift, and a pane over the copy that frosts whatever passes under it. The orbs
+are the line colors minus lime, which is giving's color and the one that
+breaks the pane.
+
+The pane is 62% navy under a thin white sheen. A clear pane would have been
+prettier and would have put white text on coral. **Contrast on glass cannot be
+computed from tokens, because the ground is a render, so it was measured from
+pixels:** the hero was captured with its text made transparent at six points
+in the orbs' drift, at 1200 and 390 wide, and the worst pixel inside each text
+element's box was compared to that element's real color.
+
+| Element | Worst pixel, 1200 | Worst pixel, 390 | Needs |
+|---|---|---|---|
+| Kicker | 5.35 | 7.57 | 4.5 |
+| Headline | 7.70 | 9.55 | 3.0 |
+| Lede | 9.79 | 9.60 | 4.5 |
+| Note | 8.02 | 8.85 | 4.5 |
+
+If an orb is added, moved, brightened or recolored, measure again. The
+automated auditor cannot see this: it reports contrast over a blurred
+backdrop as undetermined, not as a failure.
+
+The orbs are radial gradients, not blurred elements, and only their transform
+is animated, so they are composited rather than repainted. Reduced motion
+stops them where they are. A browser without backdrop-filter gets a nearly
+solid pane, because the copy must never depend on a blur to be readable.
+
+**The anchor has no lens behind it.** A glass porthole was the obvious second
+pane, and the client ruled it out on 31 August 2026: just the anchor, no
+plate, no card. A pane of glass is a plate.
+
 **The one cost, and it is visible in the hero.** The site's gold is now
 brighter than the gold ribbon in her own logo PNG, and the palette was sampled
 from that artwork so the two would match. Her mark is a phone-screenshot JPEG
