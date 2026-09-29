@@ -23,7 +23,11 @@ export default async function Quote() {
       <section className="pagehead">
         <div className="wrap">
           <p className="kicker">Get a quote</p>
-          <h1>Four fields. Then a person calls you.</h1>
+          {/* Was "Four fields. Then a person calls you.": a verbless fragment
+              and a punchline, which glaze/standards.md rules out. One
+              sentence, subject then verb, same as the homepage's closing
+              band so the two never drift apart. */}
+          <h1>Fill in four fields and a person calls you back.</h1>
           <p className="lede" style={{ marginTop: 14 }}>
             We are independent, so this gets shopped across several carriers instead of one company&rsquo;s rater. If we cannot beat what you have, we will say so.
           </p>

@@ -371,12 +371,20 @@ export default async function Home() {
       <section className="closeband" id="quote">
         <div className="wrap close-in reveal">
           <div>
-            <h2>Four fields. Then a person calls you.</h2>
+            {/* REWRITTEN 2026-09-29. This read "Four fields. Then a person calls
+                you." over a paragraph that opened on a verbless list, leaned on
+                "a conversation rather than a form" and closed on a punchline.
+                Kevin caught the headline; glaze/standards.md ("Write like a
+                person") names the rest: the fragment, the contrast that
+                corrects nobody, the neat landing. What passes is one idea per
+                sentence, subject then verb. Do not tighten these back into
+                fragments because they scan better. */}
+            <h2>Fill in four fields and a person calls you back.</h2>
             <p className="lede" style={{ marginTop: 14 }}>
-              Name, phone, ZIP, and what you need covered. The rest is a conversation rather
-              than a form. Or send the declarations page from your current policy and we will
-              tell you plainly whether we can do better; sometimes the answer is no, and you
-              should hear that from somebody willing to say it.
+              We ask for your name, your phone number, your ZIP and what you need covered, and
+              we go through the rest with you on the call. You can also send the declarations
+              page from your current policy, and we will tell you whether we can do better,
+              including when we cannot.
             </p>
           </div>
           <div className="close-actions">
