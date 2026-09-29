@@ -49,7 +49,10 @@ export default async function About() {
               instead of defending them.
             </p>
 
-            <h2>The giving is the point, not the marketing</h2>
+            {/* Was "The giving is the point, not the marketing", the "X, not
+                Y" form, removed by Kevin on 2026-09-29. A plain label in the
+                same voice as "The agency" beside it. */}
+            <h2>The giving</h2>
             <p>
               {giving.share.charAt(0).toUpperCase() + giving.share.slice(1)} goes back to
               local causes in and around {facts.contact.city}. We pick them close to home,

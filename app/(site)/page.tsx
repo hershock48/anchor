@@ -223,12 +223,14 @@ export default async function Home() {
           coverage, which is the order the client asked for. */}
       <section className="band-navy band-lime" style={{ paddingTop: 40 }}>
         <div className="wrap">
-          <p className="kicker reveal">What giving back looks like</p>
-          <h2 className="reveal">
-            Everybody says they give back.
-            <br />
-            We <em>built it in<Underline /></em>.
-          </h2>
+          {/* The headline here was "Everybody says they give back. We built it
+              in.", a contrast headline, and Kevin had it removed on
+              2026-09-29 (glaze/standards.md, "the contrast that corrects
+              nobody"). The section still needs a heading, so the plain label
+              that was the kicker is the heading now. Do not write a clever
+              one back in. */}
+          <p className="kicker reveal">Our giving</p>
+          <h2 className="reveal">What giving back looks like</h2>
           <p className="lede reveal" style={{ marginTop: 16, maxWidth: "62ch" }}>
             Almost every independent agency in the country donates to something, and it usually
             amounts to one sentence in a footer. Ours is part of how the agency is set up, and
@@ -378,8 +380,9 @@ export default async function Home() {
                 person") names the rest: the fragment, the contrast that
                 corrects nobody, the neat landing. What passes is one idea per
                 sentence, subject then verb. Do not tighten these back into
-                fragments because they scan better. */}
-            <h2>Fill in four fields and a person calls you back.</h2>
+                fragments because they scan better. The headline is Kevin's
+                own wording, the same day. */}
+            <h2>Fill this out and we will give you a jingle.</h2>
             <p className="lede" style={{ marginTop: 14 }}>
               We ask for your name, your phone number, your ZIP and what you need covered, and
               we go through the rest with you on the call. You can also send the declarations
