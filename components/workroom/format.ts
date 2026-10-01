@@ -35,10 +35,6 @@ export function ago(ms: number): string {
   return `${months} month${months === 1 ? "" : "s"} ago`;
 }
 
-export function money(cents: number): string {
-  return (cents / 100).toLocaleString("en-US", { style: "currency", currency: "USD" });
-}
-
 /** Digits only, for tel: links. A phone number that is not a link is a
  *  usability finding we make about other people's sites. */
 export function telHref(phone: string): string {

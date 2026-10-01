@@ -32,6 +32,15 @@ export async function POST(req: Request) {
   }
 
   const key = clientKey(req);
+
+  // THE BODY IS READ BEFORE THE LIMITER IS ASKED, so nothing awaits between
+  // allowed() and fail(). With the read in between, every request in a
+  // simultaneous batch passed allowed() before any of them recorded a miss,
+  // and the five-per-window cap never applied to concurrent guesses. From
+  // allowed() to fail() is now synchronous, so concurrent requests are
+  // counted one after another.
+  const body = (await req.json().catch(() => ({}))) as { passcode?: unknown };
+
   if (!logins.allowed(key)) {
     return NextResponse.json(
       { error: "Too many tries. Wait a few minutes." },
@@ -39,7 +48,6 @@ export async function POST(req: Request) {
     );
   }
 
-  const body = (await req.json().catch(() => ({}))) as { passcode?: unknown };
   if (typeof body.passcode !== "string" || !passcodeMatches(body.passcode, passcode)) {
     logins.fail(key);
     return NextResponse.json({ error: "That passcode is not right." }, { status: 401 });
