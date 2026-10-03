@@ -226,6 +226,28 @@ export default async function Home() {
                 </Link>
               </li>
             ))}
+            {/* THE SIXTH TILE IS AN ASK, NOT A SEVENTH LINE OF COVERAGE.
+                With commercial lifted into its own card above, five lines
+                were left for a three-column grid, which landed as three over
+                two with a hole on the right, and as two, two and one alone at
+                tablet width. Six divides evenly at three, two and one
+                columns. The sixth is not an invented line of business: it is
+                the declarations-page offer the coverage pages already make,
+                in navy so it reads as a different kind of tile. If a real
+                sixth personal line is ever added to lib/site.ts, this tile
+                makes it seven and should come out. */}
+            <li className="reveal">
+              <Link href="/quote" className="cov-card cov-ask">
+                <h3>Not sure which one?</h3>
+                <p>
+                  Send the declarations page from your current policy. We will tell you what is
+                  missing and what is overbought.
+                </p>
+                <span className="cov-more" aria-hidden="true">
+                  Ask us
+                </span>
+              </Link>
+            </li>
           </ul>
         </div>
       </section>

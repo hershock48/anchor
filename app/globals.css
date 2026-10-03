@@ -1298,6 +1298,15 @@ h1 em svg path, h2 em svg path { stroke-dasharray: 320; stroke-dashoffset: 320; 
   transition: transform .28s cubic-bezier(.2,.7,.2,1);
 }
 .cov-card[class*="acc-"]::after { background: var(--navy); }
+/* The homepage's sixth tile: the ask, in navy, so it reads as a different
+   kind of card from the five colored lines beside it. White on navy and
+   gold-light on navy both clear AA by a wide margin. */
+.cov-card.cov-ask { background: var(--navy); border-color: var(--navy); color: #fff; }
+.cov-card.cov-ask h3 { color: #fff; }
+.cov-card.cov-ask p { color: #dfe7ee; }
+.cov-card.cov-ask .cov-more { color: var(--gold-light); }
+.cov-card.cov-ask::after { background: var(--gold); }
+.cov-card.cov-ask:hover { color: #fff; border-color: var(--gold); }
 .cov-card:hover::after { transform: scaleX(1); }
 .cov-card:hover { transform: translateY(-4px); box-shadow: 0 18px 34px -22px rgba(11,33,64,.5); }
 
