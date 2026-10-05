@@ -1323,33 +1323,19 @@ h1 em svg path, h2 em svg path { stroke-dasharray: 320; stroke-dashoffset: 320; 
 /* ── hero layout, rebuilt for the animated mark ── */
 .hero-in { display: grid; grid-template-columns: 1.35fr 0.65fr; gap: 40px; align-items: center; }
 .hero-mark { display: flex; justify-content: center; }
-/* ON A PHONE THE ANCHOR HANGS FROM THE GLASS, BELOW THE WORDS.
-   It used to come first: a 204px mark above the pane, so a visitor's whole
-   first screen was a logo they had already seen in the header, and the
-   headline started below the fold. Kevin, 29 September 2026: integrate it
-   better or get rid of it. It stays, because "anchor bigger" is the client's
-   own note, and it moves, because a mark should never stand between a
-   visitor and the sentence that says what the business does.
-
-   So the order flips and the gap closes to nothing: the line now starts at
-   the bottom edge of the pane, and the anchor hangs from the glass the way
-   an anchor hangs from a boat. It sits right of centre so it reads as
-   dropped from the pane rather than centred under it like a stamp. The
-   words come first, and the mark is where the eye lands after the ask. */
+/* ON A PHONE THERE IS NO HERO ANCHOR, since 5 October 2026.
+   It has had two phone placements. First it came above the pane, a 204px
+   mark that pushed the headline below the fold. Then, from 29 September, it
+   hung from the bottom of the glass at 150px, right of centre. The owner's
+   call on 5 October: keep it on desktop, where it sits beside the words, and
+   take it off phones, where the header already shows the mark on the same
+   narrow screen. The hero is the pane alone below 900px, with the hero's
+   normal bottom padding, since there is nothing hanging below the pane to
+   pull it up against. The hanging version is in git history before this
+   commit. */
 @media (max-width: 900px) {
   .hero-in { grid-template-columns: 1fr; gap: 0; }
-  .hero-mark { justify-content: flex-end; padding-right: 13%; }
-  .hero { padding-bottom: 44px; }
-  /* The swing is a ROTATION, so the arc a point travels is proportional to
-     the radius: at the smaller size the angle goes up so the apparent
-     movement stays roughly constant. */
-  .ahero-rope { height: 46px; }
-  .ahero-swing img { width: 150px; height: 178px; }
-  .ahero-swing { animation-name: aheroSwingSm; }
-}
-@keyframes aheroSwingSm {
-  0%, 100% { transform: rotate(-4.2deg); }
-  50%      { transform: rotate(4.2deg); }
+  .hero-mark { display: none; }
 }
 .hero-cta { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 30px; }
 .hero-note { margin-top: 18px; font-size: var(--t-cap); max-width: 46ch; }

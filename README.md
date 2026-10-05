@@ -7,7 +7,7 @@ in Manchester, Michigan. Customer-facing surfaces say **Anchor Insurance**.
 shape.** The third: **she brought her real logo**, a navy anchor with a gold
 wave, and the whole visual system now derives from it. The mark is the
 artwork itself (see the mark trap below), the palette started from it, and the
-motion is a swing: the logo hangs from a line in the hero. The wordmark was
+motion is a swing: the logo hangs from a line in the desktop hero. The wordmark was
 serif capitals to match her logo file until 29 September 2026, when it became
 lowercase in the headline face (see the wordmark trap below). The first two:
 
@@ -218,7 +218,9 @@ with no plate behind it, also per the client. The hero hangs the reversed
 anchor from a line and rotates it about the top of the line, because an
 anchor on a line rotates about where it is held. Reduced motion leaves it
 hanging still, which is the finished state. The header mark does not animate
-at all.
+at all. **The hero anchor is desktop only**, since 5 October 2026: below
+900px the hero is the glass pane alone, because the header already shows the
+mark on the same narrow screen.
 
 **The source is a phone-screenshot JPEG, and that is a known limit.** It is
 sharp at every size the site renders (the largest is ~230px against a 380px
