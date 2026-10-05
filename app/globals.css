@@ -700,6 +700,8 @@ section {
 
 /* ═══ hero ═══ */
 .hero { padding: 64px 0 72px; }
+.hero-in { display: grid; grid-template-columns: 1.25fr 0.85fr; gap: 46px; align-items: center; }
+@media (max-width: 900px) { .hero-in { grid-template-columns: 1fr; gap: 34px; } }
 .hero h1 { margin-top: 16px; }
 .hero-lede { margin-top: 20px; }
 .hero-lede strong { color: var(--navy); font-weight: 700; }
@@ -1063,6 +1065,33 @@ section {
 .wave { display: block; width: 100%; height: 52px; margin-bottom: -1px; }
 @media (max-width: 640px) { .wave { height: 34px; } }
 
+/* ── the hero mark: the anchor itself, hanging from a line, swinging ──
+   No plate, per the client: the reversed cut of her artwork hangs bare on the
+   navy. The pivot is the top of the line, because an anchor on a line rotates
+   about where it is held; the negative delay means it arrives mid-swing
+   rather than starting from a pose. The line overlaps the ring slightly so
+   the two read as connected. */
+.ahero { display: flex; justify-content: center; }
+.ahero-swing {
+  display: flex; flex-direction: column; align-items: center;
+  transform-origin: 50% 0;
+  animation: aheroSwing 6.4s cubic-bezier(.45,.05,.55,.95) infinite -1.2s;
+  will-change: transform;
+}
+/* 1.5 degrees, down from 3, and the mark is 29% bigger than it was (264 to
+   340). Both are the client's, 16 September 2026: "anchor bigger", "anchor
+   swinging less". They pull against each other and the order matters, because
+   a rotation's apparent movement scales with the element's size: at the old 3
+   degrees the bigger mark would have swept 48px instead of 39 and read as
+   MORE motion, not less. At 1.5 it sweeps about 24px, so it is visibly calmer
+   while being visibly larger. Measure the sweep, not the angle. */
+@keyframes aheroSwing {
+  0%, 100% { transform: rotate(-1.5deg); }
+  50%      { transform: rotate(1.5deg); }
+}
+.ahero-rope { display: block; width: 3px; height: 58px; border-radius: 2px; background: #52708e; }
+.ahero-swing img { display: block; margin-top: -12px; }
+
 /* ── the drawn underline ──
    Under one word in the h1, the way Glazed's swoosh sits under "crave". Drawn
    with a stroke rather than a border so it has the wobble of a hand. */
@@ -1152,10 +1181,9 @@ h1 em svg path, h2 em svg path { stroke-dasharray: 320; stroke-dashoffset: 320; 
    filter: blur() is repainted every frame it moves; a gradient that only
    translates is composited. Transform is the only thing animated here.
 
-   There used to be a second element here, her anchor swinging beside the
-   pane, and it was never given a lens of its own: the client ruled out any
-   plate behind it on 31 August 2026, and a pane of glass is a plate. The
-   anchor came off the hero on 5 October 2026, so the pane is alone now. */
+   THE ANCHOR GETS NO LENS BEHIND IT. A glass porthole would have been the
+   obvious second pane, and the client ruled it out on 31 August 2026: "just
+   the anchor, no plate, no card." A pane of glass is a plate. */
 .hero-orbs { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
 .orb {
   position: absolute; border-radius: 50%; opacity: .6;
@@ -1287,23 +1315,42 @@ h1 em svg path, h2 em svg path { stroke-dasharray: 320; stroke-dashoffset: 320; 
 .band-navy .step-n { border-color: #fff; background: var(--gold); }
 
 @media (prefers-reduced-motion: reduce) {
-  .ticker-inner { animation: none !important; }
+  .ahero-swing, .ticker-inner { animation: none !important; }
   .js h1 em svg path, .js h2 em svg path { animation: none !important; stroke-dashoffset: 0 !important; }
   .cov-card:hover { transform: none; }
 }
 
-/* ── hero layout: the pane alone, centered ──
-   The hero was two columns, the words beside a 340px swinging anchor, until
-   5 October 2026, when the anchor came off at every width: the header
-   already shows her mark on every page, and the hero repeating it at full
-   size put the same logo on one screen twice. The pane is capped at a
-   reading width and centered, so the drifting light shows on both sides of
-   it instead of pooling in an empty right half. The copy inside stays
-   left-aligned, because a centered paragraph is harder to read. On a phone
-   the pane is already the full width of the column, so the cap never
-   applies there. */
-.hero-in { display: block; }
-.hero-glass { max-width: 760px; margin-left: auto; margin-right: auto; }
+/* ── hero layout, rebuilt for the animated mark ── */
+.hero-in { display: grid; grid-template-columns: 1.35fr 0.65fr; gap: 40px; align-items: center; }
+.hero-mark { display: flex; justify-content: center; }
+/* ON A PHONE THE ANCHOR HANGS FROM THE GLASS, BELOW THE WORDS.
+   It used to come first: a 204px mark above the pane, so a visitor's whole
+   first screen was a logo they had already seen in the header, and the
+   headline started below the fold. Kevin, 29 September 2026: integrate it
+   better or get rid of it. It stays, because "anchor bigger" is the client's
+   own note, and it moves, because a mark should never stand between a
+   visitor and the sentence that says what the business does.
+
+   So the order flips and the gap closes to nothing: the line now starts at
+   the bottom edge of the pane, and the anchor hangs from the glass the way
+   an anchor hangs from a boat. It sits right of centre so it reads as
+   dropped from the pane rather than centred under it like a stamp. The
+   words come first, and the mark is where the eye lands after the ask. */
+@media (max-width: 900px) {
+  .hero-in { grid-template-columns: 1fr; gap: 0; }
+  .hero-mark { justify-content: flex-end; padding-right: 13%; }
+  .hero { padding-bottom: 44px; }
+  /* The swing is a ROTATION, so the arc a point travels is proportional to
+     the radius: at the smaller size the angle goes up so the apparent
+     movement stays roughly constant. */
+  .ahero-rope { height: 46px; }
+  .ahero-swing img { width: 150px; height: 178px; }
+  .ahero-swing { animation-name: aheroSwingSm; }
+}
+@keyframes aheroSwingSm {
+  0%, 100% { transform: rotate(-4.2deg); }
+  50%      { transform: rotate(4.2deg); }
+}
 .hero-cta { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 30px; }
 .hero-note { margin-top: 18px; font-size: var(--t-cap); max-width: 46ch; }
 
@@ -1387,7 +1434,7 @@ h1 em svg path, h2 em svg path { stroke-dasharray: 320; stroke-dashoffset: 320; 
 /* ── print ──
    Somebody will print a guide, the PIP table or their quote confirmation. */
 @media print {
-  .site-head, .site-foot, .tick, .wave, .gw-plate,
+  .site-head, .site-foot, .tick, .wave, .hero-mark, .gw-plate,
   .hero-cta, .close-actions, .btn, .skip, .qtab { display: none !important; }
   body { background: #fff; color: #000; font-size: 11pt; }
   .hero, .band-navy, .band-navy.band-lime, .band-sand, .closeband, .goalband { background: #fff !important; color: #000 !important; }

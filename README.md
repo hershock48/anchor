@@ -6,10 +6,8 @@ in Manchester, Michigan. Customer-facing surfaces say **Anchor Insurance**.
 **Three client decisions landed on August 28, 2026, and the build changed
 shape.** The third: **she brought her real logo**, a navy anchor with a gold
 wave, and the whole visual system now derives from it. The mark is the
-artwork itself (see the mark trap below) and the palette started from it. The
-logo swung from a line in the hero until 5 October 2026, when the hero anchor
-came off at every width; it now appears in the header and footer only. The
-wordmark was
+artwork itself (see the mark trap below), the palette started from it, and the
+motion is a swing: the logo hangs from a line in the hero. The wordmark was
 serif capitals to match her logo file until 29 September 2026, when it became
 lowercase in the headline face (see the wordmark trap below). The first two:
 
@@ -215,14 +213,12 @@ what a real reversed logo does. **Never put the navy original on a dark
 ground** (it vanishes) **or the reversed cut on a light one.** The favicon
 keeps its light tile because launcher and tab grounds are unknowable.
 
-**The mark does not move, and the hero no longer carries it.** From August
-28 to October 5, 2026 the hero hung the reversed anchor from a line and swung
-it, with no plate behind it, both per the client. On October 5 it came off at
-every width, because the header already shows the mark on every page and the
-hero repeated it at 340px on the same screen. The hero is now the glass pane
-alone, centered. The header and footer marks never animated. The swinging
-component, `AnchorHero`, is in git history before that date if it is ever
-wanted back.
+**The motion is a swing, and only a swing.** Per the client, explicitly, and
+with no plate behind it, also per the client. The hero hangs the reversed
+anchor from a line and rotates it about the top of the line, because an
+anchor on a line rotates about where it is held. Reduced motion leaves it
+hanging still, which is the finished state. The header mark does not animate
+at all.
 
 **The source is a phone-screenshot JPEG, and that is a known limit.** It is
 sharp at every size the site renders (the largest is ~230px against a 380px

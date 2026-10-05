@@ -3,6 +3,7 @@ import { site, giving, lines, ph, isPlaceholder } from "@/lib/site";
 import { getFacts } from "@/lib/content";
 import { pipLevels } from "@/lib/pip";
 import ReviewBand from "@/components/ReviewBand";
+import AnchorHero from "@/components/AnchorHero";
 import Wave from "@/components/Wave";
 import Ticker from "@/components/Ticker";
 import { marketNotes } from "@/lib/ticker";
@@ -149,11 +150,10 @@ export default async function Home() {
               No obligation. We will tell you if we cannot beat what you already have.
             </p>
           </div>
-          {/* NO HERO MARK, since 5 October 2026: the swinging anchor came off
-              at every width and the glass pane is centered on its own. The
-              header carries her anchor on every page, so the hero showing it
-              again at 340px was the same logo twice on one screen. The
-              component, AnchorHero, is in git history before this commit. */}
+
+          <div className="hero-mark">
+            <AnchorHero />
+          </div>
         </div>
       </section>
 
