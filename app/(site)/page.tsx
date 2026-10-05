@@ -151,8 +151,13 @@ export default async function Home() {
                 How the giving works
               </Link>
             </div>
-            <p className="hero-note">
-              No obligation. We will tell you if we cannot beat what you already have.
+            {/* The client's favourite line, so it is set as a feature rather
+                than as fine print: globals.css, "the promise". */}
+            <p className="hero-promise">
+              <span>
+                <span className="hero-promise-lead">No obligation.</span> We will tell you if
+                we cannot beat what you already have.
+              </span>
             </p>
           </div>
 
