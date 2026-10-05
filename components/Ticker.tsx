@@ -20,24 +20,44 @@
 export default function Ticker({
   items,
   seconds,
+  narrowSeconds,
+  wideCopies = 1,
   reverse = false,
   tone = "gold",
 }: {
   items: React.ReactNode[];
-  /** One full loop. Bigger is slower. */
+  /** One full loop above 1200px. Bigger is slower. */
   seconds: number;
+  /** One full loop at 1200px and below, where the extra copies are hidden.
+   *  Defaults to `seconds`. */
+  narrowSeconds?: number;
+  /**
+   * How many times the items repeat within each half of the loop ABOVE
+   * 1200px. A half must be at least as wide as the screen or a gap scrolls
+   * into view on every loop, and a short list is narrower than a desktop.
+   * The copies after the first carry .tick-extra and are hidden at 1200px
+   * and below, where the track has to stay under the 4096px layer cap that
+   * lib/ticker.ts describes, so tablets and phones only ever get one copy.
+   */
+  wideCopies?: number;
   reverse?: boolean;
   tone?: "gold" | "navy";
 }) {
-  const run = [...items, ...items];
+  const half = Array.from({ length: wideCopies }, (_, copy) =>
+    items.map((item) => ({ item, extra: copy > 0 }))
+  ).flat();
+  const run = [...half, ...half];
   return (
     <div className={`tick tick-${tone}`} aria-hidden="true">
       <div
         className={reverse ? "tick-track tick-rev" : "tick-track"}
-        style={{ ["--tick-dur" as string]: `${seconds}s` }}
+        style={{
+          ["--tick-dur" as string]: `${seconds}s`,
+          ...(narrowSeconds ? { ["--tick-dur-narrow" as string]: `${narrowSeconds}s` } : {}),
+        }}
       >
-        {run.map((item, i) => (
-          <span className="tick-item" key={i}>
+        {run.map(({ item, extra }, i) => (
+          <span className={extra ? "tick-item tick-extra" : "tick-item"} key={i}>
             {item}
           </span>
         ))}

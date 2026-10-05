@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { site, ph, isPlaceholder } from "@/lib/site";
+import { site, ph, isPlaceholder, showReviewAsk } from "@/lib/site";
 import { getFacts } from "@/lib/content";
 import ReviewBand from "@/components/ReviewBand";
 
@@ -87,9 +87,12 @@ export default async function Contact() {
           </p>
         </div>
 
-        <div className="wrap" style={{ marginTop: 44 }}>
-          <ReviewBand />
-        </div>
+        {/* Archived with the homepage band; see showReviewAsk in lib/site.ts. */}
+        {showReviewAsk && (
+          <div className="wrap" style={{ marginTop: 44 }}>
+            <ReviewBand />
+          </div>
+        )}
       </section>
     </>
   );

@@ -146,7 +146,7 @@ export const FACT_FIELDS: FactField[] = [
     group: "links",
     label: "Google review link",
     kind: "url",
-    help: "The direct write-a-review link from your Business Profile, not the profile page itself. The review button appears once this is in.",
+    help: "The direct write-a-review link from your Business Profile, not the profile page itself. The review button is switched off on the site for now, while reviews build up; this keeps the link ready for when it comes back.",
   },
 ];
 

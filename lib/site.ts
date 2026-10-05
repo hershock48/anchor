@@ -145,6 +145,20 @@ export const site = {
 } as const;
 
 /**
+ * THE GOOGLE REVIEW ASK IS ARCHIVED, not deleted. 5 October 2026, from the
+ * client's meeting: the agency wants to build up some reviews first, and
+ * asking for the first one in public on a page with none reads worse than
+ * not asking. So the band is off on the homepage and the contact page, the
+ * two places it rendered.
+ *
+ * Everything behind it is kept: components/ReviewBand.tsx, the review link
+ * in site.social above, and the workroom box for it. Flip this to true and
+ * the band comes back in both places, still gated on the review link being
+ * filled in.
+ */
+export const showReviewAsk = false;
+
+/**
  * The giving program.
  *
  * RESHAPED TWICE BY THE CLIENT, and both old shapes are recorded because

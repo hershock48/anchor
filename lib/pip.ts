@@ -61,7 +61,7 @@ export const pipLevels: PipLevel[] = [
     eligibility: "Anyone.",
     verdict: "caution",
     detail:
-      "A real saving, and a real cap. A serious brain or spinal injury runs past $250,000 quickly, and after that the bills are yours. Worth choosing on purpose, not by accident.",
+      "Real savings, and a real cap. A serious brain or spinal injury runs past $250,000 quickly, and after that the bills are yours. Worth choosing on purpose, not by accident.",
   },
   {
     id: "250k-optout",
@@ -83,7 +83,7 @@ export const pipLevels: PipLevel[] = [
       "Only if you are enrolled in Medicaid, and everyone else in the household has Medicaid, other qualified coverage, or their own auto policy.",
     verdict: "restricted",
     detail:
-      "The largest saving on the list and the tightest eligibility. If the Medicaid enrollment lapses, so does the basis for this selection.",
+      "The largest savings on the list and the tightest eligibility. If the Medicaid enrollment lapses, so does the basis for this selection.",
   },
   {
     id: "optout",

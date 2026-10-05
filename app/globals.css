@@ -146,8 +146,12 @@
   --t-input: 16px;
   --t-lede: clamp(18px, 2.2vw, 21px);
   --t-h3: clamp(21px, 2.6vw, 28px);
-  --t-h2: clamp(28px, 4vw, 44px);
-  --t-h1: clamp(38px, 5.6vw, 68px);
+  /* The two biggest steps came down a touch on 5 October 2026: the client
+     read the headings as a size too large for the header above them. h1
+     68 to 60 at the top, h2 44 to 40, with the floors one step lower so
+     phones come down with them. h3 and below are unchanged. */
+  --t-h2: clamp(26px, 3.6vw, 40px);
+  --t-h1: clamp(36px, 5vw, 60px);
 }
 
 *,
@@ -761,8 +765,11 @@ section {
    never touch a transform that is doing layout. */
 @media (prefers-reduced-motion: reduce) { .qtab { transition: none; } }
 
-/* The tagline, under the headline, in the order the client asked for. */
-.hero-tag { margin-top: 12px; font-family: var(--font-display), sans-serif; font-weight: 600; font-size: var(--t-h3); letter-spacing: -0.01em; }
+/* The line above the headline that names the lines she writes. A sentence,
+   so it is set as one: sentence case at raised-body size, not the mono
+   capitals of a kicker, which make a full sentence hard to read. Gold-light
+   on the pane measures 6.05 at its worst point (globals.css, the glass). */
+.hero-spec { font-size: var(--t-md); font-weight: 600; line-height: 1.4; color: var(--gold-light); }
 
 /* ── the commercial card ──
    Wider than the grid below it so the eye lands here first. "Really want to
@@ -1268,7 +1275,10 @@ h1 em svg path, h2 em svg path { stroke-dasharray: 320; stroke-dashoffset: 320; 
 }
 .hero h1 { color: #fff; margin-top: 18px; }
 .hero .kicker { color: var(--gold-light); }
-.hero-lede { color: #cbd7e1; margin-top: 24px; font-size: var(--t-lede); }
+/* 32px, up from 24 on 5 October 2026: the tagline line used to sit between
+   the headline and this, and without it the drawn underline under "gives
+   back" crowded the first line of the lede. */
+.hero-lede { color: #cbd7e1; margin-top: 32px; font-size: var(--t-lede); }
 .hero-lede strong { color: #fff; font-weight: 700; }
 .hero-note { color: #90a4b5; }
 
@@ -1371,11 +1381,25 @@ h1 em svg path, h2 em svg path { stroke-dasharray: 320; stroke-dashoffset: 320; 
    vector recreations on 2026-08-31. */
 
 /* ── the rail's width budget ──
-   1200px, not 640, and the WIDTH is the reason rather than the layout. Past
-   roughly 4096px, mobile and tablet GPUs stop compositing an animated layer
-   and the rail freezes on the screen. See lib/ticker.ts. 1200 rather than 900
-   because a landscape iPad is 1024 or 1180 CSS pixels wide, so 900 would have
-   left the exact devices this protects on the wrong side of it.
+   Past roughly 4096px, mobile and tablet GPUs stop compositing an animated
+   layer and the rail freezes on the screen. See lib/ticker.ts.
+
+   SINCE 5 OCTOBER 2026 THE RAIL HAS FOUR ITEMS, and two rules do the work:
+
+   1. At 1200px and below the extra copies are hidden (.tick-extra, see
+      components/Ticker.tsx), so the track is one set doubled. 1200 rather
+      than 900 because a landscape iPad is 1024 or 1180 CSS pixels wide.
+      Measured: 2,828px at full type, 2,232px at small type, both under the
+      cap. Above 1200 the extra copies show, because one set of four is
+      narrower than a desktop screen and a gap would scroll past every loop.
+
+   2. The small type starts at 1100px, not 1200. One small-type set is
+      1,116px, narrower than a 1,101 to 1,200px screen, so that band takes
+      full-size type (one set 1,414px) instead. The width cap does not need
+      the small type any more at four items; it stays below 1100 because it
+      reads better on a phone.
+
+   Before October the rule was 1200px small type for all seven items.
 
    These rules used to live in the 640px block with the rail heights, which
    meant a 768px tablet took full-size type and its track came to 4,743px:
@@ -1392,6 +1416,10 @@ h1 em svg path, h2 em svg path { stroke-dasharray: 320; stroke-dashoffset: 320; 
    came off on 2026-09-16 at the client's word, and its .q rules went with it
    in the same commit as the component. */
 @media (max-width: 1200px) {
+  .tick-extra { display: none; }
+  .tick-track { animation-duration: var(--tick-dur-narrow, var(--tick-dur, 80s)); }
+}
+@media (max-width: 1100px) {
   .tick-item { font-size: var(--t-xs); padding: 0 11px; letter-spacing: .08em; }
   .tick-item > span { gap: 7px; }
   .tick-navy .tick-item { padding: 0 9px; }
@@ -1447,5 +1475,5 @@ h1 em svg path, h2 em svg path { stroke-dasharray: 320; stroke-dashoffset: 320; 
      fixed duration is a fixed px/sec, and on a narrow screen with only two or
      three items visible that reads as barely moving. 0.55 is roughly twice the
      apparent speed. */
-  .tick-track { animation-duration: calc(var(--tick-dur, 80s) * 0.55); }
+  .tick-track { animation-duration: calc(var(--tick-dur-narrow, var(--tick-dur, 80s)) * 0.55); }
 }

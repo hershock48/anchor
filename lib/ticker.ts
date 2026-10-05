@@ -43,12 +43,16 @@ export const marketNotes: string[] = [
   // Every fact here still appears in full, with its source, on the page it
   // belongs to.
   "Unlimited lifetime medical: Michigan only",
-  "$500k PIP saves just 3.6%",
   "3 in 10 MI vehicles now limited",
   "Attendant care: about $14 a year",
   "Only 5% of drivers carry it",
-  "Mini-tort caps at $3,000",
-  "ZIP banned as a rating factor, 2020",
-  // Seven, not eight. At eight the mobile layer measured 4,254px, just over the
-  // 4096px cap. Adding one back puts it over again.
+  // FOUR, since 5 October 2026. The client's meeting notes took three off:
+  // the PIP savings figure, the ZIP rating ban and the mini-tort cap. Each is
+  // still on the page it belongs to (the PIP tool and the guides).
+  //
+  // The cap above still binds if items come back: at eight the mobile layer
+  // measured 4,254px, just over 4096. With four, one set is narrower than a
+  // wide desktop screen, so above 1200px the Ticker repeats it (its
+  // wideCopies prop) and hides the repeats below that width. globals.css,
+  // "the rail's width budget", has the measurements.
 ];

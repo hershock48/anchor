@@ -30,8 +30,11 @@ the number, and points at the posts; the Facebook pointer is gated on
 `site.social.facebook` and renders as plain copy until the real URL lands.
 `/giving/causes` is deleted and 308-redirects to `/giving`. Receipts suite,
 causes page and `giving.stories` all live in git history if ever wanted back.
-There is also a Google-review ask on the homepage and contact page, gated on
-`site.social.googleReview` like every other placeholder.
+There is also a Google-review ask for the homepage and contact page, gated on
+`site.social.googleReview` like every other placeholder. **It is archived as
+of 5 October 2026**: the agency is building up reviews first, so
+`showReviewAsk` in `lib/site.ts` is false and the band renders nowhere.
+Flipping it to true brings it back in both places.
 
 Next.js App Router, TypeScript, plain CSS, deployed on Vercel. **Prospect, not
 signed** as of August 2026: this is a concept build, and the pitch that goes with

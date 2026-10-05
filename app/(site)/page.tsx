@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { site, giving, lines, ph, isPlaceholder } from "@/lib/site";
+import { site, giving, lines, ph, isPlaceholder, showReviewAsk } from "@/lib/site";
 import { getFacts } from "@/lib/content";
 import { pipLevels } from "@/lib/pip";
 import ReviewBand from "@/components/ReviewBand";
@@ -89,19 +89,23 @@ export default async function Home() {
   return (
     <>
       {/* ── hero ──────────────────────────────────────────────────────────
-          The headline used to read "We shop your insurance. Then we give part
-          of it away," which never said whose money it was. Read cold, "it" is
-          your premium, which is the opposite of the promise. Naming the
-          commission fixes the sentence and makes the giving concrete: it is our
-          pay, not your money.
+          THE HEADLINE IS THE SHOPPING, THEN THE TAGLINE, from the 5 October
+          2026 meeting. It read "Your policies, shopped. Our commission,
+          shared." with the tagline as a separate line under it; the client
+          dropped the commission line and moved the tagline up into the
+          headline, so the separate tagline line went with it (the same words
+          twice in a row would be a stutter). The second line is typed here
+          because the underline needs its own element; it must match
+          site.tagline in lib/site.ts, which the footer and link cards read.
 
-          THE ORDER IS THE CLIENT'S, from the September 16, 2026 meeting: the
-          policies shopped, then the commission, then the tagline underneath
-          them. The tagline is read from lib/site.ts rather than typed here, so
-          it cannot drift from the footer and the link cards.
+          THE LINE ABOVE THE HEADLINE NAMES THE LINES SHE WRITES, also from
+          that meeting, business first because commercial is where she wants
+          the work. It replaced the "Independent agency · Michigan" kicker:
+          a label and a sentence stacked over a two-line headline is three
+          openers. "Independent" is still said in the lede, in plain words.
 
           MANCHESTER IS NOT NAMED IN THE MARKETING COPY, also hers: a town in
-          the kicker reads as the only place she writes. The town still appears
+          the line above the headline would read as the only place she writes. The town still appears
           where it is a fact rather than a pitch (the contact page, the
           footer, the structured data), because that is what local search
           reads and removing it there would cost her the map listing. */}
@@ -119,18 +123,19 @@ export default async function Home() {
         </div>
         <div className="wrap hero-in">
           <div className="hero-glass">
-            <p className="kicker">Independent agency &middot; Michigan</p>
+            <p className="hero-spec">
+              Specializing in Michigan business, auto, home and life insurance.
+            </p>
             <h1>
               Your policies, shopped.
               <br />
-              Our commission,{" "}
+              Coverage that{" "}
               <em>
-                shared
+                gives back
                 <Underline />
               </em>
               .
             </h1>
-            <p className="hero-tag">{site.tagline}.</p>
             <p className="lede hero-lede">
               We compare several carriers instead of selling one company&rsquo;s product.
               Then <strong>{giving.share}</strong> goes back to causes close to home.
@@ -163,9 +168,16 @@ export default async function Home() {
           also the one remote data source on the site. The Michigan facts stay,
           because the education is what she likes and what the site is for.
           lib/ticker.ts still holds the width budget for this rail. */}
+      {/* SPEEDS KEPT FROM THE SEVEN-ITEM RAIL, measured 5 October 2026: it
+          ran 2,341px in 112s on desktop (21px a second) and 1,846px in 112s
+          below 1200 (16.5px a second). Three copies of four items is 4,242px
+          a half above 1200, so 203s; one copy below is 1,116px, so 68s. If
+          the items change, re-measure and redo the arithmetic. */}
       <Ticker
         tone="gold"
-        seconds={112}
+        seconds={203}
+        narrowSeconds={68}
+        wideCopies={3}
         reverse
         items={marketNotes.map((n) => (
           <span key={n}>
@@ -393,12 +405,16 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* ── the review ask, on the same sand ground as the carriers ──────── */}
-      <section className="band-sand" style={{ paddingTop: 0, paddingBottom: 52 }}>
-        <div className="wrap reveal">
-          <ReviewBand />
-        </div>
-      </section>
+      {/* ── the review ask, on the same sand ground as the carriers ────────
+          Archived until there are reviews to show: showReviewAsk in
+          lib/site.ts says why and how it comes back. */}
+      {showReviewAsk && (
+        <section className="band-sand" style={{ paddingTop: 0, paddingBottom: 52 }}>
+          <div className="wrap reveal">
+            <ReviewBand />
+          </div>
+        </section>
+      )}
 
       <Wave fill="var(--gold)" bg="var(--sand)" />
 

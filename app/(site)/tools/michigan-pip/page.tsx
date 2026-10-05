@@ -5,7 +5,7 @@ import { getFacts } from "@/lib/content";
 export const metadata = {
   title: "What each Michigan PIP level actually saves you",
   description:
-    "Michigan personal injury protection, all six levels, with the average saving for each one and the eligibility rules most sites get wrong. Dropping to $500,000 saves about 3.6%.",
+    "Michigan personal injury protection, all six levels, with the average savings for each one and the eligibility rules most sites get wrong. Dropping to $500,000 saves about 3.6%.",
   alternates: { canonical: "/tools/michigan-pip" },
 };
 
@@ -41,7 +41,7 @@ export default async function PipTool() {
             <thead>
               <tr>
                 <th scope="col">Level</th>
-                <th scope="col">Average saving</th>
+                <th scope="col">Average savings</th>
                 <th scope="col">Who can pick it</th>
               </tr>
             </thead>
