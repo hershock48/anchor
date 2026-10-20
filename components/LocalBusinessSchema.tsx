@@ -68,7 +68,9 @@ export default async function LocalBusinessSchema() {
 
   // Only real values. A placeholder in structured data is a false fact in the
   // one format nobody eyeballs before believing it.
-  if (!isPlaceholder(facts.contact.phone)) data.telephone = facts.contact.phone;
+  // The digits-only form with the country code, which is what Google asks
+  // for in `telephone`; the display form is for people and stays on the page.
+  if (!isPlaceholder(facts.contact.phone)) data.telephone = facts.contact.phoneHref;
   if (!isPlaceholder(facts.contact.email)) data.email = facts.contact.email;
   if (hours.length) data.openingHoursSpecification = hours;
 

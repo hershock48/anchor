@@ -192,7 +192,7 @@ export default function IntakeForm() {
       <fieldset>
         <legend>The basics</legend>
         <Row name="name" label="Your full name" hint="As it should appear on the site." required />
-        <Row name="title" label="Your title" hint="We have &ldquo;Agent and owner&rdquo; penciled in." />
+        <Row name="title" label="Your title" hint="We have &ldquo;Broker and owner&rdquo; from your answers; change it here if that is not right." />
         <div className="qf-two">
           <Row name="phone" label="Office phone" type="tel" />
           <Row name="email" label="Email for the site" hint="And who reads that inbox." />
