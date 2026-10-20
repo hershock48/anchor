@@ -913,6 +913,8 @@ section {
 .factlist { display: grid; grid-template-columns: auto 1fr; gap: 8px 14px; font-size: var(--t-cap); margin-top: 12px; }
 .factlist dt { color: var(--slate); }
 .factlist dd { font-weight: 600; }
+/* The owner's title, under the name at the label's weight and color. */
+.factlist-title { display: block; font-weight: 400; color: var(--slate); }
 .ph-block { background: #FEF8EA; border-left: 3px solid #A87C28; padding: 14px 16px; border-radius: 0 8px 8px 0; }
 
 /* ═══ pip table ═══ */

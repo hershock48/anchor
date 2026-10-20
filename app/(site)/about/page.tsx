@@ -77,7 +77,13 @@ export default async function About() {
               <dt>Legal name</dt>
               <dd>{site.legalName}</dd>
               <dt>Owner</dt>
-              <dd><Fact value={facts.owner.name} /></dd>
+              <dd>
+                <Fact value={facts.owner.name} />
+                {/* Her title under her name, from her answers of 20 October
+                    2026. It lives in lib/site.ts (owner.title) and this is
+                    the one place on the customer site that shows it. */}
+                <span className="factlist-title">{facts.owner.title}</span>
+              </dd>
               <dt>Licensed in</dt>
               <dd>{facts.license.states.join(", ")}</dd>
               <dt>Producer license</dt>
