@@ -1,4 +1,5 @@
-import { site, ph, isPlaceholder } from "@/lib/site";
+import { site, isPlaceholder } from "@/lib/site";
+import Fact from "@/components/Fact";
 import { getFacts } from "@/lib/content";
 
 export const metadata = {
@@ -85,7 +86,7 @@ export default async function Privacy() {
           <h2>Questions</h2>
           <p>
             Ask us. {isPlaceholder(facts.contact.email) ? (
-              <span className="ph">{ph(facts.contact.email)}</span>
+              <Fact value={facts.contact.email} />
             ) : (
               <a href={`mailto:${facts.contact.email}`}>{facts.contact.email}</a>
             )}

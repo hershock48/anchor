@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { site, giving, ph, isPlaceholder } from "@/lib/site";
+import { site, giving, isPlaceholder } from "@/lib/site";
+import Fact from "@/components/Fact";
 import { getFacts } from "@/lib/content";
 
 export async function generateMetadata() {
@@ -76,13 +77,13 @@ export default async function About() {
               <dt>Legal name</dt>
               <dd>{site.legalName}</dd>
               <dt>Owner</dt>
-              <dd><span className="ph">{ph(facts.owner.name)}</span></dd>
+              <dd><Fact value={facts.owner.name} /></dd>
               <dt>Licensed in</dt>
               <dd>{facts.license.states.join(", ")}</dd>
               <dt>Producer license</dt>
-              <dd><span className="ph">{ph(facts.license.producerNumber)}</span></dd>
+              <dd><Fact value={facts.license.producerNumber} /></dd>
               <dt>NPN</dt>
-              <dd><span className="ph">{ph(facts.license.npn)}</span></dd>
+              <dd><Fact value={facts.license.npn} /></dd>
             </dl>
             <p className="side-fine">
               You can check any Michigan producer&rsquo;s license and complaint history through

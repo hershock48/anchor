@@ -1,5 +1,6 @@
 import QuoteForm from "@/components/QuoteForm";
-import { ph, isPlaceholder } from "@/lib/site";
+import { isPlaceholder } from "@/lib/site";
+import Fact from "@/components/Fact";
 import { getFacts } from "@/lib/content";
 
 export const metadata = {
@@ -42,7 +43,7 @@ export default async function Quote() {
             {!isPlaceholder(facts.contact.phone) ? (
               <p><a className="btn ghost" href={`tel:${facts.contact.phoneHref}`}>Call {facts.contact.phone}</a></p>
             ) : (
-              <p>Phone: <span className="ph">{ph(facts.contact.phone)}</span></p>
+              <p>Phone: <Fact value={facts.contact.phone} /></p>
             )}
             <h2 style={{ marginTop: 26 }}>What happens next</h2>
             <ol className="sidesteps">

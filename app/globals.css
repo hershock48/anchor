@@ -865,6 +865,7 @@ section {
 
 /* ═══ carriers ═══ */
 .carrier-wall { list-style: none; display: flex; gap: 26px; flex-wrap: wrap; margin-top: 20px; font-weight: 600; }
+.carrier-more { margin-top: 16px; font-size: var(--t-base); color: var(--slate); max-width: 62ch; }
 
 /* ═══ close band ═══ */
 .close-in { display: grid; grid-template-columns: 1.4fr 0.6fr; gap: 34px; align-items: center; }

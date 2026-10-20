@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { site, ph, isPlaceholder, showReviewAsk } from "@/lib/site";
+import { site, isPlaceholder, showReviewAsk } from "@/lib/site";
+import Fact from "@/components/Fact";
 import { getFacts } from "@/lib/content";
 import ReviewBand from "@/components/ReviewBand";
 
@@ -37,7 +38,7 @@ export default async function Contact() {
             {phoneReady ? (
               <p className="contact-big"><a href={`tel:${facts.contact.phoneHref}`}>{facts.contact.phone}</a></p>
             ) : (
-              <p className="contact-big"><span className="ph">{ph(facts.contact.phone)}</span></p>
+              <p className="contact-big"><Fact value={facts.contact.phone} /></p>
             )}
             <p>Fastest way to get a real answer.</p>
           </div>
@@ -47,7 +48,7 @@ export default async function Contact() {
             {emailReady ? (
               <p className="contact-big"><a href={`mailto:${facts.contact.email}`}>{facts.contact.email}</a></p>
             ) : (
-              <p className="contact-big"><span className="ph">{ph(facts.contact.email)}</span></p>
+              <p className="contact-big"><Fact value={facts.contact.email} /></p>
             )}
             <p>Send a declarations page and we will read it.</p>
           </div>
@@ -55,10 +56,10 @@ export default async function Contact() {
           <div className="card">
             <h2>Where we are</h2>
             <p className="contact-addr">
-              <span className="ph">{ph(facts.contact.street)}</span>
+              <Fact value={facts.contact.street} />
               <br />
               {facts.contact.city}, {facts.contact.state}{" "}
-              <span className="ph">{ph(facts.contact.zip)}</span>
+              <Fact value={facts.contact.zip} />
             </p>
             {facts.contact.byAppointmentOnly ? (
               <p>Visits by appointment, so call before you drive over.</p>
@@ -72,7 +73,7 @@ export default async function Contact() {
                 <div key={h.days}>
                   <dt>{h.days}</dt>
                   <dd>
-                    {isPlaceholder(h.open) ? <span className="ph">{ph(h.open)}</span> : h.open}
+                    {isPlaceholder(h.open) ? <Fact value={h.open} /> : h.open}
                   </dd>
                 </div>
               ))}

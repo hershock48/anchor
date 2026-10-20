@@ -35,7 +35,6 @@ const SECTIONS: [string, [string, string][]][] = [
     [
       ["name", "Full name"],
       ["title", "Title"],
-      ["amanda_role", "Amanda's role"],
       ["phone", "Office phone"],
       ["email", "Email for the site"],
       ["address", "Street address and ZIP"],

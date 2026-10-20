@@ -1,4 +1,5 @@
-import { ph, isPlaceholder } from "@/lib/site";
+import { isPlaceholder } from "@/lib/site";
+import Fact from "@/components/Fact";
 import { getFacts } from "@/lib/content";
 
 /**
@@ -30,7 +31,7 @@ export default async function ReviewBand() {
         </a>
       ) : (
         <p className="review-ph">
-          Review link: <span className="ph">{ph(facts.social.googleReview)}</span>
+          Review link: <Fact value={facts.social.googleReview} />
         </p>
       )}
     </div>

@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { site, giving, lines, ph, isPlaceholder, showReviewAsk } from "@/lib/site";
+import { site, giving, lines, isPlaceholder, showReviewAsk } from "@/lib/site";
+import Fact from "@/components/Fact";
 import { getFacts } from "@/lib/content";
 import { pipLevels } from "@/lib/pip";
 import ReviewBand from "@/components/ReviewBand";
@@ -395,11 +396,20 @@ export default async function Home() {
         <div className="wrap">
           <p className="kicker quiet reveal">Who we place with</p>
           {site.carriers.length > 0 ? (
-            <ul className="carrier-wall reveal">
-              {site.carriers.map((c) => (
-                <li key={c.name}>{c.name}</li>
-              ))}
-            </ul>
+            <>
+              <ul className="carrier-wall reveal">
+                {site.carriers.map((c) => (
+                  <li key={c.name}>{c.name}</li>
+                ))}
+              </ul>
+              {/* Her words, 20 October 2026: "commercial carriers, and more,
+                  not exclusively home and auto." The list is names, not
+                  logos; lib/site.ts says why. */}
+              <p className="carrier-more reveal">
+                And more, for personal and commercial lines alike. The list above is not the
+                whole of it: we shop whichever of our carriers fits you.
+              </p>
+            </>
           ) : (
             <p className="lede reveal" style={{ marginTop: 10 }}>
               <span className="ph">Carrier list to come</span>. This is where the companies we
@@ -462,7 +472,7 @@ export default async function Home() {
               </a>
             ) : (
               <span className="close-ph">
-                Phone: <span className="ph">{ph(facts.contact.phone)}</span>
+                Phone: <Fact value={facts.contact.phone} />
               </span>
             )}
           </div>

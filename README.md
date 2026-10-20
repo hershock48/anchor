@@ -127,15 +127,19 @@ marked with a `site.` path below, plus hours and the review link); the rest
 still need an edit here. Either way the box stays unticked until the value is
 real.
 
-- [ ] **Owner name** — `site.owner.name`. Also on the logo page in the pitch.
-- [ ] **Amanda's role** — `site.owner.second`. We know she exists, not what she does.
-- [ ] **Phone**, and the digits-only form for `tel:` links
-- [ ] **Email**
-- [ ] **Street address and ZIP**, and whether there is a walk-in office at all
-- [ ] **Hours**, including the seasonal exception and the one day that is different
-- [ ] **Michigan producer license number and NPN**
-- [ ] **Carrier appointments** — `site.carriers` is an empty array and the homepage
-      says so in words rather than showing a logo wall we are not entitled to
+- [x] **Owner name** — `site.owner.name`. Amanda E. Starkey, broker and owner,
+      from her answers of 20 October 2026. Also on the logo page in the pitch.
+      The old "Amanda's role" placeholder assumed a second producer; she is the
+      owner, and that field and its intake question are gone.
+- [x] **Phone**, and the digits-only form for `tel:` links
+- [x] **Email**
+- [x] **Street address and ZIP**. By appointment only, which the site already said
+- [x] **Hours**. 9 to 5 weekdays, Saturday by appointment, closed Sunday. No
+      seasonal exception was given
+- [x] **Michigan producer license number and NPN**
+- [x] **Carrier appointments** — her list of ten, as NAMES with no logos. A
+      `logo` goes on a row only after that carrier's marketing rules are
+      checked; see the note in `lib/site.ts`
 - [ ] **The Google review link** — `site.social.googleReview`. The direct
       write-a-review URL from the Business Profile dashboard, not the profile
       URL. The review ask renders a marked blank until it lands
@@ -146,10 +150,11 @@ real.
       in her words. The single most damaging thing on this site to invent
 - [ ] **Privacy retention period** — `app/(site)/privacy/page.tsx`
 - [ ] **Real photographs.** There are none. No stock, on purpose
-- [ ] **The domain.** `site.url` assumes `anchorinsurancemi.com` and it is not
-      bought, and after the rename the assumption is even softer than it was.
-      `site.urlConfirmed` is `false`. It feeds `metadataBase` and the
-      sitemap, so it is load-bearing
+- [ ] **The domain.** `site.url` is `anchorinsurancerm.com` as of 20 October
+      2026: her email is on it and it is registered at Namecheap. It is not
+      pointed at this site yet, so `site.urlConfirmed` is still `false`. It
+      feeds `metadataBase` and the sitemap, so it is load-bearing: flip the
+      flag the day the DNS lands, and not before
 
 ---
 

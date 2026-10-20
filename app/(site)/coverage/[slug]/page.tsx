@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { lines, ph, isPlaceholder } from "@/lib/site";
+import { lines, isPlaceholder } from "@/lib/site";
+import Fact from "@/components/Fact";
 import { getFacts } from "@/lib/content";
 
 export function generateStaticParams() {
@@ -97,7 +98,7 @@ export default async function CoveragePage({ params }: { params: Promise<{ slug:
             {!isPlaceholder(facts.contact.phone) ? (
               <p><a className="btn ghost" href={`tel:${facts.contact.phoneHref}`}>Call {facts.contact.phone}</a></p>
             ) : (
-              <p>Phone: <span className="ph">{ph(facts.contact.phone)}</span></p>
+              <p>Phone: <Fact value={facts.contact.phone} /></p>
             )}
             <h2 style={{ marginTop: 26 }}>Other coverage</h2>
             <ul className="sidelist">

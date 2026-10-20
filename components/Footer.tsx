@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { Mark, Wordmark } from "./Logo";
 import GlazedPlate from "./GlazedPlate";
-import { site, giving, lines, ph, isPlaceholder } from "@/lib/site";
+import { site, giving, lines, isPlaceholder } from "@/lib/site";
+import Fact from "@/components/Fact";
 import { getFacts } from "@/lib/content";
 
 export default async function Footer() {
@@ -55,26 +56,26 @@ export default async function Footer() {
               {phoneReady ? (
                 <a href={`tel:${facts.contact.phoneHref}`}>{facts.contact.phone}</a>
               ) : (
-                <span className="ph">{ph(facts.contact.phone)}</span>
+                <Fact value={facts.contact.phone} />
               )}
             </li>
             <li>
               {emailReady ? (
                 <a href={`mailto:${facts.contact.email}`}>{facts.contact.email}</a>
               ) : (
-                <span className="ph">{ph(facts.contact.email)}</span>
+                <Fact value={facts.contact.email} />
               )}
             </li>
             <li className="foot-addr">
-              <span className="ph">{ph(facts.contact.street)}</span>
+              <Fact value={facts.contact.street} />
               <br />
-              {facts.contact.city}, {facts.contact.state} <span className="ph">{ph(facts.contact.zip)}</span>
+              {facts.contact.city}, {facts.contact.state} <Fact value={facts.contact.zip} />
             </li>
           </ul>
           <p className="foot-lic">
-            Michigan producer license <span className="ph">{ph(facts.license.producerNumber)}</span>
+            Michigan producer license <Fact value={facts.license.producerNumber} />
             <br />
-            NPN <span className="ph">{ph(facts.license.npn)}</span>
+            NPN <Fact value={facts.license.npn} />
             <br />
             Licensed in {facts.license.states.join(", ")}.
           </p>

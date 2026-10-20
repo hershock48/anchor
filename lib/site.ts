@@ -45,29 +45,36 @@ export const site = {
   legalName: "Anchor Insurance and Risk Management",
   tagline: "Coverage that gives back",
   /**
-   * PLACEHOLDER in effect: the domain is not bought yet. This is an assumption,
-   * and it is load-bearing because `metadataBase` and the sitemap are both
-   * built from it. It changed with the rename (the old assumption was
-   * insuranceforacause.com). Confirm the real domain before launch and change
-   * it here only; nothing else hardcodes it.
+   * anchorinsurancerm.com, from 20 October 2026: the agency's email is on
+   * that domain and it is registered at Namecheap. It was assumed to be
+   * anchorinsurancemi.com before that, and insuranceforacause.com before the
+   * rename. `urlConfirmed` stays false until the DNS points at this site,
+   * because `metadataBase` and the sitemap are built from this value and
+   * must not advertise a host that answers nothing. Flip it the day the
+   * domain is pointed; nothing else hardcodes the domain.
    */
-  url: "https://anchorinsurancemi.com" as string,
+  url: "https://anchorinsurancerm.com" as string,
   urlConfirmed: false,
 
+  /**
+   * Amanda, from her answers of 20 October 2026. She is the owner; an earlier
+   * build carried a second "Amanda's role" placeholder on the assumption she
+   * was a second producer, and that field is gone with the assumption. She
+   * wrote "broker / owner"; it is set here in the house pattern the old
+   * "Agent and owner" used.
+   */
   owner: {
-    name: "PLACEHOLDER:Owner name" as string,
-    title: "Agent and owner",
-    /** Second producer the client mentioned. Role unconfirmed. */
-    second: "PLACEHOLDER:Amanda’s role" as string,
+    name: "Amanda E. Starkey" as string,
+    title: "Broker and owner",
   },
 
   contact: {
-    phone: "PLACEHOLDER:phone" as string,
+    phone: "(734) 212-5100" as string,
     /** Digits only, for tel: links. A phone number that is not a link is a
      *  usability finding we make about other people's sites. */
-    phoneHref: "PLACEHOLDER:phone-digits" as string,
-    email: "PLACEHOLDER:email" as string,
-    street: "PLACEHOLDER:street address" as string,
+    phoneHref: "+17342125100" as string,
+    email: "amanda@anchorinsurancerm.com" as string,
+    street: "135 E. Main Street, Suite 205" as string,
     /**
      * MANCHESTER, WASHTENAW COUNTY.
      *
@@ -88,7 +95,7 @@ export const site = {
     city: "Manchester",
     county: "Washtenaw",
     state: "MI",
-    zip: "PLACEHOLDER:ZIP" as string,
+    zip: "48158" as string,
     /** The towns a local guide may name. Anything not on this list is not local
      *  to them, however good the story is. */
     nearby: ["Chelsea", "Saline", "Clinton", "Tecumseh", "Ann Arbor"],
@@ -96,17 +103,18 @@ export const site = {
     byAppointmentOnly: true,
   },
 
-  /** Seasonal exceptions and the one day that is different go here too. */
+  /** Her answers, 20 October 2026: 9 to 5 on weekdays, Saturday by
+   *  appointment, closed Sunday. Seasonal exceptions go here too. */
   hours: [
-    { days: "Monday to Friday", open: "PLACEHOLDER:weekday hours" },
-    { days: "Saturday", open: "PLACEHOLDER:Saturday hours" },
+    { days: "Monday to Friday", open: "9am to 5pm" },
+    { days: "Saturday", open: "By appointment" },
     { days: "Sunday", open: "Closed" },
   ] as { days: string; open: string }[],
 
   /** Michigan DIFS producer licensing. Required on the page, not optional. */
   license: {
-    producerNumber: "PLACEHOLDER:Michigan producer license number" as string,
-    npn: "PLACEHOLDER:NPN" as string,
+    producerNumber: "0753439" as string,
+    npn: "17814518" as string,
     states: ["Michigan"],
   },
 
@@ -124,8 +132,26 @@ export const site = {
    * with the payment service on 17 September 2026 and sit on the archive
    * branch with it (README, "Payments, archived"). Adding a carrier now is
    * a name and a logo.
+   *
+   * THE NAMES BELOW ARE HER OWN LIST, 20 October 2026, in her order with the
+   * three commercial carriers she named after it. NAMES ONLY, NO LOGOS: a
+   * name is a statement of fact about an appointment and needs no marketing
+   * review; a logo is a use of the carrier's mark and does. Each `logo`
+   * stays unset until that carrier's rules are checked. She also said "and
+   * more", which the homepage says in words under the list.
    */
-  carriers: [] as {
+  carriers: [
+    { name: "Progressive" },
+    { name: "AAA" },
+    { name: "Nationwide" },
+    { name: "Allstate" },
+    { name: "Foremost" },
+    { name: "Farm Bureau" },
+    { name: "Farmers Insurance" },
+    { name: "The Hanover" },
+    { name: "Citizens" },
+    { name: "The Hartford" },
+  ] as {
     name: string;
     logo?: string;
   }[],

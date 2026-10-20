@@ -193,7 +193,6 @@ export default function IntakeForm() {
         <legend>The basics</legend>
         <Row name="name" label="Your full name" hint="As it should appear on the site." required />
         <Row name="title" label="Your title" hint="We have &ldquo;Agent and owner&rdquo; penciled in." />
-        <Row name="amanda_role" label="Amanda&rsquo;s role" hint="So we introduce her correctly." />
         <div className="qf-two">
           <Row name="phone" label="Office phone" type="tel" />
           <Row name="email" label="Email for the site" hint="And who reads that inbox." />
@@ -236,7 +235,7 @@ export default function IntakeForm() {
         <Row
           name="domain"
           label="Website address"
-          hint="We have anchorinsurancemi.com penciled in, not purchased. Tell us what you want and we will handle the rest. It is registered in your name."
+          hint="We have anchorinsurancerm.com, registered in your name at Namecheap. Tell us if a different address should be the main one."
         />
       </fieldset>
 
